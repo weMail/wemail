@@ -16,5 +16,9 @@
         "illuminate/database": "~5.0",
         "tareq1988/wp-eloquent": "dev-master"
     },
-    "autoload" : {}
+    "autoload" : {
+        "psr-4": {
+            "WeDevs\\WeMail\\": "includes"
+        }
+    }
 }

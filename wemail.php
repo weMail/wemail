@@ -10,8 +10,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
  * Domain Path: /languages
- */
-/**
+ *
  * Copyright (c) 2017 weDevs LLC (email: info@wedevs.com). All rights reserved.
  *
  * Released under the GPL license
@@ -20,7 +19,7 @@
  * This is an add-on for WordPress
  * http://wordpress.org/
  *
- * **********************************************************************
+ * **************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -34,5 +33,241 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * **********************************************************************
+ * **************************************************************************
  */
+
+// don't call the file directly
+if (! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+final class WeDevs_WeMail {
+
+    /**
+     * @var object
+     *
+     * @since 1.0.0
+     *
+     * @var WeDevs_WeMail
+     */
+    private static $instance;
+
+    /**
+     * Plugin version
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $version = '0.0.1';
+
+    /**
+     * DB version
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $db_version = '0.0.1';
+
+    /**
+     * Minimum PHP version required
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    private $min_php = '5.4.0';
+
+    /**
+     * Holds various class instances
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
+    private $container = [];
+
+    /**
+     * Admin notice messages
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
+    private $admin_notices = [];
+
+    /**
+     * Initializes the WeDevs_WeMail() class
+     *
+     * @since 1.0.0
+     *
+     * Find any existing WeDevs_WeMail() instance
+     * and if it doesn't find one, creates one.
+     *
+     * @return WeDevs_WeMail
+     */
+    public static function get_instance() {
+        if (! isset( self::$instance ) && ! ( self::$instance instanceof WeDevs_WeMail ) ) {
+            self::$instance = new WeDevs_WeMail;
+            self::$instance->bootstrap();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Bootstrap the plugin
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    private function bootstrap() {
+        // Check requirements
+        if ( ! $this->met_requirements() ) {
+            add_action( 'admin_notices', [ $this, 'admin_notices' ] );
+            return;
+        }
+
+        // Define constants
+        $this->define_constants();
+
+        // Include required files
+        $this->includes();
+
+        // Hook into actions and filters
+        $this->init_hooks();
+
+        // Loaded action
+        do_action( 'wemail_loaded' );
+    }
+
+    /**
+     * Magic getter to bypass referencing plugin.
+     *
+     * @since 1.0.0
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function __get( $prop ) {
+        if ( array_key_exists( $prop, $this->container ) ) {
+            return $this->container[ $prop ];
+        }
+
+        return $this->{$prop};
+    }
+
+    /**
+     * What type of request is this?
+     *
+     * @param  string $type admin, ajax, cron or frontend.
+     *
+     * @return bool
+     */
+    public function is_request( $type ) {
+        switch ( $type ) {
+            case 'admin' :
+                $request = is_admin();
+                break;
+
+            case 'ajax' :
+                $request = defined( 'DOING_AJAX' );
+                break;
+
+            case 'cron' :
+                $request = defined( 'DOING_CRON' );
+                break;
+
+            case 'frontend' :
+                $request = ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' );
+                break;
+
+            default:
+                $request = false;
+        }
+
+        return $request;
+    }
+
+    private function met_requirements() {
+        if ( version_compare( PHP_VERSION, $this->min_php, '<' ) ) {
+            $this->admin_notices['unmet_php_version'] = sprintf(
+                __( '%s requires PHP version %s but you are using version %s', 'wemail' ),
+                '<strong>weMail</strong>',
+                '<strong>' . $this->min_php . '</strong>',
+                '<strong>' . PHP_VERSION . '</strong>'
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function admin_notices() {
+        foreach ( $this->admin_notices as $notice ) {
+            printf( '<div class="error"><p>' . $notice . '</p></div>' );
+        }
+    }
+
+    private function define_constants() {
+        define( 'WEMAIL_VERSION', $this->version );
+        define( 'WEMAIL_FILE', __FILE__ );
+        define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
+        define( 'WEMAIL_INCLUDES', WEMAIL_PATH . '/includes' );
+        define( 'WEMAIL_MODULES', WEMAIL_PATH . '/modules' );
+        define( 'WEMAIL_URL', plugins_url( '', WEMAIL_FILE ) );
+        define( 'WEMAIL_ASSETS', WEMAIL_URL . '/assets' );
+        define( 'WEMAIL_VIEWS', WEMAIL_INCLUDES . '/admin/views' );
+    }
+
+    private function includes() {
+        require_once WEMAIL_PATH . '/vendor/autoload.php';
+        require_once WEMAIL_INCLUDES . '/functions.php';
+    }
+
+    private function init_hooks() {
+        register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
+
+        add_action( 'init', [ $this, 'init' ], 0 );
+    }
+
+    public function init() {
+        // Before init action.
+        do_action( 'before_wemail_init' );
+
+        // Set up localization.
+        $this->load_plugin_textdomain();
+
+        $this->container['scripts'] = new WeDevs\WeMail\Scripts();
+
+        if ( $this->is_request( 'admin' ) ) {
+            $this->container['admin_menu'] = new WeDevs\WeMail\Admin\Menu();
+        }
+
+        // Init action.
+        do_action( 'wemail_init' );
+    }
+
+    public function load_plugin_textdomain() {
+        load_plugin_textdomain( 'wemail', false, WEMAIL_PATH . '/i18n/languages/' );
+    }
+
+}
+
+/**
+ * Init the wperp plugin
+ *
+ * @since 1.0.0
+ *
+ * @return WeDevs_WeMail class instance
+ */
+function wemail() {
+    return WeDevs_WeMail::get_instance();
+}
+
+// kick it off
+wemail();
