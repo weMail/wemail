@@ -1,0 +1,10 @@
+config.codekit
+.idea
+.codekit-cache
+/vendor/
+node_modules
+zip
+.DS_Store
+nbproject
+debug.log
+.netbeans.xml
