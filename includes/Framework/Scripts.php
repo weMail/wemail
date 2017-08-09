@@ -28,6 +28,7 @@ class Scripts {
         wp_register_script( 'vue-router', $this->vendor_dir . '/vue/vue-router' . $this->suffix . '.js', ['vue'], $this->version, true );
         wp_register_script( 'wemail-timepicker', $this->vendor_dir . '/timepicker/jquery.timepicker.min.js', ['jquery'], $this->version, true );
         wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/wemail-vendor.js', ['jquery'], $this->version, true );
+        wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['jquery', 'vue', 'vuex', 'vue-router', 'wemail-vendor'], $this->version, true );
     }
 
     public function localized_script_vars() {
@@ -45,12 +46,14 @@ class Scripts {
                 'format'           => $time_format,
                 'placeholder'      => date( $time_format )
             ],
-            'component'            => function () {}, // function will rendered as object
-            'registeredComponents' => [],
             'ajax'                 => function () {},
             'api'                  => function () {},
             'apiRootEndPoint'      => apply_filters( 'wemail-api-root-end-point', 'https://api.wemail.com/' ),
-            'apiKey'               => 'apiKey'
+            'apiKey'               => 'apiKey',
+            'component'            => function () {}, // function will be rendered as object
+            'registeredComponents' => [],
+            'partials'             => apply_filters( 'wemail-component-partials', [] ),
+            'mixins'               => function () {}
         ];
 
         return $wemail;

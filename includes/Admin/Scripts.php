@@ -17,7 +17,12 @@ class Scripts {
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['jquery', 'vue', 'vuex', 'vue-router', 'jquery-ui-datepicker', 'wemail-vendor'], WEMAIL_VERSION, true );
+        wp_enqueue_script( 'wemail-dir-mixins', WEMAIL_ASSETS . '/js/wemail-directive-mixins.js', ['wemail'] , WEMAIL_VERSION, true );
+
+        do_action('wemail-dir-mixins-after');
+
+        wp_enqueue_script( 'wemail-app', WEMAIL_ASSETS . '/js/wemail-app.js', ['jquery-ui-datepicker', 'wemail-dir-mixins'] , WEMAIL_VERSION, true );
+
 
         $this->localized_script();
     }
