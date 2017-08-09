@@ -221,7 +221,7 @@ final class WeDevs_WeMail {
         define( 'WEMAIL_MODULES', WEMAIL_PATH . '/modules' );
         define( 'WEMAIL_URL', plugins_url( '', WEMAIL_FILE ) );
         define( 'WEMAIL_ASSETS', WEMAIL_URL . '/assets' );
-        define( 'WEMAIL_VIEWS', WEMAIL_INCLUDES . '/admin/views' );
+        define( 'WEMAIL_VIEWS', WEMAIL_PATH . '/views' );
     }
 
     private function includes() {
@@ -242,10 +242,15 @@ final class WeDevs_WeMail {
         // Set up localization.
         $this->load_plugin_textdomain();
 
-        $this->container['scripts'] = new WeDevs\WeMail\Scripts();
+        $this->container['scripts'] = new WeDevs\WeMail\Framework\Scripts();
+
+        if ( $this->is_request( 'ajax' ) ) {
+            $this->container['ajax'] = new WeDevs\WeMail\Ajax();
+        }
 
         if ( $this->is_request( 'admin' ) ) {
-            $this->container['admin_menu'] = new WeDevs\WeMail\Admin\Menu();
+            $this->container['admin_scripts'] = new WeDevs\WeMail\Admin\Scripts();
+            $this->container['admin_menu']    = new WeDevs\WeMail\Admin\Menu();
         }
 
         // Init action.

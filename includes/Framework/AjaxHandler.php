@@ -1,7 +1,15 @@
 <?php
 namespace WeDevs\WeMail\Framework\Traits;
 
-trait Ajax {
+trait AjaxHandler {
+
+    protected function add_action( $tag, $nopriv = false ) {
+        add_action( 'wp_ajax_wemail_' . $tag, [ $this, $tag ] );
+
+        if ( $nopriv ) {
+            add_action( 'wp_ajax_nopriv_wemail_' . $tag, [ $this, $tag ] );
+        }
+    }
 
     /**
      * Verify request nonce
@@ -12,7 +20,7 @@ trait Ajax {
      *
      * @return void
      */
-    public function verify_nonce( $action ) {
+    public function verify_nonce( $action = 'wemail-nonce' ) {
         if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], $action ) ) {
             $this->send_error( __( 'Error: Nonce verification failed', 'wemail' ) );
         }

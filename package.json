@@ -1,0 +1,19 @@
+{
+  "name": "wemail",
+  "version": "1.0.0",
+  "description": "weMail plugin description...",
+  "scripts": {
+    "vendor": "webpack assets/src/js/vendor.js assets/js/wemail-vendor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/wedevs/wemail.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/wedevs/wemail#readme",
+  "devDependencies": {
+    "lodash": "^4.17.4",
+    "webpack": "^3.4.1"
+  }
+}

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wemail_format_date( $date, $format = false ) {
     if ( ! $format ) {
-        $format = erp_get_option( 'date_format', 'wemail_settings_general', 'Y-m-d' );
+        $format = get_option( 'date_format', 'wemail_settings_general', 'Y-m-d' );
     }
 
     $time = strtotime( $date );
@@ -30,7 +30,11 @@ function wemail_format_date( $date, $format = false ) {
  * @return string Example: Y-m-d will change to yy-mm-dd
  */
 function wemail_js_date_format() {
-    $format = erp_get_option( 'date_format', 'wemail_settings_general', 'Y-m-d' );
+    $format = get_option( 'date_format', 'wemail_settings_general', 'Y-m-d' );
 
     return str_replace( [ 'Y', 'm', 'd' ], [ 'yy', 'mm', 'dd' ], $format );
+}
+
+function wemail_validate_boolean( $var ) {
+    return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
 }
