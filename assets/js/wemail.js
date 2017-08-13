@@ -24,16 +24,16 @@
         }, options));
     }
 
-    weMail.api.get = function (route, query) {
-        var url = route ? weMail.apiRootEndPoint + route : weMail.apiRootEndPoint;
+    weMail.api.get = function (route, query, rootEndPoint) {
+        var url = !rootEndPoint ? (weMail.api.rootEndPoint + route) : (rootEndPoint + router);
 
         return Ajax(url, 'get', $.extend(true, {
-            apiKey: weMail.apiKey
+            apiKey: weMail.api.key
         }, query));
     }
 
-    weMail.api.post = function (route, query) {
-        var url = route ? weMail.apiRootEndPoint + route : weMail.apiRootEndPoint;
+    weMail.api.post = function (route, query, rootEndPoint) {
+        var url = !rootEndPoint ? (weMail.api.rootEndPoint + route) : (rootEndPoint + router);
 
         return Ajax(url, 'post', $.extend(true, {
             apiKey: weMail.apiKey
@@ -49,5 +49,13 @@
         this.registeredComponents.push(tagName);
 
         Vue.component(tagName, options);
+    }
+
+    weMail.registerStore = function (routeName, store) {
+        if (!this.stores[routeName]) {
+            this.stores[routeName] = {};
+        }
+
+        this.stores[routeName] = $.extend(true, this.stores[routeName], store);
     }
 })(jQuery);

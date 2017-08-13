@@ -46,14 +46,21 @@ class Scripts {
                 'format'           => $time_format,
                 'placeholder'      => date( $time_format )
             ],
-            'ajax'                 => function () {},
-            'api'                  => function () {},
-            'apiRootEndPoint'      => apply_filters( 'wemail-api-root-end-point', 'https://api.wemail.com/' ),
-            'apiKey'               => 'apiKey',
-            'component'            => function () {}, // function will be rendered as object
+
+            'ajax'                 => function () {}, // function will be render as object
+            'api'                   => [
+                'rootEndPoint'      => apply_filters( 'wemail-api-root-end-point', 'https://api.wemail.com/' ),
+                'key'               => 'apiKey',
+            ],
+
+            // Vue related data
+            'routes'               => apply_filters( 'wemail-admin-register-routes', [] ),
+            'routeComponents'      => function () {},
+            'component'            => function () {},
             'registeredComponents' => [],
             'partials'             => apply_filters( 'wemail-component-partials', [] ),
-            'mixins'               => function () {}
+            'mixins'               => function () {},
+            'stores'               => function () {}
         ];
 
         return $wemail;

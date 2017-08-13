@@ -15,7 +15,7 @@ class Menu {
      * @return void
      */
     public function __construct() {
-        $this->action( 'admin_menu', 'register_admin_menu' );
+        $this->add_action( 'admin_menu', 'register_admin_menu' );
     }
 
     /**
@@ -32,25 +32,13 @@ class Menu {
 
         $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt' );
 
-        $wemail_submenu = [
-            [ __( 'Overview', 'wemail' ), $capability, 'admin.php?page=wemail#/' ],
-            [ __( 'Campaigns', 'wemail' ), $capability, 'admin.php?page=wemail#/campaigns' ],
-        ];
-
-        $wemail_submenu = apply_filters( 'wemail-admin-submenu', $wemail_submenu );
-
-        $wemail_submenu = array_merge( $wemail_submenu, [
-            [ __( 'Subscribers', 'wemail' ), $capability, 'admin.php?page=wemail#/subscribers' ],
-            [ __( 'Forms', 'wemail' ), $capability, 'admin.php?page=wemail#/forms' ],
-            [ __( 'Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' ],
-            [ __( 'Settings', 'wemail' ), $capability, 'admin.php?page=wemail#/setttings' ],
-        ] );
+        $wemail_submenu = apply_filters( 'wemail-admin-submenu', [], $capability );
 
         $submenu['wemail'] = $wemail_submenu;
 
 
-        $this->action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );
-        $this->action( 'admin_print_scripts-' . $wemail, 'enqueue_scripts' );
+        $this->add_action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );
+        $this->add_action( 'admin_print_scripts-' . $wemail, 'enqueue_scripts' );
     }
 
     public function enqueue_styles() {

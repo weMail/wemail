@@ -218,7 +218,7 @@ final class WeDevs_WeMail {
         define( 'WEMAIL_FILE', __FILE__ );
         define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
         define( 'WEMAIL_INCLUDES', WEMAIL_PATH . '/includes' );
-        define( 'WEMAIL_MODULES', WEMAIL_PATH . '/modules' );
+        define( 'WEMAIL_MODULES', WEMAIL_INCLUDES . '/Modules' );
         define( 'WEMAIL_URL', plugins_url( '', WEMAIL_FILE ) );
         define( 'WEMAIL_ASSETS', WEMAIL_URL . '/assets' );
         define( 'WEMAIL_VIEWS', WEMAIL_PATH . '/views' );
@@ -243,10 +243,7 @@ final class WeDevs_WeMail {
         $this->load_plugin_textdomain();
 
         $this->container['scripts'] = new WeDevs\WeMail\Framework\Scripts();
-
-        if ( $this->is_request( 'ajax' ) ) {
-            $this->container['ajax'] = new WeDevs\WeMail\Ajax();
-        }
+        $this->container['modules'] = new WeDevs\WeMail\Modules\Modules();
 
         if ( $this->is_request( 'admin' ) ) {
             $this->container['admin_scripts'] = new WeDevs\WeMail\Admin\Scripts();

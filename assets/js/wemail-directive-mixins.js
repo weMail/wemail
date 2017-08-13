@@ -1,9 +1,33 @@
 ;(function($) {
     'use strict';
 
+    weMail.component('datepicker', {
+        template: `<input type="text" :value="value" @input="updateValue($event.target.value)">`,
+        props: ['value'],
+        mounted: function () {
+            var vm = this;
+
+            $(this.$el).datepicker({
+                onSelect: function (date) {
+                    vm.updateValue(date);
+                }
+            });
+        },
+
+        methods: {
+            updateValue(value) {
+                this.$emit('input', value);
+            }
+        }
+    });
+
     Vue.directive('wemail-datepicker', {
         bind: function (el, binding, vnode) {
-            $(el).datepicker();
+            $(el).datepicker({
+                onSelect: function (date) {
+                    Vue.set(vnode.context, binding.expression, date);
+                }
+            });
         }
     });
 
@@ -14,6 +38,8 @@
             if (!this.partials.length) {
                 return;
             }
+
+            window.ediamin = this;
 
             var partials = this.partials.map(function (partial) {
                 var content = partial.content ? vm.replaceWithData(partial.content) : '';

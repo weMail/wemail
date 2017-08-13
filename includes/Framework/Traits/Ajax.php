@@ -1,9 +1,9 @@
 <?php
 namespace WeDevs\WeMail\Framework\Traits;
 
-trait AjaxHandler {
+trait Ajax {
 
-    protected function add_action( $tag, $nopriv = false ) {
+    protected function add_ajax_action( $tag, $nopriv = false ) {
         add_action( 'wp_ajax_wemail_' . $tag, [ $this, $tag ] );
 
         if ( $nopriv ) {

@@ -19,25 +19,61 @@
     router.beforeEach(function (to, from, next) {
         var route = _lodash.filter(weMail.routes, {name: to.name})[0];
 
+        function getComponentScript() {
+            $.getScript(route.requires).done(function() {
+                setTimeout(function () {
+                    router.app.showLoadingAnime = false;
+                    next();
+                }, 400);
+            }).fail(function( jqxhr, settings, exception ) {
+                console.error(exception);
+            });
+        }
+
         if (route && route.scrollTo) {
             var scrollTo = ('top' === route.scrollTo) ? 0 : route.scrollTo;
 
             $('body').animate({scrollTop: scrollTo}, 200);
         }
 
-        if (route && route.requires && !weMail.routeComponents[route.component]) {
-            router.app.loadingRouteRequires = true;
+        if (route) {
+            router.app.showLoadingAnime = true;
 
-            $.getScript(route.requires).done(function() {
-                setTimeout(function () {
-                    router.app.loadingRouteRequires = false;
-                    next();
-                }, 800);
-            });
+            weMail
+                .ajax
+                .get('get_' + route.name + '_initial_data', route.initialData || {})
+                .done(function (response) {
+                    weMail.registerStore(route.name, {
+                        state: response.data
+                    });
 
-        } else {
-            next();
+                    if (route.requires && !weMail.routeComponents[route.component]) {
+                        if (route.dependencies && route.dependencies.length) {
+                            var depLoaded = 0;
+
+                            route.dependencies.forEach(function (dep) {
+                                $.getScript(dep).done(function() {
+                                    ++depLoaded;
+
+                                    if (depLoaded === route.dependencies.length) {
+                                        getComponentScript()
+                                    }
+                                }).fail(function(jqxhr, settings, exception) {
+                                    console.error(exception);
+                                });
+                            });
+
+                        } else {
+                            getComponentScript();
+                        }
+
+                    } else {
+                        router.app.showLoadingAnime = false;
+                        next();
+                    }
+                });
         }
+
     });
 
     // The main Vue instance
@@ -45,7 +81,7 @@
         el: '#wemail-app',
         router: router,
         data: {
-            loadingRouteRequires: true
+            showLoadingAnime: true
         },
     });
 
