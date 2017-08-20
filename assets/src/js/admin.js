@@ -1,3 +1,5 @@
+import '../sass/admin.scss';
+
 // The main Vue instance
 weMail.app = new weMail.Vue({
     el: '#wemail-app',

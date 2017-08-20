@@ -1,6 +1,8 @@
 <template>
     <div>
         <p>Overview component</p>
+        <p class="test-class">Hello World</p>
+        <p class="test-class2">Test Class 2</p>
         <partial-overview></partial-overview>
     </div>
 </template>
@@ -24,3 +26,9 @@
         }
     };
 </script>
+
+<style lang="scss" scoped>
+    .test-class2 {
+        color: $wp-yellow;
+    }
+</style>

@@ -8,3 +8,5 @@ zip
 nbproject
 debug.log
 .netbeans.xml
+assets/css/
+assets/js/
