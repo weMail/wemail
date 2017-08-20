@@ -23,12 +23,11 @@ class Scripts {
     }
 
     private function register_scripts() {
-        wp_register_script( 'vue', $this->vendor_dir . '/vue/vue' . $this->suffix . '.js', [], $this->version, true );
-        wp_register_script( 'vuex', $this->vendor_dir . '/vue/vuex' . $this->suffix . '.js', ['vue'], $this->version, true );
-        wp_register_script( 'vue-router', $this->vendor_dir . '/vue/vue-router' . $this->suffix . '.js', ['vue'], $this->version, true );
-        wp_register_script( 'wemail-timepicker', $this->vendor_dir . '/timepicker/jquery.timepicker.min.js', ['jquery'], $this->version, true );
-        wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/wemail-vendor.js', ['jquery'], $this->version, true );
-        wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['jquery', 'vue', 'vuex', 'vue-router', 'wemail-vendor'], $this->version, true );
+        wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/vendor.js', ['jquery'], $this->version, true );
+        wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['wemail-vendor'], $this->version, true );
+
+        wp_register_script( 'wemail-dir-mixins', WEMAIL_ASSETS . '/js/directives-and-mixins.js', ['wemail', 'jquery-ui-datepicker'] , WEMAIL_VERSION, true );
+        do_action('wemail-dir-mixins-after');
     }
 
     public function localized_script_vars() {
@@ -48,12 +47,13 @@ class Scripts {
             ],
 
             'ajax'                 => function () {}, // function will be render as object
-            'api'                   => [
-                'rootEndPoint'      => apply_filters( 'wemail-api-root-end-point', 'https://api.wemail.com/' ),
-                'key'               => 'apiKey',
+            'api'                  => [
+                'rootEndPoint'     => apply_filters( 'wemail-api-root-end-point', 'https://api.wemail.com/' ),
+                'key'              => 'apiKey',
             ],
 
             // Vue related data
+            'router'               => function () {},
             'routes'               => apply_filters( 'wemail-admin-register-routes', [] ),
             'routeComponents'      => function () {},
             'component'            => function () {},

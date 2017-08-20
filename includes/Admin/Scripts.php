@@ -10,6 +10,7 @@ class Scripts {
     public function __construct() {
         $this->add_action( 'wemail-admin-enqueue-styles', 'enqueue_styles' );
         $this->add_action( 'wemail-admin-enqueue-scripts', 'enqueue_scripts' );
+        $this->add_action( 'wemail-component-partials', 'partials' );
     }
 
     public function enqueue_styles() {
@@ -17,12 +18,7 @@ class Scripts {
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_script( 'wemail-dir-mixins', WEMAIL_ASSETS . '/js/wemail-directive-mixins.js', ['wemail'] , WEMAIL_VERSION, true );
-
-        do_action('wemail-dir-mixins-after');
-
-        wp_enqueue_script( 'wemail-app', WEMAIL_ASSETS . '/js/wemail-app.js', ['jquery-ui-datepicker', 'wemail-dir-mixins'] , WEMAIL_VERSION, true );
-
+        wp_enqueue_script( 'wemail-app', WEMAIL_ASSETS . '/js/admin.js', ['wemail-dir-mixins'] , WEMAIL_VERSION, true );
 
         $this->localized_script();
     }
@@ -34,7 +30,21 @@ class Scripts {
 
         $wemail = array_merge( $wemail, $admin_local_vars );
 
-        wp_localize_script( 'wemail', 'weMail', $wemail );
+        wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
+    }
+
+    public function partials($partials) {
+        $partials['overview'][] = [
+            'tag' => 'div',
+            'content' => 'testing {{ startDate }} partials'
+        ];
+
+        $partials['hello-world'][] = [
+            'tag' => 'div',
+            'content' => 'hello world {{ startDate }} partials'
+        ];
+
+        return $partials;
     }
 
 }

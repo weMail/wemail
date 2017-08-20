@@ -32,10 +32,7 @@ class Menu {
 
         $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt' );
 
-        $wemail_submenu = apply_filters( 'wemail-admin-submenu', [], $capability );
-
-        $submenu['wemail'] = $wemail_submenu;
-
+        $submenu['wemail'] = apply_filters( 'wemail-admin-submenu', [], $capability );
 
         $this->add_action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );
         $this->add_action( 'admin_print_scripts-' . $wemail, 'enqueue_scripts' );

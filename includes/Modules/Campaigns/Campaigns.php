@@ -34,7 +34,7 @@ class Campaigns extends Module {
             'notInStore' => 'not found in store'
         ];
 
-        $this->send_success($data);
+        $this->send_success( $data );
     }
 
 }

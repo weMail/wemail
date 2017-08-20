@@ -261,7 +261,7 @@ final class WeDevs_WeMail {
 }
 
 /**
- * Init the wperp plugin
+ * Init the wemail plugin
  *
  * @since 1.0.0
  *

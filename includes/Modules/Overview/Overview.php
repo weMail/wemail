@@ -32,10 +32,11 @@ class Overview extends Module {
     public function get_overview_initial_data() {
         $data = [
             'modelA' => 'Model A data from Home.php ' . current_time( 'mysql' ),
+            'modelB' => 'modelB - Overview.php ' . current_time( 'mysql' ),
             'notInStore' => 'not found in store'
         ];
 
-        $this->send_success($data);
+        $this->send_success( $data );
     }
 
 }
