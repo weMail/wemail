@@ -1,7 +1,8 @@
 <div class="wrap">
-    <div id="wemail-app" v-cloak>
+    <div id="wemail-admin" class="wemail-ui" v-cloak>
         <router-view></router-view>
-        <div id="wemail-route-loading" v-if="showLoadingAnime"><span>Loading</span></div>
-        <!-- <pre>{{ $data }}</pre> -->
+        <div id="wemail-route-loading" v-if="showLoadingAnime">
+            <span><?php _e( 'Loading', 'wemail' ); ?></span>
+        </div>
     </div>
 </div>

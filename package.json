@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "weMail plugin description...",
   "scripts": {
-    "vendor": "webpack build/vendor.js assets/js/wemail-vendor.js"
+    "lint-webpack": "node_modules/eslint/bin/eslint.js webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
     "sasslint-webpack-plugin": "^1.0.4",
     "style-loader": "^0.18.2",
     "stylelint": "^8.0.0",
+    "stylelint-config-wordpress": "^12.0.0",
     "stylelint-order": "^0.6.0",
     "stylelint-webpack-plugin": "^0.9.0",
     "vue": "^2.4.2",

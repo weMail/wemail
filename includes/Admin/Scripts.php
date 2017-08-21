@@ -14,11 +14,11 @@ class Scripts {
     }
 
     public function enqueue_styles() {
-        wp_enqueue_style( 'wemail', WEMAIL_ASSETS . '/css/wemail.css', [], WEMAIL_VERSION );
+        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', [], WEMAIL_VERSION );
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_script( 'wemail-app', WEMAIL_ASSETS . '/js/admin.js', ['wemail-dir-mixins'] , WEMAIL_VERSION, true );
+        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', ['wemail-dir-mixins'] , WEMAIL_VERSION, true );
 
         $this->localized_script();
     }
