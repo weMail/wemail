@@ -1,5 +1,6 @@
 {
   "extends": "stylelint-config-wordpress",
+  "processors": ["stylelint-processor-html"],
   "plugins": [
     "stylelint-order"
   ],
@@ -10,6 +11,7 @@
       ]
     }],
     "indentation": 4,
+    "no-empty-source": null,
     "order/properties-order": [
       [
        "position",

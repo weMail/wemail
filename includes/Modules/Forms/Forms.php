@@ -28,7 +28,7 @@ class Forms extends Module {
         return $routes;
     }
 
-    public function get_forms_initial_data() {
+    public function get_route_data_forms() {
         $data = [
             'modelA' => 'Model A data from Home.php ' . current_time( 'mysql' ),
             'notInStore' => 'not found in store'

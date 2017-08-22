@@ -26,7 +26,7 @@ class Scripts {
         wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/vendor.js', ['jquery'], $this->version, true );
         wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['wemail-vendor'], $this->version, true );
 
-        wp_register_script( 'wemail-dir-mixins', WEMAIL_ASSETS . '/js/directives-and-mixins.js', ['wemail', 'jquery-ui-datepicker'] , WEMAIL_VERSION, true );
+        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker'] , WEMAIL_VERSION, true );
         do_action('wemail-dir-mixins-after');
     }
 
@@ -57,7 +57,7 @@ class Scripts {
             'routes'               => apply_filters( 'wemail-admin-register-routes', [] ),
             'routeComponents'      => function () {},
             'component'            => function () {},
-            'registeredComponents' => [],
+            'registeredComponents' => function () {},
             'partials'             => apply_filters( 'wemail-component-partials', [] ),
             'mixins'               => function () {},
             'stores'               => function () {}

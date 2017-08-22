@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import PartialOverview from '../components/partial-overview.vue';
+    import PartialOverview from './partial.vue';
 
     export default {
         components: {
@@ -27,7 +27,7 @@
     };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .test-class2 {
         color: $wp-yellow;
     }

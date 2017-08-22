@@ -11,18 +11,22 @@ function srcDir(dir) {
     return path.join(__dirname, 'assets/src/', dir);
 }
 
-function jsSrc(filename) {
-    return path.join(srcDir('js'), `${filename}.js`);
+function jsSrc(filename, subDir = '') {
+    return path.join(srcDir('js'), subDir, `${filename}.js`);
 }
 
 function sassSrc(filename) {
-    return path.join(srcDir('sass'), `${filename}.scss`);
+    return path.join(srcDir('scss'), `${filename}.scss`);
 }
 
 function sassResources() {
     return [
-        sassSrc('_variables'), sassSrc('_mixins'),
+        sassSrc('_variables'), sassSrc('_mixins')
     ];
+}
+
+function isProduction() {
+    return process.env.NODE_ENV === 'production';
 }
 
 function cssLoaders(options) {
@@ -31,7 +35,7 @@ function cssLoaders(options) {
     const cssLoader = {
         loader: 'css-loader',
         options: {
-            minimize: process.env.NODE_ENV === 'production',
+            minimize: isProduction(),
             sourceMap: options.sourceMap
         }
     };
@@ -89,23 +93,26 @@ const plugins = [
     }),
 
     new StyleLintPlugin({
-        configFile: path.resolve('./.stylelintrc')
+        configFile: path.resolve('./.stylelintrc'),
+        files: [
+            'assets/src/sass/**/*.scss', 'assets/src/js/**/*.vue'
+        ]
     })
 ];
 
-if (process.env.NODE_ENV === 'production') {
+if (isProduction()) {
     plugins.push(new webpack.optimize.UglifyJsPlugin({
         sourceMap: true,
         compress: {
-            warnings: true
+            warnings: false
         }
     }));
 
-    // plugins[] = new webpack.DefinePlugin({
-    //   'process.env': {
-    //     NODE_ENV: JSON.stringify('production')
-    //   }
-    // });
+    plugins.push(new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: JSON.stringify('production')
+        }
+    }));
 }
 
 module.exports = {
@@ -119,14 +126,14 @@ module.exports = {
     entry: {
         vendor: jsSrc('vendor'),
         wemail: jsSrc('wemail'),
+        common: jsSrc('common'),
         admin: jsSrc('admin'),
-        Overview: jsSrc('Overview'),
-        Campaigns: jsSrc('Campaigns'),
-        Subscribers: jsSrc('Subscribers'),
-        Forms: jsSrc('Forms'),
-        Lists: jsSrc('Lists'),
-        Settings: jsSrc('Settings'),
-        'directives-and-mixins': jsSrc('directives-and-mixins')
+        Overview: jsSrc('Overview', 'routes/Overview'),
+        Campaigns: jsSrc('Campaigns', 'routes/Campaigns'),
+        Subscribers: jsSrc('Subscribers', 'routes/Subscribers'),
+        Forms: jsSrc('Forms', 'routes/Forms'),
+        Lists: jsSrc('Lists', 'routes/Lists'),
+        Settings: jsSrc('Settings', 'routes/Settings')
     },
 
     output: {
@@ -162,7 +169,8 @@ module.exports = {
                             query: {
                                 modules: false,
                                 sourceMap: false,
-                                localIdentName: '[name]'
+                                localIdentName: '[name]',
+                                minimize: isProduction()
                             }
                         },
                         {

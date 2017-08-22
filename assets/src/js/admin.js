@@ -1,4 +1,4 @@
-import '../sass/admin.scss';
+import '../scss/admin.scss';
 
 // The main Vue instance
 weMail.admin = new weMail.Vue({
@@ -29,7 +29,14 @@ const currentURL = window.location.href;
 const currentPath = currentURL.substr(currentURL.indexOf('admin.php'));
 
 $('ul.wp-submenu a', menuRoot).each((index, el) => {
-    if ($(el).attr('href') === currentPath) {
+    const pathSegments = currentPath.split('/');
+    const MINSEGMENT = 2;
+
+    if (pathSegments.length <= MINSEGMENT && $(el).attr('href') === currentPath) {
         $(el).parent().addClass('current');
+    } else if (pathSegments.length > MINSEGMENT) {
+        if ($(el).attr('href') === pathSegments.splice(0, MINSEGMENT).join('/')) {
+            $(el).parent().addClass('current');
+        }
     }
 });

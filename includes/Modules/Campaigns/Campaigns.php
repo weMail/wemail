@@ -28,7 +28,7 @@ class Campaigns extends Module {
         return $routes;
     }
 
-    public function get_campaigns_initial_data() {
+    public function get_route_data_campaigns() {
         $data = [
             'modelA' => 'Model A data from Home.php ' . current_time( 'mysql' ),
             'notInStore' => 'not found in store'

@@ -29,7 +29,7 @@ class Overview extends Module {
         return $routes;
     }
 
-    public function get_overview_initial_data() {
+    public function get_route_data_overview() {
         $data = [
             'modelA' => 'Model A data from Home.php ' . current_time( 'mysql' ),
             'modelB' => 'modelB - Overview.php ' . current_time( 'mysql' ),

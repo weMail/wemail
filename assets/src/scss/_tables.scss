@@ -1,0 +1,18 @@
+// -----------------------------
+// Table
+// -----------------------------
+.widefat {
+
+    &.bordered-cell {
+        border-collapse: collapse;
+
+        td,
+        th {
+            border: 1px solid $wp-border-color;
+        }
+    }
+
+    th.strong {
+        font-weight: 600;
+    }
+}

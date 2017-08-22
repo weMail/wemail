@@ -18,7 +18,7 @@ class Scripts {
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', ['wemail-dir-mixins'] , WEMAIL_VERSION, true );
+        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', ['wemail-common'] , WEMAIL_VERSION, true );
 
         $this->localized_script();
     }

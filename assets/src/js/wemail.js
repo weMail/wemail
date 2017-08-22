@@ -43,14 +43,12 @@ weMail.api.post = (route, query, rootEndPoint) => {
 };
 
 // Register vue component to prevent duplicate registration
-weMail.component = function (tagName, options, test) {
-    if (this.registeredComponents.indexOf(tagName) >= 0) {
+weMail.component = function (name, component) {
+    if (this.registeredComponents.hasOwnProperty(name)) {
         return;
     }
 
-    this.registeredComponents.push(tagName);
-
-    weMail.Vue.component(tagName, options);
+    this.registeredComponents[name] = component;
 };
 
 // Register vuex stores
@@ -71,29 +69,69 @@ weMail.registerMixins = function (mixins) {
     });
 };
 
+weMail.getMixins = function (...mixins) {
+    return mixins.map((mixin) => weMail.mixins[mixin]);
+};
+
 // Vue Router instance
-weMail.router = new weMail.VueRouter({
-    routes: weMail.routes.map((route) => {
-        return {
+function mapRoute(route, routeObj) {
+    if (!routeObj) {
+        routeObj = {
             path: route.path,
             name: route.name,
             component: {
-                render: (render) => render(weMail.routeComponents[route.component])
-            }
+                render(render) {
+                    return render(weMail.registeredComponents[route.component]);
+                }
+            },
+            children: []
         };
+
+        if (route.redirect) {
+            routeObj.redirect = {
+                name: route.redirect
+            };
+        }
+    }
+
+    if (route.children && route.children.length) {
+        route.children.forEach((childRoute) => {
+            const child = {
+                path: childRoute.path,
+                name: childRoute.name,
+                component: {
+                    render: (render) => {
+                        return render(weMail.registeredComponents[childRoute.component]);
+                    }
+                },
+                children: []
+            };
+
+            routeObj.children.push(child);
+
+            mapRoute(childRoute, child);
+        });
+    }
+
+    return routeObj;
+}
+
+weMail.router = new weMail.VueRouter({
+    routes: weMail.routes.map((route) => {
+        return mapRoute(route);
     })
 });
 
 // Lazy load router components
 weMail.router.beforeEach((to, from, next) => {
-    const route = weMail._.filter(weMail.routes, {
-        name: to.name
+    const rootRoute = weMail._.filter(weMail.routes, {
+        name: to.matched[0].name
     })[0];
 
     function getComponentScript() {
         const TIMEOUT = 400;
 
-        $.getScript(route.requires).done(() => {
+        $.getScript(rootRoute.requires).done(() => {
             setTimeout(() => {
                 weMail.router.app.showLoadingAnime = false;
                 next();
@@ -103,8 +141,8 @@ weMail.router.beforeEach((to, from, next) => {
         });
     }
 
-    if (route && route.scrollTo) {
-        const scrollTo = (route.scrollTo === 'top') ? 0 : route.scrollTo;
+    if (rootRoute && rootRoute.scrollTo) {
+        const scrollTo = (rootRoute.scrollTo === 'top') ? 0 : rootRoute.scrollTo;
         const DURATION = 200;
 
         $('body').animate({
@@ -112,26 +150,26 @@ weMail.router.beforeEach((to, from, next) => {
         }, DURATION);
     }
 
-    if (route) {
+    if (rootRoute) {
         weMail.router.app.showLoadingAnime = true;
 
         weMail
             .ajax
-            .get(`get_${route.name}_initial_data`, route.initialData || {})
+            .get(`get_route_data_${to.name}`)
             .done((response) => {
-                weMail.registerStore(route.name, {
-                    state: response.data
+                weMail.registerStore(rootRoute.name, {
+                    state: response.data || {}
                 });
 
-                if (route.requires && !weMail.routeComponents[route.component]) {
-                    if (route.dependencies && route.dependencies.length) {
+                if (rootRoute.requires && !weMail.registeredComponents[rootRoute.component]) {
+                    if (rootRoute.dependencies && rootRoute.dependencies.length) {
                         let depLoaded = 0;
 
-                        route.dependencies.forEach((dep) => {
+                        rootRoute.dependencies.forEach((dep) => {
                             $.getScript(dep).done(() => {
                                 ++depLoaded;
 
-                                if (depLoaded === route.dependencies.length) {
+                                if (depLoaded === rootRoute.dependencies.length) {
                                     getComponentScript();
                                 }
                             }).fail((jqxhr, settings, exception) => {
@@ -146,5 +184,7 @@ weMail.router.beforeEach((to, from, next) => {
                     next();
                 }
             });
+    } else {
+        next();
     }
 });

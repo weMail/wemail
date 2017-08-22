@@ -1,4 +1,4 @@
-import Overview from './routes/Overview.vue';
+import Overview from './Overview.vue';
 
 // Register store for Overview route
 weMail.registerStore('overview', {
@@ -13,7 +13,7 @@ weMail.registerStore('overview', {
     }
 });
 
-weMail.routeComponents.Overview = {
+weMail.component('Overview', {
     store: new weMail.Vuex.Store(weMail.stores.overview),
     ...Overview
-};
+});
