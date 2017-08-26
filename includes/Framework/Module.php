@@ -9,6 +9,13 @@ abstract class Module {
 
     use Ajax, Hooker;
 
+    /**
+     * Class constructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function __construct() {
         if ( wemail()->is_request( 'ajax' ) ) {
             $this->add_ajax_action( 'get_route_data_' . $this->route_name );
@@ -23,8 +30,27 @@ abstract class Module {
         }
     }
 
+    /**
+     * Register submenu
+     *
+     * @since 1.0.0
+     *
+     * @param array $menu_items
+     * @param string $capability
+     *
+     * @return array
+     */
     abstract public function register_submenu( $menu_items, $capability );
 
+    /**
+     * Register Vue route
+     *
+     * @since 1.0.0
+     *
+     * @param array $routes
+     *
+     * @return array
+     */
     abstract public function register_route( $routes );
 
 }

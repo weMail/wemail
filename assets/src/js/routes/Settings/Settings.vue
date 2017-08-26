@@ -15,7 +15,7 @@
             <div class="wemail-settings-content">
                 <h4 class="settings-title">{{ settingsTitle }}</h4>
 
-                <form class="settings-form" @submit.prevent="saveSettings">
+                <form class="settings-form" @submit.prevent="saveSettings" disabled>
                     <router-view></router-view>
                     <button type="submit" class="button button-primary submit-button">{{ i18n.saveSettings }}</button>
                 </form>
@@ -27,7 +27,7 @@
 <script>
     export default {
         computed: {
-            ...weMail.Vuex.mapState(['i18n', 'settingsTitle', 'settings']),
+            ...weMail.Vuex.mapState(['i18n', 'settingsTitle']),
 
             childRoutes() {
                 const children = weMail._.filter(weMail.routes, {
@@ -135,7 +135,8 @@
                 }
             }
 
-            input[type="text"] {
+            input[type="text"],
+            select {
                 width: 100%;
             }
         }

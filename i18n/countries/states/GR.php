@@ -1,0 +1,63 @@
+<?php
+/**
+ * Greece Divisions
+ *
+ * @since 1.0.0
+ *
+ * @return array Country divisions
+ */
+
+return [
+    "01" => __( "Aitolia-Akarnania", "wemail" ),
+    "03" => __( "Voiotia", "wemail" ),
+    "04" => __( "Evvoia", "wemail" ),
+    "05" => __( "Evrytania", "wemail" ),
+    "06" => __( "Fthiotis", "wemail" ),
+    "07" => __( "Fokis", "wemail" ),
+    "11" => __( "Argolis", "wemail" ),
+    "12" => __( "Arkadia", "wemail" ),
+    "13" => __( "Achaïa", "wemail" ),
+    "14" => __( "Ileia", "wemail" ),
+    "15" => __( "Korinthia", "wemail" ),
+    "16" => __( "Lakonia", "wemail" ),
+    "17" => __( "Messinia", "wemail" ),
+    "21" => __( "Zakynthos", "wemail" ),
+    "22" => __( "Kerkyra", "wemail" ),
+    "23" => __( "Kefallinia", "wemail" ),
+    "24" => __( "Lefkas", "wemail" ),
+    "31" => __( "Arta", "wemail" ),
+    "32" => __( "Thesprotia", "wemail" ),
+    "33" => __( "Ioannina", "wemail" ),
+    "34" => __( "Preveza", "wemail" ),
+    "41" => __( "Karditsa", "wemail" ),
+    "42" => __( "Larisa", "wemail" ),
+    "43" => __( "Magnisia", "wemail" ),
+    "44" => __( "Trikala", "wemail" ),
+    "51" => __( "Grevena", "wemail" ),
+    "52" => __( "Drama", "wemail" ),
+    "53" => __( "Imathia", "wemail" ),
+    "54" => __( "Thessaloniki", "wemail" ),
+    "55" => __( "Kavalla", "wemail" ),
+    "56" => __( "Kastoria", "wemail" ),
+    "57" => __( "Kilkis", "wemail" ),
+    "58" => __( "Kozani", "wemail" ),
+    "59" => __( "Pella", "wemail" ),
+    "61" => __( "Pieria", "wemail" ),
+    "62" => __( "Serrai", "wemail" ),
+    "63" => __( "Florina", "wemail" ),
+    "64" => __( "Chalkidiki", "wemail" ),
+    "69" => __( "Agio Oros", "wemail" ),
+    "71" => __( "Evros", "wemail" ),
+    "72" => __( "Xanthi", "wemail" ),
+    "73" => __( "Rodopi", "wemail" ),
+    "81" => __( "Dodekanisos", "wemail" ),
+    "82" => __( "Kyklades", "wemail" ),
+    "83" => __( "Lesvos", "wemail" ),
+    "84" => __( "Samos", "wemail" ),
+    "85" => __( "Chios", "wemail" ),
+    "91" => __( "Irakleion", "wemail" ),
+    "92" => __( "Lasithion", "wemail" ),
+    "93" => __( "Rethymnon", "wemail" ),
+    "94" => __( "Chania", "wemail" ),
+    "A1" => __( "Attiki", "wemail" ),
+];

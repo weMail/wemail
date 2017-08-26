@@ -21,19 +21,19 @@
                 <input type="text" v-model="settings.city">
             </label>
 
-            <label>
+            <label v-if="hasCountryStates">
                 <strong>{{ i18n.state }}</strong>
-                <input type="text" v-model="settings.state">
+                <select2 :data="states" v-model="settings.state"></select2>
+            </label>
+
+            <label>
+                <strong>{{ i18n.country }}</strong>
+                <select2 :data="countries" v-model="settings.country"></select2>
             </label>
 
             <label>
                 <strong>{{ i18n.zip }}</strong>
                 <input type="text" v-model="settings.zip">
-            </label>
-
-            <label>
-                <strong>{{ i18n.country }}</strong>
-                <input type="text" v-model="settings.country">
             </label>
 
             <label>
@@ -54,8 +54,10 @@
 
         <div class="col-sm-6">
             image
+            <pre>{{ settings }}</pre>
+            <!-- <pre>{{ countries }}</pre> -->
+            <pre>{{ states }}</pre>
         </div>
-
     </div>
 </template>
 
@@ -63,6 +65,40 @@
     import settingsMixin from './settings-mixin.js';
 
     export default {
-        mixins: [settingsMixin]
+        mixins: [settingsMixin],
+
+        computed: {
+            ...weMail.Vuex.mapState(['countries', 'states']),
+
+            hasCountryStates() {
+                return Object.keys(this.states).length;
+            }
+        },
+
+        watch: {
+            'settings.country'(country) {
+                const vm = this;
+
+                vm.$root.showLoadingAnime = true;
+
+                weMail.ajax.get('get_country_states', {
+                    country
+                }).done((response) => {
+                    const states = response.data.states;
+                    const names = Object.keys(states);
+
+                    if (names.length) {
+                        vm.$store.commit('updateCountryStates', states);
+                        vm.settings.state = names[0];
+                    } else {
+                        vm.$store.commit('updateCountryStates', {});
+                        vm.settings.state = null;
+                    }
+                }).always(() => {
+                    vm.$root.showLoadingAnime = false;
+                });
+
+            }
+        }
     };
 </script>

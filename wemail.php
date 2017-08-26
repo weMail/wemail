@@ -192,6 +192,13 @@ final class WeDevs_WeMail {
         return $request;
     }
 
+    /**
+     * Validate plugin requirements
+     *
+     * @since 1.0.0
+     *
+     * @return boolean
+     */
     private function met_requirements() {
         if ( version_compare( PHP_VERSION, $this->min_php, '<' ) ) {
             $this->admin_notices['unmet_php_version'] = sprintf(
@@ -207,12 +214,26 @@ final class WeDevs_WeMail {
         return true;
     }
 
+    /**
+     * `admin_notices` hook
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function admin_notices() {
         foreach ( $this->admin_notices as $notice ) {
             printf( '<div class="error"><p>' . $notice . '</p></div>' );
         }
     }
 
+    /**
+     * Define plugin constants
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function define_constants() {
         define( 'WEMAIL_VERSION', $this->version );
         define( 'WEMAIL_FILE', __FILE__ );
@@ -224,17 +245,38 @@ final class WeDevs_WeMail {
         define( 'WEMAIL_VIEWS', WEMAIL_PATH . '/views' );
     }
 
+    /**
+     * Include plugin files
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function includes() {
         require_once WEMAIL_PATH . '/vendor/autoload.php';
         require_once WEMAIL_INCLUDES . '/functions.php';
     }
 
+    /**
+     * Hooks methods to WP actions
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function init_hooks() {
         register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
 
         add_action( 'init', [ $this, 'init' ], 0 );
     }
 
+    /**
+     * Create class instances
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function init() {
         // Before init action.
         do_action( 'before_wemail_init' );
@@ -250,10 +292,21 @@ final class WeDevs_WeMail {
             $this->container['admin_menu']    = new WeDevs\WeMail\Admin\Menu();
         }
 
+        if ( $this->is_request( 'ajax' ) ) {
+            $this->container['ajax'] = new WeDevs\WeMail\Ajax();
+        }
+
         // Init action.
         do_action( 'wemail_init' );
     }
 
+    /**
+     * Load plugin i18n text domain
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function load_plugin_textdomain() {
         load_plugin_textdomain( 'wemail', false, WEMAIL_PATH . '/i18n/languages/' );
     }

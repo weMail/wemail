@@ -1,0 +1,63 @@
+<?php
+/**
+ * Spain Divisions
+ *
+ * @since 1.0.0
+ *
+ * @return array Country divisions
+ */
+
+return [
+    "A" => __( "Alicante/Alacant", "wemail" ),
+    "AB" => __( "Albacete", "wemail" ),
+    "AL" => __( "Almería", "wemail" ),
+    "AV" => __( "Ávila", "wemail" ),
+    "B" => __( "Barcelona", "wemail" ),
+    "BA" => __( "Badajoz", "wemail" ),
+    "BI" => __( "Bizkaia", "wemail" ),
+    "BU" => __( "Burgos", "wemail" ),
+    "C" => __( "Coruña, A", "wemail" ),
+    "CA" => __( "Cádiz", "wemail" ),
+    "CC" => __( "Cáceres", "wemail" ),
+    "CE" => __( "Ceuta", "wemail" ),
+    "CO" => __( "Córdoba", "wemail" ),
+    "CR" => __( "Ciudad Real", "wemail" ),
+    "CS" => __( "Castellón/Castelló", "wemail" ),
+    "CU" => __( "Cuenca", "wemail" ),
+    "GC" => __( "Palmas, Las", "wemail" ),
+    "GI" => __( "Girona", "wemail" ),
+    "GR" => __( "Granada", "wemail" ),
+    "GU" => __( "Guadalajara", "wemail" ),
+    "H" => __( "Huelva", "wemail" ),
+    "HU" => __( "Huesca", "wemail" ),
+    "J" => __( "Jaén", "wemail" ),
+    "L" => __( "Lleida", "wemail" ),
+    "LE" => __( "León", "wemail" ),
+    "LO" => __( "Rioja, La", "wemail" ),
+    "LU" => __( "Lugo", "wemail" ),
+    "M" => __( "Madrid", "wemail" ),
+    "MA" => __( "Málaga", "wemail" ),
+    "ML" => __( "Melilla", "wemail" ),
+    "MU" => __( "Murcia", "wemail" ),
+    "NA" => __( "Navarra", "wemail" ),
+    "O" => __( "Asturias", "wemail" ),
+    "OR" => __( "Ourense", "wemail" ),
+    "P" => __( "Palencia", "wemail" ),
+    "PM" => __( "Balears, Illes", "wemail" ),
+    "PO" => __( "Pontevedra", "wemail" ),
+    "S" => __( "Cantabria", "wemail" ),
+    "SA" => __( "Salamanca", "wemail" ),
+    "SE" => __( "Sevilla", "wemail" ),
+    "SG" => __( "Segovia", "wemail" ),
+    "SO" => __( "Soria", "wemail" ),
+    "SS" => __( "Gipuzkoa", "wemail" ),
+    "T" => __( "Tarragona", "wemail" ),
+    "TE" => __( "Teruel", "wemail" ),
+    "TF" => __( "Santa Cruz de Tenerife", "wemail" ),
+    "TO" => __( "Toledo", "wemail" ),
+    "V" => __( "Valencia/València", "wemail" ),
+    "VA" => __( "Valladolid", "wemail" ),
+    "VI" => __( "Araba/Álava", "wemail" ),
+    "Z" => __( "Zaragoza", "wemail" ),
+    "ZA" => __( "Zamora", "wemail" ),
+];

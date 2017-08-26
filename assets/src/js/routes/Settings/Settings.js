@@ -8,7 +8,11 @@ weMail.component('SocialNetworks', SocialNetworks);
 // Register store for Overview route
 weMail.registerStore('settings', {
     mutations: {
-        updateSettings: (state, payload) => {
+        updateCountryStates(state, payload) {
+            state.states = payload;
+        },
+
+        updateSettings(state, payload) {
             state.settings = payload;
         }
     }
