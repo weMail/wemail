@@ -3,6 +3,7 @@ import '../scss/admin.scss';
 // The main Vue instance
 weMail.admin = new weMail.Vue({
     el: '#wemail-admin',
+    store: weMail.store,
     router: weMail.router,
     data: {
         showLoadingAnime: true

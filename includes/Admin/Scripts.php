@@ -10,7 +10,6 @@ class Scripts {
     public function __construct() {
         $this->add_action( 'wemail-admin-enqueue-styles', 'enqueue_styles' );
         $this->add_action( 'wemail-admin-enqueue-scripts', 'enqueue_scripts' );
-        $this->add_action( 'wemail-component-partials', 'partials' );
     }
 
     public function enqueue_styles() {
@@ -31,20 +30,6 @@ class Scripts {
         $wemail = array_merge( $wemail, $admin_local_vars );
 
         wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
-    }
-
-    public function partials($partials) {
-        $partials['overview'][] = [
-            'tag' => 'div',
-            'content' => 'testing {{ startDate }} partials'
-        ];
-
-        $partials['hello-world'][] = [
-            'tag' => 'div',
-            'content' => 'hello world {{ startDate }} partials'
-        ];
-
-        return $partials;
     }
 
 }

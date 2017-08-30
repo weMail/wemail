@@ -47,10 +47,7 @@ class Scripts {
             ],
 
             'ajax'                 => function () {}, // function will be render as object
-            'api'                  => [
-                'rootEndPoint'     => apply_filters( 'wemail-api-root-end-point', 'https://api.wemail.com/' ),
-                'key'              => 'apiKey',
-            ],
+            'api'                  => wemail()->api->get_props(),
 
             // Vue related data
             'router'               => function () {},

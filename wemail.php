@@ -140,7 +140,7 @@ final class WeDevs_WeMail {
         $this->init_hooks();
 
         // Loaded action
-        do_action( 'wemail_loaded' );
+        do_action( 'wemail-loaded' );
     }
 
     /**
@@ -279,11 +279,12 @@ final class WeDevs_WeMail {
      */
     public function init() {
         // Before init action.
-        do_action( 'before_wemail_init' );
+        do_action( 'wemail-before-init' );
 
         // Set up localization.
         $this->load_plugin_textdomain();
 
+        $this->container['api']     = new WeDevs\WeMail\Api();
         $this->container['scripts'] = new WeDevs\WeMail\Framework\Scripts();
         $this->container['modules'] = new WeDevs\WeMail\Modules\Modules();
 
@@ -297,7 +298,7 @@ final class WeDevs_WeMail {
         }
 
         // Init action.
-        do_action( 'wemail_init' );
+        do_action( 'wemail-init' );
     }
 
     /**
@@ -318,7 +319,7 @@ final class WeDevs_WeMail {
  *
  * @since 1.0.0
  *
- * @return WeDevs_WeMail class instance
+ * @return WeDevs_WeMail
  */
 function wemail() {
     return WeDevs_WeMail::get_instance();

@@ -24,10 +24,43 @@ class Settings extends Module {
      */
     public $menu_priority = 100;
 
+    public $settings = [];
+
+    /**
+     * Class constructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function __construct() {
-        $this->add_ajax_action('get_route_data_company_details');
-        $this->add_ajax_action('get_route_data_social_networks');
+        $this->add_ajax_action('save_settings');
+
+        $this->register_settings();
+
         parent::__construct();
+    }
+
+    /**
+     * Register settings
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    private function register_settings() {
+        $default_settings = [
+            new CompanyDetails( $this ),
+            new SocialNetworks( $this )
+        ];
+
+        $settings = apply_filters( 'wemail-register-settings', $default_settings, $this );
+
+        $this->settings = collect( $settings )->sortBy( 'priority' );
+
+        $this->settings->each( function ( $setting ) {
+            add_action( 'wp_ajax_wemail_get_route_data_' . $setting->route_name, [ $setting, 'get_route_data' ] );
+        } );
     }
 
     /**
@@ -56,35 +89,31 @@ class Settings extends Module {
      * @return array
      */
     public function register_route( $routes ) {
+        $children = $this->settings->map( function ( $settings ) {
+            return [
+                'path'      => $settings->path,
+                'name'      => $settings->route_name,
+                'component' => $settings->component,
+                'menu'      => $settings->menu
+            ];
+        } );
+
         $routes[] = [
-            'path' => '/settings',
-            'name' => 'settings',
-            'component' => 'Settings',
-            'requires' => WEMAIL_ASSETS . '/js/Settings.js',
+            'path'         => '/settings',
+            'name'         => 'settings',
+            'component'    => 'Settings',
+            'requires'     => WEMAIL_ASSETS . '/js/Settings.js',
             'dependencies' => apply_filters( 'wemail-admin-route-dep-settings', [] ),
-            'scrollTo' => 'top',
-            'redirect' => 'company_details',
-            'children' => [
-                [
-                    'path' => 'company-details',
-                    'name' => 'company_details',
-                    'component' => 'CompanyDetails',
-                    'menu' => __( 'Company Details', 'wemail' )
-                ],
-                [
-                    'path' => 'social-networks',
-                    'name' => 'social_networks',
-                    'component' => 'SocialNetworks',
-                    'menu' => __( 'SocialNetworks', 'wemail' )
-                ]
-            ]
+            'scrollTo'     => 'top',
+            'redirect'     => 'companyDetails',
+            'children'     => $children
         ];
 
         return $routes;
     }
 
     /**
-     * i18n strings
+     * i18n strings for Settings route
      *
      * @since 1.0.0
      *
@@ -92,76 +121,38 @@ class Settings extends Module {
      */
     public function i18n() {
         return [
-            'settings' => __( 'Settings', 'wemail' ),
-            'saveSettings' => __( 'Save Settings', 'wemail' ),
-            'optional' => __( 'optional', 'wemail' )
+            'settings'      => __( 'Settings', 'wemail' ),
+            'saveSettings'  => __( 'Save Settings', 'wemail' ),
+            'optional'      => __( 'optional', 'wemail' )
         ];
     }
 
     /**
-     * `company_details` route data
+     * Save settings
      *
      * @since 1.0.0
      *
      * @return void
      */
-    public function get_route_data_company_details() {
+    public function save_settings() {
         $this->verify_nonce();
 
-        $data = [
-            'i18n' => array_merge( $this->i18n(), [
-                'companyName' => __( 'Company Name', 'wemail' ),
-                'address1' => __( 'Address Line 1', 'wemail' ),
-                'address2' => __( 'Address Line 2', 'wemail' ),
-                'city' => __( 'City', 'wemail' ),
-                'state' => __( 'State/Province/Region', 'wemail' ),
-                'country' => __( 'Country', 'wemail' ),
-                'zip' => __( 'Zip/Postal Code', 'wemail' ),
-                'phone' => __( 'Phone Number', 'wemail' ),
-                'mobile' => __( 'Mobile Number', 'wemail' ),
-                'website' => __( 'Website', 'wemail' ),
-            ] ),
-            'settingsTitle' => __( 'Company Details', 'wemail' ),
-            'countries' => wemail_get_countries(),
-            'states' => wemail_get_country_states( 'BD' ),
-            'settings' => [
-                'name' => 'weDevs LLC',
-                'address1' => 'Level - 3, House - 1005, Avenue - 11, Road - 09',
-                'address2' => 'Mirpur DOHS',
-                'city' => 'Dhaka',
-                'state' => '13',
-                'zip' => '33030303',
-                'country' => 'BD',
-                'phone' => '88888888888888',
-                'mobile' => '88888888888888',
-                'website' => 'https://wedevs.com'
-            ]
-        ];
+        // permission check
+        // TODO: Check permissions
 
-        $this->send_success( $data );
-    }
+        $success = false;
 
-    /**
-     * `social_networks` route data
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function get_route_data_social_networks() {
-        $this->verify_nonce();
+        if ( ! empty( $_POST['name'] ) && ! empty( $_POST['settings'] ) ) {
+            $url = '/settings/' . \Stringy\StaticStringy::dasherize( $_POST['name'] );
 
-        $data = [
-            'i18n' => $this->i18n(),
-            'settingsTitle' => __( 'Social Networks', 'wemail' ),
-            'settings' => [
-                'name' => 'weDevs LLC',
-                'street1' => 'Street 1 text',
-                'street2' => 'Street 2 text',
-            ]
-        ];
+            $response = wemail()->api->post( $url, $_POST['settings'] );
 
-        $this->send_success( $data );
+            if ( $response['success'] ) {
+                $success = true;
+            }
+        }
+
+        $this->send_success( ['success' => $success ] );
     }
 
 }

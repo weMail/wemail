@@ -26,8 +26,17 @@
 
 <script>
     export default {
+        routeName: 'settings',
+
+        beforeCreate() {
+            this.$store.registerModule('settings', {
+                namespaced: true,
+                state: weMail.stores[this.$options.routeName].state
+            });
+        },
+
         computed: {
-            ...weMail.Vuex.mapState(['i18n', 'settingsTitle']),
+            ...weMail.Vuex.mapState('settings', ['i18n', 'settingsTitle']),
 
             childRoutes() {
                 const children = weMail._.filter(weMail.routes, {
@@ -40,7 +49,21 @@
 
         methods: {
             saveSettings() {
-                console.log(this);
+                const vm = this;
+                const currentRoute = vm.$route.name;
+
+                console.log(currentRoute);
+
+                vm.$root.showLoadingAnime = true;
+
+                weMail.ajax.post('save_settings', {
+                    name: vm.$route.name,
+                    settings: vm.$store.state[currentRoute].settings
+                }).done((response) => {
+                    console.log(response);
+                }).always(() => {
+                    vm.$root.showLoadingAnime = false;
+                });
             }
         }
     };
@@ -125,7 +148,8 @@
                 margin: 10px 0;
             }
 
-            label {
+            label,
+            .multiselect-container {
                 display: block;
                 margin-bottom: 18px;
 
@@ -141,5 +165,4 @@
             }
         }
     }
-
 </style>

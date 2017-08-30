@@ -1,8 +1,8 @@
 import partials from './mixins/partials.js';
-import select2 from './components/select2.vue';
+import Multiselect from 'vendor/vue-multiselect/src/Multiselect.vue';
 
 weMail.registerMixins({
     partials
 });
 
-weMail.Vue.component('select2', select2);
+weMail.Vue.component('Multiselect', Multiselect);

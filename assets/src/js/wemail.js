@@ -25,8 +25,8 @@ weMail.ajax.post = (action, options) => {
 };
 
 // API get method
-weMail.api.get = (route, query, rootEndPoint) => {
-    const url = !rootEndPoint ? (weMail.api.rootEndPoint + route) : (rootEndPoint + route);
+weMail.api.get = (endpoint, query, root) => {
+    const url = !root ? (weMail.api.root + endpoint) : (root + endpoint);
 
     return Ajax(url, 'get', $.extend(true, {
         apiKey: weMail.api.key
@@ -34,8 +34,8 @@ weMail.api.get = (route, query, rootEndPoint) => {
 };
 
 // API post method
-weMail.api.post = (route, query, rootEndPoint) => {
-    const url = !rootEndPoint ? (weMail.api.rootEndPoint + route) : (rootEndPoint + route);
+weMail.api.post = (endpoint, query, root) => {
+    const url = !root ? (weMail.api.root + endpoint) : (root + endpoint);
 
     return Ajax(url, 'post', $.extend(true, {
         apiKey: weMail.apiKey
@@ -72,6 +72,9 @@ weMail.registerMixins = function (mixins) {
 weMail.getMixins = function (...mixins) {
     return mixins.map((mixin) => weMail.mixins[mixin]);
 };
+
+// Vuex Store instance
+weMail.store = new weMail.Vuex.Store({});
 
 // Vue Router instance
 function mapRoute(route, routeObj) {
@@ -157,9 +160,13 @@ weMail.router.beforeEach((to, from, next) => {
             .ajax
             .get(`get_route_data_${to.name}`)
             .done((response) => {
-                weMail.registerStore(rootRoute.name, {
-                    state: response.data || {}
-                });
+                if (response.data) {
+                    weMail._.forEach(response.data, (routeData, routeName) => {
+                        weMail.registerStore(routeName, {
+                            state: routeData
+                        });
+                    });
+                }
 
                 if (rootRoute.requires && !weMail.registeredComponents[rootRoute.component]) {
                     if (rootRoute.dependencies && rootRoute.dependencies.length) {

@@ -77,3 +77,15 @@ function wemail_get_country_states( $country_code ) {
         return [];
     }
 }
+
+function wemail_get_settings( $name ) {
+    $settings_class = wemail()->modules->settings->settings->where( 'path', $name )->first();
+
+    if ( $settings_class ) {
+        $settings = $settings_class->get_settings();
+    } else {
+        $settings = null;
+    }
+
+    return $settings;
+}
