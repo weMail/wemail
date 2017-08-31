@@ -1,5 +1,8 @@
 <template>
-    <div>Subscribers component</div>
+    <div>
+        Subscribers component
+        <router-link :to="{name: 'subscriber'}">Single Subscriber</router-link>
+    </div>
 </template>
 
 <script>

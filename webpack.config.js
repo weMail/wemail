@@ -131,6 +131,7 @@ module.exports = {
         Overview: jsSrc('Overview', 'routes/Overview'),
         Campaigns: jsSrc('Campaigns', 'routes/Campaigns'),
         Subscribers: jsSrc('Subscribers', 'routes/Subscribers'),
+        Subscriber: jsSrc('Subscriber', 'routes/Subscribers'),
         Forms: jsSrc('Forms', 'routes/Forms'),
         Lists: jsSrc('Lists', 'routes/Lists'),
         Settings: jsSrc('Settings', 'routes/Settings'),

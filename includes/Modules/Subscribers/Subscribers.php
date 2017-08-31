@@ -25,6 +25,16 @@ class Subscribers extends Module {
             'scrollTo' => 'top'
         ];
 
+        $routes[] = [
+            'path' => '/subscriber',
+            'name' => 'subscriber',
+            'component' => 'Subscriber',
+            'requires' => WEMAIL_ASSETS . '/js/Subscriber.js',
+            'dependencies' => apply_filters( 'wemail-admin-route-dep-subscriber', [] ),
+            'scrollTo' => 'top',
+            'submenu' => '/subscribers'
+        ];
+
         return $routes;
     }
 
