@@ -33,6 +33,17 @@ class Scripts {
     public function localized_script_vars() {
         $time_format = get_option( 'time_format', 'g:i a' );
 
+        // Build up the vue routes data
+        $routes = apply_filters( 'wemail-admin-register-routes', [] );
+
+        // Add a 404 route for any non-matching route
+        $routes[] = [
+            'path'      => '*',
+            'name'      => 'fourZeroFour',
+            'component' => 'FourZeroFour',
+            'requires'  => WEMAIL_ASSETS . '/js/404.js',
+        ];
+
         $wemail = [
             'nonce'                => wp_create_nonce( 'wemail-nonce' ),
             'ajaxurl'              => admin_url( 'admin-ajax.php' ),
@@ -51,7 +62,7 @@ class Scripts {
 
             // Vue related data
             'router'               => function () {},
-            'routes'               => apply_filters( 'wemail-admin-register-routes', [] ),
+            'routes'               => $routes,
             'routeComponents'      => function () {},
             'component'            => function () {},
             'registeredComponents' => function () {},

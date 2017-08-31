@@ -133,7 +133,8 @@ module.exports = {
         Subscribers: jsSrc('Subscribers', 'routes/Subscribers'),
         Forms: jsSrc('Forms', 'routes/Forms'),
         Lists: jsSrc('Lists', 'routes/Lists'),
-        Settings: jsSrc('Settings', 'routes/Settings')
+        Settings: jsSrc('Settings', 'routes/Settings'),
+        404: jsSrc('FourZeroFour', 'routes/FourZeroFour')
     },
 
     output: {
