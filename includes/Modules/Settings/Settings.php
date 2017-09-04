@@ -51,7 +51,7 @@ class Settings extends Module {
      */
     private function register_settings() {
         $default_settings = [
-            new CompanyDetails( $this ),
+            new Company( $this ),
             new SocialNetworks( $this )
         ];
 

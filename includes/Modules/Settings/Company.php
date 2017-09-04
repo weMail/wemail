@@ -4,7 +4,7 @@ namespace WeDevs\WeMail\Modules\Settings;
 
 use WeDevs\WeMail\Modules\Settings\AbstractSettings;
 
-class CompanyDetails extends AbstractSettings {
+class Company extends AbstractSettings {
 
     /**
      * Menu priority
@@ -48,7 +48,7 @@ class CompanyDetails extends AbstractSettings {
             'website'   => null
         ];
 
-        $settings = wemail()->api->get( '/settings/company-details' );
+        $settings = wemail()->api->get( '/settings/company' );
 
         return wp_parse_args( $settings, $defaults );
     }

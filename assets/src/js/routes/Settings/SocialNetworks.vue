@@ -1,9 +1,9 @@
 <template>
     <div class="row">
         <div class="col-6">
-            <label v-for="setting in settings">
-                <strong>{{ i18n[setting.name] }}</strong>
-                <input type="text" v-model="setting.url">
+            <label v-for="network in order">
+                <strong>{{ i18n[network] }}</strong>
+                <input type="text" v-model="settings[network]">
             </label>
         </div>
     </div>
@@ -15,6 +15,12 @@
     export default {
         routeName: 'socialNetworks',
 
-        mixins: [SettingsMixin]
+        mixins: [SettingsMixin],
+
+        computed: {
+            order() {
+                return this.$store.state.socialNetworks.order;
+            }
+        }
     };
 </script>

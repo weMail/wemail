@@ -35,83 +35,61 @@ class SocialNetworks extends AbstractSettings {
      */
     public function get_settings() {
         $defaults = [
-            [
-                'name' => 'facebook',
-                'url'  => 'https://facebook.com'
-            ],
-            [
-                'name' => 'twitter',
-                'url'  => 'https://twitter.com'
-            ],
-            [
-                'name' => 'linkedin',
-                'url'  => 'https://linkedin.com'
-            ],
-            [
-                'name' => 'googleplus',
-                'url'  => 'https://plus.google.com/'
-            ],
-            [
-                'name' => 'youtube',
-                'url'  => 'https://youtube.com'
-            ],
-            [
-                'name' => 'pinterest',
-                'url'  => 'https://pinterest.com'
-            ],
-            [
-                'name' => 'instagram',
-                'url'  => 'https://instagram.com'
-            ],
-            [
-                'name' => 'tumblr',
-                'url'  => 'https://tumblr.com'
-            ],
-            [
-                'name' => 'flickr',
-                'url'  => 'https://flickr.com'
-            ],
-            [
-                'name' => 'reddit',
-                'url'  => 'https://reddit.com'
-            ],
-            [
-                'name' => 'snapchat',
-                'url'  => 'https://snapchat.com'
-            ],
-            [
-                'name' => 'whatsapp',
-                'url'  => 'https://whatsapp.com'
-            ],
-            [
-                'name' => 'quora',
-                'url'  => 'https://quora.com'
-            ],
-            [
-                'name' => 'vine',
-                'url'  => 'https://vine.com'
-            ],
-            [
-                'name' => 'periscope',
-                'url'  => 'https://periscope.com'
-            ],
-            [
-                'name' => 'delicious',
-                'url'  => 'https://delicious.com'
-            ],
-            [
-                'name' => 'digg',
-                'url'  => 'https://digg.com'
-            ],
-            [
-                'name' => 'viber',
-                'url'  => 'https://viber.com'
-            ]
+            'facebook'      => 'https://facebook.com',
+            'twitter'       => 'https://twitter.com',
+            'google-plus'   => 'https://plus.google.com/',
+            'linkedin'      => 'https://linkedin.com',
+            'youtube'       => 'https://youtube.com',
+            'instagram'     => 'https://instagram.com',
+            'pinterest'     => 'https://pinterest.com',
+            'tumblr'        => 'https://tumblr.com',
+            'flickr'        => 'https://flickr.com',
+            'reddit'        => 'https://reddit.com',
+            'snapchat'      => 'https://snapchat.com',
+            'whatsapp'      => 'https://whatsapp.com',
+            'quora'         => 'https://quora.com',
+            'vine'          => 'https://vine.com',
+            'periscope'     => 'https://periscope.com',
+            'delicious'     => 'https://delicious.com',
+            'digg'          => 'https://digg.com',
+            'viber'         => 'https://viber.com',
         ];
 
         $settings = wemail()->api->get( '/settings/social-networks' );
 
-        return ! empty( $settings ) ? $settings : $defaults;
+        return wp_parse_args( $settings, $defaults );
+    }
+
+    public function order() {
+        $order = [
+            'facebook',
+            'twitter',
+            'google-plus',
+            'linkedin',
+            'youtube',
+            'instagram',
+            'pinterest',
+            'snapchat',
+            'whatsapp',
+            'tumblr',
+            'flickr',
+            'reddit',
+            'quora',
+            'vine',
+            'periscope',
+            'delicious',
+            'digg',
+            'viber'
+        ];
+
+        /**
+         * Social Network handles order
+         *
+         * @since 1.0.0
+         *
+         * @param array $order
+         */
+        return apply_filters( 'wemail-social-networks-order', $order );
     }
 
     /**
@@ -127,7 +105,7 @@ class SocialNetworks extends AbstractSettings {
                 'facebook'     => __( 'Facebook', 'wemail' ),
                 'twitter'      => __( 'Twitter', 'wemail' ),
                 'linkedin'     => __( 'LinkedIn', 'wemail' ),
-                'googleplus'   => __( 'Google+', 'wemail' ),
+                'google-plus'  => __( 'Google+', 'wemail' ),
                 'youtube'      => __( 'YouTube', 'wemail' ),
                 'pinterest'    => __( 'Pinterest', 'wemail' ),
                 'instagram'    => __( 'Instagram', 'wemail' ),
@@ -143,7 +121,8 @@ class SocialNetworks extends AbstractSettings {
                 'digg'         => __( 'Digg', 'wemail' ),
                 'viber'        => __( 'Viber', 'wemail' ),
             ],
-            'settings' => $this->get_settings()
+            'settings' => $this->get_settings(),
+            'order'    => $this->order()
         ];
     }
 

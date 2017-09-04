@@ -85,7 +85,7 @@
     import SettingsMixin from './SettingsMixin.js';
 
     export default {
-        routeName: 'companyDetails',
+        routeName: 'company',
 
         mutations: {
             updateCountryStates(state, payload) {
@@ -96,7 +96,7 @@
         mixins: [SettingsMixin],
 
         computed: {
-            ...weMail.Vuex.mapState('companyDetails', ['countries', 'states']),
+            ...weMail.Vuex.mapState('company', ['countries', 'states']),
 
             countryOptions() {
                 return weMail._.map(this.countries, (name, code) => {
@@ -160,10 +160,10 @@
                     const names = Object.keys(states);
 
                     if (names.length) {
-                        vm.$store.commit('companyDetails/updateCountryStates', states);
+                        vm.$store.commit('company/updateCountryStates', states);
                         vm.settings.state = names[0];
                     } else {
-                        vm.$store.commit('companyDetails/updateCountryStates', {});
+                        vm.$store.commit('company/updateCountryStates', {});
                         vm.settings.state = null;
                     }
 

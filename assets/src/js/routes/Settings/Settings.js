@@ -1,8 +1,8 @@
-import CompanyDetails from './CompanyDetails.vue';
+import Company from './Company.vue';
 import SocialNetworks from './SocialNetworks.vue';
 import Settings from './Settings.vue';
 
-weMail.component('CompanyDetails', CompanyDetails);
+weMail.component('Company', Company);
 weMail.component('SocialNetworks', SocialNetworks);
 
 weMail.component('Settings', Settings);
