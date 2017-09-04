@@ -1,3 +1,5 @@
+import router from './router.js';
+
 // jQuery ajax wrapper
 function Ajax(url, method, data) {
     return $.ajax({
@@ -25,8 +27,8 @@ weMail.ajax.post = (action, options) => {
 };
 
 // API get method
-weMail.api.get = (endpoint, query, root) => {
-    const url = !root ? (weMail.api.root + endpoint) : (root + endpoint);
+weMail.api.get = (apiURL, query, root) => {
+    const url = !root ? (weMail.api.root + apiURL) : (root + apiURL);
 
     return Ajax(url, 'get', $.extend(true, {
         apiKey: weMail.api.key
@@ -34,8 +36,8 @@ weMail.api.get = (endpoint, query, root) => {
 };
 
 // API post method
-weMail.api.post = (endpoint, query, root) => {
-    const url = !root ? (weMail.api.root + endpoint) : (root + endpoint);
+weMail.api.post = (apiURL, query, root) => {
+    const url = !root ? (weMail.api.root + apiURL) : (root + apiURL);
 
     return Ajax(url, 'post', $.extend(true, {
         apiKey: weMail.apiKey
@@ -76,122 +78,5 @@ weMail.getMixins = function (...mixins) {
 // Vuex Store instance
 weMail.store = new weMail.Vuex.Store({});
 
-// Vue Router instance
-function mapRoute(route, routeObj) {
-    if (!routeObj) {
-        routeObj = {
-            path: route.path,
-            name: route.name,
-            component: {
-                render(render) {
-                    return render(weMail.registeredComponents[route.component]);
-                }
-            },
-            children: []
-        };
-
-        if (route.redirect) {
-            routeObj.redirect = {
-                name: route.redirect
-            };
-        }
-    }
-
-    if (route.children && route.children.length) {
-        route.children.forEach((childRoute) => {
-            const child = {
-                path: childRoute.path,
-                name: childRoute.name,
-                component: {
-                    render: (render) => {
-                        return render(weMail.registeredComponents[childRoute.component]);
-                    }
-                },
-                children: []
-            };
-
-            routeObj.children.push(child);
-
-            mapRoute(childRoute, child);
-        });
-    }
-
-    return routeObj;
-}
-
-weMail.router = new weMail.VueRouter({
-    routes: weMail.routes.map((route) => {
-        return mapRoute(route);
-    })
-});
-
-// Lazy load router components
-weMail.router.beforeEach((to, from, next) => {
-    const rootRoute = weMail._.filter(weMail.routes, {
-        name: to.matched[0].name
-    })[0];
-
-    function getComponentScript() {
-        const TIMEOUT = 400;
-
-        $.getScript(rootRoute.requires).done(() => {
-            setTimeout(() => {
-                weMail.router.app.showLoadingAnime = false;
-                next();
-            }, TIMEOUT);
-        }).fail((jqxhr, settings, exception) => {
-            console.error(exception);
-        });
-    }
-
-    if (rootRoute && rootRoute.scrollTo) {
-        const scrollTo = (rootRoute.scrollTo === 'top') ? 0 : rootRoute.scrollTo;
-        const DURATION = 200;
-
-        $('body').animate({
-            scrollTop: scrollTo
-        }, DURATION);
-    }
-
-    if (rootRoute) {
-        weMail.router.app.showLoadingAnime = true;
-
-        weMail
-            .ajax
-            .get(`get_route_data_${to.name}`)
-            .done((response) => {
-                if (response.data) {
-                    weMail._.forEach(response.data, (routeData, routeName) => {
-                        weMail.registerStore(routeName, {
-                            state: routeData
-                        });
-                    });
-                }
-
-                if (rootRoute.requires && !weMail.registeredComponents[rootRoute.component]) {
-                    if (rootRoute.dependencies && rootRoute.dependencies.length) {
-                        let depLoaded = 0;
-
-                        rootRoute.dependencies.forEach((dep) => {
-                            $.getScript(dep).done(() => {
-                                ++depLoaded;
-
-                                if (depLoaded === rootRoute.dependencies.length) {
-                                    getComponentScript();
-                                }
-                            }).fail((jqxhr, settings, exception) => {
-                                console.error(exception);
-                            });
-                        });
-                    } else {
-                        getComponentScript();
-                    }
-                } else {
-                    weMail.router.app.showLoadingAnime = false;
-                    next();
-                }
-            });
-    } else {
-        next();
-    }
-});
+// Vur router instance
+weMail.router = router;

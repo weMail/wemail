@@ -122,14 +122,7 @@ class SocialNetworks extends AbstractSettings {
      * @return void
      */
     public function get_route_data() {
-        $this->verify_nonce();
-
-        $root = [
-            'settingsTitle' => $this->menu,
-            'i18n'          => $this->parent->i18n(),
-        ];
-
-        $current = [
+        return [
             'i18n' => [
                 'facebook'     => __( 'Facebook', 'wemail' ),
                 'twitter'      => __( 'Twitter', 'wemail' ),
@@ -152,11 +145,6 @@ class SocialNetworks extends AbstractSettings {
             ],
             'settings' => $this->get_settings()
         ];
-
-        $this->send_success([
-            'settings'       => $root,
-            'socialNetworks' => $current
-        ]);
     }
 
 }

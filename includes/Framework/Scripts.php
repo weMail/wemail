@@ -63,6 +63,7 @@ class Scripts {
             // Vue related data
             'router'               => function () {},
             'routes'               => $routes,
+            'namedRoutes'          => function () {},
             'routeComponents'      => function () {},
             'component'            => function () {},
             'registeredComponents' => function () {},

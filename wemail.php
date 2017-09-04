@@ -138,9 +138,6 @@ final class WeDevs_WeMail {
 
         // Hook into actions and filters
         $this->init_hooks();
-
-        // Loaded action
-        do_action( 'wemail-loaded' );
     }
 
     /**

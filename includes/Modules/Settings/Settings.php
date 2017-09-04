@@ -34,7 +34,8 @@ class Settings extends Module {
      * @return void
      */
     public function __construct() {
-        $this->add_ajax_action('save_settings');
+        $this->add_filter( 'wemail-get-route-data-settings', 'get_route_data' );
+        $this->add_ajax_action( 'save_settings' );
 
         $this->register_settings();
 
@@ -59,7 +60,7 @@ class Settings extends Module {
         $this->settings = collect( $settings )->sortBy( 'priority' );
 
         $this->settings->each( function ( $setting ) {
-            add_action( 'wp_ajax_wemail_get_route_data_' . $setting->route_name, [ $setting, 'get_route_data' ] );
+            add_action( 'wemail-get-route-data-' . $setting->route_name, [ $setting, 'get_route_data' ] );
         } );
     }
 
@@ -113,17 +114,19 @@ class Settings extends Module {
     }
 
     /**
-     * i18n strings for Settings route
+     * Settings route data
      *
      * @since 1.0.0
      *
      * @return array
      */
-    public function i18n() {
+    public function get_route_data() {
         return [
-            'settings'      => __( 'Settings', 'wemail' ),
-            'saveSettings'  => __( 'Save Settings', 'wemail' ),
-            'optional'      => __( 'optional', 'wemail' )
+            'i18n' => [
+                'settings'      => __( 'Settings', 'wemail' ),
+                'saveSettings'  => __( 'Save Settings', 'wemail' ),
+                'optional'      => __( 'optional', 'wemail' )
+            ]
         ];
     }
 

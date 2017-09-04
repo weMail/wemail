@@ -28,15 +28,16 @@
     export default {
         routeName: 'settings',
 
-        beforeCreate() {
-            this.$store.registerModule('settings', {
-                namespaced: true,
-                state: weMail.stores[this.$options.routeName].state
-            });
+        mixins: [weMail.mixins.routeComponent],
+
+        data() {
+            return {
+                settingsTitle: ''
+            };
         },
 
         computed: {
-            ...weMail.Vuex.mapState('settings', ['i18n', 'settingsTitle']),
+            ...weMail.Vuex.mapState('settings', ['i18n']),
 
             childRoutes() {
                 const children = weMail._.filter(weMail.routes, {
@@ -47,12 +48,26 @@
             }
         },
 
+        created() {
+            this.setSettingsTitle();
+        },
+
+        watch: {
+            $route() {
+                this.setSettingsTitle();
+            }
+        },
+
         methods: {
+            setSettingsTitle() {
+                this.settingsTitle = weMail._.chain(this.childRoutes).filter({
+                    name: this.$router.currentRoute.name
+                }).head().value().menu;
+            },
+
             saveSettings() {
                 const vm = this;
                 const currentRoute = vm.$route.name;
-
-                console.log(currentRoute);
 
                 vm.$root.showLoadingAnime = true;
 

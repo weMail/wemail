@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Modules\Settings;
 
 use WeDevs\WeMail\Framework\Traits\Ajax;
+use Stringy\StaticStringy;
 
 abstract class AbstractSettings {
 
@@ -65,8 +66,8 @@ abstract class AbstractSettings {
     public function __construct( Settings $parent ) {
         $class_name       = explode( "\\", get_class( $this ) );
         $class_name       = array_pop( $class_name ); // CompanyDetails
-        $this->path       = \Stringy\StaticStringy::dasherize( $class_name ); // company-details
-        $this->route_name = \Stringy\StaticStringy::camelize( $class_name ); // companyDetails
+        $this->path       = StaticStringy::dasherize( $class_name ); // company-details
+        $this->route_name = StaticStringy::camelize( $class_name ); // companyDetails
         $this->component  = $class_name; // CompanyDetails
         $this->menu       = $this->get_menu_name(); // __( 'Company Details', 'wemail' )
 

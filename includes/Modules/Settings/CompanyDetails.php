@@ -54,23 +54,16 @@ class CompanyDetails extends AbstractSettings {
     }
 
     /**
-     * Route data
+     * companyDetails Route data
      *
      * @since 1.0.0
      *
      * @return void
      */
     public function get_route_data() {
-        $this->verify_nonce();
-
         $settings = $this->get_settings();
 
-        $root = [
-            'settingsTitle' => $this->menu,
-            'i18n'          => $this->parent->i18n(),
-        ];
-
-        $current = [
+        return [
             'i18n' => [
                 'companyName'       => __( 'Company Name', 'wemail' ),
                 'address1'          => __( 'Address Line 1', 'wemail' ),
@@ -92,11 +85,6 @@ class CompanyDetails extends AbstractSettings {
             'countries' => wemail_get_countries(),
             'states'    => ! empty( $settings['country'] ) ? wemail_get_country_states( $settings['country'] ) : []
         ];
-
-        $this->send_success( [
-            'settings'       => $root,
-            'companyDetails' => $current
-        ] );
     }
 
 }

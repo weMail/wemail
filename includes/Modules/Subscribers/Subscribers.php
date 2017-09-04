@@ -9,6 +9,12 @@ class Subscribers extends Module {
     public $route_name = 'subscribers';
     public $menu_priority = 70;
 
+    public function __construct() {
+        $this->add_filter( 'wemail-get-route-data-subscribers', 'get_route_data_subscribers' );
+
+        parent::__construct();
+    }
+
     public function register_submenu( $menu_items, $capability ) {
         $menu_items[] = [ __( 'Subscribers', 'wemail' ), $capability, 'admin.php?page=wemail#/subscribers' ];
 
@@ -26,7 +32,7 @@ class Subscribers extends Module {
         ];
 
         $routes[] = [
-            'path' => '/subscriber',
+            'path' => '/subscriber/:subscriber_id',
             'name' => 'subscriber',
             'component' => 'Subscriber',
             'requires' => WEMAIL_ASSETS . '/js/Subscriber.js',
@@ -39,12 +45,8 @@ class Subscribers extends Module {
     }
 
     public function get_route_data_subscribers() {
-        $data = [
-            'modelA' => 'Model A data from Home.php ' . current_time( 'mysql' ),
-            'notInStore' => 'not found in store'
+        return [
+            'name' => 'subscribers : ' . current_time( 'mysql' )
         ];
-
-        $this->send_success( $data );
     }
-
 }

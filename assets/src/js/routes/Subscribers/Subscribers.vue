@@ -1,10 +1,17 @@
 <template>
     <div>
         Subscribers component
-        <router-link :to="{name: 'subscriber'}">Single Subscriber</router-link>
     </div>
 </template>
 
 <script>
-    export default {};
+    export default {
+        routeName: 'subscribers',
+
+        mixins: [weMail.mixins.routeComponent],
+
+        computed: {
+            ...weMail.Vuex.mapState('subscribers')
+        }
+    };
 </script>

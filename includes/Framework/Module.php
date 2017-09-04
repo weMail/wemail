@@ -17,10 +17,6 @@ abstract class Module {
      * @return void
      */
     public function __construct() {
-        if ( wemail()->is_request( 'ajax' ) ) {
-            $this->add_ajax_action( 'get_route_data_' . $this->route_name );
-        }
-
         if ( method_exists( $this , 'register_submenu' ) && isset( $this->menu_priority ) ) {
             $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
         }
