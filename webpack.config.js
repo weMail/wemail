@@ -128,14 +128,14 @@ module.exports = {
         wemail: jsSrc('wemail'),
         common: jsSrc('common'),
         admin: jsSrc('admin'),
-        Overview: jsSrc('Overview', 'routes/Overview'),
-        Campaigns: jsSrc('Campaigns', 'routes/Campaigns'),
-        Subscribers: jsSrc('Subscribers', 'routes/Subscribers'),
-        Subscriber: jsSrc('Subscriber', 'routes/Subscribers'),
-        Forms: jsSrc('Forms', 'routes/Forms'),
-        Lists: jsSrc('Lists', 'routes/Lists'),
-        Settings: jsSrc('Settings', 'routes/Settings'),
-        404: jsSrc('FourZeroFour', 'routes/FourZeroFour')
+        Overview: jsSrc('Overview', 'modules/Overview'),
+        Campaigns: jsSrc('Campaigns', 'modules/Campaigns'),
+        Subscribers: jsSrc('Subscribers', 'modules/Subscribers'),
+        Subscriber: jsSrc('Subscriber', 'modules/Subscribers'),
+        Forms: jsSrc('Forms', 'modules/Forms'),
+        Lists: jsSrc('Lists', 'modules/Lists'),
+        Settings: jsSrc('Settings', 'modules/Settings'),
+        404: jsSrc('FourZeroFour', 'modules/FourZeroFour')
     },
 
     output: {
