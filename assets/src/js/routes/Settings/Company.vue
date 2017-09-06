@@ -275,8 +275,11 @@
 
             onSelectLogo(attachment) {
                 if (!attachment.id || (attachment.type !== 'image')) {
-                    // alert
-                    console.log('Please select an image');
+                    this.alert({
+                        type: 'error',
+                        text: this.i18n.pleaseSelectAnImage
+                    });
+
                     return;
                 }
 

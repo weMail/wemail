@@ -46,6 +46,7 @@
     "stylelint-order": "^0.6.0",
     "stylelint-processor-html": "^1.0.0",
     "stylelint-webpack-plugin": "^0.9.0",
+    "sweetalert2": "^6.6.10",
     "vue": "^2.4.2",
     "vue-loader": "^13.0.4",
     "vue-multiselect": "^2.0.2",

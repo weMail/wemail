@@ -93,3 +93,13 @@
     @import "_tables.scss";
     @import "_multiselect.scss";
 }
+
+
+// -----------------------------
+// SweetAlert2
+// -----------------------------
+@import "~sweetalert2/src/sweetalert2.scss";
+
+h2.swal2-title {
+    line-height: 1.2;
+}

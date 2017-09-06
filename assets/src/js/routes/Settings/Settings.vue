@@ -74,9 +74,14 @@
                 weMail.ajax.post('save_settings', {
                     name: vm.$route.name,
                     settings: vm.$store.state[currentRoute].settings
-                }).done((response) => {
-                    console.log(response);
-                }).always(() => {
+                }).always((response) => {
+                    if (response.msg) {
+                        this.alert({
+                            type: 'error',
+                            text: response.msg
+                        });
+                    }
+
                     vm.$root.showLoadingAnime = false;
                 });
             }
