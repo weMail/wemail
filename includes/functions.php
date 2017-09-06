@@ -36,7 +36,7 @@ function wemail_js_date_format() {
 }
 
 /**
- * Converts any value to boolean true or false
+ * Verifies that a value is boolean true or false
  *
  * @since 1.0.0
  *
@@ -46,6 +46,19 @@ function wemail_js_date_format() {
  */
 function wemail_validate_boolean( $var ) {
     return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
+ * Verifies that an URL is valid
+ *
+ * @since 1.0.0
+ *
+ * @param string $url URL to check
+ *
+ * @return boolean
+ */
+function wemail_is_url( $url ) {
+    return filter_var( $url, FILTER_VALIDATE_URL );
 }
 
 /**
@@ -78,6 +91,15 @@ function wemail_get_country_states( $country_code ) {
     }
 }
 
+/**
+ * Get wemail settings
+ *
+ * @since 1.0.0
+ *
+ * @param string $name Settings name
+ *
+ * @return array
+ */
 function wemail_get_settings( $name ) {
     $settings_class = wemail()->modules->settings->settings->where( 'path', $name )->first();
 

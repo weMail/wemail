@@ -36,7 +36,7 @@ class Company extends AbstractSettings {
     public function get_settings() {
         $defaults = [
             'name'      => null,
-            'image_id'  => 0,
+            'imageId'   => 0,
             'address1'  => null,
             'address2'  => null,
             'city'      => null,
@@ -63,6 +63,16 @@ class Company extends AbstractSettings {
     public function get_route_data() {
         $settings = $this->get_settings();
 
+        $logo = null;
+
+        if ( ! empty( $settings['imageId'] ) ) {
+            $image_src = wp_get_attachment_image_src( $settings['imageId'], false );
+
+            if ( is_array( $image_src ) && wemail_is_url( $image_src[0] ) ) {
+                $logo = $image_src[0];
+            }
+        }
+
         return [
             'i18n' => [
                 'companyName'       => __( 'Company Name', 'wemail' ),
@@ -79,11 +89,14 @@ class Company extends AbstractSettings {
                 'selectState'       => __( 'Select a state/province/region', 'wemail' ),
                 'noStateFound'      => __( 'No state found', 'wemail' ),
                 'noCountryFound'    => __( 'No country found', 'wemail' ),
-                'addComapanyLogo'   => __( 'Add Comapany Logo', 'wemail' )
+                'addComapanyLogo'   => __( 'Add Comapany Logo', 'wemail' ),
+                'selectLogo'        => __( 'Select Logo', 'wemail' ),
+                'changeLogo'        => __( 'Change Logo', 'wemail' ),
             ],
             'settings'  => $settings,
             'countries' => wemail_get_countries(),
-            'states'    => ! empty( $settings['country'] ) ? wemail_get_country_states( $settings['country'] ) : []
+            'states'    => ! empty( $settings['country'] ) ? wemail_get_country_states( $settings['country'] ) : [],
+            'logo'      => $logo
         ];
     }
 

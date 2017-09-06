@@ -70,12 +70,20 @@
         </div>
 
         <div class="col-sm-6">
-            <div class="text-center company-logo no-logo">
+            <div v-if="!logo" class="text-center company-logo no-logo">
                 <button
                     type="button"
-                    class="button button-primary button-hero"
+                    class="button button-link"
                     @click="addComapanyLogo"
                 >{{ i18n.addComapanyLogo }}</button>
+            </div>
+            <div v-else class="text-center company-logo">
+                <img :src="logo" alt="Comapany Logo"><br>
+                <button
+                    type="button"
+                    class="button"
+                    @click="addComapanyLogo"
+                >{{ i18n.changeLogo }}</button>
             </div>
         </div>
     </div>
@@ -90,13 +98,33 @@
         mutations: {
             updateCountryStates(state, payload) {
                 state.states = payload;
+            },
+
+            updateLogo(state, payload) {
+                state.logo = payload;
             }
         },
 
         mixins: [SettingsMixin],
 
+        data() {
+            return {
+                fileFrame: null
+            };
+        },
+
         computed: {
             ...weMail.Vuex.mapState('company', ['countries', 'states']),
+
+            logo: {
+                get() {
+                    return this.$store.state.company.logo;
+                },
+
+                set(logo) {
+                    this.$store.commit('company/updateLogo', logo);
+                }
+            },
 
             countryOptions() {
                 return weMail._.map(this.countries, (name, code) => {
@@ -175,18 +203,102 @@
 
         methods: {
             addComapanyLogo(e) {
-                console.log(e);
+                e.preventDefault();
+
+                const vm = this;
+                const selectedFile = {
+                    id: 0,
+                    url: '',
+                    type: ''
+                };
+
+                if (vm.fileFrame) {
+                    vm.fileFrame.open();
+                    return;
+                }
+
+                const fileStates = [
+                    new wp.media.controller.Library({
+                        library: wp.media.query(),
+                        multiple: false,
+                        title: vm.i18n.selectLogo,
+                        priority: 20,
+                        filterable: 'uploaded'
+                    })
+                ];
+
+                vm.fileFrame = wp.media({
+                    title: vm.i18n.selectLogo,
+                    library: {
+                        type: ''
+                    },
+                    button: {
+                        text: vm.i18n.selectLogo
+                    },
+                    multiple: false,
+                    states: fileStates
+                });
+
+                vm.fileFrame.on('select', () => {
+                    const selection = vm.fileFrame.state().get('selection');
+
+                    selection.map((attachment) => {
+                        attachment = attachment.toJSON();
+
+                        if (attachment.id) {
+                            selectedFile.id = attachment.id;
+                        }
+
+                        if (attachment.url) {
+                            selectedFile.url = attachment.url;
+                        }
+
+                        if (attachment.type) {
+                            selectedFile.type = attachment.type;
+                        }
+
+                        vm.onSelectLogo(selectedFile);
+
+                        return null;
+                    });
+                });
+
+                vm.fileFrame.on('ready', () => {
+                    vm.fileFrame.uploader.options.uploader.params = {
+                        type: 'wemail-company-logo',
+                        test: 5
+                    };
+                });
+
+                vm.fileFrame.open();
+            },
+
+            onSelectLogo(attachment) {
+                if (!attachment.id || (attachment.type !== 'image')) {
+                    // alert
+                    console.log('Please select an image');
+                    return;
+                }
+
+                this.logo = attachment.url;
+                this.settings.imageId = attachment.id;
             }
         }
     };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .company-logo {
+        width: 250px;
 
         &.no-logo {
             padding: 90px 0;
-            border: 2px dashed $wp-border-color-darken;
+            border: 1px dashed $wp-border-color-darken;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
         }
     }
 </style>

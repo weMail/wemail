@@ -17,7 +17,8 @@ module.exports = {
         'html'
     ],
     globals: {
-        weMail: true
+        weMail: true,
+        wp: true
     },
     // rules are mostly copied from Bootstrap v4-dev
     // https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/js/.eslintrc.json

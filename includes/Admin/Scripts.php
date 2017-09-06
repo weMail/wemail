@@ -23,6 +23,8 @@ class Scripts {
     }
 
     public function localized_script() {
+        wp_enqueue_media();
+
         $wemail = wemail()->scripts->localized_script_vars();
 
         $admin_local_vars = apply_filters( 'weMail-localized-script', [] );

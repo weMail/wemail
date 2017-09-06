@@ -2,7 +2,7 @@
     <div>
         <h1>{{ i18n.settings }}</h1>
 
-        <div class="wemail-settings wemail-equal-height-wrapper">
+        <div class="wemail-settings d-flex">
             <div class="wemail-settings-sidebar">
                 <ul>
                     <template v-for="route in childRoutes">

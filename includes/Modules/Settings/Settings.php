@@ -106,7 +106,7 @@ class Settings extends Module {
             'requires'     => WEMAIL_ASSETS . '/js/Settings.js',
             'dependencies' => apply_filters( 'wemail-admin-route-dep-settings', [] ),
             'scrollTo'     => 'top',
-            'redirect'     => 'companyDetails',
+            'redirect'     => 'company',
             'children'     => $children
         ];
 

@@ -3,28 +3,6 @@
 /**
  * weMail Admin UI
  */
-
-// -----------------------------
-// Buttons
-// -----------------------------
-.button {
-
-    &.button-success {
-
-        @include button-colorized($wp-green);
-    }
-
-    &.button-error {
-
-        @include button-colorized($wp-red);
-    }
-
-    &.button-warning {
-
-        @include button-colorized($wp-yellow);
-    }
-}
-
 // -----------------------------
 // Typography
 // -----------------------------
@@ -111,6 +89,7 @@
 
     @import "../vendor/bootstrap/bootstrap.scss";
     @import "_forms.scss";
+    @import "_buttons.scss";
     @import "_tables.scss";
     @import "_multiselect.scss";
 }

@@ -1,0 +1,29 @@
+// -----------------------------
+// Buttons
+// -----------------------------
+.button {
+
+    &.button-success {
+
+        @include button-colorized($wp-green);
+    }
+
+    &.button-error {
+
+        @include button-colorized($wp-red);
+    }
+
+    &.button-warning {
+
+        @include button-colorized($wp-yellow);
+    }
+
+    &.button-link {
+        text-decoration: none;
+
+        &:hover,
+        &:active {
+            background-color: transparent;
+        }
+    }
+}
