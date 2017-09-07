@@ -116,7 +116,20 @@ router.beforeEach((to, from, next) => {
         // /foo/bar -> /foo - get data for foo
         // /foo -> /foo?s=search - get data for foo with query
         if (!routes.length) {
-            routes.push(to.matched[to.matched.length - 1].name);
+            const currentRouteName = to.matched[to.matched.length - 1].name;
+            const routeProps = weMail.namedRoutes[currentRouteName];
+
+            if (routeProps.ignoreDataRefetch && routeProps.ignoreDataRefetch.query) {
+                const match = routeProps.ignoreDataRefetch.query.filter((query) => {
+                    return to.query.hasOwnProperty(query);
+                });
+
+                if (!match.length) {
+                    routes.push(currentRouteName);
+                }
+            } else {
+                routes.push(currentRouteName);
+            }
         }
 
         return routes;
@@ -132,26 +145,32 @@ router.beforeEach((to, from, next) => {
     }
 
     if (rootRoute) {
-        weMail.router.app.showLoadingAnime = true;
+        const routeNames = getRequiredRouteData();
 
-        weMail
-            .ajax
-            .get('get_route_data', {
-                routes: getRequiredRouteData(),
-                params: to.params,
-                query: to.query
-            })
-            .done((response) => {
-                if (response.data) {
-                    weMail._.forEach(response.data, (routeData, routeName) => {
-                        weMail.registerStore(routeName, {
-                            state: routeData
+        if (routeNames.length) {
+            weMail.router.app.showLoadingAnime = true;
+
+            weMail
+                .ajax
+                .get('get_route_data', {
+                    routes: routeNames,
+                    params: to.params,
+                    query: to.query
+                })
+                .done((response) => {
+                    if (response.data) {
+                        weMail._.forEach(response.data, (routeData, routeName) => {
+                            weMail.registerStore(routeName, {
+                                state: routeData
+                            });
                         });
-                    });
-                }
+                    }
 
-                getRequiredScripts();
-            });
+                    getRequiredScripts();
+                });
+        } else {
+            next();
+        }
     } else {
         next();
     }

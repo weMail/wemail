@@ -55,9 +55,9 @@ class Api {
      *
      * @since 1.0.0
      *
-     * @param string $url API resource
-     * @param array $query Additional query
-     * @param array $args wp_remote_get argument overrides
+     * @param string $url   API resource
+     * @param array  $query Additional query
+     * @param array  $args  wp_remote_get argument overrides
      *
      * @return array|boolean Array on success, false on failure
      */
@@ -84,6 +84,10 @@ class Api {
 
         $url = $this->root . $url;
 
+        if ( ! empty( $query ) ) {
+            $url = $url . '?' . http_build_query( $query );
+        }
+
         $response = wp_remote_get( $url, $args );
 
         if ( ! empty( $response['body'] ) ) {
@@ -98,9 +102,9 @@ class Api {
      *
      * @since 1.0.0
      *
-     * @param string $url API resource
-     * @param array $data POST data
-     * @param array $args wp_remote_post argument overrides
+     * @param string $url  API resource
+     * @param array  $data POST data
+     * @param array  $args wp_remote_post argument overrides
      *
      * @return array|boolean Array on success, false on failure
      */
