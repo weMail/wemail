@@ -10,15 +10,6 @@ abstract class AbstractSettings {
     use Ajax;
 
     /**
-     * Route endpoint
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $path;
-
-    /**
      * Vue route name
      *
      * @since 1.0.0
@@ -26,15 +17,6 @@ abstract class AbstractSettings {
      * @var string
      */
     public $route_name;
-
-    /**
-     * Vue component name
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $component;
 
     /**
      * Settings menu name
@@ -46,32 +28,20 @@ abstract class AbstractSettings {
     public $menu;
 
     /**
-     * Parent Settings class
-     *
-     * @var WeDevs\WeMail\Modules\Settings\Settings
-     */
-    public $parent;
-
-    /**
      * Class constructor
      *
      * This will provide path, route_name, component and menu properties.
-     * Example properties are shown for CompanyDetails class as comment
      * at right.
      *
      * @since 1.0.0
      *
      * @param \WeDevs\WeMail\Modules\Settings\Settings $parent
      */
-    public function __construct( Settings $parent ) {
+    public function __construct() {
         $class_name       = explode( "\\", get_class( $this ) );
-        $class_name       = array_pop( $class_name ); // CompanyDetails
-        $this->path       = StaticStringy::dasherize( $class_name ); // company-details
-        $this->route_name = StaticStringy::camelize( $class_name ); // companyDetails
-        $this->component  = $class_name; // CompanyDetails
-        $this->menu       = $this->get_menu_name(); // __( 'Company Details', 'wemail' )
-
-        $this->parent = $parent;
+        $class_name       = array_pop( $class_name ); // SocialNetworks
+        $this->route_name = 'settings' . StaticStringy::upperCamelize( $class_name ); // settingsSocialNetworks
+        $this->menu       = $this->get_menu_name(); // __( 'Social Networks', 'wemail' )
     }
 
     /**

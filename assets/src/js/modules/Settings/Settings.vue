@@ -1,13 +1,13 @@
 <template>
-    <div>
+    <div v-if="!isFetchingData">
         <h1>{{ i18n.settings }}</h1>
 
         <div class="wemail-settings d-flex">
             <div class="wemail-settings-sidebar">
                 <ul>
-                    <template v-for="route in childRoutes">
-                        <router-link :to="route" active-class="active" tag="li">
-                            <a>{{ route.menu }}</a>
+                    <template v-for="setting in settings">
+                        <router-link :to="{name: setting.routeName}" active-class="active" tag="li">
+                            <a>{{ setting.menu }}</a>
                         </router-link>
                     </template>
                 </ul>
@@ -28,7 +28,7 @@
     export default {
         routeName: 'settings',
 
-        mixins: [weMail.mixins.routeComponent],
+        mixins: weMail.getMixins('routeComponent'),
 
         data() {
             return {
@@ -37,19 +37,11 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('settings', ['i18n']),
+            ...weMail.Vuex.mapState('settings', ['i18n', 'settings']),
 
-            childRoutes() {
-                const children = weMail._.filter(weMail.routes, {
-                    name: 'settings'
-                })[0].children;
-
-                return children;
+            company() {
+                return this.$store.state.settingsCompany ? this.$store.state.settingsCompany.settings : {};
             }
-        },
-
-        created() {
-            this.setSettingsTitle();
         },
 
         watch: {
@@ -59,9 +51,13 @@
         },
 
         methods: {
+            afterFetchingInitialData() {
+                this.setSettingsTitle();
+            },
+
             setSettingsTitle() {
-                this.settingsTitle = weMail._.chain(this.childRoutes).filter({
-                    name: this.$router.currentRoute.name
+                this.settingsTitle = weMail._.chain(this.settings).filter({
+                    routeName: this.$route.name
                 }).head().value().menu;
             },
 

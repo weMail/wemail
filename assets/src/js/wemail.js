@@ -1,5 +1,3 @@
-import router from './router.js';
-
 // jQuery ajax wrapper
 function Ajax(url, method, data) {
     return $.ajax({
@@ -44,15 +42,6 @@ weMail.api.post = (apiURL, query, root) => {
     }, query));
 };
 
-// Register vue component to prevent duplicate registration
-weMail.component = function (name, component) {
-    if (this.registeredComponents.hasOwnProperty(name)) {
-        return;
-    }
-
-    this.registeredComponents[name] = component;
-};
-
 // Register vuex stores
 weMail.registerStore = function (routeName, store) {
     if (!this.stores[routeName]) {
@@ -75,8 +64,17 @@ weMail.getMixins = function (...mixins) {
     return mixins.map((mixin) => weMail.mixins[mixin]);
 };
 
-// Vuex Store instance
-weMail.store = new weMail.Vuex.Store({});
+// weMail VueRouter api
+weMail.childRoutes = {};
 
-// Vur router instance
-weMail.router = router;
+weMail.registerChildRoute = function (parent, childRoute) {
+    if (!weMail.childRoutes[parent]) {
+        weMail.childRoutes[parent] = [];
+    }
+
+    weMail.childRoutes[parent].push(childRoute);
+};
+
+weMail.getChildRoutes = function (parent) {
+    return weMail.childRoutes[parent] || [];
+};

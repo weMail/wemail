@@ -1,4 +1,5 @@
 <?php
+
 namespace WeDevs\WeMail\Admin;
 
 use WeDevs\WeMail\Framework\Traits\Hooker;
@@ -30,7 +31,7 @@ class Menu {
 
         $capability = 'manage_options';
 
-        $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt' );
+        $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt', 1 );
 
         $submenu['wemail'] = apply_filters( 'wemail-admin-submenu', [], $capability );
 

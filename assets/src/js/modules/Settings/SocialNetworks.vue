@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div v-if="!isFetchingData" class="row">
         <div class="col-6">
             <label v-for="network in order">
                 <strong>{{ i18n[network] }}</strong>
@@ -10,16 +10,14 @@
 </template>
 
 <script>
-    import SettingsMixin from './SettingsMixin.js';
-
     export default {
-        routeName: 'socialNetworks',
+        routeName: 'settingsSocialNetworks',
 
-        mixins: [SettingsMixin],
+        mixins: weMail.getMixins('settings', 'routeComponent'),
 
         computed: {
             order() {
-                return this.$store.state.socialNetworks.order;
+                return this.$store.state.settingsSocialNetworks.order;
             }
         }
     };

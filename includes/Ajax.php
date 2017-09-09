@@ -20,7 +20,7 @@ class Ajax {
     }
 
     /**
-     * Get Vue.js route data
+     * Get a named Vue.js route data
      *
      * @since 1.0.0
      *
@@ -29,32 +29,27 @@ class Ajax {
     public function get_route_data() {
         $this->verify_nonce();
 
-        if ( empty( $_GET['routes'] ) ) {
+        if ( empty( $_GET['name'] ) ) {
             $this->send_error( [ 'msg' => __( 'Route name is required', 'wemail' ) ] );
         }
 
-        $routes = $_GET['routes'];
+        $name = $_GET['name'];
         $params = ! empty( $_GET['params'] ) ? $_GET['params'] : [];
         $query  = ! empty( $_GET['query'] ) ? $_GET['query'] : [];
 
-        $data = [];
-
-        foreach ( $_GET['routes'] as $route_name ) {
-            /**
-             * Get Vue.js route data for a named route
-             *
-             * Use add_filter to this filter to provide route data
-             * for a named route.
-             *
-             * @since 1.0.0
-             *
-             * @param array $params Vue.js $route.params
-             * @param array $query  Vue.js $route.query
-             * @param array $route  Route names that requires data to render
-             * @param array $_GET   HTTP $_GET data
-             */
-            $data[ $route_name ] = apply_filters( 'wemail-get-route-data-' . $route_name, $params, $query, $routes, $_GET );
-        }
+        /**
+         * Get Vue.js route data for a named route
+         *
+         * Use add_filter to this filter to provide route data
+         * for a named route.
+         *
+         * @since 1.0.0
+         *
+         * @param array $params Vue.js $route.params
+         * @param array $query  Vue.js $route.query
+         * @param array $_GET   HTTP $_GET data
+         */
+        $data = apply_filters( 'wemail-get-route-data-' . $name, $params, $query, $_GET );
 
         $this->send_success( $data );
     }

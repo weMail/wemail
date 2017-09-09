@@ -1,12 +1,15 @@
+import router from './router.js';
 import '../scss/admin.scss';
+
+__webpack_public_path__ = `${weMail.assetsURL}/js/`; // eslint-disable-line camelcase
 
 // The main Vue instance
 weMail.admin = new weMail.Vue({
     el: '#wemail-admin',
-    store: weMail.store,
-    router: weMail.router,
+    store: new weMail.Vuex.Store({}),
+    router,
     data: {
-        showLoadingAnime: true
+        showLoadingAnime: false
     },
 
     watch: {
@@ -22,11 +25,14 @@ weMail.admin = new weMail.Vue({
             if (anch.length) {
                 anch.parent().addClass('current');
             } else {
-                const route = weMail._.filter(weMail.routes, {
-                    name: rootRoute.name
-                })[0];
+                const route = weMail._.chain(weMail.subMenuMap)
+                    .filter({
+                        name: rootRoute.name
+                    })
+                    .head()
+                    .value();
 
-                if (route.submenu) {
+                if (route && route.submenu) {
                     mainMenu
                         .find(`a[href="admin.php?page=wemail#${route.submenu}"]`)
                         .parent()

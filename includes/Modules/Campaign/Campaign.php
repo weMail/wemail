@@ -1,24 +1,25 @@
 <?php
 
-namespace WeDevs\WeMail\Modules\Lists;
+namespace WeDevs\WeMail\Modules\Campaign;
 
 use WeDevs\WeMail\Framework\Module;
 
-class Lists extends Module {
+class Campaign extends Module {
 
-    public $menu_priority = 90;
+    private $menu_priority = 2;
 
     public function __construct() {
         $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail-get-route-data-campaigns', 'get_route_data_campaigns' );
     }
 
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' ];
+        $menu_items[] = [ __( 'Campaigns', 'wemail' ), $capability, 'admin.php?page=wemail#/campaigns' ];
 
         return $menu_items;
     }
 
-    public function get_lists_initial_data() {
+    public function get_route_data_campaigns() {
         $data = [
             'modelA' => 'Model A data from Home.php ' . current_time( 'mysql' ),
             'notInStore' => 'not found in store'

@@ -7,15 +7,6 @@ use WeDevs\WeMail\Framework\Module;
 class Settings extends Module {
 
     /**
-     * Vue route name
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $route_name = 'settings';
-
-    /**
      * Submenu priority
      *
      * @since 1.0.0
@@ -34,34 +25,11 @@ class Settings extends Module {
      * @return void
      */
     public function __construct() {
-        $this->add_filter( 'wemail-get-route-data-settings', 'get_route_data' );
-        $this->add_ajax_action( 'save_settings' );
-
+        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
         $this->register_settings();
 
-        parent::__construct();
-    }
-
-    /**
-     * Register settings
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    private function register_settings() {
-        $default_settings = [
-            new Company( $this ),
-            new SocialNetworks( $this )
-        ];
-
-        $settings = apply_filters( 'wemail-register-settings', $default_settings, $this );
-
-        $this->settings = collect( $settings )->sortBy( 'priority' );
-
-        $this->settings->each( function ( $setting ) {
-            add_action( 'wemail-get-route-data-' . $setting->route_name, [ $setting, 'get_route_data' ] );
-        } );
+        $this->add_filter( 'wemail-get-route-data-settings', 'get_route_data' );
+        $this->add_ajax_action( 'save_settings' );
     }
 
     /**
@@ -81,36 +49,25 @@ class Settings extends Module {
     }
 
     /**
-     * Register Vue route
+     * Register settings
      *
      * @since 1.0.0
      *
-     * @param array $routes
-     *
-     * @return array
+     * @return void
      */
-    public function register_route( $routes ) {
-        $children = $this->settings->map( function ( $settings ) {
-            return [
-                'path'      => $settings->path,
-                'name'      => $settings->route_name,
-                'component' => $settings->component,
-                'menu'      => $settings->menu
-            ];
-        } );
-
-        $routes[] = [
-            'path'         => '/settings',
-            'name'         => 'settings',
-            'component'    => 'Settings',
-            'requires'     => WEMAIL_ASSETS . '/js/Settings.js',
-            'dependencies' => apply_filters( 'wemail-admin-route-dep-settings', [] ),
-            'scrollTo'     => 'top',
-            'redirect'     => 'company',
-            'children'     => $children
+    private function register_settings() {
+        $settings = [
+            new Company(),
+            new SocialNetworks()
         ];
 
-        return $routes;
+        $settings = apply_filters( 'wemail-register-settings', $settings );
+
+        $this->settings = collect( $settings )->sortBy( 'priority' );
+
+        $this->settings->each( function ( $setting ) {
+            add_action( 'wemail-get-route-data-' . $setting->route_name, [ $setting, 'get_route_data' ] );
+        } );
     }
 
     /**
@@ -126,7 +83,13 @@ class Settings extends Module {
                 'settings'      => __( 'Settings', 'wemail' ),
                 'saveSettings'  => __( 'Save Settings', 'wemail' ),
                 'optional'      => __( 'optional', 'wemail' )
-            ]
+            ],
+            'settings' => $this->settings->map( function ( $setting ) {
+                return [
+                    'routeName' => $setting->route_name,
+                    'menu'      => $setting->menu
+                ];
+            } )
         ];
     }
 
@@ -146,7 +109,8 @@ class Settings extends Module {
         $success = false;
 
         if ( ! empty( $_POST['name'] ) && ! empty( $_POST['settings'] ) ) {
-            $url = '/settings/' . \Stringy\StaticStringy::dasherize( $_POST['name'] );
+            $name = preg_replace( '/^settings/', '', $_POST['name'] );
+            $url = '/settings/' . \Stringy\StaticStringy::dasherize( $name );
 
             $response = wemail()->api->post( $url, $_POST['settings'] );
 

@@ -127,20 +127,13 @@ module.exports = {
         vendor: jsSrc('vendor'),
         wemail: jsSrc('wemail'),
         common: jsSrc('common'),
-        admin: jsSrc('admin'),
-        Overview: jsSrc('Overview', 'modules/Overview'),
-        Campaigns: jsSrc('Campaigns', 'modules/Campaigns'),
-        Subscribers: jsSrc('Subscribers', 'modules/Subscribers'),
-        Subscriber: jsSrc('Subscriber', 'modules/Subscribers'),
-        Forms: jsSrc('Forms', 'modules/Forms'),
-        Lists: jsSrc('Lists', 'modules/Lists'),
-        Settings: jsSrc('Settings', 'modules/Settings'),
-        404: jsSrc('FourZeroFour', 'modules/FourZeroFour')
+        admin: jsSrc('admin')
     },
 
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, './assets/js/')
+        path: path.resolve(__dirname, './assets/js/'),
+        chunkFilename: 'chunks/[chunkhash].js'
     },
 
     externals: {

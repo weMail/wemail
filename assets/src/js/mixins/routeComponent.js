@@ -1,11 +1,37 @@
 export default {
-    beforeCreate() {
-        const mutations = $.extend(true, {}, this.$options.mutations);
+    data() {
+        return {
+            isFetchingData: true
+        };
+    },
 
-        this.$store.registerModule(this.$options.routeName, {
-            namespaced: true,
-            state: weMail.stores[this.$options.routeName].state,
-            mutations
+    beforeRouteEnter(to, from, next) {
+        next((vm) => {
+            weMail.ajax.get('get_route_data', {
+                name: vm.$options.routeName,
+                params: to.params,
+                query: to.query
+            }).done((response) => {
+                let _mutations = vm.$options.mutations;
+
+                if (vm.getMutations) {
+                    _mutations = vm.getMutations();
+                }
+
+                const mutations = $.extend(true, {}, _mutations);
+
+                vm.$store.registerModule(vm.$options.routeName, {
+                    namespaced: true,
+                    state: response.data,
+                    mutations
+                });
+
+                vm.isFetchingData = false;
+
+                if (vm.hasOwnProperty('afterFetchingInitialData')) {
+                    vm.afterFetchingInitialData();
+                }
+            });
         });
     }
 };

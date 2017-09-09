@@ -27,26 +27,15 @@ class Scripts {
         wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['wemail-vendor'], $this->version, true );
 
         wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker'] , WEMAIL_VERSION, true );
-        do_action('wemail-dir-mixins-after');
     }
 
     public function localized_script_vars() {
         $time_format = get_option( 'time_format', 'g:i a' );
 
-        // Build up the vue routes data
-        $routes = apply_filters( 'wemail-admin-register-routes', [] );
-
-        // Add a 404 route for any non-matching route
-        $routes[] = [
-            'path'      => '*',
-            'name'      => 'fourZeroFour',
-            'component' => 'FourZeroFour',
-            'requires'  => WEMAIL_ASSETS . '/js/404.js',
-        ];
-
         $wemail = [
             'nonce'                => wp_create_nonce( 'wemail-nonce' ),
             'ajaxurl'              => admin_url( 'admin-ajax.php' ),
+            'assetsURL'            => WEMAIL_ASSETS,
             'scriptDebug'          => $this->script_debug,
             'date'                 => [
                 'format'           => wemail_js_date_format(),
@@ -61,15 +50,10 @@ class Scripts {
             'api'                  => wemail()->api->get_props(),
 
             // Vue related data
-            'router'               => function () {},
-            'routes'               => $routes,
-            'namedRoutes'          => function () {},
-            'routeComponents'      => function () {},
-            'component'            => function () {},
-            'registeredComponents' => function () {},
-            'partials'             => apply_filters( 'wemail-component-partials', [] ),
+            'subMenuMap'           => [],
             'mixins'               => function () {},
-            'stores'               => function () {}
+            'stores'               => function () {},
+            'actions'              => apply_filters( 'wemail-component-actions', [] )
         ];
 
         return $wemail;

@@ -8,6 +8,10 @@
 
 <script>
     export default {
+        routeName: 'campaigns',
+
+        mixins: weMail.getMixins('routeComponent'),
+
         data() {
             return {
                 hello: 'hello this is es6',

@@ -18,7 +18,8 @@ module.exports = {
     ],
     globals: {
         weMail: true,
-        wp: true
+        wp: true,
+        __webpack_public_path__: true
     },
     // rules are mostly copied from Bootstrap v4-dev
     // https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/js/.eslintrc.json

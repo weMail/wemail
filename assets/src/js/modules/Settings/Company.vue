@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div v-if="!isFetchingData" class="row">
         <div class="col-sm-6">
             <label>
                 <strong>{{ i18n.companyName }}</strong>
@@ -90,10 +90,8 @@
 </template>
 
 <script>
-    import SettingsMixin from './SettingsMixin.js';
-
     export default {
-        routeName: 'company',
+        routeName: 'settingsCompany',
 
         mutations: {
             updateCountryStates(state, payload) {
@@ -105,7 +103,7 @@
             }
         },
 
-        mixins: [SettingsMixin],
+        mixins: weMail.getMixins('settings', 'routeComponent'),
 
         data() {
             return {
@@ -114,15 +112,15 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('company', ['countries', 'states']),
+            ...weMail.Vuex.mapState('settingsCompany', ['countries', 'states']),
 
             logo: {
                 get() {
-                    return this.$store.state.company.logo;
+                    return this.$store.state.settingsCompany.logo;
                 },
 
                 set(logo) {
-                    this.$store.commit('company/updateLogo', logo);
+                    this.$store.commit('settingsCompany/updateLogo', logo);
                 }
             },
 
@@ -179,7 +177,7 @@
             'settings.country'(country) {
                 const vm = this;
 
-                vm.$root.showLoadingAnime = true;
+                // TODO: @loading
 
                 weMail.ajax.get('get_country_states', {
                     country
@@ -188,15 +186,12 @@
                     const names = Object.keys(states);
 
                     if (names.length) {
-                        vm.$store.commit('company/updateCountryStates', states);
+                        vm.$store.commit('settingsCompany/updateCountryStates', states);
                         vm.settings.state = names[0];
                     } else {
-                        vm.$store.commit('company/updateCountryStates', {});
+                        vm.$store.commit('settingsCompany/updateCountryStates', {});
                         vm.settings.state = null;
                     }
-
-                }).always(() => {
-                    vm.$root.showLoadingAnime = false;
                 });
             }
         },

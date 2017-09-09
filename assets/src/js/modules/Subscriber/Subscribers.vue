@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!isFetchingData">
         <h2>
             Subscribers
             <a href="#" class="add-new-h2">Add New</a>
@@ -12,7 +12,7 @@
 
                 <ul>
                     <li v-for="subscriber in subscribers.data">
-                        id: {{ subscriber.id }} | {{ subscriber.first_name }} {{ subscriber.last_name }}
+                        id: {{ subscriber.id }} | <router-link :to="{name: 'subscriber', params: {id: subscriber.id}}">{{ subscriber.first_name }} {{ subscriber.last_name }}</router-link>
                     </li>
                 </ul>
 
@@ -34,7 +34,7 @@
             }
         },
 
-        mixins: [weMail.mixins.routeComponent],
+        mixins: weMail.getMixins('routeComponent'),
 
         data() {
             return {
