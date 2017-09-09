@@ -60,7 +60,7 @@ class Subscriber extends Module {
 
     public function get_route_data_subscriber( $params, $query ) {
         return [
-            'subscriber' => wemail()->api->get( '/subscriber/' . $params['id'] )
+            'subscriber' => wemail()->api->get( '/subscribers/' . $params['id'] )
         ];
     }
 
