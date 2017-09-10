@@ -1,6 +1,9 @@
 <template>
-    <div v-if="!isFetchingData">
-        <h1>Single Subscriber component</h1>
+    <div v-if="!isLoaded">
+        <h1> Subscriber:
+            <span v-if="subscriber.first_name">{{ subscriber.first_name }} {{ subscriber.last_name }}</span>
+            <span v-else>{{ subscriber.email }}</span>
+        </h1>
         <pre>{{ subscriber }}</pre>
     </div>
 </template>
@@ -10,12 +13,6 @@
         routeName: 'subscriber',
 
         mixins: weMail.getMixins('routeComponent'),
-
-        data() {
-            return {
-                subscriberId: 0
-            };
-        },
 
         computed: {
             ...weMail.Vuex.mapState('subscriber', ['subscriber'])

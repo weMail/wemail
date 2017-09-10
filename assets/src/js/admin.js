@@ -25,19 +25,28 @@ weMail.admin = new weMail.Vue({
             if (anch.length) {
                 anch.parent().addClass('current');
             } else {
-                const route = weMail._.chain(weMail.subMenuMap)
-                    .filter({
-                        name: rootRoute.name
-                    })
-                    .head()
-                    .value();
+                const pathParts = rootRoute.path.split('/');
+                let parent = '';
 
-                if (route && route.submenu) {
-                    mainMenu
-                        .find(`a[href="admin.php?page=wemail#${route.submenu}"]`)
-                        .parent()
-                        .addClass('current');
+                if (pathParts.length > 1) {
+                    parent = `/${pathParts[1]}`;
+                } else {
+                    const route = weMail._.chain(weMail.subMenuMap)
+                        .filter({
+                            name: rootRoute.name
+                        })
+                        .head()
+                        .value();
+
+                    if (route && route.submenu) {
+                        parent = route.submenu;
+                    }
                 }
+
+                mainMenu
+                    .find(`a[href="admin.php?page=wemail#${parent}"]`)
+                    .parent()
+                    .addClass('current');
             }
         }
     }

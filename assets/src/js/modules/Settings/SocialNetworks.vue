@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isFetchingData" class="row">
+    <div v-if="!isLoaded" class="row">
         <div class="col-6">
             <label v-for="network in order">
                 <strong>{{ i18n[network] }}</strong>

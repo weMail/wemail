@@ -60,11 +60,15 @@ class Subscriber extends Module {
 
     public function get_route_data_subscriber( $params, $query ) {
         return [
-            'subscriber' => wemail()->api->get( '/subscribers/' . $params['id'] )
+            'subscriber' => $this->get_subscriber( $params['id'] )
         ];
     }
 
-    public function get_subscribers( $query = [] ) {
-        return wemail()->api->get( '/subscribers', $query );
+    public function get_subscribers( $args = [] ) {
+        return wemail()->api->get( '/subscribers', $args );
+    }
+
+    public function get_subscriber( $id ) {
+        return wemail()->api->get( '/subscribers/' . $id );
     }
 }

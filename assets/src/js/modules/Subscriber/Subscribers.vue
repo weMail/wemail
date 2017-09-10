@@ -1,10 +1,10 @@
 <template>
-    <div v-if="!isFetchingData">
-        <h2>
+    <div v-if="!isLoaded">
+        <h1>
             Subscribers
-            <a href="#" class="add-new-h2">Add New</a>
-            <a href="#" class="add-new-h2">Search Segment</a>
-        </h2>
+            <a href="#" class="page-title-action">Add New</a>
+            <a href="#" class="page-title-action">Search Segment</a>
+        </h1>
 
         <div class="row">
             <div class="col-6">

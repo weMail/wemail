@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isFetchingData">
+    <div v-if="!isLoaded">
         <h1>{{ i18n.settings }}</h1>
 
         <div class="wemail-settings d-flex">

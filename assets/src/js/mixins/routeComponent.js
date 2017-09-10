@@ -1,7 +1,7 @@
 export default {
     data() {
         return {
-            isFetchingData: true
+            isLoaded: true
         };
     },
 
@@ -26,7 +26,7 @@ export default {
                     mutations
                 });
 
-                vm.isFetchingData = false;
+                vm.isLoaded = false;
 
                 if (vm.hasOwnProperty('afterFetchingInitialData')) {
                     vm.afterFetchingInitialData();
