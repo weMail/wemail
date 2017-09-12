@@ -1,8 +1,9 @@
 // Bootstrap v4.0.0-beta
 
-@import "functions";
-@import "variables";
-@import "mixins";
+// functions, variables and mixins are auto-loading with webpack
+// @import "functions";
+// @import "variables";
+// @import "mixins";
 // @import "print";
 @import "reboot";
 @import "type";

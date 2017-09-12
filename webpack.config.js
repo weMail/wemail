@@ -21,7 +21,11 @@ function sassSrc(filename) {
 
 function sassResources() {
     return [
-        sassSrc('_variables'), sassSrc('_mixins')
+        sassSrc('_variables'),
+        sassSrc('_mixins'),
+        srcDir('vendor/bootstrap/_functions.scss'),
+        srcDir('vendor/bootstrap/_variables.scss'),
+        srcDir('vendor/bootstrap/_mixins.scss')
     ];
 }
 
@@ -146,13 +150,21 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|vue)$/,
+                exclude: /node_modules/,
                 loader: 'eslint-loader',
                 enforce: 'pre',
                 include: [srcDir('js'), srcDir('vue')],
                 options: {
                     formatter: eslintFriendlyFormatter
-                },
-                exclude: /node_modules/
+                }
+            },
+            {
+                test: /\.(svg|woff|woff2|ttf|eot)(\?.*$|$)/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: '../fonts/'
+                }
             },
             {
                 test: /\.scss$/,
@@ -200,8 +212,8 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                loader: 'babel-loader'
             }
         ]
     }

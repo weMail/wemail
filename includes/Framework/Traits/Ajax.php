@@ -3,11 +3,17 @@ namespace WeDevs\WeMail\Framework\Traits;
 
 trait Ajax {
 
-    protected function add_ajax_action( $tag, $nopriv = false ) {
-        add_action( 'wp_ajax_wemail_' . $tag, [ $this, $tag ] );
+    protected function add_ajax_action( $tag, $method = null, $nopriv = false ) {
+        if ( ! $method ) {
+            $method = $tag;
+        } else {
+            $tag = $tag . '_' . $method;
+        }
+
+        add_action( 'wp_ajax_wemail_' . $tag, [ $this, $method ] );
 
         if ( $nopriv ) {
-            add_action( 'wp_ajax_nopriv_wemail_' . $tag, [ $this, $tag ] );
+            add_action( 'wp_ajax_nopriv_wemail_' . $tag, [ $this, $method ] );
         }
     }
 

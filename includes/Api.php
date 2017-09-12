@@ -14,6 +14,15 @@ class Api {
     public $root;
 
     /**
+     * CDN root
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $cdn;
+
+    /**
      * API Key
      *
      * @since 1.0.0
@@ -31,6 +40,7 @@ class Api {
      */
     public function __construct() {
         $root = apply_filters( 'wemail-api-root', 'https://api.wemail.com' );
+        $cdn = apply_filters( 'wemail-cdn-root', 'https://cdn.wemail.com' );
 
         $this->root = untrailingslashit( $root );
         $this->key  = get_option( 'wemail-api-key', 'apiKey' );
@@ -46,6 +56,7 @@ class Api {
     public function get_props() {
         return [
             'root' => $this->root,
+            'cdn'  => $this->cdn,
             'key'  => $this->key
         ];
     }
@@ -90,7 +101,8 @@ class Api {
 
         $response = wp_remote_get( $url, $args );
 
-        if ( ! empty( $response['body'] ) ) {
+
+        if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
             return json_decode( $response['body'], true );
         }
 

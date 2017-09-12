@@ -45,4 +45,5 @@ class Lists extends Module {
     public function get_list( $id ) {
         return wemail()->api->get( "/lists/{$id}" );
     }
+
 }
