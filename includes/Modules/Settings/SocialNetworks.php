@@ -89,7 +89,7 @@ class SocialNetworks extends AbstractSettings {
          *
          * @param array $order
          */
-        return apply_filters( 'wemail-social-networks-order', $order );
+        return apply_filters( 'wemail_social_networks_order', $order );
     }
 
     /**

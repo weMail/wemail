@@ -8,8 +8,8 @@ class Scripts {
     use Hooker;
 
     public function __construct() {
-        $this->add_action( 'wemail-admin-enqueue-styles', 'enqueue_styles' );
-        $this->add_action( 'wemail-admin-enqueue-scripts', 'enqueue_scripts' );
+        $this->add_action( 'wemail_admin_enqueue_styles', 'enqueue_styles' );
+        $this->add_action( 'wemail_admin_enqueue_scripts', 'enqueue_scripts' );
     }
 
     public function enqueue_styles() {
@@ -27,7 +27,7 @@ class Scripts {
 
         $wemail = wemail()->scripts->localized_script_vars();
 
-        $admin_local_vars = apply_filters( 'weMail-localized-script', [] );
+        $admin_local_vars = apply_filters( 'weMail_localized_script', [] );
 
         $wemail = array_merge( $wemail, $admin_local_vars );
 

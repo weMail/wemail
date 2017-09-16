@@ -53,7 +53,7 @@ class Scripts {
             'subMenuMap'           => [],
             'mixins'               => function () {},
             'stores'               => function () {},
-            'actions'              => apply_filters( 'wemail-component-actions', [] )
+            'actions'              => apply_filters( 'wemail_component_actions', [] )
         ];
 
         return $wemail;

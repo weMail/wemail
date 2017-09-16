@@ -49,7 +49,7 @@ class Ajax {
          * @param array $query  Vue.js $route.query
          * @param array $_GET   HTTP $_GET data
          */
-        $data = apply_filters( 'wemail-get-route-data-' . $name, $params, $query, $_GET );
+        $data = apply_filters( "wemail_get_route_data_{$name}", $params, $query, $_GET );
 
         $this->send_success( $data );
     }

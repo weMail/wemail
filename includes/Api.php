@@ -39,8 +39,8 @@ class Api {
      * @return void
      */
     public function __construct() {
-        $root = apply_filters( 'wemail-api-root', 'https://api.wemail.com' );
-        $cdn = apply_filters( 'wemail-cdn-root', 'https://cdn.wemail.com' );
+        $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
+        $cdn  = apply_filters( 'wemail_cdn_root', 'https://cdn.wemail.com' );
 
         $this->root = untrailingslashit( $root );
         $this->key  = get_option( 'wemail-api-key', 'apiKey' );

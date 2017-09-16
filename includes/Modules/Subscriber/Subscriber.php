@@ -23,9 +23,9 @@ class Subscriber extends Module {
      * @return void
      */
     public function __construct() {
-        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
-        $this->add_filter( 'wemail-get-route-data-subscribers', 'get_route_data_subscribers', 10, 2 );
-        $this->add_filter( 'wemail-get-route-data-subscriber', 'get_route_data_subscriber', 10, 2 );
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail_get_route_data_subscribers', 'get_route_data_subscribers', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_subscriber', 'get_route_data_subscriber', 10, 2 );
     }
 
     /**

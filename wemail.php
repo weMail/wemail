@@ -276,7 +276,7 @@ final class WeDevs_WeMail {
      */
     public function init() {
         // Before init action.
-        do_action( 'wemail-before-init' );
+        do_action( 'wemail_before_init' );
 
         // Set up localization.
         $this->load_plugin_textdomain();
@@ -295,7 +295,7 @@ final class WeDevs_WeMail {
         }
 
         // Init action.
-        do_action( 'wemail-init' );
+        do_action( 'wemail_init' );
     }
 
     /**

@@ -5,7 +5,7 @@ namespace WeDevs\WeMail\Modules\Segment;
 class Segment {
 
     public function conditions() {
-        return apply_filters( 'wemail-segment-conditions', [
+        return apply_filters( 'wemail_segment_conditions', [
             'IS'        => __( 'is', 'wemail' ),
             'ISNOT'     => __( 'is not', 'wemail' ),
             'CONT'      => __( 'contains', 'wemail' ),

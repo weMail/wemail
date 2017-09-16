@@ -25,10 +25,10 @@ class Settings extends Module {
      * @return void
      */
     public function __construct() {
-        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
         $this->register_settings();
 
-        $this->add_filter( 'wemail-get-route-data-settings', 'get_route_data' );
+        $this->add_filter( 'wemail_get_route_data_settings', 'get_route_data' );
         $this->add_ajax_action( 'save_settings' );
     }
 
@@ -61,12 +61,12 @@ class Settings extends Module {
             new SocialNetworks()
         ];
 
-        $settings = apply_filters( 'wemail-register-settings', $settings );
+        $settings = apply_filters( 'wemail_register_settings', $settings );
 
         $this->settings = collect( $settings )->sortBy( 'priority' );
 
         $this->settings->each( function ( $setting ) {
-            add_action( 'wemail-get-route-data-' . $setting->route_name, [ $setting, 'get_route_data' ] );
+            add_filter( "wemail_get_route_data_{$setting->route_name}", [ $setting, 'get_route_data' ] );
         } );
     }
 

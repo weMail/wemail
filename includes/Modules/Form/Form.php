@@ -9,9 +9,9 @@ class Form extends Module {
     public $menu_priority = 80;
 
     public function __construct() {
-        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
 
-        $this->add_filter( 'wemail-component-actions', 'add_component_actions' );
+        $this->add_filter( 'wemail_component_actions', 'add_component_actions' );
     }
 
     public function register_submenu( $menu_items, $capability ) {

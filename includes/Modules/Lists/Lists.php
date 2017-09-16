@@ -9,9 +9,9 @@ class Lists extends Module {
     public $menu_priority = 90;
 
     public function __construct() {
-        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
-        $this->add_filter( 'wemail-get-route-data-lists', 'get_route_data_lists', 10, 2 );
-        $this->add_filter( 'wemail-get-route-data-list', 'get_route_data_list', 10, 2 );
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail_get_route_data_lists', 'get_route_data_lists', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_list', 'get_route_data_list', 10, 2 );
     }
 
     public function register_submenu( $menu_items, $capability ) {

@@ -9,8 +9,8 @@ class Overview extends Module {
     public $menu_priority = 1;
 
     public function __construct() {
-        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
-        $this->add_filter( 'wemail-get-route-data-overview', 'get_route_data' );
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail_get_route_data_overview', 'get_route_data' );
     }
 
     public function register_submenu( $menu_items, $capability ) {

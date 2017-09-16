@@ -33,7 +33,7 @@ class Menu {
 
         $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt', 1 );
 
-        $submenu['wemail'] = apply_filters( 'wemail-admin-submenu', [], $capability );
+        $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
 
         $this->add_action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );
         $this->add_action( 'admin_print_scripts-' . $wemail, 'enqueue_scripts' );
@@ -47,7 +47,7 @@ class Menu {
      * @return void
      */
     public function enqueue_styles() {
-        do_action( 'wemail-admin-enqueue-styles' );
+        do_action( 'wemail_admin_enqueue_styles' );
     }
 
     /**
@@ -58,7 +58,7 @@ class Menu {
      * @return void
      */
     public function enqueue_scripts() {
-        do_action( 'wemail-admin-enqueue-scripts' );
+        do_action( 'wemail_admin_enqueue_scripts' );
     }
 
     /**

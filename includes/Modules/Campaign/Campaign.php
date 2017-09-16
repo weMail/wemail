@@ -9,11 +9,11 @@ class Campaign extends Module {
     private $menu_priority = 2;
 
     public function __construct() {
-        $this->add_filter( 'wemail-admin-submenu', 'register_submenu', $this->menu_priority, 2 );
-        $this->add_filter( 'wemail-get-route-data-campaignIndex', 'index', 10, 2 );
-        $this->add_filter( 'wemail-get-route-data-campaignCreate', 'create', 10, 2 );
-        $this->add_filter( 'wemail-get-route-data-campaignShow', 'show', 10, 2 );
-        $this->add_filter( 'wemail-get-route-data-campaignEdit', 'edit', 10, 2 );
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
+        $this->add_filter( 'wemail_get_route_data_campaignIndex', 'index', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_campaignCreate', 'create', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_campaignShow', 'show', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_campaignEdit', 'edit', 10, 2 );
     }
 
     public function register_submenu( $menu_items, $capability ) {
