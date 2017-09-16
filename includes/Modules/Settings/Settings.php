@@ -15,6 +15,13 @@ class Settings extends Module {
      */
     public $menu_priority = 100;
 
+    /**
+     * List of wemail settings
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
     public $settings = [];
 
     /**
@@ -29,7 +36,24 @@ class Settings extends Module {
         $this->register_settings();
 
         $this->add_filter( 'wemail_get_route_data_settings', 'get_route_data' );
-        $this->add_ajax_action( 'save_settings' );
+    }
+
+    /**
+     * Magic method to call an wemail setting
+     *
+     * @since 1.0.0
+     *
+     * @param string $name
+     * @param array  $args
+     *
+     * @return array|void
+     */
+    public function __call( $name, $args ) {
+        if ( $this->settings->has( $name ) ) {
+            $settings = $this->settings[$name];
+
+            return $settings->get_settings();
+        }
     }
 
     /**
@@ -57,13 +81,15 @@ class Settings extends Module {
      */
     private function register_settings() {
         $settings = [
-            new Company(),
-            new SocialNetworks()
+            'company'         => new Company(),
+            'social_networks' => new SocialNetworks()
         ];
 
         $settings = apply_filters( 'wemail_register_settings', $settings );
 
         $this->settings = collect( $settings )->sortBy( 'priority' );
+
+        // $test = $this->settings->
 
         $this->settings->each( function ( $setting ) {
             add_filter( "wemail_get_route_data_{$setting->route_name}", [ $setting, 'get_route_data' ] );
@@ -91,35 +117,6 @@ class Settings extends Module {
                 ];
             } )
         ];
-    }
-
-    /**
-     * Save settings
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function save_settings() {
-        $this->verify_nonce();
-
-        // permission check
-        // TODO: Check permissions
-
-        $success = false;
-
-        if ( ! empty( $_POST['name'] ) && ! empty( $_POST['settings'] ) ) {
-            $name = preg_replace( '/^settings/', '', $_POST['name'] );
-            $url = '/settings/' . \Stringy\StaticStringy::dasherize( $name );
-
-            $response = wemail()->api->post( $url, $_POST['settings'] );
-
-            if ( $response['success'] ) {
-                $success = true;
-            }
-        }
-
-        $this->send_success( ['success' => $success ] );
     }
 
 }

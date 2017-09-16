@@ -44,15 +44,6 @@ if (! defined( 'ABSPATH' ) ) {
 final class WeDevs_WeMail {
 
     /**
-     * @var object
-     *
-     * @since 1.0.0
-     *
-     * @var WeDevs_WeMail
-     */
-    private static $instance;
-
-    /**
      * Plugin version
      *
      * @since 1.0.0
@@ -77,16 +68,34 @@ final class WeDevs_WeMail {
      *
      * @var string
      */
-    private $min_php = '5.4.0';
+    public $min_php = '5.4.0';
 
     /**
-     * Holds various class instances
+     * Contains the core related class instance
+     *
+     * @since 1.0.0
+     *
+     * @var object
+     */
+    public $core;
+
+    /**
+     * @var object
+     *
+     * @since 1.0.0
+     *
+     * @var WeDevs_WeMail
+     */
+    private static $instance;
+
+    /**
+     * Contains all registerd modules
      *
      * @since 1.0.0
      *
      * @var array
      */
-    private $container = [];
+    private $modules = [];
 
     /**
      * Admin notice messages
@@ -150,8 +159,8 @@ final class WeDevs_WeMail {
      * @return mixed
      */
     public function __get( $prop ) {
-        if ( array_key_exists( $prop, $this->container ) ) {
-            return $this->container[ $prop ];
+        if ( array_key_exists( $prop, $this->core->modules->modules ) ) {
+            return $this->core->modules->modules[ $prop ];
         }
 
         return $this->{$prop};
@@ -281,17 +290,18 @@ final class WeDevs_WeMail {
         // Set up localization.
         $this->load_plugin_textdomain();
 
-        $this->container['api']     = new WeDevs\WeMail\Api();
-        $this->container['scripts'] = new WeDevs\WeMail\Framework\Scripts();
-        $this->container['modules'] = new WeDevs\WeMail\Modules\Modules();
+        $this->core = new StdClass();
+
+        $this->core->scripts = new WeDevs\WeMail\Framework\Scripts();
+        $this->core->modules = new WeDevs\WeMail\Modules\Modules();
 
         if ( $this->is_request( 'admin' ) ) {
-            $this->container['admin_scripts'] = new WeDevs\WeMail\Admin\Scripts();
-            $this->container['admin_menu']    = new WeDevs\WeMail\Admin\Menu();
+            $this->core->admin_scripts = new WeDevs\WeMail\Admin\Scripts();
+            $this->core->admin_menu    = new WeDevs\WeMail\Admin\Menu();
         }
 
         if ( $this->is_request( 'ajax' ) ) {
-            $this->container['ajax'] = new WeDevs\WeMail\Ajax();
+            $this->core->ajax = new WeDevs\WeMail\Ajax();
         }
 
         // Init action.
@@ -307,6 +317,19 @@ final class WeDevs_WeMail {
      */
     public function load_plugin_textdomain() {
         load_plugin_textdomain( 'wemail', false, WEMAIL_PATH . '/i18n/languages/' );
+    }
+
+    /**
+     * Check if wemail has a registered module
+     *
+     * @since 1.0.0
+     *
+     * @param $string $module_name All lowercase-underscored module name
+     *
+     * @return boolean
+     */
+    public function has_module( $module_name ) {
+        return $this->core->modules->has_module( $module_name );
     }
 
 }

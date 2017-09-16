@@ -48,7 +48,7 @@ class Company extends AbstractSettings {
             'website'   => null
         ];
 
-        $settings = wemail()->api->get( '/settings/company' );
+        $settings = wemail()->api->settings()->company()->get();
 
         return wp_parse_args( $settings, $defaults );
     }

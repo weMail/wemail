@@ -67,19 +67,21 @@
 
                 vm.$root.showLoadingAnime = true;
 
-                weMail.ajax.post('save_settings', {
-                    name: vm.$route.name,
-                    settings: vm.$store.state[currentRoute].settings
-                }).always((response) => {
-                    if (response.msg) {
-                        this.alert({
-                            type: 'error',
-                            text: response.msg
-                        });
-                    }
+                const api = weMail.api.settings();
 
-                    vm.$root.showLoadingAnime = false;
-                });
+                api[currentRoute.replace('settings', '')]()
+                    .save(vm.$store.state[currentRoute].settings)
+                    .always((response) => {
+                        console.log(response);
+                        if (response.msg) {
+                            vm.alert({
+                                type: 'error',
+                                text: response.msg
+                            });
+                        }
+
+                        vm.$root.showLoadingAnime = false;
+                    });
             }
         }
     };

@@ -55,7 +55,7 @@ class SocialNetworks extends AbstractSettings {
             'viber'         => 'https://viber.com',
         ];
 
-        $settings = wemail()->api->get( '/settings/social-networks' );
+        $settings = wemail()->api->settings()->social_networks()->get();
 
         return wp_parse_args( $settings, $defaults );
     }

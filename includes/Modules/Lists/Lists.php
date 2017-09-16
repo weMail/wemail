@@ -42,6 +42,13 @@ class Lists extends Module {
         return wemail()->api->get( '/lists', $args );
     }
 
+    public function all() {
+        // wemail()->api->lists()->all()->get();
+        wemail()->api->lists();
+
+        return wemail()->api->get( '/lists/all' );
+    }
+
     public function get_list( $id ) {
         return wemail()->api->get( "/lists/{$id}" );
     }

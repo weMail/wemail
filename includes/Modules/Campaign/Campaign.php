@@ -68,6 +68,8 @@ class Campaign extends Module {
     }
 
     public function edit( $params, $query ) {
+         wemail()->lists->all();
+
         return [
             'i18n' => [
                 'editCampaign'      => __( 'Edit Campaign', 'wemail' ),

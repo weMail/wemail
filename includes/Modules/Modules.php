@@ -2,6 +2,8 @@
 
 namespace WeDevs\WeMail\Modules;
 
+use Stringy\StaticStringy;
+
 class Modules {
 
     /**
@@ -11,7 +13,7 @@ class Modules {
      *
      * @var array
      */
-    private $modules = [];
+    public $modules = [];
 
     /**
      * Class constructor
@@ -29,7 +31,7 @@ class Modules {
      *
      * @since 1.0.0
      *
-     * @param string $module_name Camelcased module name
+     * @param string $module_name All lowercase-underscored module name
      *
      * @return object
      */
@@ -55,7 +57,7 @@ class Modules {
 
         foreach ( $module_dirs as $module_dir ) {
             $module       = str_replace( WEMAIL_MODULES . '/', '', $module_dir );
-            $module_name  = lcfirst( $module );
+            $module_name  = StaticStringy::underscored( $module );
 
             $module_class = "\\WeDevs\\WeMail\\Modules\\$module\\$module";
 
@@ -68,13 +70,37 @@ class Modules {
      *
      * @since 1.0.0
      *
-     * @param string $module_name  Camelcased module name
+     * @param string $module_name  All lowercase-underscored module name
      * @param string $module_class Module fully qualified name
      *
      * @return void
      */
     public function register_module( $module_name, $module_class ) {
         $this->modules[ $module_name ] = new $module_class;
+    }
+
+    /**
+     * Check if wemail has a registered module
+     *
+     * @since 1.0.0
+     *
+     * @param $string $module_name All lowercase-underscored module name
+     *
+     * @return boolean
+     */
+    public function has_module( $module_name ) {
+        return array_key_exists( $module_name, $this->modules ) || false;
+    }
+
+    /**
+     * Get wemail registered module names
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    public function get_module_names() {
+        return array_keys( $this->modules );
     }
 
 }

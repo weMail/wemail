@@ -137,7 +137,7 @@
             create() {
                 const vm = this;
 
-                weMail.api.post('/campaigns', {
+                weMail.api.campaigns().create({
                     data: {
                         name: this.campaign.name,
                         type: this.campaign.type,
