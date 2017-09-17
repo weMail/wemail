@@ -30,4 +30,12 @@ class Segment {
         ] );
     }
 
+    public function all() {
+        return wemail()->api->segments()->all()->get();
+    }
+
+    public function get( $id ) {
+        return wemail()->api->segments( $id )->get();
+    }
+
 }

@@ -25,7 +25,7 @@ class Lists extends Module {
             'i18n' => [
                 'lists' => __( 'Lists', 'wemail' )
             ],
-            'lists' => $this->get_lists( $query )
+            'lists' => wemail()->api->lists()->query( $query )->get()
         ];
     }
 
@@ -34,23 +34,16 @@ class Lists extends Module {
             'i18n' => [
                 'list' => __( 'List', 'wemail' )
             ],
-            'list' => $this->get_list( $params['id'] )
+            'list' => $this->get( $params['id'] )
         ];
     }
 
-    public function get_lists( $args ) {
-        return wemail()->api->get( '/lists', $args );
-    }
-
     public function all() {
-        // wemail()->api->lists()->all()->get();
-        wemail()->api->lists();
-
-        return wemail()->api->get( '/lists/all' );
+        return wemail()->api->lists()->all()->get();
     }
 
-    public function get_list( $id ) {
-        return wemail()->api->get( "/lists/{$id}" );
+    public function get( $id ) {
+        return wemail()->api->lists( $id )->get();
     }
 
 }
