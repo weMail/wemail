@@ -32,11 +32,10 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
+            ...weMail.Vuex.mapState('campaignEdit', ['i18n']),
 
             pageTitle() {
-                // return this.i18n.createCampaign;
-                return 'Edit Campaign';
+                return this.i18n.editCampaign;
             }
         }
     };

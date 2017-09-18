@@ -39,6 +39,7 @@
                 type: String,
                 default: 'edit'
             },
+
             i18n: {
                 type: Object,
                 default: {}

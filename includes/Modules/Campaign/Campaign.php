@@ -4,12 +4,14 @@ namespace WeDevs\WeMail\Modules\Campaign;
 
 use WeDevs\WeMail\Framework\Module;
 use WeDevs\WeMail\Modules\Campaign\Event;
+use WeDevs\WeMail\Modules\Campaign\Editor;
 
 class Campaign extends Module {
 
     private $menu_priority = 2;
 
     public $event;
+    public $editor;
 
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
@@ -18,7 +20,8 @@ class Campaign extends Module {
         $this->add_filter( 'wemail_get_route_data_campaignShow', 'show', 10, 2 );
         $this->add_filter( 'wemail_get_route_data_campaignEdit', 'edit', 10, 2 );
 
-        $this->event = new Event();
+        $this->event  = new Event();
+        $this->editor = new Editor();
     }
 
     public function register_submenu( $menu_items, $capability ) {
@@ -37,30 +40,7 @@ class Campaign extends Module {
     }
 
     public function create( $params, $query ) {
-        return [
-            'i18n' => [
-                'createCampaign'    => __( 'Create Campaign', 'wemail' ),
-                'campaignName'      => __( 'Campaign Name', 'wemail' ),
-                'campaignNameHint'  => __( 'Enter a name to help you remember what this campaign is all about. Only you will see this.', 'wemail' ),
-                'campaignType'      => __( 'Campaign Type', 'wemail' ),
-                'standard'          => __( 'Standard', 'wemail' ),
-                'automatic'         => __( 'Automatic', 'wemail' ),
-                'subscribers'       => __( 'Subscribers', 'wemail' ),
-                'lists'             => __( 'Lists', 'wemail' ),
-                'createNewList'     => __( 'Create new list', 'wemail' ),
-                'segments'          => __( 'Segments', 'wemail' ),
-                'createNewSegment'  => __( 'Create new segment', 'wemail' ),
-                'create'            => __( 'Create', 'wemail' ),
-                'selectLists'       => __( 'Select Lists', 'wemal' ),
-                'selectSegments'    => __( 'Select Segments', 'wemal' ),
-                'setup'             => __( 'Setup', 'wemail' ),
-                'template'          => __( 'Template', 'wemail' ),
-                'design'            => __( 'Design', 'wemail' ),
-                'send'              => __( 'Send', 'wemail' )
-            ],
-            'lists' => wemail()->lists->all(),
-            'segments' => wemail()->segment->all()
-        ];
+        return $this->editor->get_setup_data();
     }
 
     public function show( $params, $query ) {
@@ -73,37 +53,11 @@ class Campaign extends Module {
     }
 
     public function edit( $params, $query ) {
-        return [
-            'i18n' => [
-                'editCampaign'           => __( 'Edit Campaign', 'wemail' ),
-                'campaignName'           => __( 'Campaign Name', 'wemail' ),
-                'campaignNameHint'       => __( 'Enter a name to help you remember what this campaign is all about. Only you will see this.', 'wemail' ),
-                'campaignType'           => __( 'Campaign Type', 'wemail' ),
-                'standard'               => __( 'Standard', 'wemail' ),
-                'automatic'              => __( 'Automatic', 'wemail' ),
-                'subscribers'            => __( 'Subscribers', 'wemail' ),
-                'lists'                  => __( 'Lists', 'wemail' ),
-                'segments'               => __( 'Segments', 'wemail' ),
-                'selectLists'            => __( 'Select Lists', 'wemal' ),
-                'selectSegments'         => __( 'Select Segments', 'wemal' ),
-                'setup'                  => __( 'Setup', 'wemail' ),
-                'template'               => __( 'Template', 'wemail' ),
-                'design'                 => __( 'Design', 'wemail' ),
-                'send'                   => __( 'Send', 'wemail' ),
-                'next'                   => __( 'Next', 'wemail' ),
-                'previous'               => __( 'Previous', 'wemail' ),
-                'automaticallySend'      => __( 'Automatically Send', 'wemail' ),
-                'noOptionFoundForAction' => __( 'no option found for this action', 'wemail' ),
-                'immediately'            => __( 'Immediately', 'wemail' ),
-                'hoursAfter'             => __( 'hour(s) after', 'wemail' ),
-                'daysAfter'              => __( 'day(s) after', 'wemail' ),
-                'weeksAfter'             => __( 'week(s) after', 'wemail' ),
-            ],
-            'campaign'   => $this->get( $params['id'] ),
-            'lists'      => wemail()->lists->all(),
-            'segments'   => wemail()->segment->all(),
-            'events'     => $this->event->all(),
-        ];
+        $data = $this->editor->get_setup_data();
+
+        $data['campaign'] = $this->get( $params['id'] );
+
+        return $data;
     }
 
     public function get( $id ) {
