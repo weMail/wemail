@@ -150,3 +150,30 @@ weMail.registerChildRoute = function (parent, childRoute) {
 weMail.getChildRoutes = function (parent) {
     return weMail.childRoutes[parent] || [];
 };
+
+// Vue Store
+weMail.store = new weMail.Vuex.Store({});
+
+// weMail components
+weMail.components = {};
+
+weMail.registerComponents = function (components) {
+    weMail._.forEach(components, (component, name) => {
+        if (!weMail.components[name]) {
+            weMail.components[name] = component;
+        }
+    });
+};
+
+// weMail components for customizers
+weMail.customizerComponents = {};
+
+weMail.registerCustomizerComponents = function (context, components) {
+    if (!weMail.customizerComponents.hasOwnProperty(context)) {
+        weMail.customizerComponents[context] = {};
+    }
+
+    weMail._.forEach(components, (component, name) => {
+        weMail.customizerComponents[context][name] = component;
+    });
+};

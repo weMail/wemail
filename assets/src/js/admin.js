@@ -6,7 +6,7 @@ __webpack_public_path__ = `${weMail.assetsURL}/js/`; // eslint-disable-line came
 // The main Vue instance
 weMail.admin = new weMail.Vue({
     el: '#wemail-admin',
-    store: new weMail.Vuex.Store({}),
+    store: weMail.store,
     router,
     data: {
         showLoadingAnime: false

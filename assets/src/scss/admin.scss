@@ -40,7 +40,6 @@
     @import "_utilities.scss";
 }
 
-
 // SweetAlert2
 @import "~sweetalert2/src/sweetalert2.scss";
 
@@ -50,4 +49,5 @@ h2.swal2-title {
 
 // FontAwesome
 $fa-font-path: "~font-awesome/fonts";
+
 @import "~font-awesome/scss/font-awesome.scss";

@@ -1,5 +1,8 @@
 <template>
-    <setup namespace="campaignEdit"></setup>
+    <div>
+        <h1>{{ i18n.editCampaign }}</h1>
+        <setup namespace="campaignEdit"></setup>
+    </div>
 </template>
 
 <script>
@@ -10,6 +13,10 @@
 
         components: {
             Setup
+        },
+
+        computed: {
+            ...weMail.Vuex.mapState('campaignEdit', ['i18n'])
         }
     };
 </script>

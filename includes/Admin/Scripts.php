@@ -13,10 +13,14 @@ class Scripts {
     }
 
     public function enqueue_styles() {
+        do_action( 'wemail_admin_before_enqueue_styles' );
+
         wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', [], WEMAIL_VERSION );
     }
 
     public function enqueue_scripts() {
+        do_action( 'wemail_admin_before_enqueue_scripts' );
+
         wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', ['wemail-common'] , WEMAIL_VERSION, true );
 
         $this->localized_script();
@@ -27,7 +31,7 @@ class Scripts {
 
         $wemail = wemail()->core->scripts->localized_script_vars();
 
-        $admin_local_vars = apply_filters( 'weMail_localized_script', [] );
+        $admin_local_vars = apply_filters( 'wemail_admin_localized_vars', [] );
 
         $wemail = array_merge( $wemail, $admin_local_vars );
 

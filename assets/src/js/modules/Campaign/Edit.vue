@@ -1,11 +1,6 @@
 <template>
     <div v-if="!isLoaded">
-        <h1>
-            {{ pageTitle }}
-        </h1>
-
         <router-view></router-view>
-
         <progress-bar :i18n="i18n"></progress-bar>
     </div>
 </template>
@@ -32,11 +27,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n']),
-
-            pageTitle() {
-                return this.i18n.editCampaign;
-            }
+            ...weMail.Vuex.mapState('campaignEdit', ['i18n'])
         }
     };
 </script>

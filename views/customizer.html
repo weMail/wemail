@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>A Responsive Email Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
+        /* CLIENT-SPECIFIC STYLES */
+        body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+        table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+        img{-ms-interpolation-mode: bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
+
+        /* RESET STYLES */
+        img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}
+        table{border-collapse: collapse !important;}
+        body{height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* MOBILE STYLES */
+        @media screen and (max-width: 525px) {
+
+            /* ALLOWS FOR FLUID TABLES */
+            .wrapper {
+              width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+            .mobile-hide {
+              display: none !important;
+            }
+
+            .img-max {
+              max-width: 100% !important;
+              width: 100% !important;
+              height: auto !important;
+            }
+
+            /* FULL-WIDTH TABLES */
+            .responsive-table {
+              width: 100% !important;
+            }
+
+        }
+
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] { margin: 0 !important; }
+    </style>
+    <style id="global-element-style"></style>
+    <link rel="stylesheet" href="../assets/css/customizer.css">
+</head>
+<body style="margin: 0 !important; padding: 0 !important;">
+    <div id="wemail-customizer" v-cloak>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" :style="template.globalCss">
+            <tr v-for="(section, sectionIndex) in template.sections" class="section">
+                <td align="center" :style="section.style">
+                    <table class="responsive-table section-wrapper" :style="section.wrapperStyle" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody :data-section-index="sectionIndex">
+                            <template v-for="(content, contentIndex) in section.contents">
+                                <component
+                                    :is="'content-' + content.type"
+                                    :content-type-img="getContentTypeImage(content.type)"
+                                    data-source="iframe"
+                                    :data-content-type="content.type"
+                                    :data-section-index="sectionIndex"
+                                    :data-content-index="contentIndex"
+                                    class="content-wrapper"
+                                ></component>
+                            </template>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .content-type-image {
+            display: none;
+        }
+
+        .sortable-ghost > td > table.content,
+        .sortable-ghost > td > div.control-button,
+        .sortable-ghost > td > div.button {
+            display: none;
+        }
+
+        .sortable-ghost > td {
+            width: 100%;
+            height: 100px;
+            background-color: yellow;
+        }
+
+        .sortable-drag > td {
+            /*background-color: black !important;*/
+        }
+
+        .sortable-drag > td > table.content,
+        .sortable-drag > td > div.control-button,
+        .sortable-drag > td > div.button {
+            /*display: none !important;*/
+        }
+
+        .sortable-drag > td > img {
+            /*display: inline-block;*/
+        }
+
+        tr.section {
+            border: 1px dashed #ddd;
+        }
+    </style>
+</body>
+</html>

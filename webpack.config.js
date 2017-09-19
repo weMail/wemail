@@ -99,7 +99,7 @@ const plugins = [
     new StyleLintPlugin({
         configFile: path.resolve('./.stylelintrc'),
         files: [
-            'assets/src/sass/**/*.scss', 'assets/src/js/**/*.vue'
+            'assets/src/scss/**/*.scss', 'assets/src/js/**/*.vue'
         ]
     })
 ];
@@ -131,13 +131,15 @@ module.exports = {
         vendor: jsSrc('vendor'),
         wemail: jsSrc('wemail'),
         common: jsSrc('common'),
-        admin: jsSrc('admin')
+        admin: jsSrc('admin'),
+        customizer: sassSrc('customizer')
     },
 
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, './assets/js/'),
-        chunkFilename: 'chunks/[chunkhash].js'
+        chunkFilename: 'chunks/[chunkhash].js',
+        jsonpFunction: 'wemailWebpack'
     },
 
     externals: {

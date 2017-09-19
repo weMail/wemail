@@ -19,9 +19,9 @@ input {
 
     .hint {
         margin: 4px 0 5px;
-        font-size: .85em;
+        font-size: 0.85em;
         font-style: italic;
-        color: rgba(35, 40, 45, .7);
+        color: rgba(35, 40, 45, 0.7);
     }
 
     .list-inline {
@@ -34,8 +34,8 @@ input {
     }
 
     .right-floated-link {
-        font-size: 80%;
         float: right;
+        font-size: 80%;
         line-height: 1.8;
         text-decoration: none;
     }

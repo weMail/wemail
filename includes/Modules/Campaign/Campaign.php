@@ -52,10 +52,130 @@ class Campaign extends Module {
         ];
     }
 
+    // this will remove after finishing the templating system
+    public function testTemplate( $campaign ) {
+        $campaign['email']['template'] = [
+            'globalCss' => [
+                'backgroundColor' => '#fafafa',
+                'borderTopColor' => '#0073aa',
+                'borderTopStyle' => 'solid',
+                'borderTopWidth' => '0px',
+                'paddingBottom' => '0px',
+                'paddingTop' => '0px',
+            ],
+            'globalElementStyles' => [
+                'a' => [
+                    'color' => 'yellow',
+                    'textDecoration' => 'none'
+                ],
+            ],
+            'sections' => [
+                [
+                    'name' => 'top',
+                    'style' => [
+                        'backgroundColor' => ''
+                    ],
+                    'wrapperStyle' => [
+                        'backgroundColor' => '#fff',
+                        'borderBottom' => '0px solid #dddddd',
+                        'borderLeft' => '0px solid #dddddd',
+                        'borderRight' => '0px solid #dddddd',
+                        'borderTop' => '0px solid #dddddd',
+                        'marginBottom' => '0px',
+                        'paddingBottom' => '0px',
+                        'paddingLeft' => '0px',
+                        'paddingRight' => '0px',
+                        'paddingTop' => '0px',
+                        'maxWidth' => '600px'
+                    ],
+                    'contents' => [
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
+                    ]
+                ],
+                [
+                    'name' => 'head',
+                    'style' => [
+                        'backgroundColor' => ''
+                    ],
+                    'wrapperStyle' => [
+                        'backgroundColor' => '#fff',
+                        'borderBottom' => '0px solid #dddddd',
+                        'borderLeft' => '0px solid #dddddd',
+                        'borderRight' => '0px solid #dddddd',
+                        'borderTop' => '0px solid #dddddd',
+                        'marginBottom' => '0px',
+                        'paddingBottom' => '0px',
+                        'paddingLeft' => '0px',
+                        'paddingRight' => '0px',
+                        'paddingTop' => '0px',
+                        'maxWidth' => '600px'
+                    ],
+                    'contents' => [
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::footer(),
+                    ]
+                ],
+                [
+                    'name' => 'body',
+                    'style' => [
+                        'backgroundColor' => ''
+                    ],
+                    'wrapperStyle' => [
+                        'backgroundColor' => '#fff',
+                        'borderBottom' => '0px solid #dddddd',
+                        'borderLeft' => '0px solid #dddddd',
+                        'borderRight' => '0px solid #dddddd',
+                        'borderTop' => '0px solid #dddddd',
+                        'marginBottom' => '0px',
+                        'paddingBottom' => '0px',
+                        'paddingLeft' => '0px',
+                        'paddingRight' => '0px',
+                        'paddingTop' => '0px',
+                        'maxWidth' => '600px'
+                    ],
+                    'contents' => [
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image(),
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption(),
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_group(),
+                    ]
+                ],
+                [
+                    'name' => 'footer',
+                    'style' => [
+                        'backgroundColor' => ''
+                    ],
+                    'wrapperStyle' => [
+                        'backgroundColor' => '#fff',
+                        'borderBottom' => '0px solid #dddddd',
+                        'borderLeft' => '0px solid #dddddd',
+                        'borderRight' => '0px solid #dddddd',
+                        'borderTop' => '0px solid #dddddd',
+                        'marginBottom' => '0px',
+                        'paddingBottom' => '0px',
+                        'paddingLeft' => '0px',
+                        'paddingRight' => '0px',
+                        'paddingTop' => '0px',
+                        'maxWidth' => '600px'
+                    ],
+                    'contents' => [
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::social_follow(),
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::text(),
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::video(),
+                    ]
+                ]
+            ]
+        ];
+
+        return $campaign;
+    }
+
     public function edit( $params, $query ) {
         $data = $this->editor->get_setup_data();
 
-        $data['campaign'] = $this->get( $params['id'] );
+        $campaign = $this->testTemplate( $this->get( $params['id'] ) );
+
+        $data['campaign']     = $campaign;
+        $data['customizer']   = $this->editor->get_customizer_data();
 
         return $data;
     }
@@ -65,6 +185,11 @@ class Campaign extends Module {
 
         if ( isset( $campaign['data'] ) ) {
             $campaign = $campaign['data'];
+
+            if ( empty( $campaign['email']['template'] ) ) {
+                $campaign['email']['template'] = function () {};
+            }
+
         } else {
             $campaign = null;
         }

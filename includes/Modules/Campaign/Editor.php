@@ -2,7 +2,20 @@
 
 namespace WeDevs\WeMail\Modules\Campaign;
 
+use WeDevs\WeMail\Framework\Traits\Hooker;
+
 class Editor {
+
+    use Hooker;
+
+    public static $image_dir;
+
+    public function __construct() {
+        self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
+
+        $this->add_filter( 'wemail_customizer_content_type_settings_campaign', 'content_type_settings' );
+        $this->add_filter( 'wemail_customizer_i18n_campaign', 'i18n' );
+    }
 
     public function get_setup_data() {
         return [
@@ -46,9 +59,95 @@ class Editor {
                     'schedule_type'   => 'immediately',
                     'schedule_offset' => 1
                 ]
-
             ]
         ];
+    }
+
+    public function get_customizer_data() {
+        $content_types = [
+            'text',
+            'image',
+            'imageGroup',
+            'imageCaption',
+            'socialFollow',
+            'button',
+            'divider',
+            'video',
+            'footer',
+            'wpPosts',
+            'wpLatestContents',
+        ];
+
+        return wemail()->customizer->get( 'campaign', $content_types );
+    }
+
+    public function content_type_settings( $settings ) {
+        $additional_types = [
+            'wpPosts'          => self::wp_posts(),
+            'wpLatestContents' => self::wp_latest_contents()
+        ];
+
+        $settings = array_merge( $settings, $additional_types );
+
+        return $settings;
+    }
+
+    public static function wp_posts() {
+        return [
+            'type' => 'wpPosts',
+            'image'      => self::$image_dir . '/wp.png',
+            'default'    => [
+                'style'      => [
+                    'backgroundColor' => '#ffffff',
+                    'paddingTop'      => '15px',
+                    'paddingBottom'   => '15px',
+                    'paddingLeft'     => '15px',
+                    'paddingRight'    => '15px',
+                    'borderWidth'     => '0px',
+                    'borderStyle'     => 'solid',
+                    'borderColor'     => '#e5e5e5'
+                ],
+                'twoColumns' => false,
+                'texts'      => [
+                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) ),
+                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) )
+                ],
+
+                'valign'     => 'top',
+            ]
+        ];
+    }
+
+    public static function wp_latest_contents() {
+        return [
+            'image'      => self::$image_dir . '/wp-latest.png',
+            'default'    => [
+                'style'      => [
+                    'backgroundColor' => '#ffffff',
+                    'paddingTop'      => '15px',
+                    'paddingBottom'   => '15px',
+                    'paddingLeft'     => '15px',
+                    'paddingRight'    => '15px',
+                    'borderWidth'     => '0px',
+                    'borderStyle'     => 'solid',
+                    'borderColor'     => '#e5e5e5'
+                ],
+                'twoColumns' => false,
+                'texts'      => [
+                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) ),
+                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) )
+                ],
+
+                'valign'     => 'top',
+            ]
+        ];
+    }
+
+    public function i18n( $i18n ) {
+        return array_merge( $i18n, [
+            'wpPosts'           => __( 'WP Posts', 'wemail' ),
+            'wpLatestContents'  => __( 'Latest Contents', 'wemail' ),
+        ] );
     }
 
 }
