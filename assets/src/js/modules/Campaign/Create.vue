@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1>{{ i18n.createCampaign }}</h1>
 
         <setup namespace="campaignCreate">

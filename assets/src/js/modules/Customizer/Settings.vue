@@ -1,40 +1,73 @@
 <template>
     <div id="customizer-settings">
-        <div class="customizer-settings-header">
-            <div class="button-group">
-                <button
-                    type="button"
-                    :class="['button', currentWindow === 'contentTypes' ? 'active' : '']"
-                    @click="currentWindow = 'contentTypes'"
-                >{{ i18n.content }}</button>
+        <template v-if="currentWindow !== 'content-settings'">
+            <div class="customizer-settings-header">
+                <div class="button-group">
+                    <button
+                        type="button"
+                        :class="['button', currentWindow === 'contentTypes' ? 'active' : '']"
+                        @click="currentWindow = 'contentTypes'"
+                    >{{ i18n.content }}</button>
 
-                <button
-                    type="button"
-                    :class="['button', currentWindow === 'design' ? 'active' : '']"
-                    @click="currentWindow = 'design'"
-                >{{ i18n.design }}</button>
+                    <button
+                        type="button"
+                        :class="['button', currentWindow === 'design' ? 'active' : '']"
+                        @click="currentWindow = 'design'"
+                    >{{ i18n.design }}</button>
+                </div>
             </div>
-        </div>
 
-        <div v-show="currentWindow === 'contentTypes'" id="customizer-content-types">
-            <table>
-                <tbody>
-                    <tr v-for="type in contentTypes.types" data-source="settings" :data-content-type="type">
-                        <td>
-                            <div class="button" :style="getContentTypeBtnStyle(type)">{{ i18n[type] }}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div v-show="currentWindow === 'design'" id="customizer-design">
-            page/header etc
-            <div v-for="section in template.sections">
-                <h4>{{ section.name }}</h4>
-                <pre v-for="content in section.contents">{{ content.type }}</pre>
+            <div v-show="currentWindow === 'contentTypes'" id="customizer-content-types">
+                <table>
+                    <tbody>
+                        <tr v-for="type in contentTypes.types" data-source="settings" :data-content-type="type">
+                            <td>
+                                <div class="button" :style="getContentTypeBtnStyle(type)">{{ i18n[type] }}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
+
+            <div v-show="currentWindow === 'design'" id="customizer-design">
+                page/header etc
+                <div v-for="section in template.sections">
+                    <h4>{{ section.name }}</h4>
+                    <pre v-for="content in section.contents">{{ content.type }}</pre>
+                </div>
+            </div>
+        </template>
+
+        <template v-else>
+            <div class="customizer-settings-header content-settings">
+                <h3>{{ i18n[contentType] }}</h3>
+
+                <div class="button-group">
+                    <button
+                        type="button"
+                        :class="['button', settingsTab === 'content' ? 'active' : '']"
+                        @click="settingsTab = 'content'"
+                    >{{ i18n.content }}</button>
+                    <button
+                        type="button"
+                        :class="['button', settingsTab === 'style' ? 'active' : '']"
+                        @click="settingsTab = 'style'"
+                    >{{ i18n.style }}</button>
+                    <button
+                        type="button"
+                        :class="['button', settingsTab === 'settings' ? 'active' : '']"
+                        @click="settingsTab = 'settings'"
+                    >{{ i18n.settings }}</button>
+                </div>
+
+                <content-settings-text
+                    :i18n="i18n"
+                    :module="module"
+                    :section-index="sectionIndex"
+                    :content-index="contentIndex"
+                ></content-settings-text>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -43,6 +76,11 @@
         props: {
             i18n: {
                 type: Object,
+                required: true
+            },
+
+            context: {
+                type: String,
                 required: true
             },
 
@@ -59,8 +97,16 @@
 
         data() {
             return {
-                currentWindow: 'contentTypes'
+                currentWindow: 'contentTypes',
+                contentType: '',
+                settingsTab: 'content',
+                sectionIndex: 0,
+                contentIndex: 0
             };
+        },
+
+        created() {
+            weMail.event.$on('open-content-settings', this.openContentSettings);
         },
 
         methods: {
@@ -68,6 +114,14 @@
                 return {
                     backgroundImage: `url(${this.contentTypes.settings[type].image})`
                 };
+            },
+
+            openContentSettings(sectionIndex, contentIndex) {
+                this.currentWindow = 'content-settings';
+                this.contentType = this.template.sections[sectionIndex].contents[contentIndex].type;
+                this.settingsTab = 'content';
+                this.sectionIndex = sectionIndex;
+                this.contentIndex = contentIndex;
             }
         }
     };
@@ -86,6 +140,20 @@
         height: 60px;
         text-align: center;
         border-bottom: 1px solid $wp-border-color;
+
+        &.content-settings {
+            height: 106px;
+            padding: 20px 0;
+        }
+
+        * {
+            margin: 0;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            font-weight: 200;
+        }
 
         .button-group {
             margin-top: 15px;

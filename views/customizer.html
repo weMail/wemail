@@ -62,21 +62,44 @@
 <body style="margin: 0 !important; padding: 0 !important;">
     <div id="wemail-customizer" v-cloak>
         <table border="0" cellpadding="0" cellspacing="0" width="100%" :style="template.globalCss">
-            <tr v-for="(section, sectionIndex) in template.sections" class="section">
+            <tr v-for="(section, sectionIndex) in template.sections" :key="section.name" class="section">
                 <td align="center" :style="section.style">
                     <table class="responsive-table section-wrapper" :style="section.wrapperStyle" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody :data-section-index="sectionIndex">
-                            <template v-for="(content, contentIndex) in section.contents">
-                                <component
-                                    :is="'content-' + content.type"
-                                    :content-type-img="getContentTypeImage(content.type)"
-                                    data-source="iframe"
-                                    :data-content-type="content.type"
-                                    :data-section-index="sectionIndex"
-                                    :data-content-index="contentIndex"
-                                    class="content-wrapper"
-                                ></component>
-                            </template>
+                            <tr
+                                v-for="(content, contentIndex) in section.contents"
+                                :key="content.id"
+                                data-source="iframe"
+                                :data-content-type="content.type"
+                                :data-section-index="sectionIndex"
+                                :data-content-index="contentIndex"
+                                class="content-wrapper"
+                            >
+                                <td>
+                                    <component :is="'content-' + content.type"></component>
+
+                                    <div class="control-buttons">
+                                        <p>
+                                            <i class="fa fa-arrows move"></i>
+                                            <i
+                                                :class="['fa fa-arrow-up move-up', (sectionIndex === 0 && contentIndex === 0) ? 'disabled': '']"
+                                                :data-content-type="content.type"
+                                                :data-section-index="sectionIndex"
+                                                :data-content-index="contentIndex"
+                                            ></i>
+                                            <i
+                                                :class="['fa fa-arrow-down move-down', ((sectionIndex === template.sections.length - 1) && (contentIndex === section.contents.length - 1)) ? 'disabled' : '']"
+                                                :data-content-type="content.type"
+                                                :data-section-index="sectionIndex"
+                                                :data-content-index="contentIndex"
+                                            ></i>
+                                            <i class="fa fa-pencil" @click="editContent(sectionIndex, contentIndex)"></i>
+                                            <i class="fa fa-clone"></i>
+                                            <i class="fa fa-trash-o"></i>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -84,42 +107,7 @@
         </table>
     </div>
 
-
     <style>
-        [v-cloak] {
-            display: none;
-        }
-
-        .content-type-image {
-            display: none;
-        }
-
-        .sortable-ghost > td > table.content,
-        .sortable-ghost > td > div.control-button,
-        .sortable-ghost > td > div.button {
-            display: none;
-        }
-
-        .sortable-ghost > td {
-            width: 100%;
-            height: 100px;
-            background-color: yellow;
-        }
-
-        .sortable-drag > td {
-            /*background-color: black !important;*/
-        }
-
-        .sortable-drag > td > table.content,
-        .sortable-drag > td > div.control-button,
-        .sortable-drag > td > div.button {
-            /*display: none !important;*/
-        }
-
-        .sortable-drag > td > img {
-            /*display: inline-block;*/
-        }
-
         tr.section {
             border: 1px dashed #ddd;
         }

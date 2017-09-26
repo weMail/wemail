@@ -166,14 +166,17 @@ weMail.registerComponents = function (components) {
 };
 
 // weMail components for customizers
-weMail.customizerComponents = {};
+weMail.customizerContentComponents = {};
 
-weMail.registerCustomizerComponents = function (context, components) {
-    if (!weMail.customizerComponents.hasOwnProperty(context)) {
-        weMail.customizerComponents[context] = {};
+weMail.setCustomizerContentComponents = function (context, components) {
+    if (!weMail.customizerContentComponents.hasOwnProperty(context)) {
+        weMail.customizerContentComponents[context] = {};
     }
 
     weMail._.forEach(components, (component, name) => {
-        weMail.customizerComponents[context][name] = component;
+        weMail.customizerContentComponents[context][name] = component;
     });
 };
+
+// Global Event Bus
+weMail.event = new weMail.Vue();

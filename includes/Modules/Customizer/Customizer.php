@@ -9,14 +9,44 @@ use WeDevs\WeMail\Modules\Customizer\ContentTypes;
  */
 class Customizer {
 
+    /**
+     * Which customizer we are working on. e.g: campaign, woocommerce, wp etc
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $context = '';
 
+    /**
+     * Content types for customizer
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
     public $content_types = [];
 
-    public function __construct() {}
-
+    /**
+     * Get all the data required for a customizer
+     *
+     * @since 1.0.0
+     *
+     * @param string $context
+     * @param array  $content_types
+     *
+     * @return array
+     */
     public function get( $context, $content_types ) {
         $this->context       = $context;
+
+        /**
+         * Filter for weMail customizer content types
+         *
+         * @since 1.0.0
+         *
+         * @param array $content_types
+         */
         $this->content_types = apply_filters( "wemail_customizer_content_types_{$context}", $content_types );
 
         return [
@@ -28,6 +58,13 @@ class Customizer {
         ];
     }
 
+    /**
+     * Settings for content types
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public function get_type_settings() {
         $types = ContentTypes::get_type_settings( $this->context );
 
@@ -36,6 +73,13 @@ class Customizer {
         }, ARRAY_FILTER_USE_KEY );
     }
 
+    /**
+     * i18n strings for customizer
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public function i18n() {
         $i18n = [
             'text'          => __( 'Text', 'wemail' ),
@@ -48,7 +92,9 @@ class Customizer {
             'video'         => __( 'Video', 'wemail' ),
             'footer'        => __( 'Footer', 'wemail' ),
             'content'       => __( 'Content', 'wemail' ),
-            'design'        => __( 'Design', 'wemail' )
+            'design'        => __( 'Design', 'wemail' ),
+            'style'         => __( 'Style', 'wemail' ),
+            'settings'      => __( 'Settings', 'wemail' ),
         ];
 
         /**

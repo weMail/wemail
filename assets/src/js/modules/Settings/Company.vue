@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded" class="row">
+    <div v-if="isLoaded" class="row">
         <div class="col-sm-6">
             <label>
                 <strong>{{ i18n.companyName }}</strong>

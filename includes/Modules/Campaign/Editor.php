@@ -8,8 +8,22 @@ class Editor {
 
     use Hooker;
 
+    /**
+     * Content type images directory
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public static $image_dir;
 
+    /**
+     * Class contructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function __construct() {
         self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
 
@@ -17,6 +31,13 @@ class Editor {
         $this->add_filter( 'wemail_customizer_i18n_campaign', 'i18n' );
     }
 
+    /**
+     * Setup step route data
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public function get_setup_data() {
         return [
             'i18n' => [
@@ -63,6 +84,13 @@ class Editor {
         ];
     }
 
+    /**
+     * Data for email customizer
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public function get_customizer_data() {
         $content_types = [
             'text',
@@ -81,6 +109,15 @@ class Editor {
         return wemail()->customizer->get( 'campaign', $content_types );
     }
 
+    /**
+     * Content types for email campaign
+     *
+     * @since 1.0.0
+     *
+     * @param array $settings
+     *
+     * @return array
+     */
     public function content_type_settings( $settings ) {
         $additional_types = [
             'wpPosts'          => self::wp_posts(),
@@ -92,6 +129,13 @@ class Editor {
         return $settings;
     }
 
+    /**
+     * WP Posts type content
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function wp_posts() {
         return [
             'type' => 'wpPosts',
@@ -118,6 +162,13 @@ class Editor {
         ];
     }
 
+    /**
+     * WP Latest Contents type content
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function wp_latest_contents() {
         return [
             'image'      => self::$image_dir . '/wp-latest.png',
@@ -143,6 +194,15 @@ class Editor {
         ];
     }
 
+    /**
+     * i18n strings for email customizer
+     *
+     * @since 1.0.0
+     *
+     * @param array $i18n
+     *
+     * @return array
+     */
     public function i18n( $i18n ) {
         return array_merge( $i18n, [
             'wpPosts'           => __( 'WP Posts', 'wemail' ),

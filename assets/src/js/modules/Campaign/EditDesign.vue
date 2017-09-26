@@ -1,12 +1,12 @@
 <template>
     <customizer
         context="campaign"
-        :iframe-title="iframeTitle"
+        :customizer="customizer"
         :template="campaign.email.template"
-        :customizer="customizer">
-            <div slot="header">
-                <h1>{{ i18n.editCampaign }}</h1>
-            </div>
+    >
+        <div slot="header">
+            <h1>{{ i18n.editCampaign }}</h1>
+        </div>
     </customizer>
 </template>
 
@@ -24,14 +24,8 @@
             ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'campaign', 'customizer'])
         },
 
-        data() {
-            return {
-                iframeTitle: 'Email Customizer'
-            };
-        },
-
         created() {
-            weMail.registerCustomizerComponents('campaign', {
+            weMail.setCustomizerContentComponents('campaign', {
                 contentWpPosts,
                 contentWpLatestContents
             });

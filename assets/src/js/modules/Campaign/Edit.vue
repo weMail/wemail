@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <router-view></router-view>
         <progress-bar :i18n="i18n"></progress-bar>
     </div>
@@ -15,15 +15,6 @@
 
         components: {
             ProgressBar
-        },
-
-        data() {
-            return {
-                name: '',
-                type: 'standard',
-                selectedLists: [],
-                selectedSegments: []
-            };
         },
 
         computed: {

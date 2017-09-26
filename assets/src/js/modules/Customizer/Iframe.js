@@ -1,16 +1,28 @@
 export default function (customizer) {
     return {
+        store: weMail.store,
+
         // context = campaign, woocommerce, wp etc module that has template builder
-        components: weMail.customizerComponents[customizer.context],
+        components: weMail.customizerContentComponents[customizer.context],
 
         data: {
-            template: customizer.template,
             source: 'iframe',
             contentType: '',
-            oldSection: 0,
-            oldIndex: 0,
-            newSection: 0,
-            newIndex: 0
+            oldSectionIndex: 0,
+            oldContentIndex: 0,
+            newSectionIndex: 0,
+            newContentIndex: 0
+        },
+
+        computed: {
+            template() {
+                return customizer.template;
+            }
+        },
+
+        created() {
+            weMail.event.$on('customizer-content-drag-start', this.onDragStart);
+            weMail.event.$on('customizer-content-drag-end', this.onDragEnd);
         },
 
         mounted() {
@@ -21,13 +33,23 @@ export default function (customizer) {
             weMail.Sortable.create(contentTypes, {
                 group: {
                     name: 'sortable-group',
-                    pull: 'clone'
+                    pull: 'clone',
+                    put: false
                 },
                 sort: false,
-                scrollSensitivity: 300
+                scrollSensitivity: 300,
+
+                onStart(e) {
+                    weMail.event.$emit('customizer-content-drag-start', e);
+                },
+
+                onEnd(e) {
+                    weMail.event.$emit('customizer-content-drag-end', e);
+                }
             });
 
             this.bindSortable();
+            this.bindMoveButtons();
         },
 
         watch: {
@@ -69,9 +91,29 @@ export default function (customizer) {
                         group: 'sortable-group',
                         scrollSensitivity: 300,
                         handle: '.move',
+
+                        setData(dataTransfer, dragEl) {
+                            // Firefox requires this line. Without this line element disappears
+                            // after clicking the move icon
+                            dataTransfer.setData('text/html', dragEl.innerHTML);
+
+                            const img = new Image();
+                            img.src = vm.getContentTypeImage(dragEl.dataset.contentType);
+                            dataTransfer.setDragImage(img, 0, 0);
+                        },
+
+                        onStart(e) {
+                            weMail.event.$emit('customizer-content-drag-start', e);
+                        },
+
+                        onEnd(e) {
+                            weMail.event.$emit('customizer-content-drag-end', e);
+                        },
+
                         onAdd(e) {
                             vm.updateContent(e);
                         },
+
                         onUpdate(e) {
                             vm.updateContent(e);
                         }
@@ -79,13 +121,89 @@ export default function (customizer) {
                 });
             },
 
+            onDragStart(e) {
+                $('#wemail-customizer-iframe').contents().find('#wemail-customizer').addClass('content-is-dragging');
+            },
+
+            onDragEnd(e) {
+                $('#wemail-customizer-iframe').contents().find('#wemail-customizer').removeClass('content-is-dragging');
+            },
+
+            bindMoveButtons() {
+                const vm = this;
+
+                $('#wemail-customizer-iframe')
+                    .contents()
+                    .find('#wemail-customizer')
+                    .on('click', '.move-up', function (e) {
+                        vm.moveUp(e, this);
+                    });
+
+                $('#wemail-customizer-iframe')
+                    .contents()
+                    .find('#wemail-customizer')
+                    .on('click', '.move-down', function (e) {
+                        vm.moveDown(e, this);
+                    });
+            },
+
+            moveUp(e, el) {
+                this.source = 'iframe';
+                this.contentType = el.dataset.contentType;
+                this.oldSectionIndex = parseInt(el.dataset.sectionIndex, 10);
+                this.oldContentIndex = parseInt(el.dataset.contentIndex, 10);
+                this.newSectionIndex = 0;
+                this.newContentIndex = 0;
+
+                if (this.oldSectionIndex === 0 && this.oldContentIndex === 0) {
+                    return;
+
+                } else if (this.oldContentIndex !== 0) {
+                    this.newSectionIndex = this.oldSectionIndex;
+                    this.newContentIndex = this.oldContentIndex - 1;
+                } else {
+                    this.newSectionIndex = this.oldSectionIndex - 1;
+                    this.newContentIndex = customizer.template.sections[this.newSectionIndex].contents.length;
+                }
+
+                this.moveContent();
+
+                return;
+            },
+
+            moveDown(e, el) {
+                this.source = 'iframe';
+                this.contentType = el.dataset.contentType;
+                this.oldSectionIndex = parseInt(el.dataset.sectionIndex, 10);
+                this.oldContentIndex = parseInt(el.dataset.contentIndex, 10);
+                this.newSectionIndex = 0;
+                this.newContentIndex = 0;
+
+                const itemsInOldSection = customizer.template.sections[this.oldSectionIndex].contents.length;
+
+                if ((this.oldSectionIndex === this.template.sections.length - 1) && (this.oldContentIndex === itemsInOldSection - 1)) {
+                    return;
+
+                } else if (this.oldContentIndex !== itemsInOldSection - 1) {
+                    this.newSectionIndex = this.oldSectionIndex;
+                    this.newContentIndex = this.oldContentIndex + 1;
+                } else {
+                    this.newSectionIndex = this.oldSectionIndex + 1;
+                    this.newContentIndex = 0;
+                }
+
+                this.moveContent();
+
+                return;
+            },
+
             updateContent(e) {
                 this.source = e.item.dataset.source;
                 this.contentType = e.item.dataset.contentType;
-                this.oldSection = e.item.dataset.sectionIndex;
-                this.oldIndex = e.oldIndex;
-                this.newSection = e.item.parentElement.dataset.sectionIndex;
-                this.newIndex = e.newIndex;
+                this.oldSectionIndex = parseInt(e.item.dataset.sectionIndex, 10);
+                this.oldContentIndex = parseInt(e.oldIndex, 10);
+                this.newSectionIndex = parseInt(e.item.parentElement.dataset.sectionIndex, 10);
+                this.newContentIndex = parseInt(e.newIndex, 10);
 
                 if (this.source === 'iframe') {
                     this.moveContent();
@@ -95,18 +213,16 @@ export default function (customizer) {
             },
 
             moveContent() {
-                const content = customizer
-                    .template
-                    .sections[this.oldSection]
+                const content = customizer.template
+                    .sections[this.oldSectionIndex]
                     .contents.splice(
-                        this.oldIndex, 1
+                        this.oldContentIndex, 1
                     );
 
-                customizer
-                    .template
-                    .sections[this.newSection]
+                customizer.template
+                    .sections[this.newSectionIndex]
                     .contents.splice(
-                        this.newIndex, 0, content[0]
+                        this.newContentIndex, 0, content[0]
                     );
             },
 
@@ -117,12 +233,15 @@ export default function (customizer) {
 
                 delete content.image;
 
-                customizer
-                    .template
-                    .sections[this.newSection]
+                customizer.template
+                    .sections[this.newSectionIndex]
                     .contents.splice(
-                        this.newIndex, 0, content
+                        this.newContentIndex, 0, content
                     );
+            },
+
+            editContent(sectionIndex, contentIndex) {
+                weMail.event.$emit('open-content-settings', sectionIndex, contentIndex);
             }
         }
     };

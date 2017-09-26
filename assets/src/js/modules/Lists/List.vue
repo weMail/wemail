@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1> List:
             <span>{{ list.name }}</span>
         </h1>

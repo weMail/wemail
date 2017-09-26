@@ -9,6 +9,7 @@
 
             <settings
                 :i18n="customizer.i18n"
+                :context="context"
                 :content-types="customizer.contentTypes"
                 :template="template"
             ></settings>
@@ -40,17 +41,12 @@
                 required: true
             },
 
-            iframeTitle: {
-                type: String,
-                default: ''
-            },
-
-            template: {
+            customizer: {
                 type: Object,
                 required: true
             },
 
-            customizer: {
+            template: {
                 type: Object,
                 required: true
             }
@@ -65,7 +61,7 @@
         mounted() {
             const customizer = this;
 
-            weMail.registerCustomizerComponents(customizer.context, {
+            weMail.setCustomizerContentComponents(customizer.context, {
                 contentText,
                 contentImage,
                 contentImageGroup,

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1>
             Subscribers
             <a href="#" class="page-title-action">Add New</a>

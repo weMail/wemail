@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1> Subscriber:
             <span v-if="subscriber.first_name">{{ subscriber.first_name }} {{ subscriber.last_name }}</span>
             <span v-else>{{ subscriber.email }}</span>

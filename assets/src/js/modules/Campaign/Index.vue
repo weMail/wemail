@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1>
             {{ i18n.campaigns }}
             <router-link :to="{name: 'campaignCreate'}" class="page-title-action">Add New</router-link>

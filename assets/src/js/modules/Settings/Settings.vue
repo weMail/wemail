@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1>{{ i18n.settings }}</h1>
 
         <div class="wemail-settings d-flex">
@@ -51,7 +51,7 @@
         },
 
         methods: {
-            afterFetchingInitialData() {
+            afterLoaded() {
                 this.setSettingsTitle();
             },
 
@@ -72,7 +72,6 @@
                 api[currentRoute.replace('settings', '')]()
                     .save(vm.$store.state[currentRoute].settings)
                     .always((response) => {
-                        console.log(response);
                         if (response.msg) {
                             vm.alert({
                                 type: 'error',

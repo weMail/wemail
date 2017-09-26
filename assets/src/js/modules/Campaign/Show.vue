@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoaded">
+    <div v-if="isLoaded">
         <h1>{{ i18n.campaign }}: {{ campaign.name }}</h1>
         <p>
             <router-link :to="{name: 'campaignEditSetup', params: {id: $route.params.id}}">Edit</router-link>
