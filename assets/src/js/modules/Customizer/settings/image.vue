@@ -1,5 +1,5 @@
 <template>
-    <div>text settings</div>
+    <div>image settings</div>
 </template>
 
 <script>

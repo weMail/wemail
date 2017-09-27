@@ -95,6 +95,7 @@ class Customizer {
             'design'        => __( 'Design', 'wemail' ),
             'style'         => __( 'Style', 'wemail' ),
             'settings'      => __( 'Settings', 'wemail' ),
+            'saveAndClose'  => __( 'Save & close', 'wemail' ),
         ];
 
         /**

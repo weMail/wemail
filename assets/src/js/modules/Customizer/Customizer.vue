@@ -8,9 +8,8 @@
             </div>
 
             <settings
-                :i18n="customizer.i18n"
                 :context="context"
-                :content-types="customizer.contentTypes"
+                :customizer="customizer"
                 :template="template"
             ></settings>
         </div>
@@ -29,6 +28,15 @@
     import contentDivider from './content/divider.vue';
     import contentVideo from './content/video.vue';
     import contentFooter from './content/footer.vue';
+    import settingsText from './settings/text.vue';
+    import settingsImage from './settings/image.vue';
+    import settingsImageGroup from './settings/imageGroup.vue';
+    import settingsImageCaption from './settings/imageCaption.vue';
+    import settingsSocialFollow from './settings/socialFollow.vue';
+    import settingsButton from './settings/button.vue';
+    import settingsDivider from './settings/divider.vue';
+    import settingsVideo from './settings/video.vue';
+    import settingsFooter from './settings/footer.vue';
 
     export default {
         components: {
@@ -56,6 +64,18 @@
             iframeSource() {
                 return weMail.customizerIframe;
             }
+        },
+
+        created() {
+            weMail.Vue.component('customizer-content-settings-text', settingsText);
+            weMail.Vue.component('customizer-content-settings-image', settingsImage);
+            weMail.Vue.component('customizer-content-settings-image-group', settingsImageGroup);
+            weMail.Vue.component('customizer-content-settings-image-caption', settingsImageCaption);
+            weMail.Vue.component('customizer-content-settings-social-follow', settingsSocialFollow);
+            weMail.Vue.component('customizer-content-settings-button', settingsButton);
+            weMail.Vue.component('customizer-content-settings-divider', settingsDivider);
+            weMail.Vue.component('customizer-content-settings-video', settingsVideo);
+            weMail.Vue.component('customizer-content-settings-footer', settingsFooter);
         },
 
         mounted() {

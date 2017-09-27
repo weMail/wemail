@@ -14,6 +14,8 @@
     import Customizer from 'js/modules/Customizer/Customizer.vue';
     import contentWpPosts from './customizer/content/WpPosts.vue';
     import contentWpLatestContents from './customizer/content/WpLatestContents.vue';
+    import settingsWpPosts from './customizer/settings/WpPosts.vue';
+    import settingsWpLatestContents from './customizer/settings/WpLatestContents.vue';
 
     export default {
         components: {
@@ -29,6 +31,9 @@
                 contentWpPosts,
                 contentWpLatestContents
             });
+
+            weMail.Vue.component('customizer-content-settings-wp-posts', settingsWpPosts);
+            weMail.Vue.component('customizer-content-settings-wp-latest-contents', settingsWpLatestContents);
         }
     };
 </script>

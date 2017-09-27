@@ -233,6 +233,16 @@ export default function (customizer) {
 
                 delete content.image;
 
+                let totalContents = 0;
+
+                customizer.template.sections.forEach((section) => {
+                    section.contents.forEach(() => {
+                        ++totalContents;
+                    });
+                });
+
+                content.id = totalContents + 1;
+
                 customizer.template
                     .sections[this.newSectionIndex]
                     .contents.splice(

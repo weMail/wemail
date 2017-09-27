@@ -1,5 +1,8 @@
 <template>
-    <div>text settings</div>
+    <div>
+        <p>WP Posts settings</p>
+        <pre>{{ currentTab }}</pre>
+    </div>
 </template>
 
 <script>

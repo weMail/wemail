@@ -1,5 +1,5 @@
 <template>
-    <div>text settings</div>
+    <div>divider settings</div>
 </template>
 
 <script>

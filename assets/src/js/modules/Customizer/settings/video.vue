@@ -1,5 +1,5 @@
 <template>
-    <div>text settings</div>
+    <div>video settings</div>
 </template>
 
 <script>

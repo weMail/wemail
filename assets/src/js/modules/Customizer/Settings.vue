@@ -1,7 +1,7 @@
 <template>
     <div id="customizer-settings">
-        <template v-if="currentWindow !== 'content-settings'">
-            <div class="customizer-settings-header">
+        <template>
+            <div v-show="currentWindow !== 'content-settings'" class="customizer-settings-header">
                 <div class="button-group">
                     <button
                         type="button"
@@ -38,8 +38,8 @@
             </div>
         </template>
 
-        <template v-else>
-            <div class="customizer-settings-header content-settings">
+        <template>
+            <div v-if="currentWindow === 'content-settings'" class="customizer-settings-header content-settings">
                 <h3>{{ i18n[contentType] }}</h3>
 
                 <div class="button-group">
@@ -59,14 +59,21 @@
                         @click="settingsTab = 'settings'"
                     >{{ i18n.settings }}</button>
                 </div>
+            </div>
 
-                <content-settings-text
+            <div v-if="currentWindow === 'content-settings'" class="content-settings-controls">
+                <component
+                    :is="getSettingsComponentName()"
+                    :current-tab="settingsTab"
                     :i18n="i18n"
-                    :module="module"
                     :section-index="sectionIndex"
                     :content-index="contentIndex"
-                ></content-settings-text>
+                ></component>
             </div>
+
+            <button v-if="currentWindow === 'content-settings'" type="button" class="button button-link content-settings-bottom-btns" @click="saveAndClose">
+                {{ i18n.saveAndClose }}
+            </button>
         </template>
     </div>
 </template>
@@ -74,17 +81,12 @@
 <script>
     export default {
         props: {
-            i18n: {
-                type: Object,
-                required: true
-            },
-
             context: {
                 type: String,
                 required: true
             },
 
-            contentTypes: {
+            customizer: {
                 type: Object,
                 required: true
             },
@@ -105,6 +107,16 @@
             };
         },
 
+        computed: {
+            i18n() {
+                return this.customizer.i18n;
+            },
+
+            contentTypes() {
+                return this.customizer.contentTypes;
+            }
+        },
+
         created() {
             weMail.event.$on('open-content-settings', this.openContentSettings);
         },
@@ -122,6 +134,16 @@
                 this.settingsTab = 'content';
                 this.sectionIndex = sectionIndex;
                 this.contentIndex = contentIndex;
+            },
+
+            getSettingsComponentName() {
+                const contentType = weMail._.kebabCase(this.contentType);
+
+                return `customizer-content-settings-${contentType}`;
+            },
+
+            saveAndClose() {
+                this.currentWindow = 'contentTypes';
             }
         }
     };
@@ -129,6 +151,7 @@
 
 <style lang="scss">
     #customizer-settings {
+        position: relative;
         min-width: 350px;
         max-width: 350px;
         overflow-x: hidden;
@@ -199,6 +222,30 @@
                     }
                 }
             }
+        }
+    }
+
+    .content-settings-controls {
+        position: absolute;
+        top: 106px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 140px);
+    }
+
+    .content-settings-bottom-btns.button.button-link {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        padding: 4px 0;
+        color: #fff;
+        text-align: center;
+        background-color: $wp-blue;
+
+        &:hover {
+            background-color: $wp-blue-alt;
         }
     }
 </style>

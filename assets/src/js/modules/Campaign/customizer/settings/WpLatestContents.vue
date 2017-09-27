@@ -1,5 +1,5 @@
 <template>
-    <div>text settings</div>
+    <div>WP latest contents settings</div>
 </template>
 
 <script>

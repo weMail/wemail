@@ -1,3 +1,9 @@
+// Vue Store
+weMail.store = new weMail.Vuex.Store({});
+
+// Global Event Bus
+weMail.event = new weMail.Vue();
+
 // jQuery ajax wrapper
 function Ajax(url, method, headers, data) {
     return $.ajax({
@@ -151,9 +157,6 @@ weMail.getChildRoutes = function (parent) {
     return weMail.childRoutes[parent] || [];
 };
 
-// Vue Store
-weMail.store = new weMail.Vuex.Store({});
-
 // weMail components
 weMail.components = {};
 
@@ -165,7 +168,7 @@ weMail.registerComponents = function (components) {
     });
 };
 
-// weMail components for customizers
+// weMail content type components for customizers
 weMail.customizerContentComponents = {};
 
 weMail.setCustomizerContentComponents = function (context, components) {
@@ -177,6 +180,3 @@ weMail.setCustomizerContentComponents = function (context, components) {
         weMail.customizerContentComponents[context][name] = component;
     });
 };
-
-// Global Event Bus
-weMail.event = new weMail.Vue();

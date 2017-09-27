@@ -1,5 +1,5 @@
 <template>
-    <div>text settings</div>
+    <div>social follow settings</div>
 </template>
 
 <script>
