@@ -34,6 +34,12 @@
 
             weMail.Vue.component('customizer-content-settings-wp-posts', settingsWpPosts);
             weMail.Vue.component('customizer-content-settings-wp-latest-contents', settingsWpLatestContents);
+
+            $('body').addClass('wemail-fixed-body');
+        },
+
+        destroyed() {
+            $('body').removeClass('wemail-fixed-body');
         }
     };
 </script>

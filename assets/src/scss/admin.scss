@@ -32,13 +32,16 @@
     }
 
     @import "../vendor/bootstrap/bootstrap.scss";
-    @import "_multiselect.scss";
-    @import "_type.scss";
-    @import "_forms.scss";
-    @import "_buttons.scss";
-    @import "_tables.scss";
-    @import "_utilities.scss";
+    @import "multiselect";
+    @import "type";
+    @import "forms";
+    @import "buttons";
+    @import "tables";
+    @import "utilities";
 }
+
+@import "text-editor";
+@import "fixed-body";
 
 // SweetAlert2
 @import "~sweetalert2/src/sweetalert2.scss";

@@ -19,11 +19,15 @@ class Scripts {
     }
 
     private function register_styles() {
-
+        wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), ['wp-color-picker'], WEMAIL_VERSION );
     }
 
     private function register_scripts() {
-        wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/vendor.js', ['jquery'], $this->version, true );
+        wp_register_script( 'wemail-tiny-mce', site_url( '/wp-includes/js/tinymce/tinymce.min.js' ), [] );
+        wp_register_script( 'wemail-tiny-mce-code', WEMAIL_ASSETS . '/vendor/tinymce/plugins/code/plugin.min.js', [ 'wemail-tiny-mce' ], WEMAIL_VERSION, true );
+        wp_register_script( 'wemail-tiny-mce-hr', WEMAIL_ASSETS . '/vendor/tinymce/plugins/hr/plugin.min.js', [ 'wemail-tiny-mce-code' ], WEMAIL_VERSION, true );
+
+        wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/vendor.js', ['jquery', 'wemail-tiny-mce-hr', 'wp-color-picker'], $this->version, true );
         wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['wemail-vendor'], $this->version, true );
         wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker'] , WEMAIL_VERSION, true );
     }

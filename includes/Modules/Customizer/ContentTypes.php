@@ -40,6 +40,7 @@ class ContentTypes {
             'default'    => [
                 'style'      => [
                     'backgroundColor' => '#ffffff',
+                    'color'           => '',
                     'paddingTop'      => '15px',
                     'paddingBottom'   => '15px',
                     'paddingLeft'     => '15px',
@@ -48,14 +49,15 @@ class ContentTypes {
                     'borderStyle'     => 'solid',
                     'borderColor'     => '#e5e5e5'
                 ],
-                'twoColumns' => false,
+                'twoColumns' => true,
                 'texts'      => [
-                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) ),
-                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) )
+                    sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
+                    sprintf( '<p>%s</p>', __( 'This is a text block 2. You can use it to add text to your template.', 'wemail' ) )
                 ],
 
                 'valign'     => 'top',
-            ]
+            ],
+            'noSettingsTab' => false
         ];
     }
 

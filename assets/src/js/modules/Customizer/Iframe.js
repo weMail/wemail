@@ -229,9 +229,7 @@ export default function (customizer) {
             addContent(e) {
                 $(e.item).remove();
                 const contentType = customizer.customizer.contentTypes.settings[this.contentType];
-                const content = $.extend(true, {}, contentType);
-
-                delete content.image;
+                const contentSettings = $.extend(true, {}, contentType);
 
                 let totalContents = 0;
 
@@ -241,7 +239,12 @@ export default function (customizer) {
                     });
                 });
 
-                content.id = totalContents + 1;
+                let content = {
+                    id: totalContents + 1,
+                    type: contentSettings.type
+                };
+
+                content = $.extend(true, content, contentSettings.default);
 
                 customizer.template
                     .sections[this.newSectionIndex]

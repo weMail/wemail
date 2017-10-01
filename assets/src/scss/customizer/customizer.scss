@@ -61,7 +61,7 @@ $fa-font-path: "~font-awesome/fonts";
                         position: absolute;
                         top: 50%;
                         left: 50%;
-                        margin: -14px 0 0 -61px;
+                        margin: -14px 0 0 -89px;
                         font-size: 12px;
                         line-height: 1;
                         color: #eee;
@@ -98,5 +98,16 @@ $fa-font-path: "~font-awesome/fonts";
                 }
             }
         }
+    }
+}
+
+// Typography
+@import "reboot";
+@import "type";
+
+.wemail-content-text {
+
+    *:last-child {
+        margin-bottom: 0;
     }
 }

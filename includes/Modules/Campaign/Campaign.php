@@ -123,18 +123,24 @@ class Campaign extends Module {
 
     // this will remove after finishing the templating system
     public function testTemplate( $campaign ) {
+        $text_content = \WeDevs\WeMail\Modules\Customizer\ContentTypes::text();
+        $text_content = array_merge( [ 'id' => 1, 'type' => 'text' ], $text_content['default'] );
+
         $template = [
             'globalCss' => [
                 'backgroundColor' => '#fafafa',
                 'borderTopColor' => '#0073aa',
                 'borderTopStyle' => 'solid',
                 'borderTopWidth' => '0px',
-                'paddingBottom' => '0px',
                 'paddingTop' => '0px',
+                'paddingBottom' => '0px',
+                'fontFamily' => 'arial',
+                'fontSize' => '14px',
+                'color' => '#444',
             ],
             'globalElementStyles' => [
                 'a' => [
-                    'color' => 'yellow',
+                    'color' => '#0073aa',
                     'textDecoration' => 'none'
                 ],
             ],
@@ -158,6 +164,7 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
+                        $text_content,
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                     ]
@@ -228,7 +235,6 @@ class Campaign extends Module {
                     ],
                     'contents' => [
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::social_follow(),
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::text(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::video(),
                     ]
                 ]

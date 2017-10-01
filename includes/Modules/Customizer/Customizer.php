@@ -54,7 +54,8 @@ class Customizer {
             'contentTypes' => [
                 'types'    => $this->content_types,
                 'settings' => $this->get_type_settings()
-            ]
+            ],
+            'shortcodes'   => wemail()->shortcode->get()
         ];
     }
 
@@ -82,20 +83,31 @@ class Customizer {
      */
     public function i18n() {
         $i18n = [
-            'text'          => __( 'Text', 'wemail' ),
-            'image'         => __( 'Image', 'wemail' ),
-            'imageGroup'    => __( 'Image Group', 'wemail' ),
-            'imageCaption'  => __( 'Image Caption', 'wemail' ),
-            'socialFollow'  => __( 'Social Follow', 'wemail' ),
-            'button'        => __( 'Button', 'wemail' ),
-            'divider'       => __( 'Divider', 'wemail' ),
-            'video'         => __( 'Video', 'wemail' ),
-            'footer'        => __( 'Footer', 'wemail' ),
-            'content'       => __( 'Content', 'wemail' ),
-            'design'        => __( 'Design', 'wemail' ),
-            'style'         => __( 'Style', 'wemail' ),
-            'settings'      => __( 'Settings', 'wemail' ),
-            'saveAndClose'  => __( 'Save & close', 'wemail' ),
+            'text'                => __( 'Text', 'wemail' ),
+            'image'               => __( 'Image', 'wemail' ),
+            'imageGroup'          => __( 'Image Group', 'wemail' ),
+            'imageCaption'        => __( 'Image Caption', 'wemail' ),
+            'socialFollow'        => __( 'Social Follow', 'wemail' ),
+            'button'              => __( 'Button', 'wemail' ),
+            'divider'             => __( 'Divider', 'wemail' ),
+            'video'               => __( 'Video', 'wemail' ),
+            'footer'              => __( 'Footer', 'wemail' ),
+            'content'             => __( 'Content', 'wemail' ),
+            'design'              => __( 'Design', 'wemail' ),
+            'style'               => __( 'Style', 'wemail' ),
+            'settings'            => __( 'Settings', 'wemail' ),
+            'saveAndClose'        => __( 'Save & close', 'wemail' ),
+            'backgroundColor'     => __( 'Background Color', 'wemail' ),
+            'fontColor'           => __( 'Font Color', 'wemail' ),
+            'paddingTopBottom'    => __( 'Padding Top-Bottom', 'wemail' ),
+            'paddingLeftRight'    => __( 'Padding Left-Right', 'wemail' ),
+            'border'              => __( 'Border', 'wemail' ),
+            'numberOfColumns'     => __( 'Number of columns', 'wemail' ),
+            'column1'             => __( 'Column 1', 'wemail' ),
+            'column2'             => __( 'Column 2', 'wemail' ),
+            'twoColumns'          => __( 'Two columns', 'wemail' ),
+            'selectAnImage'       => __( 'Select an image', 'wemail' ),
+            'pleaseSelectAnImage' => __( 'Please select an image', 'wemail' ),
         ];
 
         /**

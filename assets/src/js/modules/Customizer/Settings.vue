@@ -5,13 +5,13 @@
                 <div class="button-group">
                     <button
                         type="button"
-                        :class="['button', currentWindow === 'contentTypes' ? 'active' : '']"
+                        :class="['button', currentWindow === 'contentTypes' ? 'active button-primary' : '']"
                         @click="currentWindow = 'contentTypes'"
                     >{{ i18n.content }}</button>
 
                     <button
                         type="button"
-                        :class="['button', currentWindow === 'design' ? 'active' : '']"
+                        :class="['button', currentWindow === 'design' ? 'active button-primary' : '']"
                         @click="currentWindow = 'design'"
                     >{{ i18n.design }}</button>
                 </div>
@@ -30,6 +30,7 @@
             </div>
 
             <div v-show="currentWindow === 'design'" id="customizer-design">
+                <label>Global font size <input type="text" v-model="template.globalCss.fontSize"></label>
                 page/header etc
                 <div v-for="section in template.sections">
                     <h4>{{ section.name }}</h4>
@@ -39,23 +40,27 @@
         </template>
 
         <template>
-            <div v-if="currentWindow === 'content-settings'" class="customizer-settings-header content-settings">
-                <h3>{{ i18n[contentType] }}</h3>
+            <div
+                v-if="currentWindow === 'content-settings'"
+                :class="headerClass"
+            >
+                <h3>{{ i18n[content.type] }}</h3>
 
                 <div class="button-group">
                     <button
                         type="button"
-                        :class="['button', settingsTab === 'content' ? 'active' : '']"
+                        :class="['button', settingsTab === 'content' ? 'active button-primary' : '']"
                         @click="settingsTab = 'content'"
                     >{{ i18n.content }}</button>
                     <button
                         type="button"
-                        :class="['button', settingsTab === 'style' ? 'active' : '']"
+                        :class="['button', settingsTab === 'style' ? 'active button-primary' : '']"
                         @click="settingsTab = 'style'"
                     >{{ i18n.style }}</button>
                     <button
+                        v-if="!noSettingsTab"
                         type="button"
-                        :class="['button', settingsTab === 'settings' ? 'active' : '']"
+                        :class="['button', settingsTab === 'settings' ? 'active button-primary' : '']"
                         @click="settingsTab = 'settings'"
                     >{{ i18n.settings }}</button>
                 </div>
@@ -64,10 +69,12 @@
             <div v-if="currentWindow === 'content-settings'" class="content-settings-controls">
                 <component
                     :is="getSettingsComponentName()"
-                    :current-tab="settingsTab"
+                    :settings-tab="settingsTab"
                     :i18n="i18n"
                     :section-index="sectionIndex"
                     :content-index="contentIndex"
+                    :content="content"
+                    :customizer="customizer"
                 ></component>
             </div>
 
@@ -100,7 +107,7 @@
         data() {
             return {
                 currentWindow: 'contentTypes',
-                contentType: '',
+                content: {},
                 settingsTab: 'content',
                 sectionIndex: 0,
                 contentIndex: 0
@@ -114,6 +121,21 @@
 
             contentTypes() {
                 return this.customizer.contentTypes;
+            },
+
+            noSettingsTab() {
+                const noSettingsTab = this.customizer.contentTypes.settings[this.content.type].noSettingsTab;
+                return !(noSettingsTab === undefined || noSettingsTab);
+            },
+
+            headerClass() {
+                const classNames = ['customizer-settings-header', 'content-settings'];
+
+                if (this.noSettingsTab) {
+                    classNames.push('no-settings-tab');
+                }
+
+                return classNames;
             }
         },
 
@@ -129,17 +151,15 @@
             },
 
             openContentSettings(sectionIndex, contentIndex) {
-                this.currentWindow = 'content-settings';
-                this.contentType = this.template.sections[sectionIndex].contents[contentIndex].type;
+                this.content = this.template.sections[sectionIndex].contents[contentIndex];
                 this.settingsTab = 'content';
                 this.sectionIndex = sectionIndex;
                 this.contentIndex = contentIndex;
+                this.currentWindow = 'content-settings';
             },
 
             getSettingsComponentName() {
-                const contentType = weMail._.kebabCase(this.contentType);
-
-                return `customizer-content-settings-${contentType}`;
+                return `customizer-content-settings-${weMail._.kebabCase(this.content.type)}`;
             },
 
             saveAndClose() {
@@ -183,6 +203,16 @@
 
             .button {
                 padding: 0 25px;
+            }
+        }
+
+        &.no-settings-tab {
+
+            .button-group {
+
+                .button {
+                    padding: 0 40px;
+                }
             }
         }
     }
@@ -231,6 +261,7 @@
         left: 0;
         width: 100%;
         height: calc(100% - 140px);
+        overflow-y: auto;
     }
 
     .content-settings-bottom-btns.button.button-link {
@@ -246,6 +277,88 @@
 
         &:hover {
             background-color: $wp-blue-alt;
+        }
+    }
+
+    .content-settings-container {
+
+        .control-property {
+
+            &:first-child .property-title {
+                border-top: 0;
+            }
+
+            .wp-color-result {
+                box-sizing: content-box;
+                margin: 0;
+            }
+        }
+
+        .property-title {
+            padding: 10px 15px;
+            margin: 0;
+            background-color: $wp-body-bg;
+            border-top: 1px solid $wp-border-color;
+            border-bottom: 1px solid $wp-border-color;
+        }
+
+        .reset-property {
+
+            a {
+                font-weight: 400;
+                text-decoration: none;
+            }
+        }
+
+        .property-value {
+            float: right;
+        }
+
+        .property {
+            padding: 10px 15px;
+            overflow-x: auto;
+        }
+    }
+
+    .settings-tab-list.list-inline {
+        margin: 0;
+        border-bottom: 1px solid $wp-border-color;
+
+        .list-inline-item {
+            padding: 0;
+            margin: 0;
+
+            a {
+                display: block;
+                padding: 8px;
+                margin-bottom: -1px;
+                font-weight: 700;
+                color: $wp-black;
+                text-decoration: none;
+                border-bottom: 1px solid $wp-border-color;
+                opacity: 0.6;
+
+                @include transition();
+
+                &:hover {
+                    border-bottom-color: $wp-black;
+                    opacity: 1;
+                }
+
+                &:focus,
+                &:active {
+                    border-bottom-color: $wp-blue;
+                    outline: 0;
+                    box-shadow: none;
+                    opacity: 1;
+                }
+            }
+
+            &.active a {
+                color: $wp-blue;
+                border-bottom-color: $wp-blue;
+                opacity: 1;
+            }
         }
     }
 </style>

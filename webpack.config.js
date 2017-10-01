@@ -132,7 +132,7 @@ module.exports = {
         wemail: jsSrc('wemail'),
         common: jsSrc('common'),
         admin: jsSrc('admin'),
-        customizer: sassSrc('customizer')
+        customizer: sassSrc('customizer/customizer')
     },
 
     output: {
@@ -166,6 +166,14 @@ module.exports = {
                 options: {
                     name: '[name].[ext]',
                     outputPath: '../fonts/'
+                }
+            },
+            {
+                test: /\.(png)(\?.*$|$)/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                    outputPath: '../images/'
                 }
             },
             {

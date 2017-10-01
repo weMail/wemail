@@ -12,3 +12,7 @@ npm-debug.log
 assets/css/
 assets/js/
 assets/fonts/
+assets/images/*
+!assets/images/content-types/
+!assets/images/dividers/
+!assets/images/social-icons/

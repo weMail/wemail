@@ -260,8 +260,7 @@
 
                 vm.fileFrame.on('ready', () => {
                     vm.fileFrame.uploader.options.uploader.params = {
-                        type: 'wemail-company-logo',
-                        test: 5
+                        type: 'wemail-company-logo'
                     };
                 });
 

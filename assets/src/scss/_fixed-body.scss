@@ -1,0 +1,12 @@
+body.wemail-fixed-body {
+    overflow: hidden;
+
+    #adminmenuwrap {
+        height: 100vh;
+        overflow: auto;
+    }
+
+    #adminmenu {
+        padding-bottom: 30px;
+    }
+}

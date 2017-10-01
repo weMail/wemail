@@ -5,7 +5,7 @@
 <script>
     export default {
         props: {
-            currentTab: {
+            settingsTab: {
                 type: String,
                 required: true
             },
@@ -22,6 +22,16 @@
 
             contentIndex: {
                 type: Number,
+                required: true
+            },
+
+            content: {
+                type: Object,
+                required: true
+            },
+
+            customizer: {
+                type: Object,
                 required: true
             }
         }

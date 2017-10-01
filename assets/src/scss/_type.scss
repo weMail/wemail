@@ -4,3 +4,8 @@
 .strong {
     font-weight: 700;
 }
+
+a.disabled {
+    pointer-events: none;
+    opacity: 0.4 !important;
+}
