@@ -80,7 +80,12 @@
                                 class="content-wrapper"
                             >
                                 <td>
-                                    <component :is="'content-' + content.type" :content="content" :global-css="template.globalCss"></component>
+                                    <component
+                                        :is="'content-' + content.type"
+                                        :content="content"
+                                        :global-css="template.globalCss"
+                                        :customizer="customizerObj"
+                                    ></component>
 
                                     <div class="control-buttons">
                                         <p>

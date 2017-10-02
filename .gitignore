@@ -15,4 +15,5 @@ assets/fonts/
 assets/images/*
 !assets/images/content-types/
 !assets/images/dividers/
+!assets/images/misc/
 !assets/images/social-icons/

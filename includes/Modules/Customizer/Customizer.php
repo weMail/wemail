@@ -50,12 +50,13 @@ class Customizer {
         $this->content_types = apply_filters( "wemail_customizer_content_types_{$context}", $content_types );
 
         return [
-            'i18n'         => $this->i18n(),
-            'contentTypes' => [
-                'types'    => $this->content_types,
-                'settings' => $this->get_type_settings()
+            'i18n'             => $this->i18n(),
+            'contentTypes'     => [
+                'types'        => $this->content_types,
+                'settings'     => $this->get_type_settings()
             ],
-            'shortcodes'   => wemail()->shortcode->get()
+            'shortcodes'       => wemail()->shortcode->get(),
+            'placeholderImage' => WEMAIL_ASSETS . '/images/misc/placeholder-image.png'
         ];
     }
 
@@ -99,6 +100,7 @@ class Customizer {
             'saveAndClose'        => __( 'Save & close', 'wemail' ),
             'backgroundColor'     => __( 'Background Color', 'wemail' ),
             'fontColor'           => __( 'Font Color', 'wemail' ),
+            'padding'             => __( 'Padding', 'wemail' ),
             'paddingTopBottom'    => __( 'Padding Top-Bottom', 'wemail' ),
             'paddingLeftRight'    => __( 'Padding Left-Right', 'wemail' ),
             'border'              => __( 'Border', 'wemail' ),
@@ -108,6 +110,20 @@ class Customizer {
             'twoColumns'          => __( 'Two columns', 'wemail' ),
             'selectAnImage'       => __( 'Select an image', 'wemail' ),
             'pleaseSelectAnImage' => __( 'Please select an image', 'wemail' ),
+            'uploadAnImage'       => __( 'Upload an image', 'wemail' ),
+            'replace'             => __( 'Replace', 'wemail' ),
+            'link'                => __( 'Link', 'wemail' ),
+            'alt'                 => __( 'Alt', 'wemail' ),
+            'width'               => __( 'Width', 'wemail' ),
+            'remove'              => __( 'Remove', 'wemail' ),
+            'addAnotherImage'     => __( 'Add another image', 'wemail' ),
+            'oneImageIsRequired'  => __( 'At least one image is required', 'wemail' ),
+            'browseImage'         => __( 'Browse Image', 'wemail' ),
+            'untitled'            => __( 'untitled', 'wemail' ),
+            'imageAlign'          => __( 'Image Align', 'wemail' ),
+            'setImageLink'        => __( 'Set Image Link', 'wemail' ),
+            'setImageAltText'     => __( 'Set Image Alt Text', 'wemail' ),
+            'close'               => __( 'Close', 'wemail' ),
         ];
 
         /**

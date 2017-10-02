@@ -79,9 +79,9 @@
         },
 
         mounted() {
-            const customizer = this;
+            const vm = this;
 
-            weMail.setCustomizerContentComponents(customizer.context, {
+            weMail.setCustomizerContentComponents(vm.context, {
                 contentText,
                 contentImage,
                 contentImageGroup,
@@ -93,7 +93,7 @@
                 contentFooter
             });
 
-            const iframeInstance = new weMail.Vue(Iframe(customizer));
+            const iframeInstance = new weMail.Vue(Iframe(vm));
 
             const INTERVAL = 300;
 

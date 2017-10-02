@@ -123,8 +123,17 @@ class Campaign extends Module {
 
     // this will remove after finishing the templating system
     public function testTemplate( $campaign ) {
+        // text
         $text_content = \WeDevs\WeMail\Modules\Customizer\ContentTypes::text();
         $text_content = array_merge( [ 'id' => 1, 'type' => 'text' ], $text_content['default'] );
+
+        // image
+        $image_content = \WeDevs\WeMail\Modules\Customizer\ContentTypes::image();
+        // $image_content['default']['images'][0]['alt'] = 'ALIZARIN.pngALIZARIN.pngALIZARIN.pngALIZARIN.pngALIZARIN.png';
+        // $image_content['default']['images'][0]['src'] = 'http://localhost/wemail/wp-content/uploads/2017/10/ALIZARIN.png';
+        // $image_content['default']['images'][1]['alt'] = 'WET-ASPHALT.png';
+        // $image_content['default']['images'][1]['src'] = 'http://localhost/wemail/wp-content/uploads/2017/10/WET-ASPHALT.png';
+        $image_content = array_merge( [ 'id' => 2, 'type' => 'image' ], $image_content['default'] );
 
         $template = [
             'globalCss' => [
@@ -165,8 +174,6 @@ class Campaign extends Module {
                     ],
                     'contents' => [
                         $text_content,
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                     ]
                 ],
                 [
@@ -188,6 +195,9 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
+                        $image_content,
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::footer(),
                     ]
                 ],
@@ -210,7 +220,6 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_group(),
                     ]

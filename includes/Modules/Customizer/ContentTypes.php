@@ -63,28 +63,28 @@ class ContentTypes {
 
     public static function image() {
         return [
-            'type'       => 'image',
+            'type'    => 'image',
             'image'   => self::$image_dir . '/image.png',
             'default' => [
                 'style'  => [
                     'backgroundColor' => '#ffffff',
-                    'padding'         => '15px',
-                    'marginLeft'      => '0px',
-                    'marginRight'     => '0px',
+                    'paddingTop'      => '15px',
+                    'paddingBottom'   => '15px',
+                    'paddingLeft'     => '15px',
+                    'paddingRight'    => '15px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5',
-                    'textAlign'       => 'center',
+                    'borderColor'     => '#e5e5e5'
                 ],
-                'images' => [],
-                'widths' => [ '0px' ]
-            ]
+                'images' => []
+            ],
+            'noSettingsTab' => false
         ];
     }
 
     public static function image_group() {
         return [
-            'type'        => 'imageGroup',
+            'type'    => 'imageGroup',
             'image'   => self::$image_dir . '/image-group.png',
             'default' => [
                 'style'  => [
@@ -98,7 +98,7 @@ class ContentTypes {
                     'textAlign'       => 'center',
                 ],
                 'images' => [],
-                'widths' => [ '0px', '0px', '0px' ],
+                'widths' => ['0px', '0px', '0px'],
                 'layout' => 'r1-r1',
             ]
         ];

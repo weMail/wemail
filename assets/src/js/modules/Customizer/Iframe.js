@@ -1,9 +1,9 @@
-export default function (customizer) {
+export default function (Customizer) {
     return {
         store: weMail.store,
 
         // context = campaign, woocommerce, wp etc module that has template builder
-        components: weMail.customizerContentComponents[customizer.context],
+        components: weMail.customizerContentComponents[Customizer.context],
 
         data: {
             source: 'iframe',
@@ -15,8 +15,12 @@ export default function (customizer) {
         },
 
         computed: {
+            customizerObj() {
+                return Customizer.customizer;
+            },
+
             template() {
-                return customizer.template;
+                return Customizer.template;
             }
         },
 
@@ -80,7 +84,7 @@ export default function (customizer) {
             },
 
             getContentTypeImage(type) {
-                return customizer.customizer.contentTypes.settings[type].image;
+                return Customizer.customizer.contentTypes.settings[type].image;
             },
 
             bindSortable() {
@@ -163,7 +167,7 @@ export default function (customizer) {
                     this.newContentIndex = this.oldContentIndex - 1;
                 } else {
                     this.newSectionIndex = this.oldSectionIndex - 1;
-                    this.newContentIndex = customizer.template.sections[this.newSectionIndex].contents.length;
+                    this.newContentIndex = Customizer.template.sections[this.newSectionIndex].contents.length;
                 }
 
                 this.moveContent();
@@ -179,7 +183,7 @@ export default function (customizer) {
                 this.newSectionIndex = 0;
                 this.newContentIndex = 0;
 
-                const itemsInOldSection = customizer.template.sections[this.oldSectionIndex].contents.length;
+                const itemsInOldSection = Customizer.template.sections[this.oldSectionIndex].contents.length;
 
                 if ((this.oldSectionIndex === this.template.sections.length - 1) && (this.oldContentIndex === itemsInOldSection - 1)) {
                     return;
@@ -213,13 +217,13 @@ export default function (customizer) {
             },
 
             moveContent() {
-                const content = customizer.template
+                const content = Customizer.template
                     .sections[this.oldSectionIndex]
                     .contents.splice(
                         this.oldContentIndex, 1
                     );
 
-                customizer.template
+                Customizer.template
                     .sections[this.newSectionIndex]
                     .contents.splice(
                         this.newContentIndex, 0, content[0]
@@ -228,12 +232,12 @@ export default function (customizer) {
 
             addContent(e) {
                 $(e.item).remove();
-                const contentType = customizer.customizer.contentTypes.settings[this.contentType];
+                const contentType = Customizer.customizer.contentTypes.settings[this.contentType];
                 const contentSettings = $.extend(true, {}, contentType);
 
                 let totalContents = 0;
 
-                customizer.template.sections.forEach((section) => {
+                Customizer.template.sections.forEach((section) => {
                     section.contents.forEach(() => {
                         ++totalContents;
                     });
@@ -246,7 +250,7 @@ export default function (customizer) {
 
                 content = $.extend(true, content, contentSettings.default);
 
-                customizer.template
+                Customizer.template
                     .sections[this.newSectionIndex]
                     .contents.splice(
                         this.newContentIndex, 0, content

@@ -62,7 +62,6 @@
                 </div>
             </div>
 
-
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.border }}
@@ -191,19 +190,3 @@
         }
     };
 </script>
-
-<style lang="scss">
-    .settings-tab-list {
-
-        li.float-right {
-
-            label {
-                display: block;
-                padding: 8px;
-                margin-bottom: -1px;
-                font-size: 0.9em;
-                border-bottom: 1px solid $wp-border-color;
-            }
-        }
-    }
-</style>

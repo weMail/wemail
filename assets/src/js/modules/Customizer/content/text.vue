@@ -91,7 +91,7 @@
                 }
 
                 const TWO_COLUMNS = 2;
-                const padding = Math.ceil(parseInt(this.style.paddingRight, 10) / TWO_COLUMNS);
+                const padding = Math.floor(parseInt(this.style.paddingRight, 10) / TWO_COLUMNS);
 
                 return `${padding}px`;
             },
