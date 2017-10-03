@@ -76,6 +76,16 @@
                     <color-picker v-model="style.borderColor"></color-picker>
                 </div>
             </div>
+
+            <div class="control-property">
+                <h4 class="property-title clearfix">
+                    {{ i18n.bottomMargin }}
+                    <span class="property-value">{{ style.marginBottom }}</span>
+                </h4>
+                <div class="property">
+                    <input-range v-model="marginBottom"></input-range>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -159,6 +169,16 @@
 
                 set(value) {
                     this.style.borderWidth = `${value}px`;
+                }
+            },
+
+            marginBottom: {
+                get() {
+                    return parseInt(this.style.marginBottom, 10);
+                },
+
+                set(value) {
+                    this.style.marginBottom = `${value}px`;
                 }
             }
         },

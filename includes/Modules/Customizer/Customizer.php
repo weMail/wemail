@@ -124,6 +124,7 @@ class Customizer {
             'setImageLink'        => __( 'Set Image Link', 'wemail' ),
             'setImageAltText'     => __( 'Set Image Alt Text', 'wemail' ),
             'close'               => __( 'Close', 'wemail' ),
+            'bottomMargin'        => __( 'Bottom Margin', 'wemail' )
         ];
 
         /**

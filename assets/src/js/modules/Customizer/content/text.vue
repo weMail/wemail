@@ -2,13 +2,13 @@
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" :style="containerOuterStyle">
         <tr>
             <td align="center" valign="top" :style="containerInnerStyle">
-                <div :style="wrapperStyle" class="wrapper">
-                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: content.twoColumns ? '300px' : '600px'}" class="wrapper">
+                <div class="wrapper" :style="wrapperStyle" >
+                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: content.twoColumns ? '300px' : '600px'}">
                         <tr>
-                            <td align="center" valign="top">
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <td align="center" valign="top" :style="wrapperTdStyle[0]">
+                                <table class="wrapperInner" border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tr>
-                                        <td :style="leftColumnPaddings">
+                                        <td :style="leftColumnStyle">
                                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                                 <tr>
                                                     <td align="left" valign="middle" :style="{fontSize: globalCss.fontSize}">
@@ -23,13 +23,13 @@
                         </tr>
                     </table>
                 </div>
-                <div v-if="content.twoColumns" :style="wrapperStyle" class="wrapper">
-                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px; float: right" class="wrapper">
+                <div v-if="content.twoColumns" class="wrapper" :style="wrapperStyle">
+                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px; float: right">
                         <tr>
-                            <td align="center" valign="top">
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <td align="center" valign="top" :style="wrapperTdStyle[1]">
+                                <table class="wrapperInner" border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tr>
-                                        <td :style="rightColumnPaddings">
+                                        <td :style="rightColumnStyle">
                                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                                 <tr>
                                                     <td align="left" valign="middle" :style="{fontSize: globalCss.fontSize}">
@@ -60,6 +60,11 @@
             globalCss: {
                 type: Object,
                 required: true
+            },
+
+            customizer: {
+                type: Object,
+                required: false
             }
         },
 
@@ -68,19 +73,20 @@
                 return this.content.style;
             },
 
+            hasBorder() {
+                return parseInt(this.style.borderWidth, 10);
+            },
+
             containerOuterStyle() {
                 return {
                     maxWidth: '600px',
-                    borderWidth: this.style.borderWidth,
-                    borderStyle: 'solid',
-                    borderColor: this.style.borderColor
+                    marginBottom: this.style.marginBottom
                 };
             },
 
             containerInnerStyle() {
                 return {
                     fontSize: 0,
-                    backgroundColor: this.style.backgroundColor,
                     color: this.style.color
                 };
             },
@@ -96,21 +102,29 @@
                 return `${padding}px`;
             },
 
-            leftColumnPaddings() {
+            leftColumnStyle() {
                 return {
+                    backgroundColor: this.style.backgroundColor,
                     paddingTop: this.style.paddingTop,
-                    paddingRight: this.centerPadding,
+                    paddingRight: this.hasBorder ? this.style.paddingRight : this.centerPadding,
                     paddingBottom: this.style.paddingBottom,
-                    paddingLeft: this.style.paddingLeft
+                    paddingLeft: this.style.paddingLeft,
+                    borderWidth: this.style.borderWidth,
+                    borderStyle: 'solid',
+                    borderColor: this.style.borderColor
                 };
             },
 
-            rightColumnPaddings() {
+            rightColumnStyle() {
                 return {
+                    backgroundColor: this.style.backgroundColor,
                     paddingTop: this.style.paddingTop,
                     paddingRight: this.style.paddingRight,
                     paddingBottom: this.style.paddingBottom,
-                    paddingLeft: this.centerPadding
+                    paddingLeft: this.hasBorder ? this.style.paddingLeft : this.centerPadding,
+                    borderWidth: this.style.borderWidth,
+                    borderStyle: 'solid',
+                    borderColor: this.style.borderColor
                 };
             },
 
@@ -125,6 +139,19 @@
                     verticalAlign: 'top',
                     width: '100%'
                 };
+            },
+
+            wrapperTdStyle() {
+                const padding = (this.hasBorder && this.content.twoColumns) ? this.centerPadding : 0;
+
+                return [
+                    {
+                        paddingRight: padding
+                    },
+                    {
+                        paddingLeft: padding
+                    }
+                ];
             }
         }
     };

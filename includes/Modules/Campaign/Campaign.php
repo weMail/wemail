@@ -196,6 +196,7 @@ class Campaign extends Module {
                     ],
                     'contents' => [
                         $image_content,
+                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::footer(),
@@ -220,7 +221,6 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_group(),
                     ]
                 ],

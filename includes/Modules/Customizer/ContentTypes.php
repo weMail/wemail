@@ -47,7 +47,8 @@ class ContentTypes {
                     'paddingRight'    => '15px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
+                    'borderColor'     => '#e5e5e5',
+                    'marginBottom'    => '0px',
                 ],
                 'twoColumns' => true,
                 'texts'      => [
@@ -74,7 +75,8 @@ class ContentTypes {
                     'paddingRight'    => '15px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
+                    'borderColor'     => '#e5e5e5',
+                    'marginBottom'    => '0px',
                 ],
                 'images' => []
             ],
@@ -108,7 +110,6 @@ class ContentTypes {
         return [
             'type'        => 'imageCaption',
             'image'       => self::$image_dir . '/image-caption.png',
-            'defaultText' => sprintf( '<p>%s</p>', __( 'Your text caption goes here. You can change the position of the caption and set styles in the block’s settings tab.', 'wemail' ) ),
             'default'     => [
                 'style'       => [
                     'backgroundColor' => '#ffffff',
@@ -116,7 +117,15 @@ class ContentTypes {
                     'fontSize'        => '14px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
-                    'borderColor' => '#e5e5e5'
+                    'borderColor'     => '#e5e5e5'
+                ],
+                'captions'    => [
+                    [
+                        'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
+                        'image' => ''
+                    ],
+
+                    sprintf( '<p>%s</p>', __( 'This is a text block 2. You can use it to add text to your template.', 'wemail' ) )
                 ],
                 'twoColumns'  => false,
                 'groups'      => [],
