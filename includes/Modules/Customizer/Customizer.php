@@ -124,7 +124,15 @@ class Customizer {
             'setImageLink'        => __( 'Set Image Link', 'wemail' ),
             'setImageAltText'     => __( 'Set Image Alt Text', 'wemail' ),
             'close'               => __( 'Close', 'wemail' ),
-            'bottomMargin'        => __( 'Bottom Margin', 'wemail' )
+            'bottomMargin'        => __( 'Bottom Margin', 'wemail' ),
+            'twoCaptions'         => __( 'Two captions', 'wemail' ),
+            'left'                => __( 'Left', 'wemail' ),
+            'right'               => __( 'Right', 'wemail' ),
+            'top'                 => __( 'Top', 'wemail' ),
+            'bottom'              => __( 'Bottom', 'wemail' ),
+            'captionPosition'     => __( 'Caption Position', 'wemail' ),
+            'caption1'            => __( 'Caption 1', 'wemail' ),
+            'caption2'            => __( 'Caption 2', 'wemail' )
         ];
 
         /**

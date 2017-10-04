@@ -135,6 +135,10 @@ class Campaign extends Module {
         // $image_content['default']['images'][1]['src'] = 'http://localhost/wemail/wp-content/uploads/2017/10/WET-ASPHALT.png';
         $image_content = array_merge( [ 'id' => 2, 'type' => 'image' ], $image_content['default'] );
 
+        // image caption
+        $image_caption = \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption();
+        $image_caption = array_merge( [ 'id' => 1, 'type' => 'imageCaption' ], $image_caption['default'] );
+
         $template = [
             'globalCss' => [
                 'backgroundColor' => '#fafafa',
@@ -196,7 +200,7 @@ class Campaign extends Module {
                     ],
                     'contents' => [
                         $image_content,
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption(),
+                        $image_caption,
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::footer(),

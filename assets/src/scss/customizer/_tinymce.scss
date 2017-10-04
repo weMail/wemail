@@ -1,0 +1,14 @@
+.mce-content-body {
+    padding: 5px;
+
+    p,
+    div,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        line-height: $line-height-base;
+    }
+}

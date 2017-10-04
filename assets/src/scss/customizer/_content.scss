@@ -1,0 +1,20 @@
+.wemail-content-text {
+
+    *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.wemail-content-image {
+
+    &.no-image-content {
+        padding: 90px 0;
+        text-align: center;
+        background-color: $wp-body-bg;
+        border: 1px solid $wp-border-color;
+    }
+
+    & > a {
+        display: block;
+    }
+}

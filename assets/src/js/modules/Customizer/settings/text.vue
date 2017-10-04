@@ -127,11 +127,7 @@
         data() {
             return {
                 listTab: 1,
-                displayEditor: true,
-                defaults: {
-                    backgroundColor: '#ffffff',
-                    color: ''
-                }
+                displayEditor: true
             };
         },
 

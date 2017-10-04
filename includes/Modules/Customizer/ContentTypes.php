@@ -112,23 +112,41 @@ class ContentTypes {
             'image'       => self::$image_dir . '/image-caption.png',
             'default'     => [
                 'style'       => [
-                    'backgroundColor' => '#ffffff',
-                    'padding'         => '15px 15px',
-                    'fontSize'        => '14px',
-                    'borderWidth'     => '0px',
-                    'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
+                    'backgroundColor'       => '#ffffff',
+                    'color'                 => '',
+                    'verticalPadding'       => '15px',
+                    'horizontalPadding'     => '15px',
+                    'borderWidth'           => '0px',
+                    'borderColor'           => '#e5e5e5',
+                    'marginBottom'          => '0px',
+                    'text'  => [
+                        'paddingTop'        => '0px',
+                        'paddintRight'      => '0px',
+                        'paddintBottom'     => '0px',
+                        'paddintLeft'       => '0px',
+                    ]
                 ],
                 'captions'    => [
                     [
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
-                        'image' => ''
+                        'image' => [
+                            'alt' => '',
+                            'src' => 'http://localhost/wemail/wp-content/uploads/2017/10/ASBESTOS.png',
+                            'link' => '',
+                            'openAttrEditor' => '',
+                        ]
                     ],
-
-                    sprintf( '<p>%s</p>', __( 'This is a text block 2. You can use it to add text to your template.', 'wemail' ) )
+                    [
+                        'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
+                        'image' => [
+                            'alt' => '',
+                            'src' => 'http://localhost/wemail/wp-content/uploads/2017/10/POMEGRANATE.png',
+                            'link' => '',
+                            'openAttrEditor' => '',
+                        ]
+                    ],
                 ],
-                'twoColumns'  => false,
-                'groups'      => [],
+                'twoCaptions' => false,
                 'capPosition' => 'bottom',
             ]
         ];

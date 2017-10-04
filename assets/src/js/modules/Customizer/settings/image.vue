@@ -21,10 +21,6 @@
                         </div>
                     </div>
                 </div>
-
-                <p v-if="content.images.length === 1">
-                    <button class="button">{{ i18n.addAnotherImage }}</button>
-                </p>
             </template>
 
             <template v-else>
@@ -61,12 +57,12 @@
                             <div v-if="image.openAttrEditor === 'link'" class="image-attr-editor">
                                 <strong>{{ i18n.setImageLink }}</strong>
                                 <input class="form-control" type="text" v-model="image.link" autofocus>
-                                <p><button type="button" class="button button-small" v-on:click="image.openAttrEditor = ''">{{ i18n.close }}</button></p>
+                                <p><button type="button" class="button button-small" @click="image.openAttrEditor = ''">{{ i18n.close }}</button></p>
                             </div>
                             <div v-if="image.openAttrEditor === 'alt'" class="image-attr-editor" >
                                 <strong>{{ i18n.setImageAltText }}</strong>
                                 <input class="form-control" type="text" v-model="image.alt" autofocus>
-                                <p><button type="button" class="button button-small" v-on:click="image.openAttrEditor = ''">{{ i18n.close }}</button></p>
+                                <p><button type="button" class="button button-small" @click="image.openAttrEditor = ''">{{ i18n.close }}</button></p>
                             </div>
                         </div>
                     </div>

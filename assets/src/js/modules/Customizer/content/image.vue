@@ -1,7 +1,7 @@
 <template>
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" :style="containerOuterStyle">
         <tr v-if="content.images && content.images.length">
-            <td align="center" valign="top">
+            <td align="center" valign="top" :style="containerInnerStyle">
                 <div class="wrapper" :style="wrapperStyle">
                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: twoColumns ? '300px' : '600px'}">
                         <tr>
@@ -132,6 +132,13 @@
                 return {
                     maxWidth: '600px',
                     marginBottom: this.style.marginBottom
+                };
+            },
+
+            containerInnerStyle() {
+                return {
+                    fontSize: 0,
+                    color: this.style.color
                 };
             },
 
