@@ -156,6 +156,10 @@ class Campaign extends Module {
         ];
         $social_follow = array_merge( [ 'id' => 4, 'type' => 'socialFollow' ], $social_follow['default'] );
 
+        // button
+        $button = \WeDevs\WeMail\Modules\Customizer\ContentTypes::button();
+        $button = array_merge( [ 'id' => 5, 'type' => 'button' ], $button['default'] );
+
         $template = [
             'globalCss' => [
                 'backgroundColor' => '#fafafa',
@@ -195,7 +199,7 @@ class Campaign extends Module {
                     ],
                     'contents' => [
                         $text_content,
-                        $social_follow
+                        $social_follow,
                     ]
                 ],
                 [
@@ -217,9 +221,9 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
+                        $button,
                         $image_content,
                         $image_caption,
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::button(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::footer(),
                     ]

@@ -256,9 +256,10 @@ class ContentTypes {
             'default'   => [
                 'style' => [
                     'display'         => 'inline-block',
-                    'padding'         => '18px 65px',
-                    'margin'          => '15px 15px',
-                    // 'fontFamily'      => 'sans-serif',
+                    'paddingTop'      => '18px',
+                    'paddingRight'    => '65px',
+                    'paddingBottom'   => '18px',
+                    'paddingLeft'     => '65px',
                     'fontSize'        => '14px',
                     'fontWeight'      => 'bold',
                     'lineHeight'      => '1',
@@ -274,11 +275,13 @@ class ContentTypes {
                     'borderColor'     => '#e5e5e5'
                 ],
                 'text'           => __( 'Button Text', 'wemail' ),
-                'link'           => '#',
+                'href'           => site_url('/'),
                 'title'          => '',
                 'containerStyle' => [
                     'textAlign'       => 'center',
-                    'backgroundColor' => '#ffffff'
+                    'backgroundColor' => '#ffffff',
+                    'padding'         => '18px',
+                    'marginBottom'    => '0px'
                 ]
             ]
         ];

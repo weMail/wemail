@@ -37,6 +37,7 @@ class Scripts {
 
         $wemail = [
             'nonce'                => wp_create_nonce( 'wemail-nonce' ),
+            'siteURL'              => site_url('/'),
             'ajaxurl'              => admin_url( 'admin-ajax.php' ),
             'assetsURL'            => WEMAIL_ASSETS,
             'scriptDebug'          => $this->script_debug,
