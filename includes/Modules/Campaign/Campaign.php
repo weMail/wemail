@@ -129,15 +129,32 @@ class Campaign extends Module {
 
         // image
         $image_content = \WeDevs\WeMail\Modules\Customizer\ContentTypes::image();
-        // $image_content['default']['images'][0]['alt'] = 'ALIZARIN.pngALIZARIN.pngALIZARIN.pngALIZARIN.pngALIZARIN.png';
-        // $image_content['default']['images'][0]['src'] = 'http://localhost/wemail/wp-content/uploads/2017/10/ALIZARIN.png';
-        // $image_content['default']['images'][1]['alt'] = 'WET-ASPHALT.png';
-        // $image_content['default']['images'][1]['src'] = 'http://localhost/wemail/wp-content/uploads/2017/10/WET-ASPHALT.png';
         $image_content = array_merge( [ 'id' => 2, 'type' => 'image' ], $image_content['default'] );
 
         // image caption
         $image_caption = \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_caption();
-        $image_caption = array_merge( [ 'id' => 1, 'type' => 'imageCaption' ], $image_caption['default'] );
+        $image_caption = array_merge( [ 'id' => 3, 'type' => 'imageCaption' ], $image_caption['default'] );
+
+        // social follow
+        $social_follow = \WeDevs\WeMail\Modules\Customizer\ContentTypes::social_follow();
+        $social_follow['default']['icons'] = [
+            [
+                'site' => 'facebook',
+                'link' => 'http://facebook.com/wedevs',
+                'text' => 'Facebook',
+            ],
+            [
+                'site' => 'twitter',
+                'link' => 'http://twitter.com/wedevs',
+                'text' => 'Twitter',
+            ],
+            [
+                'site' => 'website',
+                'link' => 'http://wedevs.com',
+                'text' => 'Website'
+            ]
+        ];
+        $social_follow = array_merge( [ 'id' => 4, 'type' => 'socialFollow' ], $social_follow['default'] );
 
         $template = [
             'globalCss' => [
@@ -178,6 +195,7 @@ class Campaign extends Module {
                     ],
                     'contents' => [
                         $text_content,
+                        $social_follow
                     ]
                 ],
                 [
@@ -247,7 +265,7 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::social_follow(),
+
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::video(),
                     ]
                 ]

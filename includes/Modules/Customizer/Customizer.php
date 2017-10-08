@@ -38,7 +38,7 @@ class Customizer {
      * @return array
      */
     public function get( $context, $content_types ) {
-        $this->context       = $context;
+        $this->context = $context;
 
         /**
          * Filter for weMail customizer content types
@@ -49,6 +49,14 @@ class Customizer {
          */
         $this->content_types = apply_filters( "wemail_customizer_content_types_{$context}", $content_types );
 
+        // Add website in the social network links
+        $company = wemail()->settings->company();
+        $social_networks = wemail()->settings->social_networks();
+        $social_networks['website'] = $company['website'] ? $company['website'] : 'http://example.com';
+
+        $networks = wemail()->settings->social_networks->networks();
+        array_unshift( $networks, 'website' );
+
         return [
             'i18n'             => $this->i18n(),
             'contentTypes'     => [
@@ -56,7 +64,11 @@ class Customizer {
                 'settings'     => $this->get_type_settings()
             ],
             'shortcodes'       => wemail()->shortcode->get(),
-            'placeholderImage' => WEMAIL_ASSETS . '/images/misc/placeholder-image.png'
+            'placeholderImage' => WEMAIL_ASSETS . '/images/misc/placeholder-image.png',
+            'socialNetworks'   => [
+                'networks'     => $networks,
+                'defaults'     => $social_networks
+            ]
         ];
     }
 
@@ -132,8 +144,30 @@ class Customizer {
             'bottom'              => __( 'Bottom', 'wemail' ),
             'captionPosition'     => __( 'Caption Position', 'wemail' ),
             'caption1'            => __( 'Caption 1', 'wemail' ),
-            'caption2'            => __( 'Caption 2', 'wemail' )
+            'caption2'            => __( 'Caption 2', 'wemail' ),
+            'addMoreNetwork'      => __( 'Add More Network', 'wemail' ),
+            'pageLink'            => __( 'Page Link', 'wemail' ),
+            'linkText'            => __( 'Link Text', 'wemail' ),
+            'website'             => __( 'Website', 'wemail' ),
+            'upperCase'           => __( 'Uppercase', 'wemail' ),
+            'yes'                 => __( 'Yes', 'wemail' ),
+            'fontWeight'          => __( 'Font Weight', 'wemail' ),
+            'normal'              => __( 'Normal', 'wemail' ),
+            'bold'                => __( 'Bold', 'wemail' ),
+            'fontSize'            => __( 'Font Size', 'wemail' ),
+            'iconMargin'          => __( 'Icon Margin', 'wemail' ),
+            'display'             => __( 'Display', 'wemail' ),
+            'iconOnly'            => __( 'Icon only', 'wemail' ),
+            'textOnly'            => __( 'Text only', 'wemail' ),
+            'both'                => __( 'Both', 'wemail' ),
+            'align'               => __( 'Align', 'wemail' ),
+            'center'              => __( 'Center', 'wemail' ),
+            'layout'              => __( 'Layout', 'wemail' ),
         ];
+
+        $social_networks = wemail()->settings->social_networks->i18n();
+
+        $i18n = array_merge( $i18n, $social_networks );
 
         /**
          * Filter for weMail customizer i18n strings

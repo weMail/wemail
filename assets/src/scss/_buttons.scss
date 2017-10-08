@@ -26,4 +26,15 @@
             background-color: transparent;
         }
     }
+
+    &.button-block {
+        width: 100%;
+    }
+}
+
+.button-group-extra-padding {
+
+    .button {
+        padding: 0 25px;
+    }
 }

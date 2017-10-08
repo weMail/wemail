@@ -4,9 +4,25 @@ namespace WeDevs\WeMail\Modules\Customizer;
 
 class ContentTypes {
 
+    /**
+     * Content type image directory
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public static $image_dir;
 
-    public static function get_type_settings( $context = '' ) {
+    /**
+     * Get content type settings for a customizer
+     *
+     * @since 1.0.0
+     *
+     * @param string $context Which customizer we are working on. e.g: campaign, woocommerce, wp etc
+     *
+     * @return array
+     */
+    public static function get_type_settings( $context ) {
         self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
 
         $settings = [
@@ -33,6 +49,13 @@ class ContentTypes {
         return apply_filters( "wemail_customizer_content_type_settings_{$context}", $settings );
     }
 
+    /**
+     * Content type: Text
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function text() {
         return [
             'type'       => 'text',
@@ -62,6 +85,13 @@ class ContentTypes {
         ];
     }
 
+    /**
+     * Content type: Image
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function image() {
         return [
             'type'    => 'image',
@@ -106,6 +136,13 @@ class ContentTypes {
         ];
     }
 
+    /**
+     * Content type: Image Caption
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function image_caption() {
         return [
             'type'        => 'imageCaption',
@@ -131,7 +168,7 @@ class ContentTypes {
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                         'image' => [
                             'alt' => '',
-                            'src' => 'http://localhost/wemail/wp-content/uploads/2017/10/ASBESTOS.png',
+                            'src' => '',
                             'link' => '',
                             'openAttrEditor' => '',
                         ]
@@ -140,7 +177,7 @@ class ContentTypes {
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                         'image' => [
                             'alt' => '',
-                            'src' => 'http://localhost/wemail/wp-content/uploads/2017/10/POMEGRANATE.png',
+                            'src' => '',
                             'link' => '',
                             'openAttrEditor' => '',
                         ]
@@ -152,59 +189,76 @@ class ContentTypes {
         ];
     }
 
+    /**
+     * Content type: Social Follow
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function social_follow() {
+        $company = wemail()->settings->company();
+        $social_networks = wemail()->settings->social_networks();
+
         return [
-            'type'        => 'socialFollow',
+            'type'       => 'socialFollow',
             'image'      => self::$image_dir . '/social-follow.png',
             'default'    => [
-                'style'     => [
-                    'backgroundColor' => '#ffffff',
-                    'padding'         => '15px',
-                    'borderWidth'     => '0px',
-                    'borderStyle'     => 'none',
-                    'borderColor'     => '',
-                    'fontSize'        => '14px',
-                    'fontWeight'      => 'normal',
-                    'textTransform'   => 'none',
-                    'lineHeight'      => '0px'
+                'style'      => [
+                    'backgroundColor'       => '#ffffff',
+                    'color'                 => '',
+                    'padding'               => '15px',
+                    'borderWidth'           => '0px',
+                    'borderColor'           => '#e5e5e5',
+                    'fontSize'              => '14px',
+                    'fontWeight'            => 'normal',
+                    'textTransform'         => 'none',
+                    'textAlign'             => 'center',
+                    'marginBottom'          => '0px',
                 ],
-                'iconStyle' => 'solid-color',
-                'icons'     => [
+                'iconStyle'  => 'solid-color',
+                'iconMargin' => '15px',
+                'display'    => 'both', // icon/text/both
+                'layout'     => 'horizontal', // vertical/horizontal
+                'size'       => 'default', // default/large
+                'icons'      => [
                     [
                         'site' => 'facebook',
-                        'link' => 'http://facebook.com',
+                        'link' => $social_networks['facebook'],
                         'text' => 'Facebook',
                     ],
                     [
                         'site' => 'twitter',
-                        'link' => 'http://twitter.com',
+                        'link' => $social_networks['twitter'],
                         'text' => 'Twitter',
                     ],
                     [
-                        'site' => 'link',
-                        'link' => 'http://example.com',
-                        'text' => __( 'Website', 'wemail' ),
+                        'site' => 'website',
+                        'link' => $company['website'] ? $company['website'] : 'http://example.com',
+                        'text' => 'Website'
                     ]
                 ],
-                'iconMargin'     => '15px',
-                'display'        => 'both', // icon/text/both
-                'containerAlign' => 'center',
-                'layout'         => 'horizontal', // verticle/horizontal
-                'layoutSize'     => 'default', // default/big
             ]
         ];
     }
 
+    /**
+     * Content type: Button
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function button() {
         return [
-            'type'        => 'button',
+            'type'      => 'button',
             'image'     => self::$image_dir . '/button.png',
             'default'   => [
                 'style' => [
                     'display'         => 'inline-block',
                     'padding'         => '18px 65px',
                     'margin'          => '15px 15px',
-                    'fontFamily'      => 'sans-serif',
+                    // 'fontFamily'      => 'sans-serif',
                     'fontSize'        => '14px',
                     'fontWeight'      => 'bold',
                     'lineHeight'      => '1',

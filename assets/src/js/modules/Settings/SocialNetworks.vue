@@ -1,7 +1,7 @@
 <template>
     <div v-if="isLoaded" class="row">
         <div class="col-6">
-            <label v-for="network in order">
+            <label v-for="network in networks">
                 <strong>{{ i18n[network] }}</strong>
                 <input type="text" v-model="settings[network]">
             </label>
@@ -16,8 +16,8 @@
         mixins: weMail.getMixins('settings', 'routeComponent'),
 
         computed: {
-            order() {
-                return this.$store.state.settingsSocialNetworks.order;
+            networks() {
+                return this.$store.state.settingsSocialNetworks.networks;
             }
         }
     };

@@ -57,6 +57,23 @@ class Settings extends Module {
     }
 
     /**
+     * Magic method to get an wemail settings class
+     *
+     * @since 1.0.0
+     *
+     * @param string $name
+     *
+     * @return object
+     */
+    public function __get( $name ) {
+        if ( $this->settings->has( $name ) ) {
+            return $this->settings[$name];
+        }
+
+        return $name;
+    }
+
+    /**
      * Register submenu
      *
      * @since 1.0.0
