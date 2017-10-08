@@ -51,3 +51,28 @@
         }
     }
 }
+
+.list-image {
+    list-style-type: none;
+
+    li {
+        margin-bottom: 0;
+
+        a {
+            display: block;
+            padding: 15px 10px;
+            line-height: 0;
+
+            @include transition();
+
+            &:hover {
+                background-color: $wp-body-bg;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+}

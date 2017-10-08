@@ -1,6 +1,6 @@
 <template>
-    <div class="content-settings-container settings-social-follow">
-        <div v-if="settingsTab === 'content'" class="settings-social-follow-content">
+    <div class="content-settings-container settings-button">
+        <div v-if="settingsTab === 'content'" class="settings-button-content">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.buttonText }}

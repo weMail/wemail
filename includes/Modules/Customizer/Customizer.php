@@ -68,7 +68,8 @@ class Customizer {
             'socialNetworks'   => [
                 'networks'     => $networks,
                 'defaults'     => $social_networks
-            ]
+            ],
+            'dividers'         => $this->dividers()
         ];
     }
 
@@ -171,6 +172,14 @@ class Customizer {
             'containerBackground'   => __( 'Container Background', 'wemail' ),
             'containerPadding'      => __( 'Container Padding', 'wemail' ),
             'containerBottomMargin' => __( 'Container Bottom Margin', 'wemail' ),
+            'dividerType'           => __( 'Divider Type', 'wemail' ),
+            'line'                  => __( 'Line', 'wemail' ),
+            'height'                => __( 'Height', 'wemail' ),
+            'color'                 => __( 'Color', 'wemail' ),
+            'gallery'               => __( 'Gallery', 'wemail' ),
+            'browse'                => __( 'Browse', 'wemail' ),
+            'chooseDivider'         => __( 'Choose Divider', 'wemail' ),
+            'cancel'                => __( 'Cancel', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();
@@ -187,5 +196,27 @@ class Customizer {
          * @param array $i18n i18n strings
          */
         return apply_filters( "wemail_customizer_i18n_{$this->context}", $i18n );
+    }
+
+    public function dividers() {
+        $dividers = [
+            'baseURL' => WEMAIL_ASSETS . '/images/dividers/',
+            'images'  => [
+                [ 'name' => 'brush-stroke-lite.png', 'height' => '24px' ],
+                [ 'name' => 'brush-stroke-orange.png', 'height' => '24px' ],
+                [ 'name' => 'dotted-line.png', 'height' => '24px' ],
+                [ 'name' => 'handwritten-swirl-black.png', 'height' => '24px' ],
+                [ 'name' => 'handwritten-swirl-cayan.png', 'height' => '24px' ],
+                [ 'name' => 'mail-ribbon.png', 'height' => '3px' ],
+                [ 'name' => 'ornamental-1.png', 'height' => '24px' ],
+                [ 'name' => 'ornamental-2.png', 'height' => '24px' ],
+                [ 'name' => 'ornamental-3.png', 'height' => '24px' ],
+                [ 'name' => 'shadow-1.png', 'height' => '24px' ],
+                [ 'name' => 'shadow-2.png', 'height' => '24px' ],
+                [ 'name' => 'star.png', 'height' => '24px' ],
+            ]
+        ];
+
+        return $dividers;
     }
 }

@@ -53,12 +53,13 @@
                         @click="settingsTab = 'content'"
                     >{{ i18n.content }}</button>
                     <button
+                        v-if="hasStyleTab"
                         type="button"
                         :class="['button', settingsTab === 'style' ? 'active button-primary' : '']"
                         @click="settingsTab = 'style'"
                     >{{ i18n.style }}</button>
                     <button
-                        v-if="!noSettingsTab"
+                        v-if="hasSettingsTab"
                         type="button"
                         :class="['button', settingsTab === 'settings' ? 'active button-primary' : '']"
                         @click="settingsTab = 'settings'"
@@ -123,16 +124,25 @@
                 return this.customizer.contentTypes;
             },
 
-            noSettingsTab() {
+            hasSettingsTab() {
                 const noSettingsTab = this.customizer.contentTypes.settings[this.content.type].noSettingsTab;
-                return !(noSettingsTab === undefined || noSettingsTab);
+                return (noSettingsTab === undefined || !noSettingsTab);
+            },
+
+            hasStyleTab() {
+                const noStyleTab = this.customizer.contentTypes.settings[this.content.type].noStyleTab;
+                return (noStyleTab === undefined || !noStyleTab);
             },
 
             headerClass() {
                 const classNames = ['customizer-settings-header', 'content-settings'];
 
-                if (this.noSettingsTab) {
+                if (!this.hasSettingsTab) {
                     classNames.push('no-settings-tab');
+                }
+
+                if (!this.hasStyleTab) {
+                    classNames.push('no-style-tab');
                 }
 
                 return classNames;

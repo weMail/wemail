@@ -160,6 +160,10 @@ class Campaign extends Module {
         $button = \WeDevs\WeMail\Modules\Customizer\ContentTypes::button();
         $button = array_merge( [ 'id' => 5, 'type' => 'button' ], $button['default'] );
 
+        // divider
+        $divider = \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider();
+        $divider = array_merge( [ 'id' => 6, 'type' => 'divider' ], $divider['default'] );
+
         $template = [
             'globalCss' => [
                 'backgroundColor' => '#fafafa',
@@ -221,10 +225,10 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
+                        $divider,
                         $button,
                         $image_content,
                         $image_caption,
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::divider(),
                         \WeDevs\WeMail\Modules\Customizer\ContentTypes::footer(),
                     ]
                 ],

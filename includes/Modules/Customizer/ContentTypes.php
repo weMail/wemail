@@ -80,7 +80,7 @@ class ContentTypes {
 
                 'valign'     => 'top',
             ],
-            'noSettingsTab' => false
+            'noSettingsTab' => true
         ];
     }
 
@@ -109,7 +109,7 @@ class ContentTypes {
                 ],
                 'images' => []
             ],
-            'noSettingsTab' => false
+            'noSettingsTab' => true
         ];
     }
 
@@ -264,26 +264,31 @@ class ContentTypes {
         ];
     }
 
+    /**
+     * Content type: Divider
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public static function divider() {
         return [
             'type'            => 'divider',
             'image'           => self::$image_dir . '/divider.png',
-            'noStyleSettings' => true,
             'default'         => [
+                'dividerType'    => 'line',
                 'containerStyle' => [
-                    'paddingTop'      => '15px',
-                    'paddingBottom'   => '15px',
+                    'padding'         => '15px',
                     'backgroundColor' => '#ffffff',
-                    'marginTop'       => '0px',
                     'marginBottom'    => '0px'
                 ],
                 'style' => [
-                    'width'           => '600px',
+                    'width'           => '570px',
                     'borderTopWidth'  => '2px',
                     'borderTopStyle'  => 'dashed',
                     'borderTopColor'  => '#e5e5e5',
+                    'margin'          => '0 auto'
                 ],
-                'useImage'  => false,
                 'image'     => [
                     'image' => WEMAIL_ASSETS . '/images/dividers/brush-stroke-lite.png',
                     'style' => [
@@ -291,7 +296,8 @@ class ContentTypes {
                         'width'  => '600px',
                     ]
                 ]
-            ]
+            ],
+            'noStyleTab' => true,
         ];
     }
 
