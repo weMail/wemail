@@ -28,7 +28,6 @@ class ContentTypes {
         $settings = [
             'text'          => self::text(),
             'image'         => self::image(),
-            'imageGroup'    => self::image_group(),
             'imageCaption'  => self::image_caption(),
             'socialFollow'  => self::social_follow(),
             'button'        => self::button(),
@@ -111,28 +110,6 @@ class ContentTypes {
                 'images' => []
             ],
             'noSettingsTab' => false
-        ];
-    }
-
-    public static function image_group() {
-        return [
-            'type'    => 'imageGroup',
-            'image'   => self::$image_dir . '/image-group.png',
-            'default' => [
-                'style'  => [
-                    'backgroundColor' => '#ffffff',
-                    'padding'         => '15px',
-                    'marginLeft'      => '0px',
-                    'marginRight'     => '0px',
-                    'borderWidth'     => '0px',
-                    'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5',
-                    'textAlign'       => 'center',
-                ],
-                'images' => [],
-                'widths' => ['0px', '0px', '0px'],
-                'layout' => 'r1-r1',
-            ]
         ];
     }
 
@@ -289,7 +266,7 @@ class ContentTypes {
 
     public static function divider() {
         return [
-            'type'        => 'divider',
+            'type'            => 'divider',
             'image'           => self::$image_dir . '/divider.png',
             'noStyleSettings' => true,
             'default'         => [

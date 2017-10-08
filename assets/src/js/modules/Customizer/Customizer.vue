@@ -21,7 +21,6 @@
     import Settings from './Settings.vue';
     import contentText from './content/text.vue';
     import contentImage from './content/image.vue';
-    import contentImageGroup from './content/imageGroup.vue';
     import contentImageCaption from './content/imageCaption.vue';
     import contentSocialFollow from './content/socialFollow.vue';
     import contentButton from './content/button.vue';
@@ -30,7 +29,6 @@
     import contentFooter from './content/footer.vue';
     import settingsText from './settings/text.vue';
     import settingsImage from './settings/image.vue';
-    import settingsImageGroup from './settings/imageGroup.vue';
     import settingsImageCaption from './settings/imageCaption.vue';
     import settingsSocialFollow from './settings/socialFollow.vue';
     import settingsButton from './settings/button.vue';
@@ -69,7 +67,6 @@
         created() {
             weMail.Vue.component('customizer-content-settings-text', settingsText);
             weMail.Vue.component('customizer-content-settings-image', settingsImage);
-            weMail.Vue.component('customizer-content-settings-image-group', settingsImageGroup);
             weMail.Vue.component('customizer-content-settings-image-caption', settingsImageCaption);
             weMail.Vue.component('customizer-content-settings-social-follow', settingsSocialFollow);
             weMail.Vue.component('customizer-content-settings-button', settingsButton);
@@ -84,7 +81,6 @@
             weMail.setCustomizerContentComponents(vm.context, {
                 contentText,
                 contentImage,
-                contentImageGroup,
                 contentImageCaption,
                 contentSocialFollow,
                 contentButton,

@@ -247,7 +247,7 @@ class Campaign extends Module {
                         'maxWidth' => '600px'
                     ],
                     'contents' => [
-                        \WeDevs\WeMail\Modules\Customizer\ContentTypes::image_group(),
+                        $image_caption,
                     ]
                 ],
                 [

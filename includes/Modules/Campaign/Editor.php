@@ -95,7 +95,6 @@ class Editor {
         $content_types = [
             'text',
             'image',
-            'imageGroup',
             'imageCaption',
             'socialFollow',
             'button',

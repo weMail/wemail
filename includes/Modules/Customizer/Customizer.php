@@ -98,7 +98,6 @@ class Customizer {
         $i18n = [
             'text'                  => __( 'Text', 'wemail' ),
             'image'                 => __( 'Image', 'wemail' ),
-            'imageGroup'            => __( 'Image Group', 'wemail' ),
             'imageCaption'          => __( 'Image Caption', 'wemail' ),
             'socialFollow'          => __( 'Social Follow', 'wemail' ),
             'button'                => __( 'Button', 'wemail' ),
