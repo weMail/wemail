@@ -97,7 +97,26 @@ class Editor {
             'preview'                => __( 'Preview', 'wemail' ),
             'selectTemplate'         => __( 'Select Template', 'wemail' ),
             'close'                  => __( 'Close', 'wemail' ),
-            'myTemplates'            => __( 'My Templates', 'wemail' )
+            'myTemplates'            => __( 'My Templates', 'wemail' ),
+            'emailSubject'           => __( 'Email Subject', 'wemail' ),
+            'preHeader'              => __( 'Preheader', 'wemail' ),
+            'preHeaderHint'          => __( 'A preheader is the short summary text that follows the subject line when an email is viewed in the inbox.', 'wemail' ),
+            'sender'                 => __( 'Sender', 'wemail' ),
+            'senderHint'             => __( 'Name & email of yourself or your company.', 'wemail' ),
+            'replyTo'                => __( 'Reply To', 'wemail' ),
+            'replyToHint'            => __( 'When the subscribers hit "reply" this is who will receive their emails.', 'wemail' ),
+            'name'                   => __( 'Name', 'wemail' ),
+            'email'                  => __( 'Email', 'wemail' ),
+            'scheduleCampaign'       => __( 'Schedule Campaign', 'wemail' ),
+            'yesScheduleIt'          => __( 'Yes schedule it', 'wemail' ),
+            'googleAnalyticCampaign' => __( 'Google Analytic Campaign', 'wemail' ),
+            'utmHint'                => __( 'For example "New year sale"', 'wemail' ),
+            'campaignSummery'        => __( 'Campaign Summery', 'wemail' ),
+            'thisFieldIsRequired'    => __( 'This field is required', 'wemail' ),
+            'charactersRemaining'    => __( 'characters remaining', 'wemail' ),
+            'invalidEmailAddress'    => __( 'Invalid email address', 'wemail' ),
+            'noListSelected'         => __( 'No list selected', 'wemail' ),
+            'noSegmentSelected'      => __( 'No segment selected', 'wemail' )
         ];
 
         /**

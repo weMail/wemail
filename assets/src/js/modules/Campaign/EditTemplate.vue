@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!showPreview">
-            <h1>{{ i18n.templates }}</h1>
+            <h1>{{ i18n.cam }}</h1>
 
             <div class="edit-template-filters">
                 <div class="clearfix">

@@ -40,6 +40,69 @@ input {
         line-height: 1.8;
         text-decoration: none;
     }
+
+    .top-hint {
+        position: relative;
+        font-size: 11px;
+        color: rgba(35, 40, 45, 0.5);
+    }
+
+    .validate-field {
+        margin-top: -20px;
+
+        .field-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            font-size: 11px;
+
+            @include transition;
+        }
+
+        .invalid-msg {
+            color: $wp-red;
+            opacity: 0;
+
+            @include transition;
+
+            & + span {
+                opacity: 1;
+
+                @include transition;
+            }
+        }
+
+        &.invalid-field {
+
+            .field-placeholder {
+                top: 19px;
+                left: 6px;
+                font-size: 14px;
+            }
+
+            &.has-length {
+
+                .field-placeholder {
+                    top: 0;
+                    left: 0;
+                    display: none;
+                }
+            }
+
+            .invalid-msg {
+                opacity: 1;
+
+                & + span {
+                    opacity: 0;
+                }
+            }
+
+            input[type="text"] {
+                border-color: $wp-red;
+            }
+        }
+    }
 }
 
 .form-control {
