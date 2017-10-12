@@ -28,7 +28,7 @@ class Editor {
         self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
 
         $this->add_filter( 'wemail_customizer_content_type_settings_campaign', 'content_type_settings' );
-        $this->add_filter( 'wemail_customizer_i18n_campaign', 'i18n' );
+        $this->add_filter( 'wemail_customizer_i18n_campaign', 'customizer_i18n' );
     }
 
     /**
@@ -40,32 +40,7 @@ class Editor {
      */
     public function get_setup_data() {
         return [
-            'i18n' => [
-                'createCampaign'         => __( 'Create Campaign', 'wemail' ),
-                'editCampaign'           => __( 'Edit Campaign', 'wemail' ),
-                'campaignName'           => __( 'Campaign Name', 'wemail' ),
-                'campaignNameHint'       => __( 'Enter a name to help you remember what this campaign is all about. Only you will see this.', 'wemail' ),
-                'campaignType'           => __( 'Campaign Type', 'wemail' ),
-                'standard'               => __( 'Standard', 'wemail' ),
-                'automatic'              => __( 'Automatic', 'wemail' ),
-                'subscribers'            => __( 'Subscribers', 'wemail' ),
-                'lists'                  => __( 'Lists', 'wemail' ),
-                'segments'               => __( 'Segments', 'wemail' ),
-                'selectLists'            => __( 'Select Lists', 'wemal' ),
-                'selectSegments'         => __( 'Select Segments', 'wemal' ),
-                'setup'                  => __( 'Setup', 'wemail' ),
-                'template'               => __( 'Template', 'wemail' ),
-                'design'                 => __( 'Design', 'wemail' ),
-                'send'                   => __( 'Send', 'wemail' ),
-                'next'                   => __( 'Next', 'wemail' ),
-                'previous'               => __( 'Previous', 'wemail' ),
-                'automaticallySend'      => __( 'Automatically Send', 'wemail' ),
-                'noOptionFoundForAction' => __( 'no option found for this action', 'wemail' ),
-                'immediately'            => __( 'Immediately', 'wemail' ),
-                'hoursAfter'             => __( 'hour(s) after', 'wemail' ),
-                'daysAfter'              => __( 'day(s) after', 'wemail' ),
-                'weeksAfter'             => __( 'week(s) after', 'wemail' ),
-            ],
+            'i18n'         => $this->i18n(),
             'lists'        => wemail()->lists->all(),
             'segments'     => wemail()->segment->all(),
             'events'       => wemail()->campaign->event->all(),
@@ -82,6 +57,57 @@ class Editor {
                 ]
             ]
         ];
+    }
+
+    private function i18n() {
+        $i18n = [
+            'createCampaign'         => __( 'Create Campaign', 'wemail' ),
+            'editCampaign'           => __( 'Edit Campaign', 'wemail' ),
+            'campaignName'           => __( 'Campaign Name', 'wemail' ),
+            'campaignNameHint'       => __( 'Enter a name to help you remember what this campaign is all about. Only you will see this.', 'wemail' ),
+            'campaignType'           => __( 'Campaign Type', 'wemail' ),
+            'standard'               => __( 'Standard', 'wemail' ),
+            'automatic'              => __( 'Automatic', 'wemail' ),
+            'subscribers'            => __( 'Subscribers', 'wemail' ),
+            'lists'                  => __( 'Lists', 'wemail' ),
+            'segments'               => __( 'Segments', 'wemail' ),
+            'selectLists'            => __( 'Select Lists', 'wemal' ),
+            'selectSegments'         => __( 'Select Segments', 'wemal' ),
+            'setup'                  => __( 'Setup', 'wemail' ),
+            'template'               => __( 'Template', 'wemail' ),
+            'design'                 => __( 'Design', 'wemail' ),
+            'send'                   => __( 'Send', 'wemail' ),
+            'next'                   => __( 'Next', 'wemail' ),
+            'previous'               => __( 'Previous', 'wemail' ),
+            'automaticallySend'      => __( 'Automatically Send', 'wemail' ),
+            'noOptionFoundForAction' => __( 'no option found for this action', 'wemail' ),
+            'immediately'            => __( 'Immediately', 'wemail' ),
+            'hoursAfter'             => __( 'hour(s) after', 'wemail' ),
+            'daysAfter'              => __( 'day(s) after', 'wemail' ),
+            'weeksAfter'             => __( 'week(s) after', 'wemail' ),
+            'templates'              => __( 'Templates', 'wemail' ),
+            'all'                    => __( 'All', 'wemail' ),
+            'chooseTemplateCategory' => __( 'Choose a template category', 'wemail' ),
+            'templateNotFound'       => __( 'Template not found', 'wemail' ),
+            'previewTemplate'        => __( 'Preview Template', 'wemail' ),
+            'myTemplates'            => __( 'My Templates', 'wemail' ),
+            'noTemplateFound'        => __( 'No template found', 'wemail' ),
+            'searchTemplate'         => __( 'Search Templates', 'wemail' ),
+            'useThisTemplate'        => __( 'Use this template', 'wemail' ),
+            'preview'                => __( 'Preview', 'wemail' ),
+            'selectTemplate'         => __( 'Select Template', 'wemail' ),
+            'close'                  => __( 'Close', 'wemail' ),
+            'myTemplates'            => __( 'My Templates', 'wemail' )
+        ];
+
+        /**
+         * i18n strings for email campaign editor pages
+         *
+         * @since 1.0.0
+         *
+         * @param array $i18n
+         */
+        return apply_filters( 'wemail_campaign_editor_i18n', $i18n );
     }
 
     /**
@@ -202,7 +228,7 @@ class Editor {
      *
      * @return array
      */
-    public function i18n( $i18n ) {
+    public function customizer_i18n( $i18n ) {
         return array_merge( $i18n, [
             'wpPosts'           => __( 'WP Posts', 'wemail' ),
             'wpLatestContents'  => __( 'Latest Contents', 'wemail' ),

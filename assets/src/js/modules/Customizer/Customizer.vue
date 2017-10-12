@@ -8,6 +8,7 @@
             </div>
 
             <settings
+                v-if="!isPreview"
                 :context="context"
                 :customizer="customizer"
                 :template="template"
@@ -55,6 +56,12 @@
             template: {
                 type: Object,
                 required: true
+            },
+
+            isPreview: {
+                type: Boolean,
+                required: false,
+                default: false
             }
         },
 
@@ -114,7 +121,6 @@
 
     #customizer-container {
         height: calc(100vh - 138px);
-        margin-top: 8px;
         background-color: #fff;
         border: 1px solid $wp-border-color;
     }

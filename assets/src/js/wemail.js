@@ -34,13 +34,12 @@ weMail.ajax.post = (action, options) => {
 // weMail REST API
 const API = {
     root: weMail.api.root,
-    cdn: weMail.api.cdn,
     site: weMail.api.site,
     user: weMail.api.user,
     _query: {},
     _url: '',
 
-    getHeaders() {
+    headers() {
         return {
             site: this.site,
             user: this.user
@@ -76,7 +75,7 @@ const API = {
     get(url, query) {
         url = this.buildQuery(url, query);
 
-        const response = Ajax(url, 'get', this.getHeaders(), $.extend(true, {}, this._query));
+        const response = Ajax(url, 'get', this.headers(), $.extend(true, {}, this._query));
 
         this.resetProps();
 
@@ -86,7 +85,7 @@ const API = {
     post(url, data) {
         url = this.buildQuery(url);
 
-        const response = Ajax(url, 'post', this.getHeaders(), $.extend(true, {}, data));
+        const response = Ajax(url, 'post', this.headers(), $.extend(true, {}, data));
 
         this.resetProps();
 

@@ -461,7 +461,7 @@
                 background: #fff;
                 border-bottom: 1px solid $wp-border-color;
 
-                @include transition();
+                @include transition;
 
                 &:hover {
                     background: $wp-body-bg;

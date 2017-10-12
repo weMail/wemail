@@ -63,7 +63,7 @@
             padding: 15px 10px;
             line-height: 0;
 
-            @include transition();
+            @include transition;
 
             &:hover {
                 background-color: $wp-body-bg;
@@ -72,6 +72,54 @@
             img {
                 max-width: 100%;
                 height: auto;
+            }
+        }
+    }
+}
+
+// imitates the ul.subsubsub found in wp admin ui
+.list-sub {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+
+    @include list-unstyled;
+
+    li {
+        position: relative;
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        white-space: nowrap;
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        &:after {
+            position: absolute;
+            top: -1px;
+            right: -9px;
+            content: "|";
+        }
+
+        &:last-child:after {
+            content: "";
+        }
+
+        a {
+            font-weight: 500;
+            color: $wp-blue;
+            text-decoration: none;
+        }
+
+        &.active {
+
+            a {
+                color: #000;
+                pointer-events: none;
+                cursor: default;
             }
         }
     }

@@ -472,7 +472,7 @@
                         color: $wp-black;
                         opacity: 0.5;
 
-                        @include transition();
+                        @include transition;
 
                         &:hover {
                             opacity: 1;
@@ -522,7 +522,7 @@
             box-shadow: none !important;
             opacity: 0.3;
 
-            @include transition();
+            @include transition;
 
             span {
                 display: block;

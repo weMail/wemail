@@ -33,6 +33,16 @@ class Scripts {
     }
 
     public function localized_script_vars() {
+        /**
+         * weMail CDN url
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
+        $cdn = apply_filters( 'wemail_cdn_root', 'https://cdn.wemail.com' );
+        $cdn = untrailingslashit( $cdn );
+
         $time_format = get_option( 'time_format', 'g:i a' );
 
         $wemail = [
@@ -52,6 +62,7 @@ class Scripts {
 
             'ajax'                 => function () {}, // function will be render as object
             'api'                  => wemail()->api->get_props(),
+            'cdn'                  => $cdn,
 
             // Vue related data
             'subMenuMap'           => [],

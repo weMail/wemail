@@ -38,3 +38,14 @@
         padding: 0 25px;
     }
 }
+
+.button-group {
+
+    &.button-group-equal-width {
+        display: flex !important;
+
+        .button {
+            flex: 1;
+        }
+    }
+}

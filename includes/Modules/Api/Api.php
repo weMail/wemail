@@ -20,15 +20,6 @@ class Api {
     public $root;
 
     /**
-     * CDN root
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $cdn;
-
-    /**
      * Site authentication key
      *
      * @since 1.0.0
@@ -73,10 +64,8 @@ class Api {
      */
     public function __construct() {
         $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
-        $cdn  = apply_filters( 'wemail_cdn_root', 'https://cdn.wemail.com' );
 
         $this->root  = untrailingslashit( $root );
-        $this->cdn   = untrailingslashit( $cdn );
         $this->site  = get_option( 'wemail-api-site-key', 'siteKey' );
         $this->user  = get_user_meta( get_current_user_id(), 'wemail-api-user-key', 'userKey' );
     }
@@ -113,7 +102,6 @@ class Api {
     public function get_props() {
         return [
             'root'  => $this->root,
-            'cdn'   => $this->cdn,
             'site'  => $this->site,
             'user'  => $this->user
         ];

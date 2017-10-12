@@ -2,10 +2,29 @@
     <customizer
         context="campaign"
         :customizer="customizer"
-        :template="campaign.email.template"
+        :template="emailTemplate"
+        :is-preview="isPreview"
     >
         <div slot="header">
-            <h1>{{ i18n.editCampaign }}</h1>
+            <h1 class="edit-template-title">{{ pageTitle }}</h1>
+
+            <div v-if="isPreview" class="preview-header clearfix">
+                <strong class="preview-template-name">{{ i18n.template }}: {{ templateName }}</strong>
+
+                <span class="float-right">
+                    <button
+                        type="button"
+                        class="button button-primary"
+                        @click="selectTemplate"
+                    >{{ i18n.selectTemplate }}</button>
+
+                    <button
+                        type="button"
+                        class="button"
+                        @click="closePreview"
+                    >{{ i18n.close }}</button>
+                </span>
+            </div>
         </div>
     </customizer>
 </template>
@@ -22,8 +41,52 @@
             Customizer
         },
 
+        props: {
+            isPreview: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+
+            template: {
+                type: Object,
+                required: false,
+                default() {
+                    return {};
+                }
+            },
+
+            title: {
+                type: String,
+                required: false,
+                default: ''
+            },
+
+            templateName: {
+                type: String,
+                required: false,
+                default: ''
+            }
+        },
+
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'campaign', 'customizer'])
+            ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'customizer']),
+
+            emailTemplate() {
+                if (!this.isPreview) {
+                    return this.$store.state.campaignEdit.campaign.email.template;
+                }
+
+                return this.template;
+            },
+
+            pageTitle() {
+                if (!this.title) {
+                    return this.i18n.editCampaign;
+                }
+
+                return this.title;
+            }
         },
 
         created() {
@@ -40,6 +103,35 @@
 
         destroyed() {
             $('body').removeClass('wemail-fixed-body');
+        },
+
+        methods: {
+            selectTemplate() {
+                weMail.event.$emit('campaign-customizer-select-template');
+            },
+
+            closePreview() {
+                weMail.event.$emit('campaign-customizer-close-preview');
+            }
         }
     };
 </script>
+
+<style lang="scss">
+    .edit-template-title {
+        margin-bottom: 8px !important;
+    }
+
+    .preview-header {
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid $wp-border-color;
+        border-bottom: 0;
+
+        .preview-template-name {
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+    }
+</style>

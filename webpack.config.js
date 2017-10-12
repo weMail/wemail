@@ -101,6 +101,12 @@ const plugins = [
         files: [
             'assets/src/scss/**/*.scss', 'assets/src/js/**/*.vue'
         ]
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+        async: true,
+        children: true,
+        minChunks: 6
     })
 ];
 

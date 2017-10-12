@@ -151,7 +151,7 @@
                 position: relative;
                 width: auto;
                 padding: 0;
-                margin: 0;
+                margin: 0 0 0 -25px;
 
                 li {
                     position: relative;
@@ -228,7 +228,7 @@
             border-radius: 0;
             box-shadow: none;
 
-            @include transition();
+            @include transition;
 
             &:active {
                 box-shadow: none;

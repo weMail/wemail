@@ -87,7 +87,7 @@
                                         :customizer="customizerObj"
                                     ></component>
 
-                                    <div class="control-buttons">
+                                    <div v-if="!isPreview" class="control-buttons">
                                         <p>
                                             <i class="fa fa-arrows move"></i>
                                             <i
@@ -115,11 +115,5 @@
             </tr>
         </table>
     </div>
-
-    <style>
-        tr.section {
-            border: 1px dashed #ddd;
-        }
-    </style>
 </body>
 </html>

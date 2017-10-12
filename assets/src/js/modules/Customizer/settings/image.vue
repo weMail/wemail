@@ -338,7 +338,7 @@
             margin: 0 0 8px;
             font-size: 15px;
 
-            @include text-truncate();
+            @include text-truncate;
 
             button.button.button-link {
                 position: absolute;

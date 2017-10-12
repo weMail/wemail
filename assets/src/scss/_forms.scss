@@ -3,7 +3,8 @@
 // -----------------------------
 input {
 
-    &[type="text"] {
+    &[type="text"],
+    &[type="search"] {
         padding: 4px 5px 5px;
         margin: 0;
         line-height: 1.3;

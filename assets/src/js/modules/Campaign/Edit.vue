@@ -11,6 +11,12 @@
     export default {
         routeName: 'campaignEdit',
 
+        mutations: {
+            setEmailTemplate(state, payload) {
+                state.campaign.email.template = payload;
+            }
+        },
+
         mixins: weMail.getMixins('routeComponent'),
 
         components: {

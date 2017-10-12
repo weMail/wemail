@@ -21,6 +21,10 @@ export default function (Customizer) {
 
             template() {
                 return Customizer.template;
+            },
+
+            isPreview() {
+                return Customizer.isPreview;
             }
         },
 
@@ -31,6 +35,10 @@ export default function (Customizer) {
 
         mounted() {
             this.printGlobalElementStyles();
+
+            if (this.isPreview) {
+                return;
+            }
 
             const contentTypes = $('tbody', '#customizer-content-types').get(0);
 

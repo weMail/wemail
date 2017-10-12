@@ -348,7 +348,7 @@
                 border-bottom: 1px solid $wp-border-color;
                 opacity: 0.6;
 
-                @include transition();
+                @include transition;
 
                 &:hover {
                     border-bottom-color: $wp-black;
