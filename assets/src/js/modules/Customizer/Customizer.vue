@@ -72,14 +72,14 @@
         },
 
         created() {
-            weMail.Vue.component('customizer-content-settings-text', settingsText);
-            weMail.Vue.component('customizer-content-settings-image', settingsImage);
-            weMail.Vue.component('customizer-content-settings-image-caption', settingsImageCaption);
-            weMail.Vue.component('customizer-content-settings-social-follow', settingsSocialFollow);
-            weMail.Vue.component('customizer-content-settings-button', settingsButton);
-            weMail.Vue.component('customizer-content-settings-divider', settingsDivider);
-            weMail.Vue.component('customizer-content-settings-video', settingsVideo);
-            weMail.Vue.component('customizer-content-settings-footer', settingsFooter);
+            Vue.component('customizer-content-settings-text', settingsText);
+            Vue.component('customizer-content-settings-image', settingsImage);
+            Vue.component('customizer-content-settings-image-caption', settingsImageCaption);
+            Vue.component('customizer-content-settings-social-follow', settingsSocialFollow);
+            Vue.component('customizer-content-settings-button', settingsButton);
+            Vue.component('customizer-content-settings-divider', settingsDivider);
+            Vue.component('customizer-content-settings-video', settingsVideo);
+            Vue.component('customizer-content-settings-footer', settingsFooter);
         },
 
         mounted() {
@@ -96,7 +96,7 @@
                 contentFooter
             });
 
-            const iframeInstance = new weMail.Vue(Iframe(vm));
+            const iframeInstance = new Vue(Iframe(vm));
 
             const INTERVAL = 300;
 

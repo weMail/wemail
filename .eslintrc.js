@@ -19,7 +19,14 @@ module.exports = {
     globals: {
         weMail: true,
         wp: true,
-        __webpack_public_path__: true
+        __webpack_public_path__: true,
+        Vue: true,
+        Vuex: true,
+        VueRouter: true,
+        _: true,
+        swal2: true,
+        Sortable: true,
+        moment: true
     },
     // rules are mostly copied from Bootstrap v4-dev
     // https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/js/.eslintrc.json

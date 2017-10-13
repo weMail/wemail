@@ -10,7 +10,7 @@ import foo from './components/foo.vue';
 import bar from './components/bar.vue';
 
 // Global Mixins
-weMail.Vue.mixin(alert);
+Vue.mixin(alert);
 
 // Local mixins
 weMail.registerMixins({
@@ -19,10 +19,10 @@ weMail.registerMixins({
 });
 
 // Global components
-weMail.Vue.component('Multiselect', Multiselect);
-weMail.Vue.component('DoAction', DoAction);
-weMail.Vue.component('TextEditor', TextEditor);
-weMail.Vue.component('ColorPicker', ColorPicker);
-weMail.Vue.component('InputRange', InputRange);
-weMail.Vue.component('foo', foo);
-weMail.Vue.component('bar', bar);
+Vue.component('Multiselect', Multiselect);
+Vue.component('DoAction', DoAction);
+Vue.component('TextEditor', TextEditor);
+Vue.component('ColorPicker', ColorPicker);
+Vue.component('InputRange', InputRange);
+Vue.component('foo', foo);
+Vue.component('bar', bar);

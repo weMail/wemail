@@ -1,8 +1,10 @@
+import { format } from './date/index.js';
+
 // Vue Store
-weMail.store = new weMail.Vuex.Store({});
+weMail.store = new Vuex.Store({});
 
 // Global Event Bus
-weMail.event = new weMail.Vue();
+weMail.event = new Vue();
 
 // jQuery ajax wrapper
 function Ajax(url, method, headers, data) {
@@ -108,7 +110,7 @@ weMail.api = new Proxy(API, {
         }
 
         return function (param) {
-            this._url += `/${weMail._.kebabCase(field)}`;
+            this._url += `/${_.kebabCase(field)}`;
 
             if (param) {
                 this._url += `/${param}`;
@@ -130,7 +132,7 @@ weMail.registerStore = function (routeName, store) {
 
 // Register vue mixins
 weMail.registerMixins = function (mixins) {
-    weMail._.forEach(mixins, (mixin, name) => {
+    _.forEach(mixins, (mixin, name) => {
         if (!weMail.mixins[name]) {
             weMail.mixins[name] = mixin;
         }
@@ -160,7 +162,7 @@ weMail.getChildRoutes = function (parent) {
 weMail.components = {};
 
 weMail.registerComponents = function (components) {
-    weMail._.forEach(components, (component, name) => {
+    _.forEach(components, (component, name) => {
         if (!weMail.components[name]) {
             weMail.components[name] = component;
         }
@@ -175,7 +177,10 @@ weMail.setCustomizerContentComponents = function (context, components) {
         weMail.customizerContentComponents[context] = {};
     }
 
-    weMail._.forEach(components, (component, name) => {
+    _.forEach(components, (component, name) => {
         weMail.customizerContentComponents[context][name] = component;
     });
 };
+
+// wp date-time format to moment js date-time formatting helper function
+weMail.dateFormat = format;

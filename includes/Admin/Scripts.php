@@ -15,13 +15,13 @@ class Scripts {
     public function enqueue_styles() {
         do_action( 'wemail_admin_before_enqueue_styles' );
 
-        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', ['wemail-tiny-mce'], WEMAIL_VERSION );
+        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', ['wemail-tiny-mce'], wemail()->core->scripts->version );
     }
 
     public function enqueue_scripts() {
         do_action( 'wemail_admin_before_enqueue_scripts' );
 
-        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', ['wemail-common'] , WEMAIL_VERSION, true );
+        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', ['wemail-common'] , wemail()->core->scripts->version, true );
 
         $this->localized_script();
     }

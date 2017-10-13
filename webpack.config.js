@@ -89,7 +89,13 @@ const vueLoaderConfig = {
 
 const plugins = [
     new webpack.ProvidePlugin({
-        $: 'jQuery'
+        $: 'jQuery',
+        Vue: 'Vue',
+        Vuex: 'Vuex',
+        VueRouter: 'VueRouter',
+        _: '_',
+        swal2: 'swal2',
+        Sortable: 'Sortable'
     }),
 
     new ExtractTextPlugin({
@@ -107,7 +113,10 @@ const plugins = [
         async: true,
         children: true,
         minChunks: 6
-    })
+    }),
+
+    // Ignore all optional deps of moment.js
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
 ];
 
 if (isProduction()) {
@@ -149,7 +158,13 @@ module.exports = {
     },
 
     externals: {
-        jQuery: 'jQuery'
+        jQuery: 'jQuery',
+        Vue: 'weMail.Vue',
+        Vuex: 'weMail.Vuex',
+        VueRouter: 'weMail.VueRouter',
+        _: 'weMail._',
+        swal2: 'weMail.swal2',
+        Sortable: 'weMail.Sortable'
     },
 
     plugins,

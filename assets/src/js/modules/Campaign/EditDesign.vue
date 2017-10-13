@@ -70,7 +70,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'customizer']),
+            ...Vuex.mapState('campaignEdit', ['i18n', 'customizer']),
 
             emailTemplate() {
                 if (!this.isPreview) {
@@ -95,8 +95,8 @@
                 contentWpLatestContents
             });
 
-            weMail.Vue.component('customizer-content-settings-wp-posts', settingsWpPosts);
-            weMail.Vue.component('customizer-content-settings-wp-latest-contents', settingsWpLatestContents);
+            Vue.component('customizer-content-settings-wp-posts', settingsWpPosts);
+            Vue.component('customizer-content-settings-wp-latest-contents', settingsWpLatestContents);
 
             $('body').addClass('wemail-fixed-body');
         },

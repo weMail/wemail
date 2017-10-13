@@ -54,7 +54,7 @@
 
         computed: {
             currentStep() {
-                return weMail._.last(this.$route.path.split('/'));
+                return _.last(this.$route.path.split('/'));
             },
 
             showNextBtn() {
@@ -84,7 +84,7 @@
 
         methods: {
             getStepLink(step) {
-                const name = `campaignEdit${weMail._.upperFirst(step)}`;
+                const name = `campaignEdit${_.upperFirst(step)}`;
 
                 return {
                     name,
@@ -102,7 +102,7 @@
                 const nextStep = this.steps[this.steps.indexOf(this.currentStep) + 1];
 
                 this.$router.push({
-                    name: `campaignEdit${weMail._.upperFirst(nextStep)}`,
+                    name: `campaignEdit${_.upperFirst(nextStep)}`,
                     params: {
                         id: this.$route.params.id
                     }
@@ -113,7 +113,7 @@
                 const prevStep = this.steps[this.steps.indexOf(this.currentStep) - 1];
 
                 this.$router.push({
-                    name: `campaignEdit${weMail._.upperFirst(prevStep)}`,
+                    name: `campaignEdit${_.upperFirst(prevStep)}`,
                     params: {
                         id: this.$route.params.id
                     }

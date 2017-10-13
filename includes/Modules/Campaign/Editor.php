@@ -116,7 +116,8 @@ class Editor {
             'charactersRemaining'    => __( 'characters remaining', 'wemail' ),
             'invalidEmailAddress'    => __( 'Invalid email address', 'wemail' ),
             'noListSelected'         => __( 'No list selected', 'wemail' ),
-            'noSegmentSelected'      => __( 'No segment selected', 'wemail' )
+            'noSegmentSelected'      => __( 'No segment selected', 'wemail' ),
+            'currentServerTimeIs'    => __( 'Current server time is', 'wemail' ),
         ];
 
         /**

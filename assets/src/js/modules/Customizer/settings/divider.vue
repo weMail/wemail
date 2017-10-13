@@ -306,7 +306,7 @@
 
         methods: {
             upperFirst(string) {
-                return weMail._.upperFirst(string);
+                return _.upperFirst(string);
             },
 
             showGallery() {

@@ -46,7 +46,7 @@
                                 :custom-label="customLabel"
                                 class="margin-bottom-20"
                             >
-                                <template slot="option" scope="props">{{ props.option.name }}</template>
+                                <template slot="option" slot-scope="props">{{ props.option.name }}</template>
                             </multiselect>
 
                             <p class="clearfix">
@@ -63,7 +63,7 @@
                                 track-by="name"
                                 :custom-label="customLabel"
                             >
-                                <template slot="option" scope="props">{{ props.option.name }}</template>
+                                <template slot="option" slot-scope="props">{{ props.option.name }}</template>
                             </multiselect>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
             },
 
             eventOptions() {
-                return weMail._.chain(this.events)
+                return _.chain(this.events)
                     .filter({
                         action: this.campaign.event.action
                     })
@@ -197,13 +197,13 @@
 
         methods: {
             customLabel(option) {
-                return weMail._.truncate(option.name, {
+                return _.truncate(option.name, {
                     length: 22
                 });
             },
 
             customOption(name) {
-                return weMail._.truncate(name, {
+                return _.truncate(name, {
                     length: 20
                 });
             },

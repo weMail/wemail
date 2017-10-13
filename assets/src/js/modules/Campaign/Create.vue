@@ -30,7 +30,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignCreate', ['i18n', 'campaign'])
+            ...Vuex.mapState('campaignCreate', ['i18n', 'campaign'])
         },
 
         methods: {

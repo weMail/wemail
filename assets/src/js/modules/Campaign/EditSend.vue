@@ -165,8 +165,10 @@
 
                         <div v-else>
                             <input type="checkbox" v-model="isScheduled">&nbsp;
-                            <input type="text" v-model="deliverDate">&nbsp;@&nbsp;
-                            <input type="text" v-model="deliverTime">
+                            <input type="text" v-model="deliverDate" :placeholder="serverDate">&nbsp;@&nbsp;
+                            <input type="text" v-model="deliverTime" :placeholder="serverTime">
+
+                            <p class="hint">{{ i18n.currentServerTimeIs }} {{ serverDate }} {{ serverTime }}</p>
                         </div>
                     </td>
                 </tr>
@@ -198,7 +200,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
+            ...Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
 
             email() {
                 return this.campaign.email;
@@ -270,6 +272,18 @@
                 return this.$store.state.campaignEdit.segments.filter((segment) => {
                     return vm.campaign.segments.indexOf(segment.id) >= 0;
                 });
+            },
+
+            serverDateTime() {
+                return moment.tz(weMail.dateTime.server.timezone);
+            },
+
+            serverDate() {
+                return weMail.dateFormat(weMail.dateTime.server.dateFormat, this.serverDateTime);
+            },
+
+            serverTime() {
+                return weMail.dateFormat(weMail.dateTime.server.timeFormat, this.serverDateTime);
             }
         },
 

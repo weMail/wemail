@@ -37,7 +37,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('settings', ['i18n', 'settings']),
+            ...Vuex.mapState('settings', ['i18n', 'settings']),
 
             company() {
                 return this.$store.state.settingsCompany ? this.$store.state.settingsCompany.settings : {};
@@ -56,7 +56,7 @@
             },
 
             setSettingsTitle() {
-                this.settingsTitle = weMail._.chain(this.settings).filter({
+                this.settingsTitle = _.chain(this.settings).filter({
                     routeName: this.$route.name
                 }).head().value().menu;
             },

@@ -169,7 +169,7 @@
             },
 
             getSettingsComponentName() {
-                return `customizer-content-settings-${weMail._.kebabCase(this.content.type)}`;
+                return `customizer-content-settings-${_.kebabCase(this.content.type)}`;
             },
 
             saveAndClose() {

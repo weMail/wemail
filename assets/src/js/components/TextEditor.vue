@@ -59,13 +59,13 @@
                 setup(editor) {
                     const shortcodeMenuItems = [];
 
-                    weMail._.forEach(vm.shortcodes, (shortcodeObj, shortcodeType) => {
+                    _.forEach(vm.shortcodes, (shortcodeObj, shortcodeType) => {
                         shortcodeMenuItems.push({
                             text: shortcodeObj.title,
                             classes: 'menu-section-title'
                         });
 
-                        weMail._.forEach(shortcodeObj.codes, (codeObj, shortcode) => {
+                        _.forEach(shortcodeObj.codes, (codeObj, shortcode) => {
                             shortcodeMenuItems.push({
                                 text: codeObj.title,
                                 onclick() {

@@ -15,7 +15,7 @@
         mixins: weMail.getMixins('routeComponent'),
 
         computed: {
-            ...weMail.Vuex.mapState('campaignShow', ['i18n', 'campaign'])
+            ...Vuex.mapState('campaignShow', ['i18n', 'campaign'])
         }
     };
 </script>

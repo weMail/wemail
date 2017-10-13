@@ -47,7 +47,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignIndex', ['i18n', 'campaigns'])
+            ...Vuex.mapState('campaignIndex', ['i18n', 'campaigns'])
         },
 
         beforeMount() {
@@ -81,7 +81,7 @@
                 if (search) {
                     query.s = search;
                 } else {
-                    weMail.Vue.delete(query, 's');
+                    Vue.delete(query, 's');
                 }
 
                 this.$router.replace({

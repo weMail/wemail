@@ -47,7 +47,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('lists', ['i18n', 'lists'])
+            ...Vuex.mapState('lists', ['i18n', 'lists'])
         },
 
         beforeMount() {
@@ -81,7 +81,7 @@
                 if (search) {
                     query.s = search;
                 } else {
-                    weMail.Vue.delete(query, 's');
+                    Vue.delete(query, 's');
                 }
 
                 this.$router.replace({

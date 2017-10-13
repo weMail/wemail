@@ -14,7 +14,7 @@
         mixins: weMail.getMixins('routeComponent'),
 
         computed: {
-            ...weMail.Vuex.mapState('list', ['list'])
+            ...Vuex.mapState('list', ['list'])
         }
     };
 </script>

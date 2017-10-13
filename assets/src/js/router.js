@@ -16,7 +16,7 @@ const routes = [
     FourZeroFour
 ];
 
-const router = new weMail.VueRouter({
+const router = new VueRouter({
     routes
 });
 

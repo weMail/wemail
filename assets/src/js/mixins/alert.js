@@ -12,7 +12,7 @@ export default {
 
             args[0] = $.extend(true, defaults, args[0]);
 
-            return weMail.swal2(...args).catch(weMail.swal2.noop);
+            return swal2(...args).catch(swal2.noop);
         }
     }
 };

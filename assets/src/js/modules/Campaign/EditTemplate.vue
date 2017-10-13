@@ -99,7 +99,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
+            ...Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
 
             templateCategories() {
                 let i = 0;
@@ -153,7 +153,7 @@
                 const vm = this;
 
                 weMail.api.templates(selectedTemplate.slug).get().done((template) => {
-                    if (weMail._.isEmpty(template)) {
+                    if (_.isEmpty(template)) {
                         this.alert({
                             type: 'error',
                             text: vm.i18n.templateNotFound

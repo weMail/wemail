@@ -112,7 +112,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('settingsCompany', ['countries', 'states']),
+            ...Vuex.mapState('settingsCompany', ['countries', 'states']),
 
             logo: {
                 get() {
@@ -125,7 +125,7 @@
             },
 
             countryOptions() {
-                return weMail._.map(this.countries, (name, code) => {
+                return _.map(this.countries, (name, code) => {
                     return {
                         code,
                         name
@@ -147,7 +147,7 @@
             },
 
             stateOptions() {
-                return weMail._.map(this.states, (name, code) => {
+                return _.map(this.states, (name, code) => {
                     return {
                         code,
                         name

@@ -24,7 +24,7 @@
         },
 
         computed: {
-            ...weMail.Vuex.mapState('campaignEdit', ['i18n'])
+            ...Vuex.mapState('campaignEdit', ['i18n'])
         }
     };
 </script>

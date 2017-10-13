@@ -4,7 +4,7 @@ import '../scss/admin.scss';
 __webpack_public_path__ = `${weMail.assetsURL}/js/`; // eslint-disable-line camelcase
 
 // The main Vue instance
-weMail.admin = new weMail.Vue({
+weMail.admin = new Vue({
     el: '#wemail-admin',
     store: weMail.store,
     router,
@@ -31,7 +31,7 @@ weMail.admin = new weMail.Vue({
                 if (pathParts.length > 1) {
                     parent = `/${pathParts[1]}`;
                 } else {
-                    const route = weMail._.chain(weMail.subMenuMap)
+                    const route = _.chain(weMail.subMenuMap)
                         .filter({
                             name: rootRoute.name
                         })

@@ -42,7 +42,7 @@ export default function (Customizer) {
 
             const contentTypes = $('tbody', '#customizer-content-types').get(0);
 
-            weMail.Sortable.create(contentTypes, {
+            Sortable.create(contentTypes, {
                 group: {
                     name: 'sortable-group',
                     pull: 'clone',
@@ -76,11 +76,11 @@ export default function (Customizer) {
             printGlobalElementStyles() {
                 let style = '';
 
-                weMail._.forEach(this.template.globalElementStyles, (styles, selector) => {
+                _.forEach(this.template.globalElementStyles, (styles, selector) => {
                     style += `${selector} {`;
 
-                    weMail._.forEach(styles, (value, property) => {
-                        const prop = weMail._.kebabCase(property);
+                    _.forEach(styles, (value, property) => {
+                        const prop = _.kebabCase(property);
 
                         style += `${prop}: ${value};`;
                     });
@@ -99,7 +99,7 @@ export default function (Customizer) {
                 const vm = this;
 
                 $('#wemail-customizer-iframe').contents().find('.responsive-table > tbody').each(function () {
-                    weMail.Sortable.create(this, {
+                    Sortable.create(this, {
                         group: 'sortable-group',
                         scrollSensitivity: 300,
                         handle: '.move',
