@@ -168,8 +168,14 @@
                             <input type="text" v-model="deliverDate" :placeholder="serverDate">&nbsp;@&nbsp;
                             <input type="text" v-model="deliverTime" :placeholder="serverTime">
 
+                            <br>
+
                             <p class="hint">{{ i18n.currentServerTimeIs }} {{ serverDate }} {{ serverTime }}</p>
                         </div>
+
+                        <datepicker v-model="deliverDate" :placeholder="serverDate"></datepicker>
+
+                        <pre>{{ campaign.deliver_at }}</pre>
                     </td>
                 </tr>
                 <tr>
@@ -233,28 +239,28 @@
             deliverDate: {
                 get() {
                     if (!this.campaign.deliver_at) {
-                        return '';
+                        return moment.tz(weMail.dateTime.server.timezone).add(1, 'd').format('YYYY-MM-DD');
                     }
 
                     return this.campaign.deliver_at.split(' ')[0];
                 },
 
                 set(date) {
-                    console.log(date);
+                    this.campaign.deliver_at = `${date} ${this.deliverTime}`;
                 }
             },
 
             deliverTime: {
                 get() {
                     if (!this.campaign.deliver_at) {
-                        return '';
+                        return moment.tz(weMail.dateTime.server.timezone).add(1, 'd').format('HH:mm:ss');
                     }
 
                     return this.campaign.deliver_at.split(' ')[1];
                 },
 
                 set(time) {
-                    console.log(time);
+                    this.campaign.deliver_at = `${this.deliverDate} ${time}`;
                 }
             },
 
@@ -279,11 +285,11 @@
             },
 
             serverDate() {
-                return weMail.dateFormat(weMail.dateTime.server.dateFormat, this.serverDateTime);
+                return weMail.dateTime.toMoment(weMail.dateTime.server.dateFormat, this.serverDateTime);
             },
 
             serverTime() {
-                return weMail.dateFormat(weMail.dateTime.server.timeFormat, this.serverDateTime);
+                return weMail.dateTime.toMoment(weMail.dateTime.server.timeFormat, this.serverDateTime);
             }
         },
 

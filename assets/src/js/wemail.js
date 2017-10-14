@@ -1,4 +1,4 @@
-import { format } from './date/index.js';
+import { momentMap, format } from './date.js';
 
 // Vue Store
 weMail.store = new Vuex.Store({});
@@ -183,4 +183,39 @@ weMail.setCustomizerContentComponents = function (context, components) {
 };
 
 // wp date-time format to moment js date-time formatting helper function
-weMail.dateFormat = format;
+weMail.dateTime.toMoment = format;
+
+weMail.dateTime.getMomentFormat = function (dateFormat) {
+    const formatMap = momentMap();
+    let i;
+    let char;
+    const newFormat = [];
+
+    for (i = 0; i < dateFormat.length; i++) {
+        char = dateFormat[i];
+
+        // Is this an escape?
+        if (char === '\\') {
+            // Add next character, then move on.
+            i++;
+            newFormat.push(`[${dateFormat[i]}]`);
+            continue;
+        }
+
+        if (char in formatMap) {
+            if (typeof formatMap[char] !== 'string') {
+                newFormat.push(`[${char}]`);
+            } else {
+                // Otherwise, add as a formatting string.
+                newFormat.push(formatMap[char]);
+            }
+        } else {
+            newFormat.push(`[${char}]`);
+        }
+    }
+
+    return newFormat.join('[]');
+};
+
+weMail.momentDateFormat = weMail.dateTime.getMomentFormat(weMail.dateTime.server.dateFormat);
+weMail.momentTimeFormat = weMail.dateTime.getMomentFormat(weMail.dateTime.server.timeFormat);

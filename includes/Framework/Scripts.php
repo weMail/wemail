@@ -19,6 +19,7 @@ class Scripts {
     }
 
     private function register_styles() {
+        wp_register_style( 'wemail-jquery-ui', WEMAIL_ASSETS . '/vendor/jquery-ui/jquery-ui.min.css', [], $this->version );
         wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), ['wp-color-picker'], $this->version );
     }
 
@@ -53,24 +54,18 @@ class Scripts {
             'ajaxurl'              => admin_url( 'admin-ajax.php' ),
             'assetsURL'            => WEMAIL_ASSETS,
             'scriptDebug'          => $this->script_debug,
-            // 'date'                 => [
-            //     'format'           => wemail_js_date_format(),
-            //     'placeholder'      => wemail_format_date( 'now' )
-            // ],
-            // 'time'                 => [
-            //     'format'           => $time_format,
-            //     'placeholder'      => date( $time_format )
-            // ],
-
             'dateTime'             => [
                 'server'           => [
                     'timezone'     => wemail_get_wp_timezone(),
                     'date'         => current_time( 'Y-m-d' ),
                     'time'         => current_time( 'H:i:s' ),
                     'dateFormat'   => get_option( 'date_format', 'Y-m-d' ),
-                    'timeFormat'   => get_option( 'time_format', 'g:i a' )
+                    'timeFormat'   => get_option( 'time_format', 'g:i a' ),
+                    'startOfWeek'  => get_option( 'start_of_week', 0 ),
                 ],
-                'datepicker'       => []
+                'toMoment'         => '',
+                'momentDateFormat' => '',
+                'momentTimeFormat' => '',
             ],
 
             'ajax'                 => function () {}, // function will be render as object

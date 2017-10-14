@@ -15,7 +15,7 @@ class Scripts {
     public function enqueue_styles() {
         do_action( 'wemail_admin_before_enqueue_styles' );
 
-        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', ['wemail-tiny-mce'], wemail()->core->scripts->version );
+        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', ['wemail-jquery-ui', 'wemail-tiny-mce'], wemail()->core->scripts->version );
     }
 
     public function enqueue_scripts() {

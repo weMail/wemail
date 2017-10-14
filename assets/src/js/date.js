@@ -201,3 +201,7 @@ export function format( dateFormat, dateValue = new Date() ) {
     newFormat = newFormat.join( '[]' );
     return momentDate.format( newFormat );
 }
+
+export function momentMap() {
+    return formatMap;
+}
