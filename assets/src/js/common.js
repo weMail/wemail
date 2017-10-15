@@ -7,6 +7,7 @@ import TextEditor from './components/TextEditor.vue';
 import ColorPicker from './components/ColorPicker.vue';
 import InputRange from './components/InputRange.vue';
 import Datepicker from './components/Datepicker.vue';
+import Timepicker from './components/Timepicker.vue';
 
 // Global Mixins
 Vue.mixin(alert);
@@ -24,3 +25,4 @@ Vue.component('TextEditor', TextEditor);
 Vue.component('ColorPicker', ColorPicker);
 Vue.component('InputRange', InputRange);
 Vue.component('Datepicker', Datepicker);
+Vue.component('Timepicker', Timepicker);

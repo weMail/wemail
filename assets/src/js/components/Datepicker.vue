@@ -76,7 +76,7 @@
                 }
             }
 
-            $(this.$el).datepicker({
+            $(vm.$el).datepicker({
                 dateFormat: datepickerFormat,
                 changeMonth: vm.changeMonthYear,
                 changeYear: vm.changeMonthYear,
@@ -94,7 +94,11 @@
 
         methods: {
             updateValue(value) {
-                value = moment(value, weMail.momentDateFormat).format('YYYY-MM-DD');
+                if (!value) {
+                    value = moment().format('YYYY-MM-DD');
+                } else {
+                    value = moment(value, weMail.momentDateFormat).format('YYYY-MM-DD');
+                }
                 this.$emit('input', value);
             }
         }

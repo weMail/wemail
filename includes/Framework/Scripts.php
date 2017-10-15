@@ -20,6 +20,7 @@ class Scripts {
 
     private function register_styles() {
         wp_register_style( 'wemail-jquery-ui', WEMAIL_ASSETS . '/vendor/jquery-ui/jquery-ui.min.css', [], $this->version );
+        wp_register_style( 'wemail-timepicker', WEMAIL_ASSETS . '/vendor/jquery-timepicker/jquery.timepicker.min.css', [], $this->version );
         wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), ['wp-color-picker'], $this->version );
     }
 
@@ -28,11 +29,16 @@ class Scripts {
         wp_register_script( 'wemail-tiny-mce-code', WEMAIL_ASSETS . '/vendor/tinymce/plugins/code/plugin.min.js', [ 'wemail-tiny-mce' ], $this->version, true );
         wp_register_script( 'wemail-tiny-mce-hr', WEMAIL_ASSETS . '/vendor/tinymce/plugins/hr/plugin.min.js', [ 'wemail-tiny-mce-code' ], $this->version, true );
 
-        wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/vendor.js', ['jquery', 'wemail-tiny-mce-hr', 'wp-color-picker'], $this->version, true );
-        wp_register_script( 'wemail-moment', WEMAIL_ASSETS . '/vendor/moment/moment.min.js', ['wemail-vendor'], $this->version, true );
+        wp_register_script( 'wemail-vendor', WEMAIL_ASSETS . '/js/vendor.js', ['jquery'], $this->version, true );
+
+        wp_register_script( 'wemail-moment', WEMAIL_ASSETS . '/vendor/moment/moment.min.js', [], $this->version, true );
         wp_register_script( 'wemail-moment-timezone', WEMAIL_ASSETS . '/vendor/moment/moment-timezone-with-data-2012-2022.min.js', ['wemail-moment'], $this->version, true );
-        wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['wemail-moment-timezone'], $this->version, true );
-        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker'] , $this->version, true );
+
+        wp_register_script( 'wemail', WEMAIL_ASSETS . '/js/wemail.js', ['wemail-vendor', 'wemail-moment', 'wemail-moment-timezone'], $this->version, true );
+
+        wp_register_script( 'wemail-timepicker', WEMAIL_ASSETS . '/vendor/jquery-timepicker/jquery.timepicker.min.js', [], $this->version, true );
+
+        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker', 'wemail-timepicker'] , $this->version, true );
     }
 
     public function localized_script_vars() {

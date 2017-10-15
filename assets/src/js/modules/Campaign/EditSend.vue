@@ -165,17 +165,12 @@
 
                         <div v-else>
                             <input type="checkbox" v-model="isScheduled">&nbsp;
-                            <input type="text" v-model="deliverDate" :placeholder="serverDate">&nbsp;@&nbsp;
-                            <input type="text" v-model="deliverTime" :placeholder="serverTime">
-
+                            <datepicker v-model="deliverDate" :placeholder="serverDate"></datepicker>&nbsp;&nbsp;@&nbsp;
+                            <timepicker v-model="deliverTime" :placeholder="serverTime"></timepicker>
                             <br>
 
                             <p class="hint">{{ i18n.currentServerTimeIs }} {{ serverDate }} {{ serverTime }}</p>
                         </div>
-
-                        <datepicker v-model="deliverDate" :placeholder="serverDate"></datepicker>
-
-                        <pre>{{ campaign.deliver_at }}</pre>
                     </td>
                 </tr>
                 <tr>
