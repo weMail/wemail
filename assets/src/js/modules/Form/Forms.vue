@@ -4,10 +4,10 @@
         Forms component
         <ul class="list-inline">
             <li class="list-inline-item">
-                <router-link :to="{path: '/form/1'}">Form 1</router-link>
+                <router-link :to="{path: '/forms/1'}">Form 1</router-link>
             </li>
             <li class="list-inline-item">
-                <router-link :to="{path: '/form/2'}">Form 2</router-link>
+                <router-link :to="{path: '/forms/2'}">Form 2</router-link>
             </li>
         </ul>
 

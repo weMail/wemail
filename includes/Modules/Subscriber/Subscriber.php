@@ -24,8 +24,11 @@ class Subscriber extends Module {
      */
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
-        $this->add_filter( 'wemail_get_route_data_subscribers', 'get_route_data_subscribers', 10, 2 );
-        $this->add_filter( 'wemail_get_route_data_subscriber', 'get_route_data_subscriber', 10, 2 );
+        // $this->add_filter( 'wemail_get_route_data_subscribers', 'get_route_data_subscribers', 10, 2 );
+        // $this->add_filter( 'wemail_get_route_data_subscriber', 'get_route_data_subscriber', 10, 2 );
+
+        $this->add_filter( 'wemail_get_route_data_subscriberIndex', 'index', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_subscriberShow', 'show', 10, 2 );
     }
 
     /**
@@ -45,30 +48,83 @@ class Subscriber extends Module {
     }
 
     /**
-     * Subscribers route data
+     * Subscribers list table data
      *
      * @since 1.0.0
      *
+     * @param array $params
+     * @param array $query
+     *
      * @return array
      */
-    public function get_route_data_subscribers( $params, $query ) {
+    public function index( $params, $query ) {
         return [
             'i18n' => [],
-            'subscribers' => $this->get_subscribers( $query )
+            'subscribers' => wemail()->subscriber->all( $query )
         ];
     }
 
-    public function get_route_data_subscriber( $params, $query ) {
+    /**
+     * Single subscriber page route data
+     *
+     * @since 1.0.0
+     *
+     * @param array $params
+     * @param array $query
+     *
+     * @return array
+     */
+    public function show( $params, $query ) {
+        $i18n = [
+            'noName'  => __( 'no name', 'wemail' ),
+            'website' => __( 'Website', 'wemail' ),
+        ];
+
+        $social_networks = wemail()->settings->social_networks->i18n();
+        $i18n = array_merge( $i18n, $social_networks );
+
+        $social_networks = wemail()->settings->social_networks->networks();
+        array_unshift($social_networks, 'website');
+
+        $social_network_icons = wemail()->settings->social_networks->icons();
+        $social_network_icons = array_merge( $social_network_icons, [
+            'website' => '<i class="fa fa-globe"></i>'
+        ] );
+
         return [
-            'subscriber' => $this->get_subscriber( $params['id'] )
+            'dummyImageURL' => WEMAIL_ASSETS . '/images/misc/mystery-person.png',
+            'subscriber'    => wemail()->subscriber->get( $params['hash'] ),
+            'i18n' => $i18n,
+            'socialNetworks' => [
+                'networks' => $social_networks,
+                'icons' => $social_network_icons
+            ]
         ];
     }
 
-    public function get_subscribers( $args = [] ) {
-        return wemail()->api->get( '/subscribers', $args );
+    /**
+     * Get list of subscribers
+     *
+     * @since 1.0.0
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public function all( $args = [] ) {
+        return wemail()->api->subscribers()->query( $args )->get();
     }
 
-    public function get_subscriber( $id ) {
-        return wemail()->api->get( '/subscribers/' . $id );
+    /**
+     * Get data for a single subscriber
+     *
+     * @since 1.0.0
+     *
+     * @param string $hash
+     *
+     * @return array
+     */
+    public function get( $hash ) {
+        return wemail()->api->subscribers( $hash )->get();
     }
 }

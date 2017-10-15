@@ -9,7 +9,7 @@ import FourZeroFour from './modules/FourZeroFour/route.js';
 const routes = [
     Overview,
     Campaign,
-    ...Subscriber,
+    Subscriber,
     ...Form,
     ...Lists,
     Settings,

@@ -1,17 +1,16 @@
-/* eslint-disable func-style */
 /* eslint-disable global-require */
 
-const List = (resolve) => {
+function List(resolve) {
     require.ensure(['./List.vue'], () => {
         resolve(require('./List.vue'));
     });
-};
+}
 
-const Lists = (resolve) => {
+function Lists(resolve) {
     require.ensure(['./Lists.vue'], () => {
         resolve(require('./Lists.vue'));
     });
-};
+}
 
 export default [
     {

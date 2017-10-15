@@ -1,27 +1,32 @@
-/* eslint-disable func-style */
 /* eslint-disable global-require */
 
-const Subscriber = (resolve) => {
-    require.ensure(['./Subscriber.vue'], () => {
-        resolve(require('./Subscriber.vue'));
-    });
-};
+import RouterView from '../RouterView.js';
 
-const Subscribers = (resolve) => {
-    require.ensure(['./Subscribers.vue'], () => {
-        resolve(require('./Subscribers.vue'));
+function Index(resolve) {
+    require.ensure(['./Index.vue'], () => {
+        resolve(require('./Index.vue'));
     });
-};
+}
 
-export default [
-    {
-        path: '/subscribers/:id',
-        name: 'subscriber',
-        component: Subscriber
-    },
-    {
-        path: '/subscribers',
-        name: 'subscribers',
-        component: Subscribers
-    }
-];
+function Show(resolve) {
+    require.ensure(['./Show.vue'], () => {
+        resolve(require('./Show.vue'));
+    });
+}
+
+export default {
+    path: '/subscribers',
+    component: RouterView,
+    children: [
+        {
+            path: '',
+            component: Index,
+            name: 'subscriberIndex'
+        },
+        {
+            path: ':hash',
+            component: Show,
+            name: 'subscriberShow'
+        }
+    ]
+};

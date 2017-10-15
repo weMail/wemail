@@ -12,7 +12,7 @@
 
                 <ul>
                     <li v-for="subscriber in subscribers.data">
-                        id: {{ subscriber.id }} | <router-link :to="{name: 'subscriber', params: {id: subscriber.id}}">{{ subscriber.first_name }} {{ subscriber.last_name }}</router-link>
+                        hash: {{ subscriber.hash }} | <router-link :to="{name: 'subscriberShow', params: {hash: subscriber.hash}}">{{ subscriber.first_name }} {{ subscriber.last_name }}</router-link>
                     </li>
                 </ul>
 
@@ -26,7 +26,7 @@
 
 <script>
     export default {
-        routeName: 'subscribers',
+        routeName: 'subscriberIndex',
 
         mutations: {
             updateSubscribers(state, payload) {
@@ -48,7 +48,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('subscribers', ['i18n', 'subscribers'])
+            ...Vuex.mapState('subscriberIndex', ['i18n', 'subscribers'])
         },
 
         beforeMount() {

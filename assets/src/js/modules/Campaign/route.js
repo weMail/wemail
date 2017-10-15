@@ -1,55 +1,54 @@
-/* eslint-disable func-style */
 /* eslint-disable global-require */
 
 import RouterView from '../RouterView.js';
 
-const Index = (resolve) => {
+function Index(resolve) {
     require.ensure(['./Index.vue'], () => {
         resolve(require('./Index.vue'));
     });
-};
+}
 
-const Create = (resolve) => {
+function Create(resolve) {
     require.ensure(['./Create.vue'], () => {
         resolve(require('./Create.vue'));
     });
-};
+}
 
-const Show = (resolve) => {
+function Show(resolve) {
     require.ensure(['./Show.vue'], () => {
         resolve(require('./Show.vue'));
     });
-};
+}
 
-const Edit = (resolve) => {
+function Edit(resolve) {
     require.ensure(['./Edit.vue'], () => {
         resolve(require('./Edit.vue'));
     });
-};
+}
 
-const EditSetup = (resolve) => {
+function EditSetup(resolve) {
     require.ensure(['./EditSetup.vue'], () => {
         resolve(require('./EditSetup.vue'));
     });
-};
+}
 
-const EditTemplate = (resolve) => {
+function EditTemplate(resolve) {
     require.ensure(['./EditTemplate.vue'], () => {
         resolve(require('./EditTemplate.vue'));
     });
-};
+}
 
-const EditDesign = (resolve) => {
+function EditDesign(resolve) {
     require.ensure(['./EditDesign.vue'], () => {
         resolve(require('./EditDesign.vue'));
     });
-};
+}
 
-const EditSend = (resolve) => {
+function EditSend(resolve) {
     require.ensure(['./EditSend.vue'], () => {
         resolve(require('./EditSend.vue'));
     });
-};
+}
 
 export default {
     path: '/campaigns',

@@ -10,8 +10,6 @@ class Form extends Module {
 
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
-
-        $this->add_filter( 'wemail_component_actions', 'add_component_actions' );
     }
 
     public function register_submenu( $menu_items, $capability ) {
@@ -27,23 +25,6 @@ class Form extends Module {
         ];
 
         $this->send_success( $data );
-    }
-
-    public function add_component_actions( $actions ) {
-        $actions['before-forms'][] = [
-            'tag' => 'foo'
-        ];
-
-        $actions['after-forms'][] = [
-            'tag' => 'div',
-            'content' => 'hello action {{ parentData }}'
-        ];
-
-        $actions['after-forms'][] = [
-            'tag' => 'bar'
-        ];
-
-        return $actions;
     }
 
 }

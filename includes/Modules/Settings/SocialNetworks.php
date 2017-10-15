@@ -144,4 +144,38 @@ class SocialNetworks extends AbstractSettings {
         return apply_filters( 'wemail_social_network_default_links', $default_links );
     }
 
+    /**
+     * Icons for social networks
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    public function icons() {
+        $icons = [
+            'facebook'      => '<i class="fa fa-facebook-square"></i>',
+            'twitter'       => '<i class="fa fa-twitter-square"></i>',
+            'google-plus'   => '<i class="fa fa-google-plus-square"></i>',
+            'linkedin'      => '<i class="fa fa-linkedin-square"></i>',
+            'youtube'       => '<i class="fa fa-youtube-square"></i>',
+            'instagram'     => '<i class="fa fa-instagram"></i>',
+            'pinterest'     => '<i class="fa fa-pinterest-square"></i>',
+            'tumblr'        => '<i class="fa fa-tumblr-square"></i>',
+            'flickr'        => '<i class="fa fa-flickr"></i>',
+            'reddit'        => '<i class="fa fa-reddit-square"></i>',
+            'snapchat'      => '<i class="fa fa-snapchat-square"></i>',
+            'whatsapp'      => '<i class="fa fa-whatsapp"></i>',
+            'viber'         => '<i class="fa fa-viber"></i>',
+        ];
+
+        /**
+         * Social network default links
+         *
+         * @since 1.0.0
+         *
+         * @param array $icons
+         */
+        return apply_filters( 'wemail_social_network_icons', $icons );
+    }
+
 }

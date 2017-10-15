@@ -1,11 +1,10 @@
-/* eslint-disable func-style */
 /* eslint-disable global-require */
 
-const Overview = (resolve) => {
+function Overview(resolve) {
     require.ensure(['./Overview.vue'], () => {
         resolve(require('./Overview.vue'));
     });
-};
+}
 
 const route = {
     path: '/',

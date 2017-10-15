@@ -144,7 +144,7 @@
             margin: 7px auto;
             overflow: hidden;
             color: #444;
-            background-color: #2a5f9e;
+            background-color: $wp-border-color;
             border-radius: 3px;
 
             ul {
@@ -180,9 +180,13 @@
                         text-decoration: none;
 
                         &.disabled {
-                            color: rgba(68, 68, 68, 0.47);
                             pointer-events: none;
                             cursor: default;
+                            opacity: 1 !important;
+
+                            span {
+                                color: rgba(68, 68, 68, 0.4);
+                            }
                         }
 
                         span {

@@ -1,17 +1,16 @@
-/* eslint-disable func-style */
 /* eslint-disable global-require */
 
-const Form = (resolve) => {
+function Form(resolve) {
     require.ensure(['./Form.vue'], () => {
         resolve(require('./Form.vue'));
     });
-};
+}
 
-const Forms = (resolve) => {
+function Forms(resolve) {
     require.ensure(['./Forms.vue'], () => {
         resolve(require('./Forms.vue'));
     });
-};
+}
 
 export default [
     {
