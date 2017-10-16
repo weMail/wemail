@@ -23,9 +23,9 @@ function sassResources() {
     return [
         sassSrc('_variables'),
         sassSrc('_mixins'),
-        srcDir('vendor/bootstrap/_functions.scss'),
-        srcDir('vendor/bootstrap/_variables.scss'),
-        srcDir('vendor/bootstrap/_mixins.scss')
+        srcDir('vendor/bootstrap/scss/_functions.scss'),
+        srcDir('vendor/bootstrap/scss/_variables.scss'),
+        srcDir('vendor/bootstrap/scss/_mixins.scss')
     ];
 }
 

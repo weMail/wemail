@@ -4,7 +4,9 @@
   "description": "weMail plugin description...",
   "scripts": {
     "install": "webpack",
-    "lint:webpack": "node_modules/eslint/bin/eslint.js webpack.config.js"
+    "lint:webpack": "node_modules/eslint/bin/eslint.js webpack.config.js",
+    "bootstrap:js": "shx cat assets/src/vendor/bootstrap/js/util.js assets/src/vendor/bootstrap/js/dropdown.js | shx sed \"s/^(import|export).*//\" | babel --no-babelrc --presets=es2015 --filename assets/src/vendor/bootstrap/js/bootstrap.js | node assets/src/vendor/bootstrap/build/stamp.js > assets/js/bootstrap.js",
+    "clean": "shx rm -rf assets/css && shx rm -rf assets/js && shx rm -rf assets/fonts && shx rm assets/images/*.*"
   },
   "repository": {
     "type": "git",
@@ -14,6 +16,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/wedevs/wemail#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
@@ -41,6 +44,7 @@
     "sass-resources-loader": "^1.3.0",
     "sasslint-loader": "0.0.1",
     "sasslint-webpack-plugin": "^1.0.4",
+    "shx": "^0.2.2",
     "style-loader": "^0.18.2",
     "stylelint": "^8.1.1",
     "stylelint-config-wordpress": "^12.0.0",

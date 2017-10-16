@@ -19,13 +19,35 @@
 
                                     <input
                                         type="text"
-                                        class="block"
+                                        class="block campaign-subject-input"
                                         v-model="email.subject"
                                         :maxlength="subMaxLength"
                                         data-validator="isEmptyInput"
                                         @focus="focusFloatingInfoInput"
                                         @blur="blurFloatingInfoInput"
                                     >
+
+                                    <div class="dropdown" id="shortcode-dropdown">
+                                        <button type="button" class="button" data-toggle="dropdown">
+                                           <img :src="customizer.shortcodeImg" alt="">
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <template v-for="(shortcodeObj, shortcodeType) in customizer.shortcodes">
+                                                <a href="#" class="dropdown-item shortcode-type">
+                                                    {{ shortcodeObj.title }}
+                                                </a>
+
+                                                <a
+                                                    v-for="(codeObj, shortcode) in shortcodeObj.codes"
+                                                    class="dropdown-item"
+                                                    href="#"
+                                                    @click.prevent="addShortcode(shortcodeType, shortcode, codeObj)"
+                                                >{{ codeObj.title }}</a>
+
+                                                <div class="dropdown-divider"></div>
+                                            </template>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +223,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
+            ...Vuex.mapState('campaignEdit', ['i18n', 'campaign', 'customizer']),
 
             email() {
                 return this.campaign.email;
@@ -318,10 +340,67 @@
 
             isInvalidEmail(email) {
                 return !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+            },
+
+            addShortcode(shortcodeType, shortcode, codeObj) {
+                let code = `[${shortcodeType}:${shortcode}]`;
+
+                if (codeObj.default) {
+                    code = `[${shortcodeType}:${shortcode} default="${codeObj.default}"]`;
+                }
+
+                if (codeObj.text) {
+                    code = `[${shortcodeType}:${shortcode} text="${codeObj.text}"]`;
+                }
+
+                if (codeObj.plainText) {
+                    code = codeObj.text;
+                }
+
+                this.email.subject += ` ${code}`;
+
+                $(this.$el).find('.campaign-subject-input').focus();
+
+                // should be move cursor to end also
             }
         }
     };
 </script>
 
 <style lang="scss">
+    .campaign-subject-input {
+        padding-right: 35px !important;
+    }
+
+    #shortcode-dropdown {
+        position: absolute;
+        top: 1px;
+        right: 11px;
+
+        button {
+            width: 27px;
+            height: 27px;
+            padding: 3px;
+            border-width: 0 0 0 1px;
+            border-radius: 0;
+            box-shadow: none;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        .dropdown-menu {
+            top: -2px !important;
+            left: 1px !important;
+            max-height: 170px;
+            overflow-y: auto;
+
+            .shortcode-type {
+                font-size: 14px;
+                font-weight: 700;
+            }
+        }
+    }
 </style>

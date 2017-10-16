@@ -64,6 +64,7 @@ class Customizer {
                 'settings'     => $this->get_type_settings()
             ],
             'shortcodes'       => wemail()->shortcode->get(),
+            'shortcodeImg'     => WEMAIL_ASSETS . '/images/shortcode.png',
             'placeholderImage' => WEMAIL_ASSETS . '/images/misc/placeholder-image.png',
             'socialNetworks'   => [
                 'networks'     => $networks,

@@ -76,7 +76,7 @@
                                     }
 
                                     if (codeObj.text) {
-                                        code = `[${shortcodeType}:${shortcode} text="${codeObj.default}"]`;
+                                        code = `[${shortcodeType}:${shortcode} text="${codeObj.text}"]`;
                                     }
 
                                     if (codeObj.plainText) {

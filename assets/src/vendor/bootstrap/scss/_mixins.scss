@@ -22,14 +22,14 @@
 // @import "mixins/pagination";
 @import "mixins/lists";
 // @import "mixins/list-group";
-// @import "mixins/nav-divider";
+@import "mixins/nav-divider";
 // @import "mixins/forms";
 // @import "mixins/table-row";
 
 // // Skins
 // @import "mixins/background-variant";
-// @import "mixins/border-radius";
-// @import "mixins/box-shadow";
+@import "mixins/border-radius";
+@import "mixins/box-shadow";
 // @import "mixins/gradients";
 @import "mixins/transition";
 

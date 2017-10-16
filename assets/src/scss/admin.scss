@@ -31,7 +31,7 @@
         }
     }
 
-    @import "../vendor/bootstrap/bootstrap.scss";
+    @import "../vendor/bootstrap/scss/bootstrap.scss";
     @import "multiselect";
     @import "type";
     @import "forms";
@@ -40,6 +40,7 @@
     @import "utilities";
     @import "lists";
     @import "box";
+    @import "dropdown";
 }
 
 @import "text-editor";
