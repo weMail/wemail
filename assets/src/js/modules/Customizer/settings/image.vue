@@ -74,7 +74,7 @@
             </template>
         </div>
 
-        <div v-if="settingsTab === 'style'">
+        <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.backgroundColor }}

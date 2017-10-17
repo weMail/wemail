@@ -1,6 +1,6 @@
 <template>
     <div class="content-settings-container settings-divider">
-        <div v-if="settingsTab === 'content'" class="settings-divider-content">
+        <div v-show="settingsTab === 'content'" class="settings-divider-content">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.dividerType }}
@@ -134,7 +134,7 @@
             </template>
         </div>
 
-        <div v-if="settingsTab === 'settings'">
+        <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.backgroundColor }}

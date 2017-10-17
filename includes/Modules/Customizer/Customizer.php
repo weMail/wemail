@@ -181,6 +181,8 @@ class Customizer {
             'browse'                => __( 'Browse', 'wemail' ),
             'chooseDivider'         => __( 'Choose Divider', 'wemail' ),
             'cancel'                => __( 'Cancel', 'wemail' ),
+            'columnSplit'           => __( 'Column Split', 'wemail' ),
+            'columnSplitDisableMsg' => __( 'Column splitting is available when "Two Columns" is set' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();

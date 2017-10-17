@@ -1,5 +1,5 @@
 <template>
-    <div class="content-settings-container">
+    <div class="content-settings-container settings-text">
         <div v-show="settingsTab === 'content'">
             <ul class="list-inline settings-tab-list clearfix">
                 <li :class="['list-inline-item', (listTab === 1) ? 'active' : '']">
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div v-if="settingsTab === 'style'">
+        <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.backgroundColor }}
@@ -87,6 +87,27 @@
                 </div>
             </div>
         </div>
+
+        <div v-show="settingsTab === 'settings'">
+            <div class="control-property">
+                <h4 class="property-title clearfix">
+                    {{ i18n.columnSplit }}
+                </h4>
+                <div class="property">
+                    <ul v-if="content.twoColumns" class="list-inline text-center column-split-list">
+                        <li
+                            v-for="split in columnSplits"
+                            :class="['list-inline-item', content.columnSplit === split ? 'active' : '']"
+                        >
+                            <a href="#" @click.prevent="setColumnSplit(split)">
+                                <span :class="[`column-split split-${split}`]">&nbsp;</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <em v-else class="text-muted">{{ i18n.columnSplitDisableMsg }}</em>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -127,7 +148,8 @@
         data() {
             return {
                 listTab: 1,
-                displayEditor: true
+                displayEditor: true,
+                columnSplits: ['1-1', '2-1', '1-2']
             };
         },
 
@@ -201,8 +223,69 @@
             onChangeTwoColumns(newVal, oldVal) {
                 if (oldVal) {
                     this.setListTab(1);
+                    this.content.columnSplit = null;
+                } else {
+                    this.content.columnSplit = '1-1';
                 }
+            },
+
+            setColumnSplit(split) {
+                this.content.columnSplit = split;
             }
         }
     };
 </script>
+
+<style lang="scss">
+    .column-split-list {
+        text-align: center;
+
+        li {
+            margin: 0 4px;
+
+            &.active {
+
+                .column-split.split-1-1 {
+                    background-position: 0 0;
+                }
+
+                .column-split.split-1-2 {
+                    background-position: 0 -160px;
+
+                }
+
+                .column-split.split-2-1 {
+                    background-position: 0 -319px;
+
+                }
+            }
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .column-split {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            background-image: url(../images/column-split.png);
+            background-repeat: repeat-y;
+
+            &.split-1-1 {
+                background-position: 0 -80px;
+            }
+
+            &.split-1-2 {
+                background-position: 0 -239px;
+
+            }
+
+            &.split-2-1 {
+                background-position: 0 -398px;
+
+            }
+        }
+    }
+</style>

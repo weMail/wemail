@@ -1,6 +1,6 @@
 <template>
     <div class="content-settings-container settings-button">
-        <div v-if="settingsTab === 'content'" class="settings-button-content">
+        <div v-show="settingsTab === 'content'" class="settings-button-content">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.buttonText }}
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="settingsTab === 'style'">
+        <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.backgroundColor }}
@@ -114,7 +114,7 @@
             </div>
         </div>
 
-        <div v-if="settingsTab === 'settings'">
+        <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.width }}

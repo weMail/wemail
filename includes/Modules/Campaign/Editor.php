@@ -59,6 +59,16 @@ class Editor {
         ];
     }
 
+    /**
+     * i18n strings for campaign editor page
+     *
+     * i18n for Customizer will add via filter hook at the end
+     * of this function
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     private function i18n() {
         $i18n = [
             'createCampaign'         => __( 'Create Campaign', 'wemail' ),
@@ -117,7 +127,7 @@ class Editor {
             'invalidEmailAddress'    => __( 'Invalid email address', 'wemail' ),
             'noListSelected'         => __( 'No list selected', 'wemail' ),
             'noSegmentSelected'      => __( 'No segment selected', 'wemail' ),
-            'currentServerTimeIs'    => __( 'Current server time is', 'wemail' ),
+            'currentServerTimeIs'    => __( 'Current server time is', 'wemail' )
         ];
 
         /**

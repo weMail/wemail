@@ -2,7 +2,7 @@
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" :style="containerOuterStyle">
         <tr>
             <td align="center" valign="top" :style="containerInnerStyle">
-                <div class="wrapper" :style="wrapperStyle" >
+                <div class="wrapper" :style="wrapperStyle.left" >
                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: content.twoColumns ? '300px' : '600px'}">
                         <tr>
                             <td align="center" valign="top" :style="wrapperTdStyle[0]">
@@ -23,7 +23,7 @@
                         </tr>
                     </table>
                 </div>
-                <div v-if="content.twoColumns" class="wrapper" :style="wrapperStyle">
+                <div v-if="content.twoColumns" class="wrapper" :style="wrapperStyle.right">
                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px; float: right">
                         <tr>
                             <td align="center" valign="top" :style="wrapperTdStyle[1]">
@@ -66,6 +66,14 @@
                 type: Object,
                 required: false
             }
+        },
+
+        data() {
+            return {
+                two: 2,
+                fullWidth: 600,
+                halfWidth: 300
+            };
         },
 
         computed: {
@@ -129,15 +137,55 @@
             },
 
             wrapperStyle() {
-                const HALF_WIDTH = 300;
-                const minWidth = HALF_WIDTH - parseInt(this.style.borderWidth, 10);
+                let leftMaxWidth = 0;
+                let leftMinWidth = 0;
+                let rightMaxWidth = 0;
+                let rightMinWidth = 0;
+
+                if (!this.content.twoColumns) {
+                    leftMaxWidth = '100%';
+                    leftMinWidth = '600';
+
+                } else if (this.content.columnSplit === '1-1') {
+                    const minWidth = this.halfWidth - (this.two * parseInt(this.style.borderWidth, 10));
+
+                    leftMaxWidth = '50%';
+                    leftMinWidth = minWidth;
+
+                    rightMaxWidth = '50%';
+                    rightMinWidth = minWidth;
+
+                } else if (this.content.columnSplit === '2-1') {
+                    leftMaxWidth = '66.6666666666%';
+                    leftMinWidth = '400';
+
+                    rightMaxWidth = '33.3333333333%';
+                    rightMinWidth = '200';
+
+                } else if (this.content.columnSplit === '1-2') {
+                    leftMaxWidth = '33.3333333333%';
+                    leftMinWidth = '200';
+
+                    rightMaxWidth = '66.6666666666%';
+                    rightMinWidth = '400';
+                }
 
                 return {
-                    display: 'inline-block',
-                    maxWidth: this.content.twoColumns ? '50%' : '100%',
-                    minWidth: `${minWidth}px`,
-                    verticalAlign: 'top',
-                    width: '100%'
+                    left: {
+                        display: 'inline-block',
+                        maxWidth: leftMaxWidth,
+                        minWidth: `${leftMinWidth}px`,
+                        verticalAlign: 'top',
+                        width: '100%'
+                    },
+
+                    right: {
+                        display: 'inline-block',
+                        maxWidth: rightMaxWidth,
+                        minWidth: `${rightMinWidth}px`,
+                        verticalAlign: 'top',
+                        width: '100%'
+                    }
                 };
             },
 

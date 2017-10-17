@@ -77,10 +77,9 @@ class ContentTypes {
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                     sprintf( '<p>%s</p>', __( 'This is a text block 2. You can use it to add text to your template.', 'wemail' ) )
                 ],
-
+                'columnSplit' => '1-1', // 1-1, 1-2, 2-1
                 'valign'     => 'top',
-            ],
-            'noSettingsTab' => true
+            ]
         ];
     }
 
