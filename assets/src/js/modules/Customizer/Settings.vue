@@ -1,7 +1,7 @@
 <template>
     <div id="customizer-settings">
         <template>
-            <div v-show="currentWindow !== 'content-settings'" class="customizer-settings-header">
+            <div v-show="currentWindow !== 'content-settings' && currentWindow !== 'section-settings'" class="customizer-settings-header">
                 <div class="button-group">
                     <button
                         type="button"
@@ -30,11 +30,13 @@
             </div>
 
             <div v-show="currentWindow === 'design'" id="customizer-design">
-                <label>Global font size <input type="text" v-model="template.globalCss.fontSize"></label>
-                page/header etc
-                <div v-for="section in template.sections">
-                    <h4>{{ section.name }}</h4>
-                    <pre v-for="content in section.contents">{{ content.type }}</pre>
+                <div v-for="section in sections" class="section-name">
+                    <a href="#" class="section-title clearfix" @click.prevent="openSectionSettings(section)">
+                        {{ i18n[section] }}
+                        <span class="float-right">
+                            <i class="fa fa-angle-right"></i>
+                        </span>
+                    </a>
                 </div>
             </div>
         </template>
@@ -79,7 +81,29 @@
                 ></component>
             </div>
 
-            <button v-if="currentWindow === 'content-settings'" type="button" class="button button-link content-settings-bottom-btns" @click="saveAndClose">
+            <button v-if="currentWindow === 'content-settings'" type="button" class="button button-link content-settings-bottom-btns" @click="saveAndClose('contentTypes')">
+                {{ i18n.saveAndClose }}
+            </button>
+        </template>
+
+        <template>
+            <div v-show="currentWindow === 'section-settings'" class="customizer-settings-header">
+                <h3 class="section-settings-title">
+                    {{ i18n[editingSection] }}
+                    <button type="button" class="button back-button" @click="saveAndClose('design')">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                </h3>
+            </div>
+
+            <section-settings
+                v-show="currentWindow === 'section-settings'"
+                :i18n="i18n"
+                :template="template"
+                :editing-section="editingSection"
+            ></section-settings>
+
+            <button v-show="currentWindow === 'section-settings'" type="button" class="button button-link content-settings-bottom-btns" @click="saveAndClose('design')">
                 {{ i18n.saveAndClose }}
             </button>
         </template>
@@ -87,7 +111,13 @@
 </template>
 
 <script>
+    import SectionSettings from './SectionSettings.vue';
+
     export default {
+        components: {
+            SectionSettings
+        },
+
         props: {
             context: {
                 type: String,
@@ -111,7 +141,9 @@
                 content: {},
                 settingsTab: 'content',
                 sectionIndex: 0,
-                contentIndex: 0
+                contentIndex: 0,
+                sections: ['global', 'top', 'head', 'body', 'footer'],
+                editingSection: 'global'
             };
         },
 
@@ -172,8 +204,13 @@
                 return `customizer-content-settings-${_.kebabCase(this.content.type)}`;
             },
 
-            saveAndClose() {
-                this.currentWindow = 'contentTypes';
+            openSectionSettings(section) {
+                this.currentWindow = 'section-settings';
+                this.editingSection = section;
+            },
+
+            saveAndClose(currentWindow) {
+                this.currentWindow = currentWindow;
             }
         }
     };
@@ -204,8 +241,27 @@
         }
 
         h3 {
+            position: relative;
             font-size: 1.5em;
             font-weight: 200;
+
+            &.section-settings-title {
+                line-height: 3.1;
+            }
+
+            button.back-button {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 30px;
+                height: 59px;
+                padding: 0;
+                font-size: 25px;
+                background-color: #fff;
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
         }
 
         .button-group {
@@ -290,44 +346,41 @@
         }
     }
 
-    .content-settings-container {
+    .control-property {
 
-        .control-property {
-
-            &:first-child .property-title {
-                border-top: 0;
-            }
-
-            .wp-color-result {
-                box-sizing: content-box;
-                margin: 0;
-            }
+        &:first-child .property-title {
+            border-top: 0;
         }
 
-        .property-title {
-            padding: 10px 15px;
+        .wp-color-result {
+            box-sizing: content-box;
             margin: 0;
-            background-color: $wp-body-bg;
-            border-top: 1px solid $wp-border-color;
-            border-bottom: 1px solid $wp-border-color;
         }
+    }
 
-        .reset-property {
+    .property-title {
+        padding: 10px 15px;
+        margin: 0;
+        background-color: $wp-body-bg;
+        border-top: 1px solid $wp-border-color;
+        border-bottom: 1px solid $wp-border-color;
+    }
 
-            a {
-                font-weight: 400;
-                text-decoration: none;
-            }
+    .reset-property {
+
+        a {
+            font-weight: 400;
+            text-decoration: none;
         }
+    }
 
-        .property-value {
-            float: right;
-        }
+    .property-value {
+        float: right;
+    }
 
-        .property {
-            padding: 10px 15px;
-            overflow-x: auto;
-        }
+    .property {
+        padding: 10px 15px;
+        overflow-x: auto;
     }
 
     .settings-tab-list.list-inline {
@@ -368,6 +421,30 @@
                 color: $wp-blue;
                 border-bottom-color: $wp-blue;
                 opacity: 1;
+            }
+        }
+    }
+
+    #customizer-design {
+
+        .section-name {
+
+            a {
+                display: block;
+                padding: 12px 10px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #444;
+                text-decoration: none;
+                border-bottom: 1px solid $wp-border-color;
+
+                &:hover {
+                    color: $wp-blue;
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
             }
         }
     }

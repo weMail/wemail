@@ -157,10 +157,10 @@
 
             centerPadding() {
                 if (!this.twoCaptionsSideBySide) {
-                    return this.style.horizontalPadding;
+                    return this.style.padding;
                 }
 
-                const padding = Math.floor(parseInt(this.style.horizontalPadding, 10) / this.TWO_CAPTIONS);
+                const padding = Math.floor(parseInt(this.style.padding, 10) / this.TWO_CAPTIONS);
 
                 return `${padding}px`;
             },
@@ -168,10 +168,10 @@
             leftColumnPaddings() {
                 return {
                     backgroundColor: this.style.backgroundColor,
-                    paddingTop: this.style.verticalPadding,
-                    paddingRight: this.hasBorder ? this.style.horizontalPadding : this.centerPadding,
-                    paddingBottom: this.style.verticalPadding,
-                    paddingLeft: this.style.horizontalPadding,
+                    paddingTop: this.style.padding,
+                    paddingRight: this.hasBorder ? this.style.padding : this.centerPadding,
+                    paddingBottom: this.style.padding,
+                    paddingLeft: this.style.padding,
                     borderWidth: this.style.borderWidth,
                     borderStyle: 'solid',
                     borderColor: this.style.borderColor
@@ -181,10 +181,10 @@
             rightColumnPaddings() {
                 return {
                     backgroundColor: this.style.backgroundColor,
-                    paddingTop: this.style.verticalPadding,
-                    paddingRight: this.style.horizontalPadding,
-                    paddingBottom: this.style.verticalPadding,
-                    paddingLeft: this.hasBorder ? this.style.horizontalPadding : this.centerPadding,
+                    paddingTop: this.style.padding,
+                    paddingRight: this.style.padding,
+                    paddingBottom: this.style.padding,
+                    paddingLeft: this.hasBorder ? this.style.padding : this.centerPadding,
                     borderWidth: this.style.borderWidth,
                     borderStyle: 'solid',
                     borderColor: this.style.borderColor
@@ -237,7 +237,7 @@
             },
 
             imageStyle() {
-                const padding = parseInt(this.style.horizontalPadding, 10);
+                const padding = parseInt(this.style.padding, 10);
                 const border = parseInt(this.style.borderWidth, 10);
 
                 let width = 0;

@@ -183,6 +183,19 @@ class Customizer {
             'cancel'                => __( 'Cancel', 'wemail' ),
             'columnSplit'           => __( 'Column Split', 'wemail' ),
             'columnSplitDisableMsg' => __( 'Column splitting is available when "Two Columns" is set' ),
+            'global'                => __( 'Global', 'wemail' ),
+            'head'                  => __( 'Head', 'wemail' ),
+            'body'                  => __( 'Body', 'wemail' ),
+            'inherit'               => __( 'Inherit' ),
+            'fontFamily'            => __( 'Font Family', 'wemail' ),
+            'borderTop'             => __( 'Border Top', 'wemail' ),
+            'textColor'             => __( 'Text Color', 'wemail' ),
+            'linkColor'             => __( 'Link Color', 'wemail' ),
+            'underline'             => __( 'Underline', 'wemail' ),
+            'none'                  => __( 'None', 'wemail' ),
+            'linkUnderline'         => __( 'Link Underline', 'wemail' ),
+            'marginBottom'          => __( 'Margin Bottom', 'wemail' ),
+            'borderBottom'          => __( 'Border Bottom', 'wemail' )
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();

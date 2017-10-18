@@ -127,8 +127,7 @@ class ContentTypes {
                 'style'       => [
                     'backgroundColor'       => '#ffffff',
                     'color'                 => '',
-                    'verticalPadding'       => '15px',
-                    'horizontalPadding'     => '15px',
+                    'padding'               => '15px',
                     'borderWidth'           => '0px',
                     'borderColor'           => '#e5e5e5',
                     'marginBottom'          => '0px',

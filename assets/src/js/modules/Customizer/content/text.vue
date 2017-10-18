@@ -70,7 +70,7 @@
 
         data() {
             return {
-                two: 2,
+                TWO: 2,
                 fullWidth: 600,
                 halfWidth: 300
             };
@@ -147,7 +147,7 @@
                     leftMinWidth = '600';
 
                 } else if (this.content.columnSplit === '1-1') {
-                    const minWidth = this.halfWidth - (this.two * parseInt(this.style.borderWidth, 10));
+                    const minWidth = this.halfWidth - (this.TWO * parseInt(this.style.borderWidth, 10));
 
                     leftMaxWidth = '50%';
                     leftMinWidth = minWidth;

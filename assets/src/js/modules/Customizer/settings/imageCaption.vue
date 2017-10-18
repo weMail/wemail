@@ -117,21 +117,11 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.paddingTopBottom }}
-                    <span class="property-value">{{ style.verticalPadding }}</span>
+                    {{ i18n.padding }}
+                    <span class="property-value">{{ style.padding }}</span>
                 </h4>
                 <div class="property">
-                    <input-range v-model="verticalPadding"></input-range>
-                </div>
-            </div>
-
-            <div class="control-property">
-                <h4 class="property-title clearfix">
-                    {{ i18n.paddingLeftRight }}
-                    <span class="property-value">{{ style.horizontalPadding }}</span>
-                </h4>
-                <div class="property">
-                    <input-range v-model="horizontalPadding"></input-range>
+                    <input-range v-model="padding"></input-range>
                 </div>
             </div>
 
@@ -228,24 +218,13 @@
                 return this.content.style;
             },
 
-            verticalPadding: {
+            padding: {
                 get() {
-                    return parseInt(this.style.verticalPadding, 10);
+                    return parseInt(this.style.padding, 10);
                 },
 
                 set(value) {
-                    this.style.verticalPadding = `${value}px`;
-                    this.style.paddingBottom = `${value}px`;
-                }
-            },
-
-            horizontalPadding: {
-                get() {
-                    return parseInt(this.style.horizontalPadding, 10);
-                },
-
-                set(value) {
-                    this.style.horizontalPadding = `${value}px`;
+                    this.style.padding = `${value}px`;
                 }
             },
 
