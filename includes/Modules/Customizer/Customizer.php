@@ -195,7 +195,10 @@ class Customizer {
             'none'                  => __( 'None', 'wemail' ),
             'linkUnderline'         => __( 'Link Underline', 'wemail' ),
             'marginBottom'          => __( 'Margin Bottom', 'wemail' ),
-            'borderBottom'          => __( 'Border Bottom', 'wemail' )
+            'borderBottom'          => __( 'Border Bottom', 'wemail' ),
+            'deleteContentWarnMsg'  => __( 'Are you sure you want to delete this content?', 'wemail' ),
+            'confirmDeleteContent'  => __( 'Yes, delete it', 'wemail' ),
+            'cancelDeleteContent'   => __( 'No, cancel it', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();

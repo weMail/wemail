@@ -182,7 +182,8 @@
         },
 
         created() {
-            weMail.event.$on('open-content-settings', this.openContentSettings);
+            weMail.event.$on('customizer-open-content-settings', this.openContentSettings);
+            weMail.event.$on('customizer-deleted-content', this.resetCurrentWindow);
         },
 
         methods: {
@@ -198,6 +199,10 @@
                 this.sectionIndex = sectionIndex;
                 this.contentIndex = contentIndex;
                 this.currentWindow = 'content-settings';
+            },
+
+            resetCurrentWindow() {
+                this.currentWindow = 'contentTypes';
             },
 
             getSettingsComponentName() {

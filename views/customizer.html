@@ -103,8 +103,8 @@
                                                 :data-content-index="contentIndex"
                                             ></i>
                                             <i class="fa fa-pencil" @click="editContent(sectionIndex, contentIndex)"></i>
-                                            <i class="fa fa-clone"></i>
-                                            <i class="fa fa-trash-o"></i>
+                                            <i class="fa fa-clone" @click="cloneContent(sectionIndex, contentIndex)"></i>
+                                            <i class="fa fa-trash-o" @click="deleteContent(sectionIndex, contentIndex)"></i>
                                         </p>
                                     </div>
                                 </td>

@@ -19,6 +19,10 @@ export default function (Customizer) {
                 return Customizer.customizer;
             },
 
+            i18n() {
+                return this.customizerObj.i18n;
+            },
+
             template() {
                 return Customizer.template;
             },
@@ -266,7 +270,45 @@ export default function (Customizer) {
             },
 
             editContent(sectionIndex, contentIndex) {
-                weMail.event.$emit('open-content-settings', sectionIndex, contentIndex);
+                weMail.event.$emit('customizer-open-content-settings', sectionIndex, contentIndex);
+            },
+
+            cloneContent(sectionIndex, contentIndex) {
+                const content = $.extend(
+                    true,
+                    {},
+                    Customizer.template.sections[sectionIndex].contents[contentIndex]
+                );
+
+                const newContentIndex = parseInt(contentIndex, 10) + 1;
+
+                Customizer.template
+                    .sections[sectionIndex]
+                    .contents.splice(
+                        newContentIndex, 0, content
+                    );
+            },
+
+            deleteContent(sectionIndex, contentIndex) {
+                this.alert({
+                    type: 'warning',
+                    text: this.i18n.deleteContentWarnMsg,
+                    showCancelButton: true,
+                    confirmButtonText: this.i18n.confirmDeleteContent,
+                    cancelButtonText: this.i18n.cancelDeleteContent,
+                    confirmButtonColor: '#dc3232',
+                    cancelButtonColor: '#cccccc'
+                }).then((deleteIt) => {
+                    if (deleteIt) {
+                        Customizer.template
+                            .sections[sectionIndex]
+                            .contents.splice(
+                                contentIndex, 1
+                            );
+
+                        weMail.event.$emit('customizer-deleted-content', sectionIndex, contentIndex);
+                    }
+                });
             }
         }
     };
