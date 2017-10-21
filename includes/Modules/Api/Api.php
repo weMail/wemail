@@ -64,10 +64,13 @@ class Api {
      */
     public function __construct() {
         $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
-
         $this->root  = untrailingslashit( $root );
-        $this->site  = get_option( 'wemail-api-site-key', 'siteKey' );
-        $this->user  = get_user_meta( get_current_user_id(), 'wemail-api-user-key', 'userKey' );
+
+        $site_key    = get_option( 'wemail_api_site_key', 'siteKey' );
+        $this->site  = apply_filters( 'wemail_api_site_key', $site_key );
+
+        $user_key    = get_user_meta( get_current_user_id(), 'wemail_api_user_key' );
+        $this->user  = apply_filters( 'wemail_api_user_key', $user_key );
     }
 
     /**
@@ -143,12 +146,13 @@ class Api {
             $url = $this->root . $this->url;
         }
 
-        if ( ! empty( $query ) ) {
-            $url .= '?' . http_build_query( $query );
+        $this->query['api_token'] = $this->user;
 
-        } else if ( $this->query ) {
-            $url .= '?' . http_build_query( $this->query );
+        if ( ! empty( $query ) ) {
+            $this->query = array_merge( $query, $this->query );
         }
+
+        $url .= '?' . http_build_query( $this->query );
 
         $this->url   = '';
         $this->query = [];

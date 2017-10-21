@@ -3,7 +3,7 @@
         <tr>
             <td align="center" valign="top" :style="containerInnerStyle">
                 <div class="wrapper" :style="wrapperStyle.left" >
-                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: content.twoColumns ? '300px' : '600px'}">
+                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: wrapperStyle.left.minWidth}">
                         <tr>
                             <td align="center" valign="top" :style="wrapperTdStyle[0]">
                                 <table class="wrapperInner" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -24,7 +24,7 @@
                     </table>
                 </div>
                 <div v-if="content.twoColumns" class="wrapper" :style="wrapperStyle.right">
-                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px; float: right">
+                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: wrapperStyle.right.minWidth}">
                         <tr>
                             <td align="center" valign="top" :style="wrapperTdStyle[1]">
                                 <table class="wrapperInner" border="0" cellpadding="0" cellspacing="0" width="100%">

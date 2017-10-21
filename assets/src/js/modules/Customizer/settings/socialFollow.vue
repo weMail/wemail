@@ -118,7 +118,7 @@
             <div class="control-property">
                 <h4 class="property-title clearfix">
                     {{ i18n.padding }}
-                    <span class="property-value">{{ style.paddingLeft }}</span>
+                    <span class="property-value">{{ style.padding }}</span>
                 </h4>
                 <div class="property">
                     <input-range v-model="padding"></input-range>

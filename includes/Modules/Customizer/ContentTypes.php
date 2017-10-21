@@ -22,7 +22,7 @@ class ContentTypes {
      *
      * @return array
      */
-    public static function get_type_settings( $context ) {
+    public static function get_content_type_settings( $context ) {
         self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
 
         $settings = [
@@ -335,21 +335,24 @@ class ContentTypes {
             'type'        => 'footer',
             'image'      => self::$image_dir . '/footer.png',
             'default'    => [
-                'style'  => [
+                'style'      => [
                     'backgroundColor' => '#ffffff',
+                    'color'           => '',
                     'paddingTop'      => '15px',
                     'paddingBottom'   => '15px',
                     'paddingLeft'     => '15px',
                     'paddingRight'    => '15px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
+                    'borderColor'     => '#e5e5e5',
+                    'marginBottom'    => '0px',
                 ],
                 'twoColumns' => false,
                 'texts'      => [
                     '<p style="text-align: center;"><span style="font-size: 12px;">This email was sent to [user:email] because you have opted in to receive specific updates on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;">If you would prefer not to receive any email from us in the future, please [links:unsubscribe text="click here to unsubscribe"] or go to your [links:edit_subscription text="account preferences"] on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;"><strong>Our mailing address</strong></span><br /><span style="font-size: 12px;"> [company:name]</span><br /><span style="font-size: 12px;"> [company:address]</span></p><p style="text-align: center;"><span style="font-size: 12px;">Copyright © [date:year] [company:name], All rights reserved.</span></p>',
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) )
                 ],
+                'columnSplit' => '1-1',
                 'valign'     => 'top',
             ]
         ];

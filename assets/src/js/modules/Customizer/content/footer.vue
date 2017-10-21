@@ -1,13 +1,34 @@
 <template>
-    <table class="content" width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td align="left">
-                <pre>footer.vue</pre>
-            </td>
-        </tr>
-    </table>
+    <content-text
+        :content="content"
+        :global-css="globalCss"
+        :customizer="customizer"
+    ></content-text>
 </template>
 
 <script>
-    export default {};
+    import ContentText from './text.vue';
+
+    export default {
+        components: {
+            ContentText
+        },
+
+        props: {
+            content: {
+                type: Object,
+                required: true
+            },
+
+            globalCss: {
+                type: Object,
+                required: true
+            },
+
+            customizer: {
+                type: Object,
+                required: false
+            }
+        }
+    };
 </script>

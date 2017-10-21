@@ -61,7 +61,7 @@ class Customizer {
             'i18n'             => $this->i18n(),
             'contentTypes'     => [
                 'types'        => $this->content_types,
-                'settings'     => $this->get_type_settings()
+                'settings'     => $this->get_content_type_settings()
             ],
             'shortcodes'       => wemail()->shortcode->get(),
             'shortcodeImg'     => WEMAIL_ASSETS . '/images/shortcode.png',
@@ -81,8 +81,8 @@ class Customizer {
      *
      * @return array
      */
-    public function get_type_settings() {
-        $types = ContentTypes::get_type_settings( $this->context );
+    public function get_content_type_settings() {
+        $types = ContentTypes::get_content_type_settings( $this->context );
 
         return array_filter( $types, function ( $type ) {
             return in_array( $type , $this->content_types );
@@ -217,6 +217,13 @@ class Customizer {
         return apply_filters( "wemail_customizer_i18n_{$this->context}", $i18n );
     }
 
+    /**
+     * Divider variation data
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public function dividers() {
         $dividers = [
             'baseURL' => WEMAIL_ASSETS . '/images/dividers/',

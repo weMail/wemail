@@ -66,13 +66,20 @@
 
                 vm.apiHandler.abort();
 
+                // console.log(vm.$router.currentRoute.fullPath);
+
+                console.log();
                 vm.apiHandler = weMail
                     .api
-                    .get(vm.$router.currentRoute.fullPath)
+                    .subscribers()
+                    .query(vm.$router.currentRoute.query)
+                    .get()
                     .done((response) => {
                         if (response.data) {
                             vm.$store.commit('subscribers/updateSubscribers', response);
                         }
+                    }).always((response) => {
+                        console.log(response);
                     });
             },
 

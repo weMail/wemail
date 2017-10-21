@@ -106,8 +106,6 @@ class Settings extends Module {
 
         $this->settings = collect( $settings )->sortBy( 'priority' );
 
-        // $test = $this->settings->
-
         $this->settings->each( function ( $setting ) {
             add_filter( "wemail_get_route_data_{$setting->route_name}", [ $setting, 'get_route_data' ] );
         } );

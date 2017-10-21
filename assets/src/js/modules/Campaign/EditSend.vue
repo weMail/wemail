@@ -394,7 +394,7 @@
         .dropdown-menu {
             top: -2px !important;
             left: 1px !important;
-            max-height: 170px;
+            max-height: 220px;
             overflow-y: auto;
 
             .shortcode-type {

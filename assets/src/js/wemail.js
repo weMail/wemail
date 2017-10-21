@@ -8,13 +8,15 @@ weMail.event = new Vue();
 
 // jQuery ajax wrapper
 function Ajax(url, method, headers, data) {
-    return $.ajax({
+    const test = $.ajax({
         url,
         method,
         dataType: 'json',
         headers,
         data
     });
+
+    return test;
 }
 
 // Ajax get method
@@ -42,10 +44,7 @@ const API = {
     _url: '',
 
     headers() {
-        return {
-            site: this.site,
-            user: this.user
-        };
+        return {};
     },
 
     resetProps() {
@@ -67,8 +66,10 @@ const API = {
             url = `${this.root}${this._url}`;
         }
 
+        this._query.api_token = this.user;
+
         if (query) {
-            this._query = query;
+            this._query = $.extend(true, this._query, query);
         }
 
         return url;
