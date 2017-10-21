@@ -8,11 +8,35 @@ $fa-font-path: "~font-awesome/fonts";
 }
 
 #wemail-customizer {
+    position: relative;
 
     &.content-is-dragging {
 
         .control-buttons {
             display: none !important;
+        }
+    }
+}
+
+.empty-content-zone {
+
+    .sortable-chosen.sortable-ghost {
+        display: none;
+    }
+
+    .content-dropzone-placeholder {
+        padding: 15px;
+        font-weight: 700;
+        text-align: center;
+        background-color: $wp-border-color;
+        border: 1px solid $wp-border-color-darken;
+    }
+
+    &.hovering-content {
+
+        .content-dropzone-placeholder {
+            background: fade-out($wp-blue, 0.8);
+            border: 1px dashed $wp-blue;
         }
     }
 }
@@ -97,4 +121,13 @@ $fa-font-path: "~font-awesome/fonts";
             }
         }
     }
+}
+
+#section-highlighter {
+    position: absolute;
+    left: calc(50% - 300px);
+    background: fade-out($wp-blue, 0.8);
+    border: 1px dashed $wp-blue;
+
+    @include transition;
 }

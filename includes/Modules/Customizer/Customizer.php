@@ -199,6 +199,7 @@ class Customizer {
             'deleteContentWarnMsg'  => __( 'Are you sure you want to delete this content?', 'wemail' ),
             'confirmDeleteContent'  => __( 'Yes, delete it', 'wemail' ),
             'cancelDeleteContent'   => __( 'No, cancel it', 'wemail' ),
+            'dropContentHere'       => __( 'drop content here', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();

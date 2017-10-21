@@ -31,7 +31,13 @@
 
             <div v-show="currentWindow === 'design'" id="customizer-design">
                 <div v-for="section in sections" class="section-name">
-                    <a href="#" class="section-title clearfix" @click.prevent="openSectionSettings(section)">
+                    <a
+                        href="#"
+                        class="section-title clearfix"
+                        @click.prevent="openSectionSettings(section)"
+                        @mouseenter="mouseenterSection(section)"
+                        @mouseout="mouseoutSection(section)"
+                    >
                         {{ i18n[section] }}
                         <span class="float-right">
                             <i class="fa fa-angle-right"></i>
@@ -216,6 +222,18 @@
 
             saveAndClose(currentWindow) {
                 this.currentWindow = currentWindow;
+            },
+
+            mouseenterSection(section) {
+                if (section !== 'global') {
+                    weMail.event.$emit('customizer-show-section-highlighter', section);
+                }
+            },
+
+            mouseoutSection(section) {
+                if (section !== 'global') {
+                    weMail.event.$emit('customizer-hide-section-highlighter', section);
+                }
             }
         }
     };

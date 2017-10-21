@@ -66,10 +66,17 @@
 <body style="margin: 0 !important; padding: 0 !important;">
     <div id="wemail-customizer" v-cloak>
         <table border="0" cellpadding="0" cellspacing="0" width="100%" :style="template.globalCss">
-            <tr v-for="(section, sectionIndex) in template.sections" :key="section.name" class="section">
+            <tr v-for="(section, sectionIndex) in template.sections" :key="section.name" :class="['section section-' + section.name]">
                 <td align="center" :style="section.style">
                     <table class="responsive-table section-wrapper" :style="section.wrapperStyle" border="0" cellpadding="0" cellspacing="0" width="100%">
-                        <tbody :data-section-index="sectionIndex">
+                        <tbody :data-section-index="sectionIndex" :class="[!section.contents.length ? 'empty-content-zone': '']">
+                            <tr v-if="!section.contents.length">
+                                <td>
+                                    <div class="content-dropzone-placeholder">
+                                      {{ i18n[section.name] }} - {{ i18n.dropContentHere }}
+                                    </div>
+                                </td>
+                            </tr>
                             <tr
                                 v-for="(content, contentIndex) in section.contents"
                                 :key="content.id"
@@ -114,6 +121,8 @@
                 </td>
             </tr>
         </table>
+
+        <div v-if="!isPreview" id="section-highlighter" :style="highlighterStyle">&nbsp;</div>
     </div>
 </body>
 </html>

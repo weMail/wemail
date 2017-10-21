@@ -11,7 +11,14 @@ export default function (Customizer) {
             oldSectionIndex: 0,
             oldContentIndex: 0,
             newSectionIndex: 0,
-            newContentIndex: 0
+            newContentIndex: 0,
+            highlighterStyle: {
+                bottom: '0',
+                width: '600px',
+                height: '0px',
+                opacity: '0',
+                zIndex: '-1'
+            }
         },
 
         computed: {
@@ -35,6 +42,9 @@ export default function (Customizer) {
         created() {
             weMail.event.$on('customizer-content-drag-start', this.onDragStart);
             weMail.event.$on('customizer-content-drag-end', this.onDragEnd);
+
+            weMail.event.$on('customizer-show-section-highlighter', this.showSectionHighlighter);
+            weMail.event.$on('customizer-hide-section-highlighter', this.hideSectionHighlighter);
         },
 
         mounted() {
@@ -61,6 +71,14 @@ export default function (Customizer) {
 
                 onEnd(e) {
                     weMail.event.$emit('customizer-content-drag-end', e);
+                },
+
+                onMove(e) {
+                    $('#wemail-customizer-iframe').contents().find('#wemail-customizer').find('.hovering-content').removeClass('hovering-content');
+
+                    if ($(e.to).hasClass('empty-content-zone')) {
+                        $(e.to).addClass('hovering-content');
+                    }
                 }
             });
 
@@ -126,6 +144,14 @@ export default function (Customizer) {
                             weMail.event.$emit('customizer-content-drag-end', e);
                         },
 
+                        onMove(e) {
+                            $('#wemail-customizer-iframe').contents().find('#wemail-customizer').find('.hovering-content').removeClass('hovering-content');
+
+                            if ($(e.to).hasClass('empty-content-zone')) {
+                                $(e.to).addClass('hovering-content');
+                            }
+                        },
+
                         onAdd(e) {
                             vm.updateContent(e);
                         },
@@ -143,6 +169,7 @@ export default function (Customizer) {
 
             onDragEnd(e) {
                 $('#wemail-customizer-iframe').contents().find('#wemail-customizer').removeClass('content-is-dragging');
+                $('#wemail-customizer-iframe').contents().find('.hovering-content').removeClass('.hovering-content');
             },
 
             bindMoveButtons() {
@@ -247,16 +274,18 @@ export default function (Customizer) {
                 const contentType = Customizer.customizer.contentTypes.settings[this.contentType];
                 const contentSettings = $.extend(true, {}, contentType);
 
-                let totalContents = 0;
+                // id property is required only for v-for -> :key property.
+                // It helps to keep order after re-order/sorting contents
+                const ids = [];
 
                 Customizer.template.sections.forEach((section) => {
-                    section.contents.forEach(() => {
-                        ++totalContents;
+                    section.contents.forEach((content) => {
+                        ids.push(parseInt(content.id, 10));
                     });
                 });
 
                 let content = {
-                    id: totalContents + 1,
+                    id: _.max(ids) + 1,
                     type: contentSettings.type
                 };
 
@@ -309,6 +338,29 @@ export default function (Customizer) {
                         weMail.event.$emit('customizer-deleted-content', sectionIndex, contentIndex);
                     }
                 });
+            },
+
+            showSectionHighlighter(section) {
+                const sectionTable = $('#wemail-customizer-iframe').contents().find(`.section.section-${section} > td > table`);
+                const position = sectionTable.position();
+
+                this.highlighterStyle = {
+                    top: `${position.top}px`,
+                    width: `${sectionTable.outerWidth(true)}px`,
+                    height: `${sectionTable.outerHeight(true)}px`,
+                    opacity: '1',
+                    zIndex: '100'
+                };
+            },
+
+            hideSectionHighlighter(section) {
+                this.highlighterStyle = {
+                    bottom: '0',
+                    width: '600px',
+                    height: '0px',
+                    opacity: '0',
+                    zIndex: '-1'
+                };
             }
         }
     };
