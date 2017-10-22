@@ -111,6 +111,25 @@ class Api {
     }
 
     /**
+     * The arguments for wp_remote_get or wp_remote_post
+     *
+     * @since 1.0.0
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    private function args( $args ) {
+        $defaults = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->user
+            ]
+        ];
+
+        return wp_parse_args( $args, $defaults );
+    }
+
+    /**
      * Set the query for URL to build
      *
      * @since 1.0.0
@@ -146,8 +165,6 @@ class Api {
             $url = $this->root . $this->url;
         }
 
-        $this->query['api_token'] = $this->user;
-
         if ( ! empty( $query ) ) {
             $this->query = array_merge( $query, $this->query );
         }
@@ -161,7 +178,7 @@ class Api {
     }
 
     /**
-     * API GET request caller
+     * API - GET request caller
      *
      * @since 1.0.0
      *
@@ -172,25 +189,7 @@ class Api {
      * @return array|boolean Array on success, false on failure
      */
     public function get( $url = '', $query = [], $args = [] ) {
-        // global $wp_version;
-
-        $defaults = [
-            // 'timeout'     => 5,
-            // 'redirection' => 5,
-            // 'httpversion' => '1.0',
-            // 'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url(),
-            // 'blocking'    => true,
-            // 'headers'     => array(),
-            // 'cookies'     => array(),
-            // 'body'        => null,
-            // 'compress'    => false,
-            // 'decompress'  => true,
-            // 'sslverify'   => true,
-            // 'stream'      => false,
-            // 'filename'    => null
-        ];
-
-        $args = wp_parse_args( $args, $defaults );
+        $args = $this->args( $args );
 
         $url = $this->build_url( $url, $query );
 
@@ -204,7 +203,7 @@ class Api {
     }
 
     /**
-     * API POST request caller
+     * API - POST request caller
      *
      * @since 1.0.0
      *
@@ -215,23 +214,7 @@ class Api {
      * @return array|boolean Array on success, false on failure
      */
     public function post( $url, $data, $args = [] ) {
-        $defaults = [
-            // 'timeout'     => 5,
-            // 'redirection' => 5,
-            // 'httpversion' => '1.0',
-            // 'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url(),
-            // 'blocking'    => true,
-            // 'headers'     => array(),
-            // 'cookies'     => array(),
-            // 'body'        => null,
-            // 'compress'    => false,
-            // 'decompress'  => true,
-            // 'sslverify'   => true,
-            // 'stream'      => false,
-            // 'filename'    => null
-        ];
-
-        $args = wp_parse_args( $args, $defaults );
+        $args = $this->args( $args );
 
         $args['body'] = ! empty( $data ) ? $data : null;
 

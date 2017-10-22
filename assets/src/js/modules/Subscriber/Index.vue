@@ -12,7 +12,7 @@
 
                 <ul>
                     <li v-for="subscriber in subscribers.data">
-                        hash: {{ subscriber.hash }} | <router-link :to="{name: 'subscriberShow', params: {hash: subscriber.hash}}">{{ subscriber.first_name }} {{ subscriber.last_name }}</router-link>
+                        <router-link :to="{name: 'subscriberShow', params: {hash: subscriber.hash}}">hash: {{ subscriber.hash }} | {{ subscriber.first_name }} {{ subscriber.last_name }}</router-link>
                     </li>
                 </ul>
 
@@ -76,7 +76,7 @@
                     .get()
                     .done((response) => {
                         if (response.data) {
-                            vm.$store.commit('subscribers/updateSubscribers', response);
+                            vm.$store.commit('subscriberIndex/updateSubscribers', response);
                         }
                     }).always((response) => {
                         console.log(response);

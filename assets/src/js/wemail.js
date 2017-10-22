@@ -44,7 +44,9 @@ const API = {
     _url: '',
 
     headers() {
-        return {};
+        return {
+            Authorization: `Bearer ${this.user}`
+        };
     },
 
     resetProps() {
@@ -65,8 +67,6 @@ const API = {
         } else if (this._url) {
             url = `${this.root}${this._url}`;
         }
-
-        this._query.api_token = this.user;
 
         if (query) {
             this._query = $.extend(true, this._query, query);
