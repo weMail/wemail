@@ -48,6 +48,12 @@ weMail.admin = new Vue({
                     .parent()
                     .addClass('current');
             }
+
+            const INTERVAL = 300;
+
+            $('html, body').animate({
+                scrollTop: 0
+            }, INTERVAL);
         }
     }
 });
