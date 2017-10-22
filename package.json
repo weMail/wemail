@@ -5,8 +5,8 @@
   "scripts": {
     "install": "webpack",
     "lint:webpack": "node_modules/eslint/bin/eslint.js webpack.config.js",
-    "bootstrap:js": "shx cat assets/src/vendor/bootstrap/js/util.js assets/src/vendor/bootstrap/js/dropdown.js | shx sed \"s/^(import|export).*//\" | babel --no-babelrc --presets=es2015 --filename assets/src/vendor/bootstrap/js/bootstrap.js | node assets/src/vendor/bootstrap/build/stamp.js > assets/js/bootstrap.js",
-    "clean": "shx rm -rf assets/css && shx rm -rf assets/js && shx rm -rf assets/fonts && shx rm assets/images/*.*"
+    "bootstrap:js": "shx mkdir -p assets/js && shx cat assets/src/vendor/bootstrap/js/util.js assets/src/vendor/bootstrap/js/dropdown.js | shx sed \"s/^(import|export).*//\" | babel --no-babelrc --presets=es2015 --filename assets/src/vendor/bootstrap/js/bootstrap.js | node assets/src/vendor/bootstrap/build/stamp.js > assets/js/bootstrap.js",
+    "clean": "shx rm -rf assets/css && shx rm -rf assets/js && shx rm -rf assets/fonts && shx rm -f assets/images/*.*"
   },
   "repository": {
     "type": "git",

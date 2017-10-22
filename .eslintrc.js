@@ -161,7 +161,7 @@ module.exports = {
         "id-blacklist": "error",
         "id-length": "off",
         "id-match": "error",
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "indent-legacy": ["error", 4, { "SwitchCase": 1 }],
         "jsx-quotes": "error",
         "key-spacing": "off",

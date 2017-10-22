@@ -76,8 +76,19 @@ class Subscriber extends Module {
      */
     public function show( $params, $query ) {
         $i18n = [
-            'noName'  => __( 'no name', 'wemail' ),
-            'website' => __( 'Website', 'wemail' ),
+            'noName'             => __( 'no name', 'wemail' ),
+            'website'            => __( 'Website', 'wemail' ),
+            'informations'       => __( 'Informations', 'wemail' ),
+            'lists'              => __( 'Lists', 'wemail' ),
+            'subscriberNotFound' => __( 'Subscriber not found', 'wemail' ),
+            'dob'                => __( 'Date of birth', 'wemail' ),
+            'address1'           => __( 'Address 1', 'wemail' ),
+            'address2'           => __( 'Address 2', 'wemail' ),
+            'city'               => __( 'City', 'wemail' ),
+            'state'              => __( 'State', 'wemail' ),
+            'country'            => __( 'Country', 'wemail' ),
+            'zip'                => __( 'Zip', 'wemail' ),
+            'editInfo'           => __( 'edit info', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();
@@ -92,9 +103,10 @@ class Subscriber extends Module {
         ] );
 
         return [
-            'dummyImageURL' => WEMAIL_ASSETS . '/images/misc/mystery-person.png',
-            'subscriber'    => wemail()->subscriber->get( $params['hash'] ),
             'i18n' => $i18n,
+            'dummyImageURL' => WEMAIL_ASSETS . '/images/misc/mystery-person.png',
+            'subscriber' => wemail()->subscriber->get( $params['hash'] ),
+            'lists' => wemail()->lists->all(),
             'socialNetworks' => [
                 'networks' => $social_networks,
                 'icons' => $social_network_icons

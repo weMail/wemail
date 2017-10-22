@@ -128,3 +128,28 @@
 .list-disc {
     list-style-type: disc;
 }
+
+.list-two-columns {
+    margin: 0 0 10px;
+
+    li {
+        margin: 10px 0;
+
+        @include clearfix;
+
+        & > label {
+            float: left;
+            width: 140px;
+            font-weight: 500;
+        }
+
+        & > div {
+            float: left;
+            width: calc(100% - 140px);
+
+            p {
+                margin-top: 0;
+            }
+        }
+    }
+}

@@ -5,3 +5,25 @@
     background-color: #fff;
     border: 1px solid $wp-border-color;
 }
+
+.wemail-box-plain {
+    position: relative;
+    margin-bottom: 20px;
+
+    .box-title {
+        padding-bottom: 5px;
+        margin-bottom: 12px;
+        font-size: 18px;
+        font-weight: 500;
+        border-bottom: 1px solid $wp-border-color-darken;
+
+        @include clearfix;
+
+        .button.button-link {
+            height: auto;
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+    }
+}
