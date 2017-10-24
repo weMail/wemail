@@ -1,10 +1,10 @@
 // The dropdown wrapper (`<div>`)
-.dropup,
-.dropdown {
+.wemail-dropup,
+.wemail-dropdown {
   position: relative;
 }
 
-.dropdown-toggle {
+.wemail-dropdown-toggle {
   // Generate the caret automatically
   &::after {
     display: inline-block;
@@ -24,14 +24,14 @@
 }
 
 // Allow for dropdowns to go bottom up (aka, dropup-menu)
-// Just add .dropup after the standard .dropdown class and you're set.
-.dropup {
-  .dropdown-menu {
+// Just add .wemail-dropup after the standard .wemail-dropdown class and you're set.
+.wemail-dropup {
+  .wemail-dropdown-menu {
     margin-top: 0;
     margin-bottom: $dropdown-spacer;
   }
 
-  .dropdown-toggle {
+  .wemail-dropdown-toggle {
     &::after {
       border-top: 0;
       border-bottom: $caret-width solid;
@@ -40,7 +40,7 @@
 }
 
 // The dropdown menu
-.dropdown-menu {
+.wemail-dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -62,14 +62,14 @@
 }
 
 // Dividers (basically an `<hr>`) within the dropdown
-.dropdown-divider {
+.wemail-dropdown-divider {
   @include nav-divider($dropdown-divider-bg);
 }
 
 // Links, buttons, and more within the dropdown menu
 //
 // `<button>`-specific styles are denoted with `// For <button>s`
-.dropdown-item {
+.wemail-dropdown-item {
   display: block;
   width: 100%; // For `<button>`s
   padding: $dropdown-item-padding-y $dropdown-item-padding-x;
@@ -113,12 +113,12 @@
   }
 }
 
-.dropdown-menu.show {
+.wemail-dropdown-menu.show {
   display: block;
 }
 
 // Dropdown section headers
-.dropdown-header {
+.wemail-dropdown-header {
   display: block;
   padding: $dropdown-padding-y $dropdown-item-padding-x;
   margin-bottom: 0; // for use with heading elements

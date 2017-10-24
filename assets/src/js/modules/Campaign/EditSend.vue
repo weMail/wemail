@@ -27,24 +27,24 @@
                                         @blur="blurFloatingInfoInput"
                                     >
 
-                                    <div class="dropdown" id="shortcode-dropdown">
-                                        <button type="button" class="button" data-toggle="dropdown">
+                                    <div class="wemail-dropdown" id="shortcode-wemail-dropdown">
+                                        <button type="button" class="button" data-toggle="wemail-dropdown">
                                            <img :src="customizer.shortcodeImg" alt="">
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="wemail-dropdown-menu wemail-dropdown-menu-right">
                                             <template v-for="(shortcodeObj, shortcodeType) in customizer.shortcodes">
-                                                <a href="#" class="dropdown-item shortcode-type">
+                                                <a href="#" class="wemail-dropdown-item shortcode-type">
                                                     {{ shortcodeObj.title }}
                                                 </a>
 
                                                 <a
                                                     v-for="(codeObj, shortcode) in shortcodeObj.codes"
-                                                    class="dropdown-item"
+                                                    class="wemail-dropdown-item"
                                                     href="#"
                                                     @click.prevent="addShortcode(shortcodeType, shortcode, codeObj)"
                                                 >{{ codeObj.title }}</a>
 
-                                                <div class="dropdown-divider"></div>
+                                                <div class="wemail-dropdown-divider"></div>
                                             </template>
                                         </div>
                                     </div>
@@ -357,7 +357,7 @@
                     code = codeObj.text;
                 }
 
-                this.email.subject += ` ${code}`;
+                this.email.subject = this.email.subject ? `${this.email.subject} ${code}` : code;
 
                 $(this.$el).find('.campaign-subject-input').focus();
 
@@ -372,7 +372,7 @@
         padding-right: 35px !important;
     }
 
-    #shortcode-dropdown {
+    #shortcode-wemail-dropdown {
         position: absolute;
         top: 1px;
         right: 11px;
@@ -391,7 +391,7 @@
             }
         }
 
-        .dropdown-menu {
+        .wemail-dropdown-menu {
             top: -2px !important;
             left: 1px !important;
             max-height: 220px;

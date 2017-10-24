@@ -1,9 +1,9 @@
-.dropdown {
+.wemail-dropdown {
 
-    .dropdown-menu {
+    .wemail-dropdown-menu {
         border-radius: 0;
 
-        .dropdown-item {
+        .wemail-dropdown-item {
             padding-right: 1.2rem;
             padding-left: 1.2rem;
             font-size: 13px;
@@ -17,7 +17,7 @@
             }
         }
 
-        .dropdown-divider:last-child {
+        .wemail-dropdown-divider:last-child {
             display: none;
         }
     }
