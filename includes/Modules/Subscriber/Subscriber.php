@@ -89,6 +89,11 @@ class Subscriber extends Module {
             'country'            => __( 'Country', 'wemail' ),
             'zip'                => __( 'Zip', 'wemail' ),
             'editInfo'           => __( 'edit info', 'wemail' ),
+            'save'               => __( 'Save', 'wemail' ),
+            'cancel'             => __( 'Cancel', 'wemail' ),
+            'unconfirmed'        => __( 'unconfirmed', 'wemail' ),
+            'unsubscribed'       => __( 'unsubscribed', 'wemail' ),
+            'subscribed'         => __( 'subscribed', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();

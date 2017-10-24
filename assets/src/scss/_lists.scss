@@ -132,7 +132,7 @@
 .list-two-columns {
     margin: 0 0 10px;
 
-    li {
+    & > li {
         margin: 10px 0;
 
         @include clearfix;
