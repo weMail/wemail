@@ -215,6 +215,8 @@
 
 <script>
     export default {
+        mixins: [weMail.mixins.dataValidators],
+
         data() {
             return {
                 subMaxLength: 150,
@@ -339,7 +341,7 @@
             },
 
             isInvalidEmail(email) {
-                return !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+                return !this.isEmail(email);
             },
 
             addShortcode(shortcodeType, shortcode, codeObj) {

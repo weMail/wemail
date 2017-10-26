@@ -18,6 +18,23 @@
                                         <a :href="network.link" v-html="network.icon" target="_blank"></a>
                                     </li>
                                 </ul>
+
+                                <div class="subscriber-action wemail-dropdown">
+                                    <button
+                                        class="button button-link"
+                                        type="button"
+                                        data-toggle="wemail-dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    ><i class="fa fa-gear"></i></button>
+                                    <div class="wemail-dropdown-menu wemail-dropdown-menu-right">
+                                        <a
+                                            class="wemail-dropdown-item"
+                                            href="#delete-subscriber"
+                                            @click.prevent="deleteItem"
+                                        >{{ i18n.deleteSubscriber }}</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,10 +138,12 @@
 </template>
 
 <script>
+    import deleteSubscriber from './deleteSubscriber.js';
+
     export default {
         routeName: 'subscriberShow',
 
-        mixins: weMail.getMixins('routeComponent'),
+        mixins: [...weMail.getMixins('routeComponent'), deleteSubscriber],
 
         data() {
             return {
@@ -317,41 +336,29 @@
                 }
 
                 if (newUnsubId) {
-                    // We are subscribing to an existing list here. First, make sure if this id is
+                    // We are unsubscribing to an existing list here. First, make sure if this id is
                     // in the temporary information.list.
                     infoListSubList = _.chain(this.informations.lists).filter((list) => {
                         return (list.id === newUnsubId) && (list.status === 'subscribed');
                     }).first().value();
 
                     if (infoListSubList) {
-                        // Before unsubscribing, let's check what's its status in origin subcriber.lists.
-                        // Original status may either unsubscribed or unconfirmed.
+                        // Before unsubscribing, let's check what's if it exists in subscriber.lists
                         unconfirmedList = this.subscriber.lists.filter((list) => {
-                            return (list.id === infoListSubList.id) && (list.status === 'unconfirmed');
+                            return (list.id === infoListSubList.id);
                         });
 
                         if (unconfirmedList.length) {
-                            // The original status was unconfirmed
-                            infoListSubList.status = 'unconfirmed';
+                            // If original status is subscribed then unsubscribed it, otherwise set back
+                            // the original status. Keep in mind that, user can check and then uncheck before
+                            // save the changes.
+                            infoListSubList.status = unconfirmedList[0].status === 'subscribed' ? 'unsubscribed' : unconfirmedList[0].status;
 
                         } else {
-                            // The original status was not unconfirmed. In editing mode, when we check a list that
-                            // doesn't exist in original subscriber.lists, and then uncheck that list, we have to
-                            // remove it from informations.lists
-                            const subList = this.subscriber.lists.filter((list, i) => {
-                                return (list.id === infoListSubList.id) && (list.status === 'unsubscribed');
+                            // The list doesn't exist in subscriber.lists
+                            _.remove(this.informations.lists, (list) => {
+                                return list.id === infoListSubList.id;
                             });
-
-                            if (subList.length) {
-                                // The list exists in subscriber.lists
-                                infoListSubList.status = 'unsubscribed';
-
-                            } else {
-                                // The list doesn't exist in subscriber.lists
-                                _.remove(this.informations.lists, (list) => {
-                                    return list.id === infoListSubList.id;
-                                });
-                            }
                         }
                     }
                 }
@@ -401,6 +408,21 @@
                 }
 
                 return elem;
+            },
+
+            deleteItem() {
+                const vm = this;
+
+                this.deleteSubscriber(this.subscriber, () => {
+                    vm.success({
+                        text: vm.i18n.subscriberDeleted,
+                        confirmButtonText: vm.i18n.close
+                    }).then(() => {
+                        vm.$router.push({
+                            name: 'subscriberIndex'
+                        });
+                    });
+                });
             }
         }
     };
@@ -416,9 +438,10 @@
         }
 
         .profile-summery {
+            position: relative;
 
             .subscriber-name {
-                padding: 0;
+                padding: 0 30px 0 0;
                 margin-bottom: 5px;
                 line-height: 1.4;
             }
@@ -432,6 +455,20 @@
                 a {
                     font-size: 18px;
                     color: $wp-black;
+                }
+            }
+
+            .subscriber-action {
+                position: absolute;
+                top: 6px;
+                right: 0;
+
+                button {
+                    height: auto;
+                    padding: 3px 6px;
+                    font-size: 16px;
+                    line-height: 1;
+                    color: #666;
                 }
             }
         }

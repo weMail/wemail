@@ -36,3 +36,10 @@
     border: 1px solid $wp-border-color-darken;
     border-radius: 15px;
 }
+
+.d-block-with-border {
+    display: block;
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid $wp-border-color;
+}

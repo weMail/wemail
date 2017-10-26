@@ -53,6 +53,10 @@ h2.swal2-title {
     line-height: 1.2;
 }
 
+.swal2-container {
+    z-index: $zindex-modal-backdrop;
+}
+
 // FontAwesome
 $fa-font-path: "~font-awesome/fonts";
 

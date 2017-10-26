@@ -2,8 +2,16 @@
     <div v-if="isLoaded">
         <h1>
             Subscribers
-            <a href="#" class="page-title-action">Add New</a>
-            <a href="#" class="page-title-action">Search Segment</a>
+            <a
+                href="#add-new-subscriber"
+                class="page-title-action"
+                @click.prevent="showNewSubscriberModal"
+            >{{ i18n.addNew }}</a>
+
+            <a
+                href="#"
+                class="page-title-action"
+            >{{ i18n.searchSegment }}</a>
         </h1>
 
         <div class="row">
@@ -12,7 +20,7 @@
 
                 <ul>
                     <li v-for="subscriber in subscribers.data">
-                        <router-link :to="{name: 'subscriberShow', params: {hash: subscriber.hash}}">hash: {{ subscriber.hash }} | {{ subscriber.first_name }} {{ subscriber.last_name }}</router-link>
+                        <router-link :to="{name: 'subscriberShow', params: {hash: subscriber.hash}}">hash: {{ subscriber.hash }} | {{ subscriber.email }}</router-link>
                     </li>
                 </ul>
 
@@ -21,10 +29,18 @@
                 <pre>{{ subscribers }}</pre>
             </div>
         </div>
+
+        <new-subscriber-modal
+            scope="subscriber-index"
+            :i18n="i18n"
+            :lists="lists"
+        ></new-subscriber-modal>
     </div>
 </template>
 
 <script>
+    import NewSubscriberModal from './NewSubscriberModal.vue';
+
     export default {
         routeName: 'subscriberIndex',
 
@@ -35,6 +51,10 @@
         },
 
         mixins: weMail.getMixins('routeComponent'),
+
+        components: {
+            NewSubscriberModal
+        },
 
         data() {
             return {
@@ -48,7 +68,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('subscriberIndex', ['i18n', 'subscribers'])
+            ...Vuex.mapState('subscriberIndex', ['i18n', 'subscribers', 'lists'])
         },
 
         beforeMount() {
@@ -95,6 +115,10 @@
                 this.$router.replace({
                     query
                 });
+            },
+
+            showNewSubscriberModal() {
+                weMail.event.$emit('show-new-subscriber-modal-subscriber-index');
             }
         }
     };

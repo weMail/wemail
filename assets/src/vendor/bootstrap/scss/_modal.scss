@@ -159,7 +159,7 @@
   // Automatically set modal's width for larger viewports
   .wemail-modal-dialog {
     max-width: $modal-md;
-    margin: $modal-dialog-margin-y-sm-up auto;
+    margin: 53px auto $modal-dialog-margin-y-sm-up;
   }
 
   .wemail-modal-content {

@@ -34,6 +34,10 @@
     &.button-extra-padding {
         padding: 0 25px;
     }
+
+    &.button-extra-padding-medium {
+        padding: 0 18px;
+    }
 }
 
 .button-group-extra-padding {
@@ -51,5 +55,12 @@
         .button {
             flex: 1;
         }
+    }
+
+    .button-menu {
+        padding-right: 5px;
+        padding-left: 5px;
+        -webkit-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
     }
 }

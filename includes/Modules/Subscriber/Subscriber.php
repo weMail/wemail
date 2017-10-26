@@ -24,8 +24,6 @@ class Subscriber extends Module {
      */
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
-        // $this->add_filter( 'wemail_get_route_data_subscribers', 'get_route_data_subscribers', 10, 2 );
-        // $this->add_filter( 'wemail_get_route_data_subscriber', 'get_route_data_subscriber', 10, 2 );
 
         $this->add_filter( 'wemail_get_route_data_subscriberIndex', 'index', 10, 2 );
         $this->add_filter( 'wemail_get_route_data_subscriberShow', 'show', 10, 2 );
@@ -59,8 +57,24 @@ class Subscriber extends Module {
      */
     public function index( $params, $query ) {
         return [
-            'i18n' => [],
-            'subscribers' => wemail()->subscriber->all( $query )
+            'i18n' => [
+                'addNew'                 => __( 'Add New', 'wemail' ),
+                'searchSegment'          => __( 'Search Segment', 'wemail' ),
+                'addNewSubscriber'       => __( 'Add New Subscriber', 'wemail' ),
+                'cancel'                 => __( 'Cancel', 'wemail' ),
+                'save'                   => __( 'Save', 'wemail' ),
+                'saveAndAddAnother'      => __( 'Save and add another', 'wemail' ),
+                'saveAndGoToDetailsPage' => __( 'Save and go to details page', 'wemail' ),
+                'email'                  => __( 'Email', 'wemail' ),
+                'firstName'              => __( 'First Name', 'wemail' ),
+                'lastName'               => __( 'Last Name', 'wemail' ),
+                'phone'                  => __( 'Phone', 'wemail' ),
+                'requiredField'          => __( 'required field', 'wemail' ),
+                'invalidEmail'           => __( 'invalid email', 'wemail' ),
+                'lists'                  => __( 'Lists', 'wemail' )
+            ],
+            'subscribers' => wemail()->subscriber->all( $query ),
+            'lists'       => wemail()->lists->all()
         ];
     }
 
@@ -94,6 +108,12 @@ class Subscriber extends Module {
             'unconfirmed'        => __( 'unconfirmed', 'wemail' ),
             'unsubscribed'       => __( 'unsubscribed', 'wemail' ),
             'subscribed'         => __( 'subscribed', 'wemail' ),
+            'deleteSubscriber'   => __( 'Delete Subscriber', 'wemail' ),
+            'delete'             => __( 'Delete', 'wemail' ),
+            'cancel'             => __( 'Cancel', 'wemail' ),
+            'close'              => __( 'Close', 'wemail' ),
+            'subscriberDeleted'  => __( 'Subscriber deleted', 'wemail' ),
+            'deleteSubWarnMsg'   => __( 'Are you sure you want to delete this subscriber? This subscriber will be removed from all lists and your action cannot be undone.', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();

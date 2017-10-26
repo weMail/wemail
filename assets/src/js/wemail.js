@@ -101,6 +101,16 @@ const API = {
 
     save(data) {
         return this.post(null, data);
+    },
+
+    delete(url) {
+        url = this.buildQuery(url);
+
+        const response = Ajax(url, 'delete', this.headers(), $.extend(true, {}, this._query));
+
+        this.resetProps();
+
+        return response;
     }
 };
 

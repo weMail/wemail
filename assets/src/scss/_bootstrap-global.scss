@@ -1,4 +1,14 @@
-// Modal background
+// modal
+.wemail-modal-open {
+    overflow: hidden;
+
+    .wemail-modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}
+
+
 .wemail-modal-backdrop {
     position: fixed;
     top: 0;

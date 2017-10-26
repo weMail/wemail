@@ -1,6 +1,7 @@
 import routeComponent from './mixins/routeComponent.js';
 import settings from './mixins/settings.js';
 import alert from './mixins/alert.js';
+import dataValidators from './mixins/dataValidators.js';
 import Multiselect from 'vue-multiselect/src/Multiselect.vue';
 import DoAction from './components/DoAction.vue';
 import TextEditor from './components/TextEditor.vue';
@@ -15,7 +16,8 @@ Vue.mixin(alert);
 // Local mixins
 weMail.registerMixins({
     routeComponent,
-    settings
+    settings,
+    dataValidators
 });
 
 // Global components
