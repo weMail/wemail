@@ -74,7 +74,7 @@ class Subscriber extends Module {
                 'lists'                  => __( 'Lists', 'wemail' )
             ],
             'subscribers' => wemail()->subscriber->all( $query ),
-            'lists'       => wemail()->lists->all()
+            'lists'       => wemail()->lists->items()
         ];
     }
 
@@ -131,7 +131,7 @@ class Subscriber extends Module {
             'i18n' => $i18n,
             'dummyImageURL' => WEMAIL_ASSETS . '/images/misc/mystery-person.png',
             'subscriber' => wemail()->subscriber->get( $params['hash'] ),
-            'lists' => wemail()->lists->all(),
+            'lists' => wemail()->lists->items(),
             'socialNetworks' => [
                 'networks' => $social_networks,
                 'icons' => $social_network_icons
@@ -140,7 +140,7 @@ class Subscriber extends Module {
     }
 
     /**
-     * Get list of subscribers
+     * Get a list of subscribers
      *
      * @since 1.0.0
      *

@@ -41,7 +41,7 @@ class Editor {
     public function get_setup_data() {
         return [
             'i18n'         => $this->i18n(),
-            'lists'        => wemail()->lists->all(),
+            'lists'        => wemail()->lists->items(),
             'segments'     => wemail()->segment->all(),
             'events'       => wemail()->campaign->event->all(),
             'campaign'     => [

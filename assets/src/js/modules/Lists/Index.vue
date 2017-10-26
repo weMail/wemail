@@ -11,7 +11,7 @@
 
                 <ul>
                     <li v-for="list in lists.data">
-                        id: {{ list.id }} | <router-link :to="{name: 'list', params: {id: list.id}}">{{ list.name }}</router-link>
+                        id: {{ list.id }} | <router-link :to="{name: 'listsShow', params: {id: list.id}}">{{ list.name }}</router-link>
                     </li>
                 </ul>
 
@@ -25,7 +25,7 @@
 
 <script>
     export default {
-        routeName: 'lists',
+        routeName: 'listsIndex',
 
         mutations: {
             updateLists(state, payload) {
@@ -47,7 +47,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('lists', ['i18n', 'lists'])
+            ...Vuex.mapState('listsIndex', ['i18n', 'lists'])
         },
 
         beforeMount() {
@@ -70,7 +70,7 @@
                     .get(vm.$router.currentRoute.fullPath)
                     .done((response) => {
                         if (response.data) {
-                            vm.$store.commit('lists/updateLists', response);
+                            vm.$store.commit('listsIndex/updateLists', response);
                         }
                     });
             },

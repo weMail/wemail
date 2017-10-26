@@ -97,7 +97,7 @@
 
 <script>
     export default {
-        mixins: [weMail.mixins.dataValidators],
+        mixins: [weMail.mixins.dataValidators, weMail.mixins.helpers],
 
         props: {
             scope: {
@@ -159,7 +159,9 @@
 
                 vm.isDisabled = true;
 
-                weMail.api.subscribers().create(vm.subscriber).done((response) => {
+                const subscriber = this.snakeKeys(vm.subscriber);
+
+                weMail.api.subscribers().create(subscriber).done((response) => {
                     if (response && response.hash) {
                         if (typeof callback === 'function') {
                             callback(vm, response);

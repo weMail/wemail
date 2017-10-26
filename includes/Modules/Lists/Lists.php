@@ -6,42 +6,123 @@ use WeDevs\WeMail\Framework\Module;
 
 class Lists extends Module {
 
+    /**
+     * Submenu priority
+     *
+     * @since 1.0.0
+     *
+     * @var integer
+     */
     public $menu_priority = 90;
 
+    /**
+     * Class constructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
-        $this->add_filter( 'wemail_get_route_data_lists', 'get_route_data_lists', 10, 2 );
-        $this->add_filter( 'wemail_get_route_data_list', 'get_route_data_list', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_listsIndex', 'index', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_listsShow', 'show', 10, 2 );
     }
 
+    /**
+     * Register submenu
+     *
+     * @since 1.0.0
+     *
+     * @param array $menu_items
+     * @param string $capability
+     *
+     * @return array
+     */
     public function register_submenu( $menu_items, $capability ) {
         $menu_items[] = [ __( 'Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' ];
 
         return $menu_items;
     }
 
-    public function get_route_data_lists( $params, $query ) {
+    /**
+     * listsIndex route data
+     *
+     * @since 1.0.0
+     *
+     * @param array $params
+     * @param array $query
+     *
+     * @return array
+     */
+    public function index( $params, $query ) {
         return [
             'i18n' => [
                 'lists' => __( 'Lists', 'wemail' )
             ],
-            'lists' => wemail()->api->lists()->query( $query )->get()
+            'lists' => wemail()->lists->all( $query )
         ];
     }
 
-    public function get_route_data_list( $params, $query ) {
+    /**
+     * listsShow route data
+     *
+     * @since 1.0.0
+     *
+     * @param array $params
+     * @param array $query
+     *
+     * @return array
+     */
+    public function show( $params, $query ) {
         return [
             'i18n' => [
-                'list' => __( 'List', 'wemail' )
             ],
-            'list' => $this->get( $params['id'] )
+            'list' => wemail()->lists->get( $params['id'] )
         ];
     }
 
-    public function all() {
-        return wemail()->api->lists()->all()->get();
+    /**
+     * Get a list of lists
+     *
+     * @since 1.0.0
+     *
+     * @param array $query
+     *
+     * @return array
+     */
+    public function all( $query = [] ) {
+        return wemail()->api->lists()->query( $query )->get();
     }
 
+    /**
+     * Get all lists
+     *
+     * id-name paired items
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    public function items() {
+        $query = [
+            'per_page' => -1,
+            'fields' => 'id, name',
+            'orderby' => 'name',
+            'order' => 'asc'
+        ];
+
+        return wemail()->api->lists()->query( $query )->get();
+    }
+
+    /**
+     * Get a single list
+     *
+     * @since 1.0.0
+     *
+     * @param integer $id
+     *
+     * @return array
+     */
     public function get( $id ) {
         return wemail()->api->lists( $id )->get();
     }

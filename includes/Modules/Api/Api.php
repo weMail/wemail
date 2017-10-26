@@ -169,7 +169,9 @@ class Api {
             $this->query = array_merge( $query, $this->query );
         }
 
-        $url .= '?' . http_build_query( $this->query );
+        if ( ! empty( $this->query ) ) {
+            $url .= '?' . http_build_query( $this->query );
+        }
 
         $this->url   = '';
         $this->query = [];

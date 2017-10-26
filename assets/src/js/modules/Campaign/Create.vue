@@ -37,11 +37,7 @@
             create() {
                 const vm = this;
 
-                weMail.api.campaigns().create({
-                    data: {
-                        campaign: this.campaign
-                    }
-                }).done((response) => {
+                weMail.api.campaigns().create(this.campaign).done((response) => {
                     if (response.id) {
                         vm.$router.push({
                             name: 'campaignEditTemplate',

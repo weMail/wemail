@@ -11,7 +11,7 @@ class Event {
             [
                 'action'      => 'wemail_subscribed_to_list',
                 'actionTitle' => __( 'when someone subscribes to the list', 'wemail' ),
-                'options'     => wemail()->lists->all()
+                'options'     => wemail()->lists->items()
             ],
             [
                 'action'      => 'wemail_matches_segment',

@@ -11,7 +11,7 @@ const routes = [
     Campaign,
     Subscriber,
     ...Form,
-    ...Lists,
+    Lists,
     Settings,
     FourZeroFour
 ];

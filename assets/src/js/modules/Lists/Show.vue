@@ -9,12 +9,12 @@
 
 <script>
     export default {
-        routeName: 'list',
+        routeName: 'listsShow',
 
         mixins: weMail.getMixins('routeComponent'),
 
         computed: {
-            ...Vuex.mapState('list', ['list'])
+            ...Vuex.mapState('listsShow', ['list'])
         }
     };
 </script>
