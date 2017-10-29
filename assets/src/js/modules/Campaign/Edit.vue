@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import ProgressBar from './templates/ProgressBar.vue';
+    import ProgressBar from './ProgressBar.vue';
 
     export default {
         routeName: 'campaignEdit',

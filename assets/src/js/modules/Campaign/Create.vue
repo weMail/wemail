@@ -16,8 +16,8 @@
 </template>
 
 <script>
-    import ProgressBar from './templates/ProgressBar.vue';
-    import Setup from './templates/Setup.vue';
+    import ProgressBar from './ProgressBar.vue';
+    import Setup from './Setup.vue';
 
     export default {
         routeName: 'campaignCreate',

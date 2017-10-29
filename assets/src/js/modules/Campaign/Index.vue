@@ -11,7 +11,7 @@
 
                 <ul>
                     <li v-for="campaign in campaigns.data">
-                        id: {{ campaign.id }} | <router-link :to="{name: 'campaignShow', params: {id: campaign.id}}">{{ campaign.name }}</router-link>
+                        <router-link :to="{name: 'campaignShow', params: {id: campaign.id}}">{{ campaign.name }}</router-link>
                     </li>
                 </ul>
 

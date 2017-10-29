@@ -42,7 +42,7 @@ class Editor {
         return [
             'i18n'         => $this->i18n(),
             'lists'        => wemail()->lists->items(),
-            'segments'     => wemail()->segment->all(),
+            'segments'     => wemail()->segment->items(),
             'events'       => wemail()->campaign->event->all(),
             'campaign'     => [
                 'name'     => '',

@@ -130,7 +130,7 @@ class Subscriber extends Module {
         return [
             'i18n' => $i18n,
             'dummyImageURL' => WEMAIL_ASSETS . '/images/misc/mystery-person.png',
-            'subscriber' => wemail()->subscriber->get( $params['hash'] ),
+            'subscriber' => wemail()->subscriber->get( $params['id'] ),
             'lists' => wemail()->lists->items(),
             'socialNetworks' => [
                 'networks' => $social_networks,
@@ -157,11 +157,11 @@ class Subscriber extends Module {
      *
      * @since 1.0.0
      *
-     * @param string $hash
+     * @param string $id or email
      *
      * @return array
      */
-    public function get( $hash ) {
-        return wemail()->api->subscribers( $hash )->get();
+    public function get( $id_or_email ) {
+        return wemail()->api->subscribers( $id_or_email )->get();
     }
 }

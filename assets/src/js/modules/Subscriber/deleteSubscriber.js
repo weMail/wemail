@@ -10,7 +10,7 @@ export default {
             }).then((deleteIt) => {
                 if (deleteIt) {
                     weMail.api
-                        .subscribers(subscriber.hash)
+                        .subscribers(subscriber.id)
                         .delete()
                         .done(() => {
                             if (typeof callback === 'function') {

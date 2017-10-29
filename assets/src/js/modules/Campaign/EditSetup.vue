@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import Setup from './templates/Setup.vue';
+    import Setup from './Setup.vue';
 
     export default {
         namespace: 'campaignEdit',

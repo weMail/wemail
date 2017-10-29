@@ -24,7 +24,7 @@ export default {
             name: 'subscriberIndex'
         },
         {
-            path: ':hash',
+            path: ':id',
             component: Show,
             name: 'subscriberShow'
         }

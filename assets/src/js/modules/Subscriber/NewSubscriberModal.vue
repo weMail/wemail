@@ -38,20 +38,20 @@
                                 <input type="text" class="form-control" v-model="subscriber.phone">
                             </label>
 
-                            <label class="d-block margin-bottom-20">
+                            <label class="d-block no-bottom-margin">
                                 <strong class="d-block-with-border">{{ i18n.lists }}</strong>
-                                <ul class="no-margin">
-                                    <li v-for="list in lists">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                :value="list.id"
-                                                v-model="subscriber.lists"
-                                            > {{ list.name }}
-                                        </label>
-                                    </li>
-                                </ul>
                             </label>
+                            <ul>
+                                <li v-for="list in lists">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            :value="list.id"
+                                            v-model="subscriber.lists"
+                                        > {{ list.name }}
+                                    </label>
+                                </li>
+                            </ul>
                         </fieldset>
 
                         <em class="d-block small">
@@ -162,7 +162,7 @@
                 const subscriber = this.snakeKeys(vm.subscriber);
 
                 weMail.api.subscribers().create(subscriber).done((response) => {
-                    if (response && response.hash) {
+                    if (response && response.id) {
                         if (typeof callback === 'function') {
                             callback(vm, response);
                         } else {
@@ -185,7 +185,7 @@
                     vm.$router.push({
                         name: 'subscriberShow',
                         params: {
-                            hash: response.hash
+                            id: response.id
                         }
                     });
                 });

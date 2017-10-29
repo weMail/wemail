@@ -11,7 +11,7 @@
 
                 <ul>
                     <li v-for="list in lists.data">
-                        id: {{ list.id }} | <router-link :to="{name: 'listsShow', params: {id: list.id}}">{{ list.name }}</router-link>
+                        <router-link :to="{name: 'listsShow', params: {id: list.id}}">{{ list.name }}</router-link>
                     </li>
                 </ul>
 

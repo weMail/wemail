@@ -20,7 +20,7 @@
 
                 <ul>
                     <li v-for="subscriber in subscribers.data">
-                        <router-link :to="{name: 'subscriberShow', params: {hash: subscriber.hash}}">hash: {{ subscriber.hash }} | {{ subscriber.email }}</router-link>
+                        <router-link :to="{name: 'subscriberShow', params: {id: subscriber.id}}">id: {{ subscriber.id }} | {{ subscriber.email }}</router-link>
                     </li>
                 </ul>
 
