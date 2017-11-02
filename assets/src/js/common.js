@@ -30,3 +30,16 @@ Vue.component('ColorPicker', ColorPicker);
 Vue.component('InputRange', InputRange);
 Vue.component('Datepicker', Datepicker);
 Vue.component('Timepicker', Timepicker);
+
+// Lazy loaded components
+__webpack_public_path__ = `${weMail.assetsURL}/js/`; // eslint-disable-line camelcase
+
+function ListTable(resolve) {
+    require.ensure(['./components/ListTable.vue'], () => {
+        resolve(require('./components/ListTable.vue')); // eslint-disable-line global-require
+    });
+}
+
+weMail.registerComponents({
+    ListTable
+});

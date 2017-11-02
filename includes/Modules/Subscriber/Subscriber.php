@@ -56,8 +56,17 @@ class Subscriber extends Module {
      * @return array
      */
     public function index( $params, $query ) {
+        if ( !empty( $params['lifeStage'] ) ) {
+            $query['life_stage'] = $params['lifeStage'];
+        }
+
+        if ( !empty( $params['status'] ) ) {
+            $query['status'] = $params['status'];
+        }
+
         return [
             'i18n' => [
+                'subscribers'            => __( 'Subscribers', 'wemail' ),
                 'addNew'                 => __( 'Add New', 'wemail' ),
                 'searchSegment'          => __( 'Search Segment', 'wemail' ),
                 'addNewSubscriber'       => __( 'Add New Subscriber', 'wemail' ),
@@ -71,10 +80,55 @@ class Subscriber extends Module {
                 'phone'                  => __( 'Phone', 'wemail' ),
                 'requiredField'          => __( 'required field', 'wemail' ),
                 'invalidEmail'           => __( 'invalid email', 'wemail' ),
-                'lists'                  => __( 'Lists', 'wemail' )
+                'lists'                  => __( 'Lists', 'wemail' ),
+                'noName'                 => __( 'no name', 'wemail' ),
+                'delete'                 => __( 'Delete', 'wemail' ),
+                'cancel'                 => __( 'Cancel', 'wemail' ),
+                'close'                  => __( 'Close', 'wemail' ),
+                'subscriberDeleted'      => __( 'Subscriber deleted', 'wemail' ),
+                'deleteSubWarnMsg'       => __( 'Are you sure you want to delete this subscriber? This subscriber will be removed from all lists and your action cannot be undone.', 'wemail' ),
+                'deleteSubsWarnMsg'      => __( 'Are you sure you want to delete these subscribers? These subscribers will be removed from all lists and your action cannot be undone.', 'wemail' ),
+                'name'                   => __( 'Name', 'wemail' ),
+                'emailAddress'           => __( 'Email Address', 'wemail' ),
+                'lifeStage'              => __( 'Life Stage', 'wemail' ),
+                'createdAt'              => __( 'Created At', 'wemail' ),
+                'edit'                   => __( 'Edit', 'wemail' ),
+                'view'                   => __( 'View', 'wemail' ),
+                'searchSubscribers'      => __( 'Search Subscribers', 'wemail' ),
+                'bulkActions'            => __( 'Bulk Actions', 'wemail' ),
+                'moveToTrash'            => __( 'Move to Trash', 'wemail' ),
+                'noDataFound'            => __( 'No data found', 'wemail' ),
+                'noSubscriberFound'      => __( 'No subscriber found', 'wemail' ),
+                'quickEdit'              => __( 'Quick Edit', 'wemail' ),
+                'trash'                  => __( 'Trash', 'wemail' ),
+                'apply'                  => __( 'Apply', 'wemail' ),
+                'deletePermanently'      => __( 'Delete Permanently', 'wemail' ),
+                'restore'                => __( 'Restore', 'wemail' ),
+                'all'                    => __( 'All', 'wemail' ),
+                'customer'               => __( 'Customer', 'wemail' ),
+                'lead'                   => __( 'Lead', 'wemail' ),
+                'opportunity'            => __( 'Opportunity', 'wemail' ),
+                'subscriber'             => __( 'Subscriber', 'wemail' ),
+                'trashed'                => __( 'Trashed', 'wemail' ),
+                'items'                  => __( 'items', 'wemail' ),
             ],
-            'subscribers' => wemail()->subscriber->all( $query ),
-            'lists'       => wemail()->lists->items()
+            'subscribers'   => wemail()->subscriber->all( $query ),
+            'lists'         => wemail()->lists->items(),
+            'listTable'     => [
+                'columns' => [
+                    'name',
+                    'emailAddress',
+                    'phone',
+                    'lifeStage',
+                    'createdAt'
+                ],
+                'sortableColumns' => [
+                    'name' => 'first_name',
+                    'emailAddress' => 'email',
+                    'lifeStage' => 'life_stage',
+                    'createdAt' => 'created_at'
+                ]
+            ]
         ];
     }
 

@@ -21,7 +21,17 @@ export default {
         {
             path: '',
             component: Index,
-            name: 'subscriberIndex'
+            name: 'subscriberIndex',
+            children: [
+                {
+                    path: 'status/:status',
+                    name: 'subscriberIndexStatus'
+                },
+                {
+                    path: 'life-stage/:lifeStage',
+                    name: 'subscriberIndexLifeStage'
+                }
+            ]
         },
         {
             path: ':id',

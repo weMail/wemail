@@ -5,6 +5,8 @@ import _ from 'lodash';
 import swal2 from 'sweetalert2';
 import Sortable from 'sortablejs';
 
+Vue.config.productionTip = !weMail.turnOffVueProductionTip;
+
 weMail.Vue = Vue;
 weMail.Vuex = Vuex;
 weMail.VueRouter = VueRouter;

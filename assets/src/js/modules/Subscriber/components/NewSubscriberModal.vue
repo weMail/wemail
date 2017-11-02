@@ -159,10 +159,12 @@
 
                 vm.isDisabled = true;
 
-                const subscriber = this.snakeKeys(vm.subscriber);
+                const subscriber = vm.snakeKeys(vm.subscriber);
 
                 weMail.api.subscribers().create(subscriber).done((response) => {
                     if (response && response.id) {
+                        vm.$emit('subscriber-created', response);
+
                         if (typeof callback === 'function') {
                             callback(vm, response);
                         } else {

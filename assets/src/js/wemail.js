@@ -49,7 +49,7 @@ const API = {
         };
     },
 
-    resetProps() {
+    reset() {
         this._url = '';
         this._query = {};
     },
@@ -75,12 +75,13 @@ const API = {
         return url;
     },
 
+    // get, post, put, delete methods have repeatitive codes, so they could be shorten
     get(url, query) {
         url = this.buildQuery(url, query);
 
         const response = Ajax(url, 'get', this.headers(), $.extend(true, {}, this._query));
 
-        this.resetProps();
+        this.reset();
 
         return response;
     },
@@ -90,7 +91,27 @@ const API = {
 
         const response = Ajax(url, 'post', this.headers(), $.extend(true, {}, data));
 
-        this.resetProps();
+        this.reset();
+
+        return response;
+    },
+
+    delete(url) {
+        url = this.buildQuery(url);
+
+        const response = Ajax(url, 'delete', this.headers(), $.extend(true, {}, this._query));
+
+        this.reset();
+
+        return response;
+    },
+
+    put(url) {
+        url = this.buildQuery(url);
+
+        const response = Ajax(url, 'put', this.headers(), $.extend(true, {}, this._query));
+
+        this.reset();
 
         return response;
     },
@@ -101,16 +122,6 @@ const API = {
 
     save(data) {
         return this.post(null, data);
-    },
-
-    delete(url) {
-        url = this.buildQuery(url);
-
-        const response = Ajax(url, 'delete', this.headers(), $.extend(true, {}, this._query));
-
-        this.resetProps();
-
-        return response;
     }
 };
 

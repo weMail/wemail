@@ -138,7 +138,7 @@
 </template>
 
 <script>
-    import deleteSubscriber from './deleteSubscriber.js';
+    import deleteSubscriber from './mixins/deleteSubscriber.js';
 
     export default {
         routeName: 'subscriberShow',
@@ -413,14 +413,9 @@
             deleteItem() {
                 const vm = this;
 
-                this.deleteSubscriber(this.subscriber, () => {
-                    vm.success({
-                        text: vm.i18n.subscriberDeleted,
-                        confirmButtonText: vm.i18n.close
-                    }).then(() => {
-                        vm.$router.push({
-                            name: 'subscriberIndex'
-                        });
+                this.deleteSubscriber(this.subscriber.id, () => {
+                    vm.$router.push({
+                        name: 'subscriberIndex'
                     });
                 });
             }

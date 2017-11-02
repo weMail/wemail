@@ -79,6 +79,13 @@ class Scripts {
             'ajax'                 => function () {}, // function will be render as object
             'api'                  => wemail()->api->get_props(),
             'cdn'                  => $cdn,
+            'userCaps'             => [
+                // hard coded for now
+                'create_subscriber' => true,
+                'view_subscriber'   => true,
+                'edit_subscriber'   => true,
+                'delete_subscriber' => true,
+            ],
 
             // Vue related data
             'subMenuMap'           => [],

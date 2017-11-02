@@ -112,6 +112,15 @@
             font-weight: 500;
             color: $wp-blue;
             text-decoration: none;
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            span.count {
+                font-weight: 400;
+                color: $wp-black;
+            }
         }
 
         &.active {
@@ -120,6 +129,16 @@
                 color: #000;
                 pointer-events: none;
                 cursor: default;
+            }
+        }
+    }
+
+    &.has-count {
+
+        li {
+
+            &:not(:last-child) {
+                margin-right: 14px;
             }
         }
     }
