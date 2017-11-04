@@ -12,6 +12,12 @@ function Company(resolve) {
     });
 }
 
+function LifeStages(resolve) {
+    require.ensure(['./LifeStages.vue'], () => {
+        resolve(require('./LifeStages.vue'));
+    });
+}
+
 function SocialNetworks(resolve) {
     require.ensure(['./SocialNetworks.vue'], () => {
         resolve(require('./SocialNetworks.vue'));
@@ -22,6 +28,12 @@ weMail.registerChildRoute('settings', {
     path: 'company',
     component: Company,
     name: 'settingsCompany'
+});
+
+weMail.registerChildRoute('settings', {
+    path: 'life-stages',
+    component: LifeStages,
+    name: 'settingsLifeStages'
 });
 
 weMail.registerChildRoute('settings', {

@@ -24,8 +24,8 @@ export default {
                 type: 'warning',
                 title: '',
                 showCancelButton: true,
-                confirmButtonText: '',
-                cancelButtonText: '',
+                confirmButtonText: this.i18n.ok,
+                cancelButtonText: this.i18n.cancel,
                 confirmButtonColor: '#dc3232',
                 cancelButtonColor: '#cccccc'
             };
@@ -34,11 +34,33 @@ export default {
         },
 
         success(...args) {
+            if (typeof args[0] === 'string') {
+                args[0] = {
+                    text: args[0]
+                };
+            }
+
             const defaults = {
                 type: 'success',
                 title: '',
-                confirmButtonText: '',
+                confirmButtonText: this.i18n.ok,
                 confirmButtonColor: '#46b450'
+            };
+
+            return this.swal(defaults, ...args);
+        },
+
+        error(...args) {
+            if (typeof args[0] === 'string') {
+                args[0] = {
+                    text: args[0]
+                };
+            }
+
+            const defaults = {
+                type: 'error',
+                title: '',
+                confirmButtonText: this.i18n.ok
             };
 
             return this.swal(defaults, ...args);

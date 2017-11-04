@@ -376,7 +376,7 @@
             },
 
             columnLifeStage(subscriber) {
-                return subscriber.life_stage;
+                return this.i18n[subscriber.life_stage];
             },
 
             columnCreatedAt(subscriber) {

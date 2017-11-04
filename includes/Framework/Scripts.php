@@ -40,7 +40,7 @@ class Scripts {
         wp_register_script( 'wemail-popper-js', WEMAIL_ASSETS . '/vendor/popper.js/popper.min.js', [], $this->version, true );
         wp_register_script( 'wemail-bootstrap', WEMAIL_ASSETS . '/js/bootstrap.js', ['jquery', 'wemail-popper-js'], $this->version, true );
 
-        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker', 'wemail-timepicker', 'wemail-bootstrap'] , $this->version, true );
+        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'wemail-timepicker', 'wemail-bootstrap'] , $this->version, true );
     }
 
     public function localized_script_vars() {

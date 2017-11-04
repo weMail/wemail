@@ -13,7 +13,7 @@ class SocialNetworks extends AbstractSettings {
      *
      * @var integer
      */
-    public $priority = 20;
+    public $priority = 60;
 
     /**
      * Settings menu name

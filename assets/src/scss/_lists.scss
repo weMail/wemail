@@ -172,3 +172,61 @@
         }
     }
 }
+
+.list-accordion {
+    display: block;
+    margin: 0 0 15px;
+
+    & > li {
+        display: block;
+
+        .item-header {
+            padding: 10px 15px;
+            color: #23282d;
+            cursor: move;
+            background-color: #fafafa;
+            border: 1px solid $wp-input-border-color;
+
+            @include clearfix;
+
+            &:hover {
+                border-color: #999;
+            }
+
+            .item-name {
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .item-edit {
+                display: inline-block;
+                float: right;
+                width: 18px;
+                height: 18px;
+                text-align: center;
+                border-radius: 50%;
+
+                .fa {
+                    position: relative;
+                    left: 1px;
+                    margin-left: -1px;
+                    font-size: 14px;
+                }
+
+                .fa-caret-down {
+                    top: 0;
+                }
+
+                .fa-caret-up {
+                    top: -1px;
+                }
+            }
+        }
+
+        .item-content {
+            padding: 10px;
+            border: 1px solid $wp-border-color;
+            border-top: 0;
+        }
+    }
+}

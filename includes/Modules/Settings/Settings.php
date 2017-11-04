@@ -99,7 +99,8 @@ class Settings extends Module {
     private function register_settings() {
         $settings = [
             'company'         => new Company(),
-            'social_networks' => new SocialNetworks()
+            'life_stages'     => new LifeStages(),
+            'social_networks' => new SocialNetworks(),
         ];
 
         $settings = apply_filters( 'wemail_register_settings', $settings );
