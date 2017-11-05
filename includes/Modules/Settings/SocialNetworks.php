@@ -16,13 +16,13 @@ class SocialNetworks extends AbstractSettings {
     public $priority = 60;
 
     /**
-     * Settings menu name
+     * Settings title
      *
      * @since 1.0.0
      *
      * @return string
      */
-    public function get_menu_name() {
+    public function get_title() {
         return __( 'Social Networks', 'wemail' );
     }
 

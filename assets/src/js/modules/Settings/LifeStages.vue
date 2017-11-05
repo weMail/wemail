@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isLoaded" class="row settings-life-stages hide-save-button">
+    <div v-if="isLoaded" class="row settings-life-stages">
         <div class="col-sm-6 margin-bottom-20">
             <ul id="life-stage-settings-list" class="list-accordion">
                 <li
@@ -59,7 +59,11 @@
                         <div class="item-content-footer">
                             <ul>
                                 <li>
-                                    <a href="#" @click.prevent="remove" class="text-danger">{{ i18n.remove }}</a>
+                                    <a
+                                        href="#"
+                                        :class="['text-danger', (stage === settings.default) ? 'disabled' : '']"
+                                        @click.prevent="remove"
+                                    >{{ i18n.remove }}</a>
                                 </li>
                                 <li>
                                     <a href="#" @click.prevent="reset">{{ i18n.cancel }}</a>
@@ -77,29 +81,22 @@
                 </li>
             </ul>
 
-            <span class="add-new-life-stage">
-
-            </span>
-
-            <button type="button" class="button button-block" @click="addNewLifeStage">
+            <button type="button" class="button button-primary button-block" @click="addNewLifeStage">
                 <i class="fa fa-plus-circle"></i> {{ i18n.addNewLifeStage }}
             </button>
-        </div>
-
-        <div class="col-sm-6">
-            <div class="text-warning">Need to hide the save settings button</div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        routeName: 'settingsLifeStages',
+        name: 'settingsLifeStages',
 
-        mixins: weMail.getMixins('settings', 'routeComponent', 'dataValidators'),
+        mixins: weMail.getMixins('settings', 'dataValidators'),
 
         data() {
             return {
+                hideSaveButton: true,
                 lifeStage: {
                     index: -1,
                     i18n: '',
@@ -109,24 +106,17 @@
             };
         },
 
-        computed: {
-            ...Vuex.mapState('settingsLifeStages', ['i18n', 'settings'])
-        },
-
         watch: {
-            'lifeStage.name': 'onChangeName',
-            isLoaded: 'afterLoaded'
+            'lifeStage.name': 'onChangeName'
         },
 
         methods: {
-            afterLoaded(isLoaded) {
-                if (isLoaded) {
-                    const vm = this;
+            afterLoaded() {
+                const vm = this;
 
-                    Vue.nextTick(() => {
-                        vm.bindSortable();
-                    });
-                }
+                Vue.nextTick(() => {
+                    vm.bindSortable();
+                });
             },
 
             bindSortable() {
@@ -145,6 +135,8 @@
                 const lifeStage = this.settings.names.splice(fromIndex, 1);
 
                 this.settings.names.splice(toIndex, 0, lifeStage[0]);
+
+                this.saveSettings();
             },
 
             open(index) {
@@ -170,20 +162,32 @@
             },
 
             remove() {
-                if (this.settings.names.length === 1) {
-                    this.error(this.i18n.atLeastOneMsg);
+                const vm = this;
+
+                if (vm.settings.names.length === 1) {
+                    vm.error(vm.i18n.atLeastOneMsg);
                     return;
                 }
 
-                if (this.lifeStage.default) {
-                    this.error(this.i18n.errorMsgDefault);
+                if (vm.lifeStage.default) {
+                    vm.error(vm.i18n.errorMsgDefault);
                     return;
                 }
 
-                Vue.delete(this.settings.i18n, this.lifeStage.name);
-                Vue.delete(this.settings.names, this.lifeStage.index);
+                vm.warn({
+                    title: vm.i18n.delStageWarnTitle,
+                    text: vm.i18n.delStageWarnText,
+                    confirmButtonText: vm.i18n.yesDeleteIt
+                }).then((deleteIt) => {
+                    if (deleteIt) {
+                        Vue.delete(vm.settings.i18n, vm.lifeStage.name);
+                        Vue.delete(vm.settings.names, vm.lifeStage.index);
 
-                this.reset();
+                        vm.reset();
+                        vm.saveSettings();
+                    }
+                });
+
             },
 
             save() {
@@ -209,17 +213,24 @@
                 }
 
                 vm.reset();
+                this.saveSettings();
+            },
+
+            saveSettings() {
+                this.$emit('save-settings', true);
             },
 
             addNewLifeStage() {
                 const index = this.settings.names.length;
-                const newStageName = `new_life_stage_${index}`;
+                const newStageName = `new_life_stage_${moment().unix()}`;
 
                 this.settings.names.splice(index, 1, newStageName);
 
                 this.settings.i18n[newStageName] = 'New life stage';
 
                 this.open(index);
+
+                this.saveSettings();
             },
 
             onChangeName(name) {
@@ -291,6 +302,11 @@
 
                 }
             }
+        }
+
+        .ui-sortable-placeholder {
+            visibility: visible !important;
+            border: 1px dashed $wp-border-color-darken;
         }
     }
 </style>

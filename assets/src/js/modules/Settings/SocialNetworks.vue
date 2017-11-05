@@ -11,9 +11,9 @@
 
 <script>
     export default {
-        routeName: 'settingsSocialNetworks',
+        name: 'settingsSocialNetworks',
 
-        mixins: weMail.getMixins('settings', 'routeComponent'),
+        mixins: weMail.getMixins('settings'),
 
         computed: {
             networks() {

@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Modules\Settings;
 
+use Stringy\StaticStringy;
 use WeDevs\WeMail\Framework\Module;
 
 class Settings extends Module {
@@ -46,14 +47,20 @@ class Settings extends Module {
      * @param string $name
      * @param array  $args
      *
-     * @return array|void
+     * @return array
      */
     public function __call( $name, $args ) {
-        if ( $this->settings->has( $name ) ) {
-            $settings = $this->settings[$name];
+        $name = StaticStringy::upperCamelize($name);
 
-            return $settings->get_settings();
-        }
+        $settings = null;
+
+        $this->settings->each(function($settings_class) use ($name, &$settings) {
+            if (get_class($settings_class) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
+                $settings = $settings_class->get_settings();
+            }
+        });
+
+        return $settings;
     }
 
     /**
@@ -66,11 +73,17 @@ class Settings extends Module {
      * @return object
      */
     public function __get( $name ) {
-        if ( $this->settings->has( $name ) ) {
-            return $this->settings[$name];
-        }
+        $name = StaticStringy::upperCamelize($name);
 
-        return $name;
+        $settings = null;
+
+        $this->settings->each(function($settings_class) use ($name, &$settings) {
+            if (get_class($settings_class) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
+                $settings = $settings_class;
+            }
+        });
+
+        return $settings ? $settings : $name;
     }
 
     /**
@@ -97,19 +110,23 @@ class Settings extends Module {
      * @return void
      */
     private function register_settings() {
-        $settings = [
-            'company'         => new Company(),
-            'life_stages'     => new LifeStages(),
-            'social_networks' => new SocialNetworks(),
-        ];
+        $file_paths = glob( WEMAIL_MODULES . '/Settings/*.php' );
+
+        $settings = [];
+
+        foreach ( $file_paths as $file_path ) {
+            $file_name = str_replace( WEMAIL_MODULES . '/Settings/', '', $file_path );
+
+            if ( $file_name !== 'Settings.php' && $file_name !== 'AbstractSettings.php' ) {
+                $class_name = str_replace( '.php', '', $file_name );
+                $class_name = "\\WeDevs\\WeMail\\Modules\\Settings\\$class_name";
+                $settings[] = new $class_name();
+            }
+        }
 
         $settings = apply_filters( 'wemail_register_settings', $settings );
 
         $this->settings = collect( $settings )->sortBy( 'priority' );
-
-        $this->settings->each( function ( $setting ) {
-            add_filter( "wemail_get_route_data_{$setting->route_name}", [ $setting, 'get_route_data' ] );
-        } );
     }
 
     /**
@@ -128,8 +145,9 @@ class Settings extends Module {
             ],
             'settings' => $this->settings->map( function ( $setting ) {
                 return [
-                    'routeName' => $setting->route_name,
-                    'menu'      => $setting->menu
+                    'name'  => $setting->name,
+                    'path'  => $setting->path,
+                    'title' => $setting->title
                 ];
             } )
         ];

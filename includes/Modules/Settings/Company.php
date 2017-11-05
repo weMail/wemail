@@ -16,13 +16,13 @@ class Company extends AbstractSettings {
     public $priority = 10;
 
     /**
-     * Settings menu name
+     * Settings title
      *
      * @since 1.0.0
      *
      * @return string
      */
-    public function get_menu_name() {
+    public function get_title() {
         return __( 'Company Details', 'wemail' );
     }
 

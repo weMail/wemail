@@ -1,5 +1,5 @@
 import routeComponent from './mixins/routeComponent.js';
-import settings from './mixins/settings.js';
+import settings from './modules/Settings/mixins/settings.js';
 import alert from './mixins/alert.js';
 import dataValidators from './mixins/dataValidators.js';
 import helpers from './mixins/helpers.js';

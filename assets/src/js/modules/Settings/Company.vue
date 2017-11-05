@@ -91,7 +91,7 @@
 
 <script>
     export default {
-        routeName: 'settingsCompany',
+        name: 'settingsCompany',
 
         mutations: {
             updateCountryStates(state, payload) {
@@ -103,7 +103,7 @@
             }
         },
 
-        mixins: weMail.getMixins('settings', 'routeComponent'),
+        mixins: weMail.getMixins('settings'),
 
         data() {
             return {

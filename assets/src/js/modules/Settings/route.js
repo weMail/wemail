@@ -6,50 +6,14 @@ function Settings(resolve) {
     });
 }
 
-function Company(resolve) {
-    require.ensure(['./Company.vue'], () => {
-        resolve(require('./Company.vue'));
-    });
-}
-
-function LifeStages(resolve) {
-    require.ensure(['./LifeStages.vue'], () => {
-        resolve(require('./LifeStages.vue'));
-    });
-}
-
-function SocialNetworks(resolve) {
-    require.ensure(['./SocialNetworks.vue'], () => {
-        resolve(require('./SocialNetworks.vue'));
-    });
-}
-
-weMail.registerChildRoute('settings', {
-    path: 'company',
-    component: Company,
-    name: 'settingsCompany'
-});
-
-weMail.registerChildRoute('settings', {
-    path: 'life-stages',
-    component: LifeStages,
-    name: 'settingsLifeStages'
-});
-
-weMail.registerChildRoute('settings', {
-    path: 'social-networks',
-    component: SocialNetworks,
-    name: 'settingsSocialNetworks'
-});
-
-const route = {
+export default {
     path: '/settings',
     component: Settings,
-    name: 'settings',
-    redirect: {
-        name: 'settingsCompany'
-    },
-    children: weMail.getChildRoutes('settings')
+    redirect: '/settings/company',
+    children: [
+        {
+            path: ':name',
+            name: 'settings'
+        }
+    ]
 };
-
-export default route;

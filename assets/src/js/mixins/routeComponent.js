@@ -37,7 +37,7 @@ export default {
 
                 vm.isLoaded = true;
 
-                if (vm.hasOwnProperty('afterLoaded')) {
+                if (typeof vm.afterLoaded === 'function') {
                     vm.afterLoaded();
                 }
             });

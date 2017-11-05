@@ -6,8 +6,8 @@
             <div class="wemail-settings-sidebar">
                 <ul>
                     <template v-for="setting in settings">
-                        <router-link :to="{name: setting.routeName}" active-class="active" tag="li">
-                            <a>{{ setting.menu }}</a>
+                        <router-link :to="{name: 'settings', params: {name: setting.path}}" active-class="active" tag="li">
+                            <a>{{ setting.title }}</a>
                         </router-link>
                     </template>
                 </ul>
@@ -15,9 +15,18 @@
             <div class="wemail-settings-content">
                 <h4 class="settings-title">{{ settingsTitle }}</h4>
 
-                <form class="settings-form" @submit.prevent="saveSettings" disabled>
-                    <router-view></router-view>
-                    <button type="submit" class="button button-primary submit-button">{{ i18n.saveSettings }}</button>
+                <form class="settings-form" @submit.prevent="saveSettings()">
+                    <component
+                        :is="settingsComponent"
+                        @loaded="onSettingsLoaded"
+                        @save-settings="saveSettings"
+                    ></component>
+
+                    <button
+                        v-if="!hideSaveButton"
+                        type="submit"
+                        class="button button-primary submit-button"
+                    >{{ i18n.saveSettings }}</button>
                 </form>
             </div>
         </div>
@@ -25,52 +34,77 @@
 </template>
 
 <script>
+    /* eslint-disable global-require */
+
+    function Company(resolve) {
+        require.ensure(['./Company.vue'], () => {
+            resolve(require('./Company.vue'));
+        });
+    }
+
+    function LifeStages(resolve) {
+        require.ensure(['./LifeStages.vue'], () => {
+            resolve(require('./LifeStages.vue'));
+        });
+    }
+
+    function SocialNetworks(resolve) {
+        require.ensure(['./SocialNetworks.vue'], () => {
+            resolve(require('./SocialNetworks.vue'));
+        });
+    }
+
     export default {
         routeName: 'settings',
 
         mixins: weMail.getMixins('routeComponent'),
 
+        components: {
+            Company,
+            LifeStages,
+            SocialNetworks
+        },
+
         data() {
             return {
-                settingsTitle: ''
+                settingsTitle: '',
+                settingsComponent: '',
+                hideSaveButton: true
             };
         },
 
         computed: {
-            ...Vuex.mapState('settings', ['i18n', 'settings']),
-
-            company() {
-                return this.$store.state.settingsCompany ? this.$store.state.settingsCompany.settings : {};
-            }
+            ...Vuex.mapState('settings', ['i18n', 'settings'])
         },
 
         watch: {
             $route() {
-                this.setSettingsTitle();
+                this.hideSaveButton = true;
+                this.afterLoaded();
             }
         },
 
         methods: {
             afterLoaded() {
-                this.setSettingsTitle();
+                const currentSettings = _.chain(this.settings).filter({
+                    path: this.$route.params.name
+                }).head().value();
+
+                this.settingsTitle = currentSettings.title;
+                this.settingsComponent = currentSettings.path;
             },
 
-            setSettingsTitle() {
-                this.settingsTitle = _.chain(this.settings).filter({
-                    routeName: this.$route.name
-                }).head().value().menu;
-            },
-
-            saveSettings() {
+            saveSettings(isSilent) {
                 const vm = this;
-                const currentRoute = vm.$route.name;
+                const settings = vm.$route.params.name;
+                const namespace = `settings${_.upperFirst(_.camelCase(settings))}`;
 
-                vm.$root.showLoadingAnime = true;
+                vm.$root.showLoadingAnime = !isSilent;
 
                 const api = weMail.api.settings();
 
-                api[currentRoute.replace('settings', '')]()
-                    .save(vm.$store.state[currentRoute].settings)
+                api[settings]()
+                    .save(vm.$store.state[namespace].settings)
                     .always((response) => {
                         if (response.msg) {
                             vm.alert({
@@ -81,6 +115,10 @@
 
                         vm.$root.showLoadingAnime = false;
                     });
+            },
+
+            onSettingsLoaded(settings) {
+                this.hideSaveButton = settings.hideSaveButton;
             }
         }
     };

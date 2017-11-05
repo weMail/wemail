@@ -2,56 +2,66 @@
 
 namespace WeDevs\WeMail\Modules\Settings;
 
-use WeDevs\WeMail\Framework\Traits\Ajax;
 use Stringy\StaticStringy;
 
 abstract class AbstractSettings {
 
-    use Ajax;
-
     /**
-     * Vue route name
+     * Settings name
+     *
+     * snake_cased string
      *
      * @since 1.0.0
      *
      * @var string
      */
-    public $route_name;
+    public $name;
 
     /**
-     * Settings menu name
+     * The URL slug for related settings
+     *
+     * kebab-cased string
      *
      * @since 1.0.0
      *
      * @var string
      */
-    public $menu;
+    public $path;
+
+    /**
+     * Settings title
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $title;
 
     /**
      * Class constructor
      *
-     * This will provide path, route_name, component and menu properties.
-     * at right.
-     *
      * @since 1.0.0
      *
-     * @param \WeDevs\WeMail\Modules\Settings\Settings $parent
+     * @return void
      */
     public function __construct() {
-        $class_name       = explode( "\\", get_class( $this ) );
-        $class_name       = array_pop( $class_name ); // SocialNetworks
-        $this->route_name = 'settings' . StaticStringy::upperCamelize( $class_name ); // settingsSocialNetworks
-        $this->menu       = $this->get_menu_name(); // __( 'Social Networks', 'wemail' )
+        $class_name = explode( "\\", get_class( $this ) );
+        $class_name = array_pop( $class_name ); // LifeStage
+        $this->name = StaticStringy::underscored( $class_name ); // life-stage
+        $this->path = StaticStringy::dasherize( $class_name ); // life-stage
+        $this->title = $this->get_title(); // __( 'Life Stage', 'wemail' )
+
+        add_filter( "wemail_get_route_data_settings{$class_name}", [ $this, 'get_route_data' ] );
     }
 
     /**
-     * Menu name in Settings page
+     * i18n title for the settings
      *
      * @since 1.0.0
      *
      * @return string
      */
-    abstract public function get_menu_name();
+    abstract public function get_title();
 
     /**
      * Get settings data
