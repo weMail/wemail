@@ -84,7 +84,11 @@
                             </th>
 
                             <template v-for="column in columns">
-                                <th v-if="!sortableColumns[column]"  v-html="columnTitles[column]"></th>
+                                <th
+                                    v-if="!sortableColumns[column]"
+                                    :class="columnTitles[column].classNames"
+                                    v-html="columnTitles[column].title"
+                                ></th>
 
                                 <th
                                     v-else
@@ -101,30 +105,48 @@
 
                     <tbody>
                         <template v-if="records.length">
-                            <tr v-for="record in records">
+                            <tr v-for="(record, recordIndex) in records">
                                 <td class="column-checkbox">
                                     <input type="checkbox" :value="record[primaryKey]" v-model="selectedRecords">
                                 </td>
 
                                 <template v-for="column in columns">
-                                    <td v-if="!record[column].route" v-html="record[column]"></td>
+                                    <td :class="[getColumnClass(column)]">
+                                        <div
+                                            v-if="!record[column].route"
+                                            class="list-table-content clearfix"
+                                            v-html="record[column]"
+                                        ></div>
 
-                                    <td v-else>
-                                        <router-link
-                                            :to="record[column].route"
-                                            :class="record[column].classNames"
-                                            v-html="record[column].text"
-                                        ></router-link>
+                                        <div v-else>
+                                            <router-link
+                                                :to="record[column].route"
+                                                :class="record[column].classNames"
+                                                v-html="record[column].text"
+                                            ></router-link>
+                                        </div>
 
-                                        <div v-if="rowActions.length" class="row-actions">
-                                            <template v-for="rowAction in rowActions">
-                                                <span v-if="showRowAction(rowAction, record[column].data)"  :class="rowAction.classNames">
-                                                    <a
-                                                        :href="`#${rowAction.action}`"
-                                                        @click.prevent="onClickRowAction(rowAction, record[column].data)"
-                                                        v-text="rowAction.title"
-                                                    ></a>
-                                                </span>
+                                        <div v-if="(showRowActionIn === column) && rowActions.length" class="row-actions">
+                                            <template v-for="rowAction in rowActions" v-if="showRowAction(rowAction, tableData.data[recordIndex])">
+                                                <template v-if="rowAction.route">
+                                                    <router-link
+                                                        :to="rowActionRoute(rowAction.route, tableData.data[recordIndex])"
+                                                        :class="rowAction.classNames"
+                                                        tag="span"
+                                                    >
+                                                        <a href="#" v-text="rowAction.title"></a>
+                                                    </router-link>
+                                                </template>
+
+                                                <template v-else>
+                                                    <span :class="rowAction.classNames">
+                                                        <a
+                                                            :href="`#${rowAction.action}`"
+                                                            @click.prevent="onClickRowAction(rowAction, tableData.data[recordIndex])"
+                                                            v-text="rowAction.title"
+                                                        ></a>
+                                                    </span>
+                                                </template>
                                             </template>
                                         </div>
                                     </td>
@@ -150,7 +172,11 @@
                             </th>
 
                             <template v-for="column in columns">
-                                <th v-if="!sortableColumns[column]"  v-html="columnTitles[column]"></th>
+                                <th
+                                    v-if="!sortableColumns[column]"
+                                    :class="columnTitles[column].classNames"
+                                    v-html="columnTitles[column].title"
+                                ></th>
 
                                 <th
                                     v-else
@@ -164,6 +190,7 @@
                             </template>
                         </tr>
                     </tfoot>
+
                 </table>
 
                 <div class="clearfix">
@@ -294,6 +321,12 @@
                 default() {
                     return [];
                 }
+            },
+
+            showRowActionIn: {
+                type: String,
+                required: false,
+                default: 'name'
             }
         },
 
@@ -329,7 +362,9 @@
 
                         const columnName = _.snakeCase(column);
 
-                        return data[column] = (record[columnName] !== undefined) ? record[columnName] : '-';
+                        return data[column] = ((record[columnName] !== undefined) && (record[columnName] !== null))
+                            ? record[columnName]
+                            : '&mdash;';
                     });
 
                     return data;
@@ -436,7 +471,10 @@
                 const titles = {};
 
                 vm.columns.forEach((column) => {
-                    titles[column] = vm.i18n[column];
+                    titles[column] = {
+                        title: vm.i18n[column],
+                        classNames: [vm.getColumnClass(column)]
+                    };
 
                     if (vm.sortableColumns[column]) {
                         const currentRoute = $.extend(true, {}, vm.currentRoute);
@@ -460,6 +498,8 @@
                         classNames.push(route.query.order === 'asc' ? 'desc' : 'asc');
 
                         route.query.orderby = vm.sortableColumns[column];
+
+                        classNames.push(vm.getColumnClass(column));
 
                         titles[column] = {
                             title: vm.i18n[column],
@@ -559,10 +599,22 @@
                 return !rowAction.hasOwnProperty('showIf') || this.$parent[rowAction.showIf](record, this.currentRoute);
             },
 
+            rowActionRoute(route, data) {
+                if (typeof this.$parent[route] === 'function') {
+                    return this.$parent[route](data);
+                }
+
+                return {};
+            },
+
             onClickRowAction(rowAction, data) {
                 if (rowAction.onClick && (typeof this.$parent[rowAction.onClick] === 'function')) {
                     this.$parent[rowAction.onClick](data);
                 }
+            },
+
+            getColumnClass(column) {
+                return `column-${_.kebabCase(column)}`;
             }
         }
     };
@@ -674,6 +726,10 @@
         .list-table-title {
             font-size: 14px;
             font-weight: 500;
+        }
+
+        .column-created-at {
+            width: 150px;
         }
 
         .row-actions {

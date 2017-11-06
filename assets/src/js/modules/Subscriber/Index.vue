@@ -15,7 +15,7 @@
         </h1>
 
         <list-table
-            :name="'subscriber'"
+            name="subscribers"
             :i18n="i18n"
             :filter-menu="filterMenu"
             :bulk-actions="bulkActions"
@@ -124,17 +124,17 @@
                     {
                         name: 'trash',
                         title: this.i18n.moveToTrash,
-                        showIf: 'showBulkActionOptionTrash'
+                        showIf: 'showBulkActionTrash'
                     },
                     {
                         name: 'restore',
                         title: this.i18n.restore,
-                        showIf: 'showBulkActionOptionRestore'
+                        showIf: 'showBulkActionRestore'
                     },
                     {
                         name: 'delete',
                         title: this.i18n.deletePermanently,
-                        showIf: 'showBulkActionOptionDelete'
+                        showIf: 'showBulkActionDelete'
                     }
                 ];
             },
@@ -145,36 +145,36 @@
                         action: 'quickEdit',
                         title: this.i18n.quickEdit,
                         classNames: ['quick-edit'],
-                        showIf: 'showQuickEditAction',
-                        onClick: 'onClickQuickEditAction'
+                        showRowIf: 'showRowActionQuickEdit',
+                        onClick: 'onClickRowActionQuickEdit'
                     },
                     {
                         action: 'trash',
                         title: this.i18n.trash,
                         classNames: ['trash'],
-                        showIf: 'showTrashAction',
-                        onClick: 'onClickTrashAction'
+                        showIf: 'showRowActionTrash',
+                        onClick: 'onClickRowActionTrash'
                     },
                     {
                         action: 'view',
                         title: this.i18n.view,
                         classNames: ['view'],
-                        showIf: 'showViewAction',
-                        onClick: 'onClickViewAction'
+                        showIf: 'showRowActionView',
+                        route: 'rowActionViewRoute'
                     },
                     {
                         action: 'restore',
                         title: this.i18n.restore,
                         classNames: ['restore'],
-                        showIf: 'showRestoreAction',
-                        onClick: 'onClickRestoreAction'
+                        showIf: 'showRowActionRestore',
+                        onClick: 'onClickRowActionRestore'
                     },
                     {
                         action: 'delete',
                         title: this.i18n.deletePermanently,
                         classNames: ['delete'],
-                        showIf: 'showDeleteAction',
-                        onClick: 'onClickDeleteAction'
+                        showIf: 'showRowActionDelete',
+                        onClick: 'onClickRowActionDelete'
                     }
                 ];
             }
@@ -235,7 +235,7 @@
                 });
             },
 
-            showQuickEditAction(subscriber, currentRoute) {
+            showRowActionQuickEdit(subscriber, currentRoute) {
                 if (currentRoute.params.status === 'trashed') {
                     return false;
                 }
@@ -243,12 +243,12 @@
                 return weMail.userCaps.edit_subscriber;
             },
 
-            onClickQuickEditAction(subscriber) {
+            onClickRowActionQuickEdit(subscriber) {
                 console.log('onClickEditAction');
                 console.log(subscriber);
             },
 
-            showTrashAction(subscriber, currentRoute) {
+            showRowActionTrash(subscriber, currentRoute) {
                 if (currentRoute.params.status === 'trashed') {
                     return false;
                 }
@@ -256,11 +256,11 @@
                 return weMail.userCaps.delete_subscriber;
             },
 
-            onClickTrashAction(subscriber) {
-                this.onClickDeleteAction(subscriber, true);
+            onClickRowActionTrash(subscriber) {
+                this.onClickRowActionDelete(subscriber, true);
             },
 
-            showDeleteAction(subscriber, currentRoute) {
+            showRowActionDelete(subscriber, currentRoute) {
                 if (currentRoute.params.status !== 'trashed') {
                     return false;
                 }
@@ -268,7 +268,7 @@
                 return weMail.userCaps.delete_subscriber;
             },
 
-            onClickDeleteAction(subscriber, softDelete) {
+            onClickRowActionDelete(subscriber, softDelete) {
                 const vm = this;
 
                 this.deleteSubscriber(subscriber.id, () => {
@@ -276,7 +276,7 @@
                 }, softDelete);
             },
 
-            showViewAction(subscriber, currentRoute) {
+            showRowActionView(subscriber, currentRoute) {
                 if (currentRoute.params.status === 'trashed') {
                     return false;
                 }
@@ -284,16 +284,16 @@
                 return true;
             },
 
-            onClickViewAction(subscriber) {
-                this.$router.push({
+            rowActionViewRoute(subscriber) {
+                return {
                     name: 'subscriberShow',
                     params: {
                         id: subscriber.id
                     }
-                });
+                };
             },
 
-            showRestoreAction(subscriber, currentRoute) {
+            showRowActionRestore(subscriber, currentRoute) {
                 if (currentRoute.params.status !== 'trashed') {
                     return false;
                 }
@@ -301,7 +301,7 @@
                 return weMail.userCaps.delete_subscriber;
             },
 
-            onClickRestoreAction(subscriber) {
+            onClickRowActionRestore(subscriber) {
                 const vm = this;
 
                 this.restoreSubscriber(subscriber.id, () => {
@@ -309,15 +309,15 @@
                 });
             },
 
-            showBulkActionOptionTrash(currentRoute) {
+            showBulkActionTrash(currentRoute) {
                 return !(currentRoute.params.status === 'trashed') || false;
             },
 
-            showBulkActionOptionDelete(currentRoute) {
-                return !this.showBulkActionOptionTrash(currentRoute);
+            showBulkActionDelete(currentRoute) {
+                return !this.showBulkActionTrash(currentRoute);
             },
 
-            showBulkActionOptionRestore(currentRoute) {
+            showBulkActionRestore(currentRoute) {
                 return (currentRoute.params.status === 'trashed') || false;
             },
 
@@ -355,7 +355,6 @@
                 }
 
                 return {
-                    data: subscriber,
                     text: `<span class="text-truncate">${name}</span>`,
                     classNames: ['list-table-title'],
                     route: {

@@ -2,28 +2,37 @@
     <div v-if="isLoaded">
         <h1>
             {{ i18n.lists }}
-            <a href="#" class="page-title-action">Add New</a>
+
+            <a
+                href="#add-new-list"
+                class="page-title-action"
+                @click.prevent="showNewListModal"
+            >{{ i18n.addNew }}</a>
         </h1>
 
-        <div class="row">
-            <div class="col-6">
-                <p><input type="text" v-model="search"></p>
+        <list-table
+            name="lists"
+            :i18n="i18n"
+            :filter-menu="filterMenu"
+            :bulk-actions="bulkActions"
+            :table-data="lists"
+            :columns="listTable.columns"
+            :sortable-columns="listTable.sortableColumns"
+            :row-actions="rowActions"
+            @bulk-action="onBulkAction"
+        >
+            <input slot="search" type="search" v-model="search" :placeholder="i18n.searchLists">
 
-                <ul>
-                    <li v-for="list in lists.data">
-                        <router-link :to="{name: 'listsShow', params: {id: list.id}}">{{ list.name }}</router-link>
-                    </li>
-                </ul>
-
-            </div>
-            <div class="col-6">
-                <pre>{{ lists }}</pre>
-            </div>
-        </div>
+            <span slot="no-data-found">{{ i18n.noListFound }}</span>
+        </list-table>
     </div>
 </template>
 
 <script>
+    import deleteList from './mixins/deleteList.js';
+
+    const ListTable = weMail.components.ListTable;
+
     export default {
         routeName: 'listsIndex',
 
@@ -33,7 +42,14 @@
             }
         },
 
-        mixins: weMail.getMixins('routeComponent'),
+        mixins: [
+            ...weMail.getMixins('routeComponent', 'helpers'),
+            deleteList
+        ],
+
+        components: {
+            ListTable
+        },
 
         data() {
             return {
@@ -47,7 +63,70 @@
         },
 
         computed: {
-            ...Vuex.mapState('listsIndex', ['i18n', 'lists'])
+            ...Vuex.mapState('listsIndex', ['i18n', 'lists', 'listTable']),
+
+            filterMenu() {
+                return _.map(this.lists.meta.filter_menu, (count, name) => {
+                    const menu = {
+                        name,
+                        count,
+                        title: this.i18n[name],
+                        route: {}
+                    };
+
+                    switch (name) {
+                        case 'all':
+                            menu.route = {
+                                name: 'listsIndex'
+                            };
+                            break;
+
+                        default:
+                            menu.route = {
+                                name: 'listsIndexType',
+                                params: {
+                                    type: name
+                                }
+                            };
+                            break;
+                    }
+
+                    return menu;
+                });
+            },
+
+            bulkActions() {
+                return [
+                    {
+                        name: 'delete',
+                        title: this.i18n.delete
+                    }
+                ];
+            },
+
+            rowActions() {
+                return [
+                    {
+                        action: 'edit',
+                        title: this.i18n.edit,
+                        classNames: ['edit'],
+                        onClick: 'onClickRowActionEdit'
+                    },
+                    {
+                        action: 'viewSubscribers',
+                        title: this.i18n.viewSubscribers,
+                        classNames: ['view'],
+                        route: 'rowActionViewSubscribersRoute'
+                    },
+                    {
+                        action: 'delete',
+                        title: this.i18n.delete,
+                        classNames: ['delete'],
+                        showIf: 'showRowActionDelete',
+                        onClick: 'onClickRowActionDelete'
+                    }
+                ];
+            }
         },
 
         beforeMount() {
@@ -55,24 +134,36 @@
         },
 
         watch: {
-            '$route.query': 'onChangeRouteQuery',
+            '$route.query': 'fetchData',
             search: 'onChangeSearch'
         },
 
         methods: {
-            onChangeRouteQuery() {
+            fetchData() {
                 const vm = this;
 
                 vm.apiHandler.abort();
 
+                const query = vm.$router.currentRoute.query;
+
+                if (vm.$router.currentRoute.params.type) {
+                    query.type = vm.$router.currentRoute.params.type;
+                }
+
                 vm.apiHandler = weMail
                     .api
-                    .get(vm.$router.currentRoute.fullPath)
+                    .lists()
+                    .query(query)
+                    .get()
                     .done((response) => {
                         if (response.data) {
                             vm.$store.commit('listsIndex/updateLists', response);
                         }
                     });
+            },
+
+            showNewListModal() {
+                weMail.event.$emit('show-new-list-modal-list-index');
             },
 
             onChangeSearch(search) {
@@ -87,7 +178,75 @@
                 this.$router.replace({
                     query
                 });
+            },
+
+            onClickRowActionEdit(list) {
+                console.log('onClickRowActionEdit');
+                console.log(list);
+            },
+
+            rowActionViewSubscribersRoute(list) {
+                return {
+                    name: 'listsSubscribers',
+                    params: {
+                        id: list.id
+                    }
+                };
+            },
+
+            showRowActionDelete(list) {
+                return !(list.type === 'protected');
+            },
+
+            onClickRowActionDelete(list) {
+                const vm = this;
+
+                vm.deleteList(list.id, () => {
+                    vm.fetchData();
+                });
+            },
+
+            onBulkAction(action, ids) {
+                if (action === 'delete') {
+                    this.deleteBulkLists(ids);
+                }
+            },
+
+            deleteBulkLists(ids) {
+                const vm = this;
+
+                vm.deleteList(ids, () => {
+                    vm.fetchData();
+                });
+            },
+
+            columnName(list) {
+                return {
+                    text: list.name,
+                    classNames: ['list-table-title'],
+                    route: {
+                        name: 'listsSubscribers',
+                        params: {
+                            id: list.id
+                        }
+                    }
+                };
+            },
+
+            columnCreatedAt(list) {
+                return this.toWPDate(list.created_at);
             }
         }
     };
 </script>
+
+<style lang="scss">
+    .wemail-list-table-lists {
+
+        .column-subscribed,
+        .column-unsubscribed,
+        .column-unconfirmed {
+            width: 130px;
+        }
+    }
+</style>

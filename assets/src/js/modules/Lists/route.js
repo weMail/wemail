@@ -8,9 +8,9 @@ function Index(resolve) {
     });
 }
 
-function Show(resolve) {
-    require.ensure(['./Show.vue'], () => {
-        resolve(require('./Show.vue'));
+function Subscribers(resolve) {
+    require.ensure(['./Subscribers.vue'], () => {
+        resolve(require('./Subscribers.vue'));
     });
 }
 
@@ -21,12 +21,27 @@ export default {
         {
             path: '',
             component: Index,
-            name: 'listsIndex'
+            name: 'listsIndex',
+            children: [
+                {
+                    path: 'type/:type',
+                    name: 'listsIndexType'
+                }
+            ]
         },
         {
             path: ':id',
-            component: Show,
-            name: 'listsShow'
+            component: RouterView,
+            redirect: {
+                name: 'listsSubscribers'
+            },
+            children: [
+                {
+                    path: 'subscribers',
+                    component: Subscribers,
+                    name: 'listsSubscribers'
+                }
+            ]
         }
     ]
 };

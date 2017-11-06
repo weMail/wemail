@@ -25,7 +25,7 @@ class Lists extends Module {
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
         $this->add_filter( 'wemail_get_route_data_listsIndex', 'index', 10, 2 );
-        $this->add_filter( 'wemail_get_route_data_listsShow', 'show', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_listsSubscribers', 'subscribers', 10, 2 );
     }
 
     /**
@@ -56,10 +56,48 @@ class Lists extends Module {
      */
     public function index( $params, $query ) {
         return [
-            'i18n' => [
-                'lists' => __( 'Lists', 'wemail' )
+            'i18n'      => [
+                'lists'              => __( 'Lists', 'wemail' ),
+                'addNew'             => __( 'Add New', 'wemail' ),
+                'bulkActions'        => __( 'Bulk Actions', 'wemail' ),
+                'apply'              => __( 'Apply', 'wemail' ),
+                'items'              => __( 'items', 'wemail' ),
+                'delete'             => __( 'Delete', 'wemail' ),
+                'edit'               => __( 'Edit', 'wemail' ),
+                'viewSubscribers'    => __( 'View Subscribers', 'wemail' ),
+                'name'               => __( 'Name', 'wemail' ),
+                'description'        => __( 'Description', 'wemail' ),
+                'subscribed'         => __( 'Subscribed', 'wemail' ),
+                'unsubscribed'       => __( 'Unsubscribed', 'wemail' ),
+                'unconfirmed'        => __( 'Unconfirmed', 'wemail' ),
+                'createdAt'          => __( 'Created At', 'wemail' ),
+                'searchLists'        => __( 'Search Lists', 'wemail' ),
+                'noListFound'        => __( 'no list found', 'wemail' ),
+                'all'                => __( 'All', 'wemail' ),
+                'public'             => __( 'Public', 'wemail' ),
+                'private'            => __( 'Private', 'wemail' ),
+                'cancel'             => __( 'Cancel', 'wemail' ),
+                'deleteListsWarnMsg' => __( 'Are you sure you want to delete these lists?', 'wemail' ),
+                'deleteListWarnMsg'  => __( 'Are you sure you want to delete this list?', 'wemail' )
             ],
-            'lists' => wemail()->lists->all( $query )
+            'lists'     => wemail()->lists->all( $query ),
+            'listTable' => [
+                'columns'   => [
+                    'name',
+                    'description',
+                    'subscribed',
+                    'unsubscribed',
+                    'unconfirmed',
+                    'createdAt'
+                ],
+                'sortableColumns' => [
+                    'name'          => 'name',
+                    'subscribed'    => 'subscribed',
+                    'unsubscribed'  => 'unsubscribed',
+                    'unconfirmed'   => 'unconfirmed',
+                    'createdAt'     => 'created_at'
+                ]
+            ]
         ];
     }
 
@@ -73,7 +111,7 @@ class Lists extends Module {
      *
      * @return array
      */
-    public function show( $params, $query ) {
+    public function subscribers( $params, $query ) {
         return [
             'i18n' => [
             ],

@@ -46,7 +46,9 @@ export default {
 
             } else {
                 api.delete().done((response) => {
-                    callback(response);
+                    if (typeof callback === 'function') {
+                        callback(response);
+                    }
                 });
             }
         }
