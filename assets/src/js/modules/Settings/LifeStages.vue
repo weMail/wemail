@@ -92,11 +92,12 @@
     export default {
         name: 'settingsLifeStages',
 
+        hideSaveButton: true,
+
         mixins: weMail.getMixins('settings', 'dataValidators'),
 
         data() {
             return {
-                hideSaveButton: true,
                 lifeStage: {
                     index: -1,
                     i18n: '',
@@ -112,14 +113,6 @@
 
         methods: {
             afterLoaded() {
-                const vm = this;
-
-                Vue.nextTick(() => {
-                    vm.bindSortable();
-                });
-            },
-
-            bindSortable() {
                 $('#life-stage-settings-list').sortable({
                     handle: '.item-header',
                     cancel: '.item-edit',

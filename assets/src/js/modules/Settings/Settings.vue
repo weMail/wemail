@@ -118,7 +118,7 @@
             },
 
             onSettingsLoaded(settings) {
-                this.hideSaveButton = settings.hideSaveButton;
+                this.hideSaveButton = settings.$options.hideSaveButton;
             }
         }
     };

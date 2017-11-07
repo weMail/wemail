@@ -3,11 +3,10 @@
         <h1>
             {{ i18n.lists }}
 
-            <a
-                href="#add-new-list"
+            <router-link
+                :to="{name: 'listsCreate'}"
                 class="page-title-action"
-                @click.prevent="showNewListModal"
-            >{{ i18n.addNew }}</a>
+            >{{ i18n.addNew }}</router-link>
         </h1>
 
         <list-table
@@ -25,6 +24,8 @@
 
             <span slot="no-data-found">{{ i18n.noListFound }}</span>
         </list-table>
+
+        <router-view></router-view>
     </div>
 </template>
 
@@ -110,7 +111,7 @@
                         action: 'edit',
                         title: this.i18n.edit,
                         classNames: ['edit'],
-                        onClick: 'onClickRowActionEdit'
+                        route: 'rowActionEditRoute'
                     },
                     {
                         action: 'viewSubscribers',
@@ -162,10 +163,6 @@
                     });
             },
 
-            showNewListModal() {
-                weMail.event.$emit('show-new-list-modal-list-index');
-            },
-
             onChangeSearch(search) {
                 const query = $.extend(true, {}, this.$router.currentRoute.query);
 
@@ -180,9 +177,13 @@
                 });
             },
 
-            onClickRowActionEdit(list) {
-                console.log('onClickRowActionEdit');
-                console.log(list);
+            rowActionEditRoute(list) {
+                return {
+                    name: 'listsEdit',
+                    params: {
+                        id: list.id
+                    }
+                };
             },
 
             rowActionViewSubscribersRoute(list) {

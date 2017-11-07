@@ -5,12 +5,11 @@ export default {
 
             if (_.isArray(id)) {
                 api = api.subscribers().restore()
-                    .bulk()
                     .query({
                         ids: id
                     });
             } else {
-                api = api.subscribers().restore(id);
+                api = api.subscribers(id).restore();
             }
 
             api.put().done((response) => {

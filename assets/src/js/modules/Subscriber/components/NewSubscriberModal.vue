@@ -97,7 +97,7 @@
 
 <script>
     export default {
-        mixins: [weMail.mixins.dataValidators, weMail.mixins.helpers],
+        mixins: weMail.getMixins('dataValidators', 'helpers'),
 
         props: {
             scope: {

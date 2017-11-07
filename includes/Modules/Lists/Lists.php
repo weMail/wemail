@@ -25,6 +25,8 @@ class Lists extends Module {
     public function __construct() {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
         $this->add_filter( 'wemail_get_route_data_listsIndex', 'index', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_listsCreate', 'create', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_listsEdit', 'edit', 10, 2 );
         $this->add_filter( 'wemail_get_route_data_listsSubscribers', 'subscribers', 10, 2 );
     }
 
@@ -98,6 +100,37 @@ class Lists extends Module {
                     'createdAt'     => 'created_at'
                 ]
             ]
+        ];
+    }
+
+    private function modal_i18n() {
+        return [
+            'addNewList'        => __( 'Add New List', 'wemail' ),
+            'name'              => __( 'Name', 'wemail' ),
+            'description'       => __( 'Description', 'wemail' ),
+            'makeItPrivate'     => __( 'Make it private', 'wemail' ),
+            'requiredField'     => __( 'Required field', 'wemail' ),
+            'cancel'            => __( 'Cancel', 'wemail' ),
+            'save'              => __( 'Save', 'wemail' ),
+            'whatIsPrivateMsg'  => __( "Subscribers cannot unsubscribe from a private list. Also, they don't need to double opt-in for a private list.", 'wemail' )
+        ];
+    }
+
+    public function create() {
+        return [
+            'i18n' => $this->modal_i18n(),
+            'list' => [
+                'name'        => '',
+                'description' => '',
+                'type'        => 'public'
+            ]
+        ];
+    }
+
+    public function edit( $params ) {
+        return [
+            'i18n' => $this->modal_i18n(),
+            'list' => $this->get( $params['id'] )
         ];
     }
 

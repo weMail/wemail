@@ -122,6 +122,11 @@ const API = {
 
     save(data) {
         return this.post(null, data);
+    },
+
+    update(data) {
+        this.query(data);
+        return this.put();
     }
 };
 

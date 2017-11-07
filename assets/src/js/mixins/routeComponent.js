@@ -35,12 +35,26 @@ export default {
                     getters
                 });
 
+                // we have our state data at this point, so render the dom
                 vm.isLoaded = true;
 
-                if (typeof vm.afterLoaded === 'function') {
-                    vm.afterLoaded();
-                }
+                // We may need to bind some plugin to new rendered dom
+                // so, we'll wait to finish the render, and do our things
+                // after vue triggered the nextTick method
+                vm.callAfterLoaded();
             });
         });
+    },
+
+    methods: {
+        callAfterLoaded() {
+            const vm = this;
+
+            if (typeof vm.afterLoaded === 'function') {
+                Vue.nextTick(() => {
+                    vm.afterLoaded();
+                });
+            }
+        }
     }
 };

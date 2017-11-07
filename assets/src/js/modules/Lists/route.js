@@ -8,6 +8,18 @@ function Index(resolve) {
     });
 }
 
+function Create(resolve) {
+    require.ensure(['./Create.vue'], () => {
+        resolve(require('./Create.vue'));
+    });
+}
+
+function Edit(resolve) {
+    require.ensure(['./Edit.vue'], () => {
+        resolve(require('./Edit.vue'));
+    });
+}
+
 function Subscribers(resolve) {
     require.ensure(['./Subscribers.vue'], () => {
         resolve(require('./Subscribers.vue'));
@@ -26,6 +38,16 @@ export default {
                 {
                     path: 'type/:type',
                     name: 'listsIndexType'
+                },
+                {
+                    path: 'create',
+                    name: 'listsCreate',
+                    component: Create
+                },
+                {
+                    path: ':id/edit',
+                    name: 'listsEdit',
+                    component: Edit
                 }
             ]
         },
