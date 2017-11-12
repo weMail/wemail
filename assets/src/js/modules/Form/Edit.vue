@@ -1,9 +1,15 @@
 <template>
     <div v-if="isLoaded" id="wemail-form-customizer" class="wemail-form-edit">
         <div class="clearfix">
-            <h1 class="customizer-title pull-left">
-                {{ form.name }}
-            </h1>
+            <popover-form
+                v-model="form.name"
+                :container-class="['pull-left']"
+                :top="12"
+            >
+                <h1 class="customizer-title">
+                    {{ form.name }}
+                </h1>
+            </popover-form>
 
             <div class="pull-right top-right-buttons">
                 <button
@@ -57,9 +63,7 @@
 
         methods: {
             saveForm() {
-                weMail.api.forms(this.form.id).update(this.form).done((response) => {
-                    console.log(response);
-                });
+                weMail.api.forms(this.form.id).update(this.form);
             }
         }
     };

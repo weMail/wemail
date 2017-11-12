@@ -94,15 +94,18 @@ class Scripts {
             ],
 
             // Vue related data
-            'subMenuMap'           => [],
-            'mixins'               => function () {},
-            'stores'               => function () {},
-            'actions'              => apply_filters( 'wemail_component_actions', [] ),
-            'customizerIframe'     => WEMAIL_URL . '/views/customizer.html',
-            'lists'                => wemail()->lists->items(),
-            'i18n'                 => [
-                'selectLists' => __( 'Select Lists', 'wemail' ),
-                'noListFound' => __( 'No List Found', 'wemail' ),
+            'subMenuMap'            => [],
+            'mixins'                => function () {},
+            'stores'                => function () {},
+            'actions'               => apply_filters( 'wemail_component_actions', [] ),
+            'customizerIframe'      => WEMAIL_URL . '/views/customizer.html',
+            'lists'                 => wemail()->lists->items(),
+            'i18n'                  => [
+                'selectLists'       => __( 'Select Lists', 'wemail' ),
+                'noListFound'       => __( 'No List Found', 'wemail' ),
+                'cancel'            => __( 'Cancel', 'wemail' ),
+                'done'              => __( 'Done', 'wemail' ),
+                'popoverFormHint'   => __( 'edit and then press enter', 'wemail' ),
             ]
         ];
 
