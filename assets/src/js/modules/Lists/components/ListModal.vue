@@ -96,7 +96,6 @@
             $(this.$el)
                 .wemailModal('show')
                 .on('hidden.wemail.modal', this.onCloseModal);
-
         },
 
         methods: {
@@ -129,7 +128,13 @@
                     api = weMail.api.lists(vm.$route.params.id).update(vm.list);
                 }
 
-                api.done(() => {
+                api.done((response) => {
+                    this.$store.commit('global/updateLists', {
+                        id: response.id,
+                        name: response.name,
+                        type: response.type
+                    });
+
                     vm.isDisabled = false;
                     $(vm.$el).off('hide.wemail.modal').wemailModal('hide');
                 });

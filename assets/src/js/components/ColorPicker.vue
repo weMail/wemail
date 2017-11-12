@@ -37,6 +37,10 @@
 </script>
 
 <style lang="scss">
+    .wemail a.wp-color-result {
+        box-sizing: content-box;
+    }
+
     .colorpicker-grouped {
         position: relative;
 

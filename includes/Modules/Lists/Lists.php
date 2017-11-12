@@ -13,7 +13,7 @@ class Lists extends Module {
      *
      * @var integer
      */
-    public $menu_priority = 90;
+    public $menu_priority = 80;
 
     /**
      * Class constructor
@@ -80,11 +80,13 @@ class Lists extends Module {
                 'private'            => __( 'Private', 'wemail' ),
                 'cancel'             => __( 'Cancel', 'wemail' ),
                 'deleteListsWarnMsg' => __( 'Are you sure you want to delete these lists?', 'wemail' ),
-                'deleteListWarnMsg'  => __( 'Are you sure you want to delete this list?', 'wemail' )
+                'deleteListWarnMsg'  => __( 'Are you sure you want to delete this list?', 'wemail' ),
+                'selectLists'        => __( 'Select lists', 'wemail' ),
+                'noListFound'        => __( 'No list found', 'wemail' ),
             ],
-            'lists'     => wemail()->lists->all( $query ),
+            'lists'     => $this->all( $query ),
             'listTable' => [
-                'columns'   => [
+                'columns' => [
                     'name',
                     'description',
                     'subscribed',
@@ -148,7 +150,7 @@ class Lists extends Module {
         return [
             'i18n' => [
             ],
-            'list' => wemail()->lists->get( $params['id'] )
+            'list' => $this->get( $params['id'] )
         ];
     }
 
@@ -175,14 +177,7 @@ class Lists extends Module {
      * @return array
      */
     public function items() {
-        $query = [
-            'per_page' => -1,
-            'fields' => 'id, name',
-            'orderby' => 'name',
-            'order' => 'asc'
-        ];
-
-        return wemail()->api->lists()->query( $query )->get();
+        return wemail()->api->lists()->items()->get();
     }
 
     /**

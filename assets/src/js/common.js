@@ -10,6 +10,7 @@ import ColorPicker from './components/ColorPicker.vue';
 import InputRange from './components/InputRange.vue';
 import Datepicker from './components/Datepicker.vue';
 import Timepicker from './components/Timepicker.vue';
+import ListsDropdown from './components/ListsDropdown.vue';
 
 // Global Mixins
 Vue.mixin(alert);
@@ -30,6 +31,7 @@ Vue.component('ColorPicker', ColorPicker);
 Vue.component('InputRange', InputRange);
 Vue.component('Datepicker', Datepicker);
 Vue.component('Timepicker', Timepicker);
+Vue.component('ListsDropdown', ListsDropdown);
 
 // Lazy loaded components
 __webpack_public_path__ = `${weMail.assetsURL}/js/`; // eslint-disable-line camelcase

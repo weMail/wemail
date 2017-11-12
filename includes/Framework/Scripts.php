@@ -40,7 +40,7 @@ class Scripts {
         wp_register_script( 'wemail-popper-js', WEMAIL_ASSETS . '/vendor/popper.js/popper.min.js', [], $this->version, true );
         wp_register_script( 'wemail-bootstrap', WEMAIL_ASSETS . '/js/bootstrap.js', ['jquery', 'wemail-popper-js'], $this->version, true );
 
-        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'wemail-timepicker', 'wemail-bootstrap'] , $this->version, true );
+        wp_register_script( 'wemail-common', WEMAIL_ASSETS . '/js/common.js', ['wemail', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'jquery-ui-draggable', 'wemail-timepicker', 'wemail-bootstrap'] , $this->version, true );
     }
 
     public function localized_script_vars() {
@@ -79,12 +79,18 @@ class Scripts {
             'ajax'                 => function () {}, // function will be render as object
             'api'                  => wemail()->api->get_props(),
             'cdn'                  => $cdn,
-            'userCaps'             => [
-                // hard coded for now
+            'userCaps'             => [ // hard coded for now
+                // subscriber
                 'create_subscriber' => true,
                 'view_subscriber'   => true,
                 'edit_subscriber'   => true,
                 'delete_subscriber' => true,
+
+                // form
+                'create_form' => true,
+                'view_form'   => true,
+                'edit_form'   => true,
+                'delete_form' => true,
             ],
 
             // Vue related data
@@ -92,7 +98,12 @@ class Scripts {
             'mixins'               => function () {},
             'stores'               => function () {},
             'actions'              => apply_filters( 'wemail_component_actions', [] ),
-            'customizerIframe'     => WEMAIL_URL . '/views/customizer.html'
+            'customizerIframe'     => WEMAIL_URL . '/views/customizer.html',
+            'lists'                => wemail()->lists->items(),
+            'i18n'                 => [
+                'selectLists' => __( 'Select Lists', 'wemail' ),
+                'noListFound' => __( 'No List Found', 'wemail' ),
+            ]
         ];
 
         return $wemail;

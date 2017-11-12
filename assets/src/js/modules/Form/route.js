@@ -1,26 +1,58 @@
 /* eslint-disable global-require */
 
-function Form(resolve) {
-    require.ensure(['./Form.vue'], () => {
-        resolve(require('./Form.vue'));
+import RouterView from '../RouterView.js';
+
+function Index(resolve) {
+    require.ensure(['./Index.vue'], () => {
+        resolve(require('./Index.vue'));
     });
 }
 
-function Forms(resolve) {
-    require.ensure(['./Forms.vue'], () => {
-        resolve(require('./Forms.vue'));
+function Create(resolve) {
+    require.ensure(['./Create.vue'], () => {
+        resolve(require('./Create.vue'));
     });
 }
 
-export default [
-    {
-        path: '/forms/:id',
-        component: Form,
-        name: 'form'
-    },
-    {
-        path: '/forms',
-        component: Forms,
-        name: 'forms'
-    }
-];
+function Edit(resolve) {
+    require.ensure(['./Edit.vue'], () => {
+        resolve(require('./Edit.vue'));
+    });
+}
+
+export default {
+    path: '/forms',
+    component: RouterView,
+    children: [
+        {
+            path: '',
+            component: Index,
+            name: 'formIndex',
+            children: [
+                {
+                    path: 'status/:status',
+                    name: 'formIndexStatus'
+                },
+                {
+                    path: 'create',
+                    component: Create,
+                    name: 'formCreate'
+                }
+            ]
+        },
+        {
+            path: ':id',
+            component: RouterView,
+            redirect: {
+                name: 'formEdit'
+            },
+            children: [
+                {
+                    path: 'edit',
+                    component: Edit,
+                    name: 'formEdit'
+                }
+            ]
+        }
+    ]
+};

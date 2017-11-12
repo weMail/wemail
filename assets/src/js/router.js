@@ -10,7 +10,7 @@ const routes = [
     Overview,
     Campaign,
     Subscriber,
-    ...Form,
+    Form,
     Lists,
     Settings,
     FourZeroFour

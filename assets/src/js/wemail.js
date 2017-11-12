@@ -1,7 +1,27 @@
 import { momentMap, format } from './date.js';
 
 // Vue Store
-weMail.store = new Vuex.Store({});
+const global = {
+    namespaced: true,
+
+    state: {
+        lists: weMail.lists,
+        i18n: weMail.i18n
+    },
+
+    mutations: {
+        updateLists(state, list) {
+            const lists = state.lists.concat(list);
+            state.lists = _.orderBy(lists, 'name', 'asc');
+        }
+    }
+};
+
+weMail.store = new Vuex.Store({
+    modules: {
+        global
+    }
+});
 
 // Global Event Bus
 weMail.event = new Vue();
