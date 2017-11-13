@@ -57,7 +57,17 @@ export default {
         {
             path: '',
             component: Index,
-            name: 'campaignIndex'
+            name: 'campaignIndex',
+            children: [
+                {
+                    path: 'type/:type',
+                    name: 'campaignIndexType'
+                },
+                {
+                    path: 'status/:status',
+                    name: 'campaignIndexStatus'
+                }
+            ]
         },
         {
             path: 'create',

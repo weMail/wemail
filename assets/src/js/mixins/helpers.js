@@ -8,7 +8,7 @@ export default {
 
         toWPDate(dateTime) {
             return moment
-                .tz(dateTime, 'YYYY-MM-DD HH:mm:ss', 'Etc/UTC')
+                .tz(dateTime, moment.defaultFormat, 'Etc/UTC')
                 .tz(weMail.dateTime.server.timezone)
                 .format(`${weMail.momentDateFormat}`);
         }

@@ -87,10 +87,16 @@ class Scripts {
                 'delete_subscriber' => true,
 
                 // form
-                'create_form' => true,
-                'view_form'   => true,
-                'edit_form'   => true,
-                'delete_form' => true,
+                'create_form'       => true,
+                'view_form'         => true,
+                'edit_form'         => true,
+                'delete_form'       => true,
+
+                // campaigns
+                'create_campaign'   => true,
+                'view_campaign'     => true,
+                'edit_campaign'     => true,
+                'delete_campaign'   => true,
             ],
 
             // Vue related data

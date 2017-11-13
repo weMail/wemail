@@ -257,6 +257,8 @@
 
 <script>
     export default {
+        mixins: weMail.getMixins('helpers'),
+
         props: {
             name: {
                 type: String,
@@ -358,6 +360,8 @@
 
                         if (typeof vm.$parent[methodName] === 'function') {
                             return data[column] = vm.$parent[methodName](record);
+                        } else if (typeof vm[methodName] === 'function') {
+                            return data[column] = vm[methodName](record);
                         }
 
                         const columnName = _.snakeCase(column);
@@ -390,19 +394,21 @@
             },
 
             pagination() {
+                const pagination = this.tableData.meta.pagination;
+
                 const firstPage = 1;
-                const lastPage = this.tableData.last_page;
+                const lastPage = pagination.total_pages;
 
-                let nextPage = 1;
-                let prevPage = 1;
+                let nextPage = 0;
+                let prevPage = 0;
 
-                let match = this.tableData.next_page_url ? this.tableData.next_page_url.match(/page=(\d+)/) : nextPage;
+                let match = (pagination.links && pagination.links.next) ? pagination.links.next.match(/page=(\d+)/) : nextPage;
 
                 if (match && match[1]) {
                     nextPage = parseInt(match[1], 10) || nextPage;
                 }
 
-                match = this.tableData.prev_page_url ? this.tableData.prev_page_url.match(/page=(\d+)/) : prevPage;
+                match = (pagination.links && pagination.links.previous) ? pagination.links.previous.match(/page=(\d+)/) : prevPage;
 
                 if (match && match[1]) {
                     prevPage = parseInt(match[1], 10) || prevPage;
@@ -428,13 +434,13 @@
 
                 let hasPagination = false;
 
-                if (this.tableData.next_page_url || this.tableData.prev_page_url) {
+                if (nextPage || prevPage) {
                     hasPagination = true;
                 }
 
                 return {
-                    currentPage: this.tableData.current_page,
-                    total: this.tableData.total,
+                    currentPage: pagination.current_page,
+                    total: pagination.total,
                     hasPagination,
                     firstPage,
                     lastPage,
@@ -615,6 +621,10 @@
 
             getColumnClass(column) {
                 return `column-${_.kebabCase(column)}`;
+            },
+
+            columnCreatedAt(campaign) {
+                return this.toWPDate(campaign.created_at);
             }
         }
     };
