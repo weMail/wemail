@@ -223,14 +223,11 @@
 
             columnName(list) {
                 return {
-                    text: list.name,
-                    classNames: ['list-table-title'],
-                    route: {
-                        name: 'listsSubscribers',
-                        params: {
-                            id: list.id
-                        }
-                    }
+                    html: `
+                        <router-link :to="{name: 'subscriberShow', params: {id: '${list.id}'}}" class="list-table-title">
+                            ${list.name}
+                        </router-link>
+                    `
                 };
             },
 

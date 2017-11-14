@@ -51,6 +51,7 @@
 
         data() {
             return {
+                testString: 'this is from index.vue',
                 search: '',
                 apiHandler: {
                     abort() {
@@ -365,14 +366,11 @@
 
             columnName(campaign) {
                 return {
-                    text: campaign.name,
-                    classNames: ['list-table-title'],
-                    route: {
-                        name: 'campaignShow',
-                        params: {
-                            id: campaign.id
-                        }
-                    }
+                    html: `
+                        <router-link :to="{name: 'campaignShow', params: {id: '${campaign.id}'}}" class="list-table-title">
+                            ${campaign.name}
+                        </router-link>
+                    `
                 };
             },
 

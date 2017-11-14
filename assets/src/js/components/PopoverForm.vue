@@ -116,12 +116,13 @@
             .wemail-popover-close {
                 position: absolute;
                 top: -7px;
-                right: -3px;
-                width: 12px;
-                height: 12px;
+                right: -7px;
+                width: 15px;
+                height: 15px;
                 font-size: 18px;
                 background-color: #fff;
                 border-radius: 50%;
+                box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.62);
 
                 i {
                     position: absolute;

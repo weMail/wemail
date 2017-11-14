@@ -111,7 +111,7 @@ class Scripts {
                 'noListFound'       => __( 'No List Found', 'wemail' ),
                 'cancel'            => __( 'Cancel', 'wemail' ),
                 'done'              => __( 'Done', 'wemail' ),
-                'popoverFormHint'   => __( 'edit and then press enter', 'wemail' ),
+                'popoverFormHint'   => __( 'edit and press enter to apply the changes', 'wemail' ),
             ]
         ];
 

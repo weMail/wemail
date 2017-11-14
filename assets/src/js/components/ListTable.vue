@@ -112,19 +112,8 @@
 
                                 <template v-for="column in columns">
                                     <td :class="[getColumnClass(column)]">
-                                        <div
-                                            v-if="!record[column].route"
-                                            class="list-table-content clearfix"
-                                            v-html="record[column]"
-                                        ></div>
-
-                                        <div v-else>
-                                            <router-link
-                                                :to="record[column].route"
-                                                :class="record[column].classNames"
-                                                v-html="record[column].text"
-                                            ></router-link>
-                                        </div>
+                                        <div v-if="!record[column].html" class="list-table-content clearfix" v-html="record[column]"></div>
+                                        <render-html v-else :html="record[column].html" :scope="$parent"></render-html>
 
                                         <div v-if="(showRowActionIn === column) && rowActions.length" class="row-actions">
                                             <template v-for="rowAction in rowActions" v-if="showRowAction(rowAction, tableData.data[recordIndex])">

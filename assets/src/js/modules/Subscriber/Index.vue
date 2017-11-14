@@ -355,14 +355,11 @@
                 }
 
                 return {
-                    text: `<span class="text-truncate">${name}</span>`,
-                    classNames: ['list-table-title'],
-                    route: {
-                        name: 'subscriberShow',
-                        params: {
-                            id: subscriber.id
-                        }
-                    }
+                    html: `
+                        <router-link :to="{name: 'subscriberShow', params: {id: '${subscriber.id}'}}" class="list-table-title">
+                            ${name}
+                        </router-link>
+                    `
                 };
             },
 

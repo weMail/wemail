@@ -392,14 +392,11 @@
 
             columnName(form) {
                 return {
-                    text: form.name,
-                    classNames: ['list-table-title'],
-                    route: {
-                        name: 'formEdit',
-                        params: {
-                            id: form.id
-                        }
-                    }
+                    html: `
+                        <router-link :to="{name: 'formEdit', params: {id: '${form.id}'}}" class="list-table-title">
+                            ${form.name}
+                        </router-link>
+                    `
                 };
             },
 
