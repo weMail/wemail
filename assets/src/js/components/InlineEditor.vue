@@ -73,6 +73,10 @@
             }
         },
 
+        watch: {
+            show: 'focusEditor'
+        },
+
         methods: {
             updateValue(value) {
                 this.newValue = value;
@@ -81,6 +85,16 @@
             save() {
                 this.$emit('input', this.newValue);
                 this.show = false;
+            },
+
+            focusEditor(show) {
+                if (show) {
+                    const vm = this;
+
+                    Vue.nextTick(() => {
+                        $(vm.$el).find('input.form-control').focus();
+                    });
+                }
             }
         }
     };

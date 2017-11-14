@@ -1,7 +1,7 @@
 <template>
     <div v-if="isLoaded" id="wemail-form-customizer" class="wemail-form-edit">
         <div class="clearfix">
-            <popover-form
+            <inline-editor
                 v-model="form.name"
                 :container-class="['pull-left']"
                 :top="12"
@@ -9,7 +9,7 @@
                 <h1 class="customizer-title">
                     {{ form.name }}
                 </h1>
-            </popover-form>
+            </inline-editor>
 
             <div class="pull-right top-right-buttons">
                 <button

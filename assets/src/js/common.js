@@ -12,7 +12,7 @@ import InputRange from './components/InputRange.vue';
 import Datepicker from './components/Datepicker.vue';
 import Timepicker from './components/Timepicker.vue';
 import ListsDropdown from './components/ListsDropdown.vue';
-import PopoverForm from './components/PopoverForm.vue';
+import InlineEditor from './components/InlineEditor.vue';
 
 // Global Mixins
 Vue.mixin(alert);
@@ -35,7 +35,7 @@ Vue.component('InputRange', InputRange);
 Vue.component('Datepicker', Datepicker);
 Vue.component('Timepicker', Timepicker);
 Vue.component('ListsDropdown', ListsDropdown);
-Vue.component('PopoverForm', PopoverForm);
+Vue.component('InlineEditor', InlineEditor);
 
 // Lazy loaded components
 __webpack_public_path__ = `${weMail.assetsURL}/js/`; // eslint-disable-line camelcase
