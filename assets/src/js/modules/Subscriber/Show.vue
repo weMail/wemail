@@ -2,39 +2,49 @@
     <div v-if="isLoaded" class="wemail-single-subscriber">
         <div v-if="subscriber" class="row">
             <div class="col-md-5">
-                <div class="wemail-box-plain">
-                    <div class="row">
-                        <div class="col-3 line-height-0">
-                            <img class="profile-image" :src="dummyImageURL" alt="">
-                        </div>
-                        <div class="col-9 no-left-padding">
-                            <div class="profile-summery">
-                                <h1 class="subscriber-name">{{ subscriberName }}</h1>
+                <div class="wemail-box-plain clearfix">
+                    <div :class="['profile-image', !hasUploadedImage ? 'gravatar-image' : '']">
+                        <img :src="profileImage" alt="">
 
-                                <a class="subscriber-email" :href="`mailto:${subscriber.email}`">{{ subscriber.email }}</a>
+                        <button
+                            type="button"
+                            class="button button-link edit-image"
+                            @click="setProfileImage"
+                        >{{ i18n.edit }}</button>
 
-                                <ul v-if="networks.length" class="subscriber-networks list-inline">
-                                    <li v-for="network in networks" class="list-inline-item">
-                                        <a :href="network.link" v-html="network.icon" target="_blank"></a>
-                                    </li>
-                                </ul>
+                        <button
+                            v-if="hasUploadedImage"
+                            type="button"
+                            class="button button-link remove-image"
+                            @click="removeImage"
+                        >{{ i18n.remove }}</button>
+                    </div>
 
-                                <div class="subscriber-action wemail-dropdown">
-                                    <button
-                                        class="button button-link"
-                                        type="button"
-                                        data-toggle="wemail-dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                    ><i class="fa fa-gear"></i></button>
-                                    <div class="wemail-dropdown-menu wemail-dropdown-menu-right">
-                                        <a
-                                            class="wemail-dropdown-item"
-                                            href="#delete-subscriber"
-                                            @click.prevent="deleteItem"
-                                        >{{ i18n.deleteSubscriber }}</a>
-                                    </div>
-                                </div>
+                    <div class="profile-summery">
+                        <h1 class="subscriber-name">{{ subscriberName }}</h1>
+
+                        <a class="subscriber-email" :href="`mailto:${subscriber.email}`">{{ subscriber.email }}</a>
+
+                        <ul v-if="networks.length" class="subscriber-networks list-inline">
+                            <li v-for="network in networks" class="list-inline-item">
+                                <a :href="network.link" v-html="network.icon" target="_blank"></a>
+                            </li>
+                        </ul>
+
+                        <div class="subscriber-action wemail-dropdown">
+                            <button
+                                class="button button-link"
+                                type="button"
+                                data-toggle="wemail-dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            ><i class="fa fa-gear"></i></button>
+                            <div class="wemail-dropdown-menu wemail-dropdown-menu-right">
+                                <a
+                                    class="wemail-dropdown-item"
+                                    href="#delete-subscriber"
+                                    @click.prevent="deleteItem"
+                                >{{ i18n.deleteSubscriber }}</a>
                             </div>
                         </div>
                     </div>
@@ -143,10 +153,14 @@
     export default {
         routeName: 'subscriberShow',
 
-        mixins: [...weMail.getMixins('routeComponent'), deleteSubscriber],
+        mixins: [
+            ...weMail.getMixins('routeComponent', 'helpers', 'imageUploader'),
+            deleteSubscriber
+        ],
 
         data() {
             return {
+                fileFrame: null,
                 isEditingInformations: false,
                 editLists: [],
                 informations: {
@@ -157,7 +171,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('subscriberShow', ['i18n', 'subscriber', 'lists', 'dummyImageURL', 'socialNetworks']),
+            ...Vuex.mapState('subscriberShow', ['i18n', 'subscriber', 'lists', 'socialNetworks']),
 
             meta() {
                 return this.subscriber.meta;
@@ -171,6 +185,22 @@
                 const name = [this.subscriber.first_name, this.subscriber.last_name];
 
                 return name.join(' ');
+            },
+
+            hasUploadedImage() {
+                return (this.subscriber.image && this.subscriber.image.sizes && this.subscriber.image.sizes.thumbnail);
+            },
+
+            profileImage() {
+                let src = '';
+
+                if (this.hasUploadedImage) {
+                    src = weMail.siteURL + this.subscriber.image.sizes.thumbnail.url;
+                } else {
+                    src = `https://www.gravatar.com/avatar/${this.md5(this.subscriber.email)}?d=mm&s=100`;
+                }
+
+                return src;
             },
 
             networks() {
@@ -255,6 +285,38 @@
         },
 
         methods: {
+            setProfileImage() {
+                this.openImageManager();
+            },
+
+            onSelectImages(images) {
+                const image = images[0];
+
+                const sizes = {};
+
+                _.forEach(image.sizes, (img, size) => {
+                    sizes[size] = {
+                        width: img.width,
+                        height: img.height,
+                        url: img.url.replace(weMail.siteURL, '')
+                    };
+                });
+
+                this.subscriber.image = {
+                    id: image.id,
+                    name: image.name,
+                    alt: image.alt,
+                    sizes
+                };
+
+                this.updateSubscriber('image');
+            },
+
+            removeImage() {
+                this.subscriber.image = null;
+                this.updateSubscriber('image');
+            },
+
             editInfo() {
                 const lists = $.extend(true, [], this.subscriber.lists);
 
@@ -418,6 +480,14 @@
                         name: 'subscriberIndex'
                     });
                 });
+            },
+
+            updateSubscriber(prop) {
+                const data = {};
+
+                data[prop] = this.subscriber[prop];
+
+                weMail.api.subscribers(this.subscriber.id).update(data);
             }
         }
     };
@@ -428,16 +498,75 @@
         padding-top: 10px;
 
         .profile-image {
-            max-width: 100%;
-            border: 1px solid $wp-border-color-darken;
+            position: relative;
+            display: inline-block;
+            float: left;
+            width: 100px;
+            height: 100px;
+            padding: 4px;
+            margin-right: 10px;
+            line-height: 0;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+
+            img {
+                max-width: 100%;
+                border: 1px solid $wp-border-color-darken;
+            }
+
+            button.button-link {
+                position: absolute;
+                left: 0;
+                z-index: 1;
+                width: 100%;
+                height: 50%;
+                color: #fff;
+                text-align: center;
+                background-color: rgba(0, 0, 0, 0.75);
+                opacity: 0;
+
+                @include transition;
+
+                &:hover {
+                    color: $wp-blue;
+                    background-color: rgba(0, 0, 0, 0.75);
+                }
+
+                &.edit-image {
+                    top: 0;
+                }
+
+                &.remove-image {
+                    bottom: 0;
+                    border-top: 1px solid #afafaf;
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+
+            &:hover {
+
+                button {
+                    opacity: 1;
+                }
+            }
+
+            &.gravatar-image {
+
+                button.button-link.edit-image {
+                    height: 100%;
+                }
+            }
         }
 
         .profile-summery {
             position: relative;
+            float: left;
 
             .subscriber-name {
-                padding: 0 30px 0 0;
-                margin-bottom: 5px;
+                padding: 0;
+                margin: 0 30px 5px 0;
                 line-height: 1.4;
             }
 

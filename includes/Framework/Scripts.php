@@ -112,6 +112,10 @@ class Scripts {
                 'cancel'            => __( 'Cancel', 'wemail' ),
                 'done'              => __( 'Done', 'wemail' ),
                 'popoverFormHint'   => __( 'edit and press enter to apply the changes', 'wemail' ),
+                'addImage'          => __( 'Add Image', 'wemail' ),
+                'missingImgMethod'  => __( 'Component is missing onSelectImages method', 'wemail' ),
+                'ok'                => __( 'OK', 'wemail' ),
+                'cancel'            => __( 'Cancel', 'wemail' )
             ]
         ];
 

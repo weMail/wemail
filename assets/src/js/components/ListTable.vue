@@ -735,10 +735,13 @@
 
             & > span {
 
+                a {
+                    white-space: nowrap;
+                }
+
                 &:after {
                     position: relative;
                     top: -1px;
-                    display: inline-block;
                     padding: 0 4px;
                     font-size: 12px;
                     color: $wp-input-border-color;
@@ -748,7 +751,7 @@
                 &:last-child {
 
                     &:after {
-                        content: "";
+                        display: none;
                     }
                 }
             }

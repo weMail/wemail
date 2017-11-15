@@ -168,6 +168,8 @@ class Subscriber extends Module {
             'close'              => __( 'Close', 'wemail' ),
             'subscriberDeleted'  => __( 'Subscriber deleted', 'wemail' ),
             'deleteSubWarnMsg'   => __( 'Are you sure you want to delete this subscriber? This subscriber will be removed from all lists and your action cannot be undone.', 'wemail' ),
+            'edit'               => __( 'Edit', 'wemail' ),
+            'remove'             => __( 'Remove', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();
@@ -183,7 +185,6 @@ class Subscriber extends Module {
 
         return [
             'i18n' => $i18n,
-            'dummyImageURL' => WEMAIL_ASSETS . '/images/misc/mystery-person.png',
             'subscriber' => wemail()->subscriber->get( $params['id'] ),
             'lists' => wemail()->lists->items(),
             'socialNetworks' => [

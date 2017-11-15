@@ -3,6 +3,7 @@ import settings from './modules/Settings/mixins/settings.js';
 import alert from './mixins/alert.js';
 import dataValidators from './mixins/dataValidators.js';
 import helpers from './mixins/helpers.js';
+import imageUploader from './mixins/imageUploader.js';
 import Multiselect from 'vue-multiselect/src/Multiselect.vue';
 import DoAction from './components/DoAction.vue';
 import RenderHtml from './components/RenderHtml.vue';
@@ -22,7 +23,8 @@ weMail.registerMixins({
     routeComponent,
     settings,
     dataValidators,
-    helpers
+    helpers,
+    imageUploader
 });
 
 // Global components

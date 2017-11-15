@@ -1,3 +1,5 @@
+import md5 from 'md5';
+
 export default {
     methods: {
         snakeKeys(obj) {
@@ -11,6 +13,10 @@ export default {
                 .tz(dateTime, moment.defaultFormat, 'Etc/UTC')
                 .tz(weMail.dateTime.server.timezone)
                 .format(`${weMail.momentDateFormat}`);
+        },
+
+        md5(string) {
+            return md5(string);
         }
     }
 };

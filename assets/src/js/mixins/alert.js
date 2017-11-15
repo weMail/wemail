@@ -24,8 +24,8 @@ export default {
                 type: 'warning',
                 title: '',
                 showCancelButton: true,
-                confirmButtonText: this.i18n.ok,
-                cancelButtonText: this.i18n.cancel,
+                confirmButtonText: weMail.i18n.ok,
+                cancelButtonText: weMail.i18n.cancel,
                 confirmButtonColor: '#dc3232',
                 cancelButtonColor: '#cccccc'
             };
@@ -43,7 +43,7 @@ export default {
             const defaults = {
                 type: 'success',
                 title: '',
-                confirmButtonText: this.i18n.ok,
+                confirmButtonText: weMail.i18n.ok,
                 confirmButtonColor: '#46b450'
             };
 
@@ -60,7 +60,7 @@ export default {
             const defaults = {
                 type: 'error',
                 title: '',
-                confirmButtonText: this.i18n.ok
+                confirmButtonText: weMail.i18n.ok
             };
 
             return this.swal(defaults, ...args);

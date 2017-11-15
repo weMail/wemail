@@ -354,17 +354,30 @@
                     name = `(${this.i18n.noName})`;
                 }
 
+                let src = '';
+
+                if (subscriber.image && subscriber.image.sizes && subscriber.image.sizes.thumbnail) {
+                    src = weMail.siteURL + subscriber.image.sizes.thumbnail.url;
+                } else {
+                    src = `https://www.gravatar.com/avatar/${this.md5(subscriber.email)}?d=mm&s=100`;
+                }
+
                 return {
                     html: `
-                        <router-link :to="{name: 'subscriberShow', params: {id: '${subscriber.id}'}}" class="list-table-title">
-                            ${name}
-                        </router-link>
+                        <div>
+                            <img src="${src}">
+                            <router-link :to="{name: 'subscriberShow', params: {id: '${subscriber.id}'}}" class="list-table-title">
+                                ${name}
+                            </router-link>
+                        </div>
                     `
                 };
             },
 
             columnEmailAddress(subscriber) {
-                return `<span class="text-truncate">${subscriber.email}</span>`;
+                return `
+                    <span class="text-truncate">${subscriber.email}</span>
+                `;
             },
 
             columnPhone(subscriber) {
@@ -381,3 +394,20 @@
         }
     };
 </script>
+
+<style lang="scss">
+    .wemail-list-table-subscribers {
+
+        .column-name {
+
+            img {
+                float: left;
+                width: 40px;
+                height: auto;
+                margin-right: 8px;
+                line-height: 0;
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+            }
+        }
+    }
+</style>
