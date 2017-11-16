@@ -170,6 +170,8 @@ class Subscriber extends Module {
             'deleteSubWarnMsg'   => __( 'Are you sure you want to delete this subscriber? This subscriber will be removed from all lists and your action cannot be undone.', 'wemail' ),
             'edit'               => __( 'Edit', 'wemail' ),
             'remove'             => __( 'Remove', 'wemail' ),
+            'firstName'          => __( 'First Name', 'wemail' ),
+            'lastName'           => __( 'Last Name', 'wemail' ),
         ];
 
         $social_networks = wemail()->settings->social_networks->i18n();
@@ -184,12 +186,12 @@ class Subscriber extends Module {
         ] );
 
         return [
-            'i18n' => $i18n,
-            'subscriber' => wemail()->subscriber->get( $params['id'] ),
-            'lists' => wemail()->lists->items(),
-            'socialNetworks' => [
-                'networks' => $social_networks,
-                'icons' => $social_network_icons
+            'i18n'              => $i18n,
+            'subscriber'        => wemail()->subscriber->get( $params['id'] ),
+            'lists'             => wemail()->lists->items(),
+            'socialNetworks'    => [
+                'networks'  => $social_networks,
+                'icons'     => $social_network_icons
             ]
         ];
     }

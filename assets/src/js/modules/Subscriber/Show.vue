@@ -21,7 +21,9 @@
                     </div>
 
                     <div class="profile-summery">
-                        <h1 class="subscriber-name">{{ subscriberName }}</h1>
+                        <inline-editor v-model="name" :options="nameOptions">
+                            <h1 class="subscriber-name">{{ fullName }}</h1>
+                        </inline-editor>
 
                         <a class="subscriber-email" :href="`mailto:${subscriber.email}`">{{ subscriber.email }}</a>
 
@@ -177,7 +179,7 @@
                 return this.subscriber.meta;
             },
 
-            subscriberName() {
+            fullName() {
                 if (!this.subscriber.first_name) {
                     return this.i18n.noName;
                 }
@@ -185,6 +187,33 @@
                 const name = [this.subscriber.first_name, this.subscriber.last_name];
 
                 return name.join(' ');
+            },
+
+            name: {
+                get() {
+                    return {
+                        firstName: this.subscriber.first_name || '',
+                        lastName: this.subscriber.last_name || ''
+                    };
+                },
+
+                set(name) {
+                    this.subscriber.first_name = name.firstName;
+                    this.subscriber.last_name = name.lastName;
+                }
+            },
+
+            nameOptions() {
+                return [
+                    {
+                        label: this.i18n.firstName,
+                        name: 'firstName'
+                    },
+                    {
+                        label: this.i18n.lastName,
+                        name: 'lastName'
+                    }
+                ];
             },
 
             hasUploadedImage() {
