@@ -54,6 +54,13 @@ weMail.admin = new Vue({
             $('html, body').animate({
                 scrollTop: 0
             }, INTERVAL);
+
+            // hide admin notices in certain pages
+            if (weMail.hideAdminNoticesIn.indexOf(to.name) >= 0) {
+                $('body').addClass('wemail-hide-admin-notices');
+            } else {
+                $('body').removeClass('wemail-hide-admin-notices');
+            }
         }
     }
 });

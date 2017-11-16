@@ -46,6 +46,13 @@
 @import "text-editor";
 @import "fixed-body";
 
+body.wemail-hide-admin-notices {
+
+    .update-nag {
+        display: none;
+    }
+}
+
 // SweetAlert2
 @import "~sweetalert2/src/sweetalert2.scss";
 

@@ -102,7 +102,6 @@ class Scripts {
             // Vue related data
             'subMenuMap'            => [],
             'mixins'                => function () {},
-            'stores'                => function () {},
             'actions'               => apply_filters( 'wemail_component_actions', [] ),
             'customizerIframe'      => WEMAIL_URL . '/views/customizer.html',
             'lists'                 => wemail()->lists->items(),
@@ -115,6 +114,9 @@ class Scripts {
                 'ok'                => __( 'OK', 'wemail' ),
                 'cancel'            => __( 'Cancel', 'wemail' ),
                 'save'              => __( 'Save', 'wemail' )
+            ],
+            'hideAdminNoticesIn'    => [
+                'campaignEditDesign'
             ]
         ];
 
