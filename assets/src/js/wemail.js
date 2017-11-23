@@ -58,14 +58,13 @@ weMail.ajax.post = (action, options) => {
 // weMail REST API
 const API = {
     root: weMail.api.root,
-    site: weMail.api.site,
-    user: weMail.api.user,
+    apiKey: weMail.api.api_key,
     _query: {},
     _url: '',
 
     headers() {
         return {
-            Authorization: `Bearer ${this.user}`
+            'x-api-key': this.apiKey
         };
     },
 

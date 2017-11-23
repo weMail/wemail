@@ -20,22 +20,13 @@ class Api {
     public $root;
 
     /**
-     * Site authentication key
+     * User x-api-key
      *
      * @since 1.0.0
      *
      * @var string
      */
-    public $site;
-
-    /**
-     * User authentication key
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $user;
+    public $api_key;
 
     /**
      * Holds the generated api url
@@ -66,11 +57,8 @@ class Api {
         $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
         $this->root  = untrailingslashit( $root );
 
-        $site_key    = get_option( 'wemail_api_site_key', 'siteKey' );
-        $this->site  = apply_filters( 'wemail_api_site_key', $site_key );
-
-        $user_key    = get_user_meta( get_current_user_id(), 'wemail_api_user_key' );
-        $this->user  = apply_filters( 'wemail_api_user_key', $user_key );
+        $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key' );
+        $this->api_key  = apply_filters( 'wemail_api_key', $api_key );
     }
 
     /**
@@ -104,9 +92,8 @@ class Api {
      */
     public function get_props() {
         return [
-            'root'  => $this->root,
-            'site'  => $this->site,
-            'user'  => $this->user
+            'root'     => $this->root,
+            'api_key'  => $this->api_key
         ];
     }
 
@@ -122,7 +109,7 @@ class Api {
     private function args( $args ) {
         $defaults = [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->user
+                'x-api-key' => $this->api_key
             ]
         ];
 

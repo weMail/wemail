@@ -173,7 +173,11 @@
         },
 
         computed: {
-            ...Vuex.mapState('subscriberShow', ['i18n', 'subscriber', 'lists', 'socialNetworks']),
+            ...Vuex.mapState('subscriberShow', ['i18n', 'lists', 'socialNetworks']),
+
+            subscriber() {
+                return this.$store.state.subscriberShow.subscriber.data || {};
+            },
 
             meta() {
                 return this.subscriber.meta;
@@ -236,6 +240,10 @@
                 const vm = this;
                 const networks = [];
 
+                if (!vm.subscriber.meta) {
+                    vm.subscriber.meta = {};
+                }
+
                 if (!vm.subscriber.meta.social) {
                     vm.subscriber.meta.social = {};
                 }
@@ -256,6 +264,10 @@
 
             inLists() {
                 const vm = this;
+
+                if (!this.subscriber.lists) {
+                    this.subscriber.lists = [];
+                }
 
                 const lists = this.subscriber.lists.map((list) => {
                     list = $.extend(true, {}, list);
