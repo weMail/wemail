@@ -56,6 +56,8 @@ class Scripts {
 
         $time_format = get_option( 'time_format', 'g:i a' );
 
+        $user = wemail()->user;
+
         $wemail = [
             'nonce'                => wp_create_nonce( 'wemail-nonce' ),
             'siteURL'              => site_url('/'),
@@ -79,24 +81,10 @@ class Scripts {
             'ajax'                 => function () {}, // function will be render as object
             'api'                  => wemail()->api->get_props(),
             'cdn'                  => $cdn,
-            'userCaps'             => [ // hard coded for now
-                // subscriber
-                'create_subscriber' => true,
-                'view_subscriber'   => true,
-                'edit_subscriber'   => true,
-                'delete_subscriber' => true,
-
-                // form
-                'create_form'       => true,
-                'view_form'         => true,
-                'edit_form'         => true,
-                'delete_form'       => true,
-
-                // campaigns
-                'create_campaign'   => true,
-                'view_campaign'     => true,
-                'edit_campaign'     => true,
-                'delete_campaign'   => true,
+            'user'                 => [
+                'hash'             => $user->hash,
+                'role'             => $user->role,
+                'permissions'      => $user->permissions,
             ],
 
             // Vue related data

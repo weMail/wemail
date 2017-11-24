@@ -57,6 +57,8 @@
     export default {
         routeName: 'settings',
 
+        permission: 'manage_settings',
+
         mixins: weMail.getMixins('routeComponent'),
 
         components: {

@@ -317,7 +317,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.edit_form;
+                return weMail.user.permissions.edit_form;
             },
 
             rowActionEditRoute(form) {
@@ -334,7 +334,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_form;
+                return weMail.user.permissions.delete_form;
             },
 
             onClickRowActionTrash(form) {
@@ -363,7 +363,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_form;
+                return weMail.user.permissions.delete_form;
             },
 
             onClickRowActionRestore(form) {
@@ -379,7 +379,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_form;
+                return weMail.user.permissions.delete_form;
             },
 
             onClickRowActionDelete(form, softDelete) {

@@ -60,8 +60,10 @@ class Modules {
             $module_name  = StaticStringy::underscored( $module );
 
             $module_class = "\\WeDevs\\WeMail\\Modules\\$module\\$module";
+            $route_class = "\\WeDevs\\WeMail\\Modules\\$module\\Routes";
 
             $this->register_module( $module_name, $module_class );
+            $this->register_route_hooks( $module_name, $route_class );
         }
     }
 
@@ -77,6 +79,12 @@ class Modules {
      */
     public function register_module( $module_name, $module_class ) {
         $this->modules[ $module_name ] = new $module_class;
+    }
+
+    public function register_route_hooks( $module_name, $route_class ) {
+        if ( class_exists( $route_class ) ) {
+            new $route_class();
+        }
     }
 
     /**

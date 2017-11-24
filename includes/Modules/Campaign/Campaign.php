@@ -64,7 +64,9 @@ class Campaign extends Module {
      * @return array
      */
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Campaigns', 'wemail' ), $capability, 'admin.php?page=wemail#/campaigns' ];
+        if ( wemail()->user->can( 'view_campaign' ) ) {
+            $menu_items[] = [ __( 'Campaigns', 'wemail' ), $capability, 'admin.php?page=wemail#/campaigns' ];
+        }
 
         return $menu_items;
     }

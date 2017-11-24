@@ -97,7 +97,9 @@ class Settings extends Module {
      * @return array
      */
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Settings', 'wemail' ), $capability, 'admin.php?page=wemail#/settings' ];
+        if ( wemail()->user->can( 'manage_settings' ) ) {
+            $menu_items[] = [ __( 'Settings', 'wemail' ), $capability, 'admin.php?page=wemail#/settings' ];
+        }
 
         return $menu_items;
     }

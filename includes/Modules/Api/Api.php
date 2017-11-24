@@ -57,8 +57,23 @@ class Api {
         $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
         $this->root  = untrailingslashit( $root );
 
-        $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key' );
-        $this->api_key  = apply_filters( 'wemail_api_key', $api_key );
+        $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
+        $api_key = apply_filters( 'wemail_api_key', $api_key );
+
+        $this->set_api_key( $api_key );
+    }
+
+    /**
+     * Set the api key
+     *
+     * @since 1.0.0
+     *
+     * @param string $api_key
+     *
+     * @return void
+     */
+    public function set_api_key( $api_key ) {
+        $this->api_key = $api_key;
     }
 
     /**
@@ -144,7 +159,7 @@ class Api {
      *
      * @return string
      */
-    private function build_url( $url, $query ) {
+    private function build_url( $url = '', $query = [] ) {
         if ( $url ) {
             $url = $this->root . $url;
 
@@ -184,8 +199,14 @@ class Api {
 
         $response = wp_remote_get( $url, $args );
 
-        if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
-            return json_decode( $response['body'], true );
+        if ( ! is_wp_error( $response ) ) {
+            // if ( !empty( $response['response']['code'] ) ) {
+            //     status_header( $response['response']['code'] );
+            // }
+
+            if ( !empty( $response['body'] ) ) {
+                return json_decode( $response['body'], true );
+            }
         }
 
         return false;
@@ -200,14 +221,14 @@ class Api {
      * @param array  $data POST data
      * @param array  $args wp_remote_post argument overrides
      *
-     * @return array|boolean Array on success, false on failure
+     * @return array|null Array on success, null on failure
      */
-    public function post( $url, $data, $args = [] ) {
+    public function post( $data, $args = [] ) {
         $args = $this->args( $args );
 
         $args['body'] = ! empty( $data ) ? $data : null;
 
-        $url = $this->root . $url;
+        $url = $this->build_url();
 
         $response = wp_remote_post( $url, $args );
 
@@ -219,7 +240,7 @@ class Api {
             }
         }
 
-        return false;
+        return null;
     }
 
 }

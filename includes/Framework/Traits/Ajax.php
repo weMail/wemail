@@ -3,6 +3,18 @@ namespace WeDevs\WeMail\Framework\Traits;
 
 trait Ajax {
 
+    /**
+     * Wrapper method to hook an ajax action
+     *
+     * If method name is not provided, then the class must have
+     * a method with the same name as tag or ajax action name.
+     *
+     * @since 1.0.0
+     *
+     * @param string $tag    Action name
+     * @param string $method Method name
+     * @param bool   $nopriv Also add nopriv hook
+     */
     protected function add_ajax_action( $tag, $method = null, $nopriv = false ) {
         if ( ! $method ) {
             $method = $tag;

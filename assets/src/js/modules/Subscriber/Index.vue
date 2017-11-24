@@ -240,7 +240,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.edit_subscriber;
+                return weMail.user.permissions.edit_subscriber;
             },
 
             onClickRowActionQuickEdit(subscriber) {
@@ -253,7 +253,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_subscriber;
+                return weMail.user.permissions.delete_subscriber;
             },
 
             onClickRowActionTrash(subscriber) {
@@ -265,7 +265,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_subscriber;
+                return weMail.user.permissions.delete_subscriber;
             },
 
             onClickRowActionDelete(subscriber, softDelete) {
@@ -298,7 +298,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_subscriber;
+                return weMail.user.permissions.delete_subscriber;
             },
 
             onClickRowActionRestore(subscriber) {

@@ -7,6 +7,22 @@ export default {
 
     beforeRouteEnter(to, from, next) {
         next((vm) => {
+            if (to.name !== 'authSite' && !weMail.user.hash) {
+                vm.$router.push({
+                    name: 'authSite'
+                });
+
+                return;
+            }
+
+            if (vm.$options.permission && !weMail.user.permissions[vm.$options.permission]) {
+                vm.$router.push({
+                    path: '/404'
+                });
+
+                return;
+            }
+
             weMail.ajax.get('get_route_data', {
                 name: vm.$options.routeName,
                 params: to.params,

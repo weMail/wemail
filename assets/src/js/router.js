@@ -5,8 +5,10 @@ import Form from './modules/Form/route.js';
 import Lists from './modules/Lists/route.js';
 import Settings from './modules/Settings/route.js';
 import FourZeroFour from './modules/FourZeroFour/route.js';
+import Auth from './modules/Auth/route.js';
 
 const routes = [
+    Auth,
     Overview,
     Campaign,
     Subscriber,

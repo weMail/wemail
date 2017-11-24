@@ -291,7 +291,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.edit_campaign;
+                return weMail.user.permissions.edit_campaign;
             },
 
             rowActionEditRoute(campaign) {
@@ -308,7 +308,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_campaign;
+                return weMail.user.permissions.delete_campaign;
             },
 
             onClickRowActionTrash(campaign) {
@@ -337,7 +337,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_campaign;
+                return weMail.user.permissions.delete_campaign;
             },
 
             onClickRowActionRestore(campaign) {
@@ -353,7 +353,7 @@
                     return false;
                 }
 
-                return weMail.userCaps.delete_campaign;
+                return weMail.user.permissions.delete_campaign;
             },
 
             onClickRowActionDelete(campaign, softDelete) {

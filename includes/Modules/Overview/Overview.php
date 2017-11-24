@@ -14,7 +14,9 @@ class Overview extends Module {
     }
 
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Overview', 'wemail' ), $capability, 'admin.php?page=wemail#/' ];
+        if ( wemail()->user->can( 'view_dashboard' ) ) {
+            $menu_items[] = [ __( 'Overview', 'wemail' ), $capability, 'admin.php?page=wemail#/' ];
+        }
 
         return $menu_items;
     }

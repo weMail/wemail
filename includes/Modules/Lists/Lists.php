@@ -41,7 +41,9 @@ class Lists extends Module {
      * @return array
      */
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' ];
+        if ( wemail()->user->can( 'view_list' ) ) {
+            $menu_items[] = [ __( 'Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' ];
+        }
 
         return $menu_items;
     }

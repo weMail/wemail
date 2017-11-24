@@ -40,7 +40,9 @@ class Subscriber extends Module {
      * @return array
      */
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Subscribers', 'wemail' ), $capability, 'admin.php?page=wemail#/subscribers' ];
+        if ( wemail()->user->can( 'view_subscriber' ) ) {
+            $menu_items[] = [ __( 'Subscribers', 'wemail' ), $capability, 'admin.php?page=wemail#/subscribers' ];
+        }
 
         return $menu_items;
     }

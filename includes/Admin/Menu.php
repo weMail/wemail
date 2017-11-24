@@ -29,14 +29,16 @@ class Menu {
     public function register_admin_menu() {
         global $submenu;
 
-        $capability = 'manage_options';
+        if ( current_user_can( 'manage_options' ) || wemail()->user->can( 'view_wemail' ) ) {
+            $capability = 'read';
 
-        $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt', 1 );
+            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt', 1 );
 
-        $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
+            $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
 
-        $this->add_action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );
-        $this->add_action( 'admin_print_scripts-' . $wemail, 'enqueue_scripts' );
+            $this->add_action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );
+            $this->add_action( 'admin_print_scripts-' . $wemail, 'enqueue_scripts' );
+        }
     }
 
     /**

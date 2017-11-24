@@ -16,7 +16,9 @@ class Form extends Module {
     }
 
     public function register_submenu( $menu_items, $capability ) {
-        $menu_items[] = [ __( 'Forms', 'wemail' ), $capability, 'admin.php?page=wemail#/forms' ];
+        if ( wemail()->user->can( 'view_form' ) ) {
+            $menu_items[] = [ __( 'Forms', 'wemail' ), $capability, 'admin.php?page=wemail#/forms' ];
+        }
 
         return $menu_items;
     }
