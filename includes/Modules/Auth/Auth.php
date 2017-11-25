@@ -2,11 +2,15 @@
 
 namespace WeDevs\WeMail\Modules\Auth;
 
+use WP_REST_Response;
 use WeDevs\WeMail\Framework\Traits\Ajax;
+use WeDevs\WeMail\Framework\Traits\Hooker;
+
 
 class Auth {
 
     use Ajax;
+    use Hooker;
 
     /**
      * Class constructor
@@ -16,7 +20,8 @@ class Auth {
      * @return void
      */
     public function __construct() {
-        $this->add_ajax_action('auth_site');
+        $this->add_ajax_action( 'auth_site' );
+        $this->add_action( 'rest_api_init', 'add_validate_me_endpoint' );
     }
 
     /**
@@ -99,4 +104,22 @@ class Auth {
 
         $this->send_error( ['message' => $message ] );
     }
+
+    public function add_validate_me_endpoint() {
+        register_rest_route( 'wemail', '/validate-me', array(
+            'methods' => 'GET',
+            'callback' => [ $this, 'validate_me' ],
+        ) );
+    }
+
+    public function validate_me() {
+        error_log( print_r( $_REQUEST, true ) );
+
+        $data = [
+            'success' => true
+        ];
+
+        return new WP_REST_Response( $data, 200 );
+    }
+
 }

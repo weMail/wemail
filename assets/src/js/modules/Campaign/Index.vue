@@ -19,9 +19,9 @@
             :row-actions="rowActions"
             @bulk-action="onBulkAction"
         >
-            <input slot="search" type="search" v-model="search" :placeholder="i18n.searchLists">
+            <input slot="search" type="search" v-model="search" :placeholder="i18n.searchCampaign">
 
-            <span slot="no-data-found">{{ i18n.noListFound }}</span>
+            <span slot="no-data-found">{{ i18n.noCampaignFound }}</span>
         </list-table>
     </div>
 </template>

@@ -60,9 +60,11 @@ class Modules {
             $module_name  = StaticStringy::underscored( $module );
 
             $module_class = "\\WeDevs\\WeMail\\Modules\\$module\\$module";
+            $menu_class = "\\WeDevs\\WeMail\\Modules\\$module\\Menu";
             $route_class = "\\WeDevs\\WeMail\\Modules\\$module\\Routes";
 
             $this->register_module( $module_name, $module_class );
+            $this->register_menu( $module_name, $menu_class );
             $this->register_route_hooks( $module_name, $route_class );
         }
     }
@@ -81,6 +83,32 @@ class Modules {
         $this->modules[ $module_name ] = new $module_class;
     }
 
+    /**
+     * Register admin menu
+     *
+     * @since 1.0.0
+     *
+     * @param string $module_name
+     * @param string $menu_class
+     *
+     * @return void
+     */
+    public function register_menu( $module_name, $menu_class ) {
+        if ( class_exists( $menu_class ) ) {
+            new $menu_class();
+        }
+    }
+
+    /**
+     * Register route hooks
+     *
+     * @since 1.0.0
+     *
+     * @param string $module_name
+     * @param string $route_class
+     *
+     * @return void
+     */
     public function register_route_hooks( $module_name, $route_class ) {
         if ( class_exists( $route_class ) ) {
             new $route_class();
