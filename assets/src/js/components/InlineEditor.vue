@@ -65,8 +65,8 @@
                 <em v-if="hint" class="wemail-popover-body-hint">{{ hint }}</em>
             </div>
             <div class="wemail-popover-footer">
-                <button type="button" class="button button-small button-link" @click="show = false">{{ i18n.cancel }}</button>
-                <button type="button" class="button button-small button-primary" @click="save">{{ i18n.save }}</button>
+                <button type="button" class="button button-small button-link" @click="show = false">{{ __('Cancel') }}</button>
+                <button type="button" class="button button-small button-primary" @click="save">{{ __('Save') }}</button>
             </div>
         </div>
     </div>
@@ -129,10 +129,6 @@
         },
 
         computed: {
-            i18n() {
-                return weMail.i18n;
-            },
-
             containerClassNames() {
                 return ['wemail-popover-container'].concat(this.containerClass);
             },

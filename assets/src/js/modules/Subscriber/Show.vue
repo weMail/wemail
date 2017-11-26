@@ -123,13 +123,13 @@
                             type="button"
                             class="button button-link"
                             @click.prevent="canceEditInfo"
-                        >{{ i18n.cancel }}</button>&nbsp;&nbsp;
+                        >{{ __('Cancel') }}</button>&nbsp;&nbsp;
 
                         <button
                             type="button"
                             class="button button-success button-extra-padding"
                             @click.prevent="saveEditInfo"
-                        >{{ i18n.save }}</button>
+                        >{{ __('Save') }}</button>
                     </p>
                 </div>
             </div>

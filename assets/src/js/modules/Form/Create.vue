@@ -49,9 +49,9 @@
                                     :custom-label="customLabel"
                                     track-by="id"
                                     label="name"
-                                    :placeholder="i18n.selectLists"
+                                    :placeholder="__('Select Lists')"
                                 >
-                                    <span slot="noResult">{{ i18n.noListFound }}</span>
+                                    <span slot="noResult">{{ __('No List Found') }}</span>
                                 </multiselect>
                             </label>
                         </div>
@@ -60,12 +60,12 @@
                                 type="button"
                                 class="button button-link"
                                 data-dismiss="wemail-modal"
-                            >{{ i18n.cancel }}</button>&nbsp;&nbsp;
+                            >{{ __('Cancel') }}</button>&nbsp;&nbsp;
 
                             <button
                                 type="submit"
                                 class="button button-primary"
-                            >{{ i18n.save }}</button>
+                            >{{ __('Save') }}</button>
                         </div>
                     </fieldset>
                 </form>

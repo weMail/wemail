@@ -65,7 +65,7 @@
                         class="button button-link"
                         data-dismiss="wemail-modal"
                         :disabled="isDisabled"
-                    >{{ i18n.cancel }}</button>&nbsp;&nbsp;
+                    >{{ __('Cancel') }}</button>&nbsp;&nbsp;
 
                     <span class="button-group wemail-dropdown">
                         <button
@@ -84,7 +84,7 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="wemail-dropdown-menu wemail-dropdown-menu-right">
-                            <a class="wemail-dropdown-item" href="#" @click.prevent="saveForm">{{ i18n.save }}</a>
+                            <a class="wemail-dropdown-item" href="#" @click.prevent="saveForm">{{ __('Save') }}</a>
                             <a class="wemail-dropdown-item" href="#" @click.prevent="saveAndAddAnother">{{ i18n.saveAndAddAnother }}</a>
                             <a class="wemail-dropdown-item" href="#" @click.prevent="saveAndGoToDetailsPage">{{ i18n.saveAndGoToDetailsPage }}</a>
                         </div>

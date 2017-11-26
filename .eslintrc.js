@@ -26,7 +26,9 @@ module.exports = {
         _: true,
         swal2: true,
         Sortable: true,
-        moment: true
+        moment: true,
+        __: true,
+        sprintf: true
     },
     // rules are mostly copied from Bootstrap v4-dev
     // https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/js/.eslintrc.json

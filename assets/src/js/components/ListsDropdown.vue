@@ -8,12 +8,12 @@
         :custom-label="customLabel"
         track-by="id"
         label="name"
-        :placeholder="i18n.selectLists"
+        :placeholder="__('Select Lists')"
         @select="select"
         @remove="remove"
     >
         <template slot="option" slot-scope="props">{{ props.option.name }}</template>
-        <span slot="noResult">{{ i18n.noListFound }}</span>
+        <span slot="noResult">{{ __('No List Found') }}</span>
     </multiselect>
 </template>
 

@@ -18,7 +18,7 @@ export default {
             let fileStatesOptions = {
                 library: wp.media.query(),
                 multiple: false, // set it true for multiple image
-                title: weMail.i18n.addImage,
+                title: __('Add Image'),
                 priority: 20,
                 filterable: 'uploaded'
             };
@@ -34,12 +34,12 @@ export default {
             ];
 
             let mediaOptions = {
-                title: weMail.i18n.addImage,
+                title: __('Add Image'),
                 library: {
                     type: ''
                 },
                 button: {
-                    text: weMail.i18n.addImage
+                    text: __('Add Image')
                 },
                 multiple: false
             };
@@ -59,7 +59,7 @@ export default {
                 if (typeof vm.onSelectImages === 'function') {
                     vm.onSelectImages(images);
                 } else {
-                    this.error(weMail.i18n.missingImgMethod);
+                    this.error(__('Component is missing onSelectImages method'));
                 }
             });
 

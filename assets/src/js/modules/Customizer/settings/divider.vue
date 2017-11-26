@@ -113,7 +113,7 @@
 
                         <ul class="list-inline-dots property-value">
                             <li>
-                                <a href="#gallery" @click.prevent="hideGallery">{{ i18n.cancel }}</a>
+                                <a href="#gallery" @click.prevent="hideGallery">{{ __('Cancel') }}</a>
                             </li>
                         </ul>
                     </h4>

@@ -66,14 +66,14 @@
                                     >{{ i18n.remove }}</a>
                                 </li>
                                 <li>
-                                    <a href="#" @click.prevent="reset">{{ i18n.cancel }}</a>
+                                    <a href="#" @click.prevent="reset">{{ __('Cancel') }}</a>
                                 </li>
                                 <li class="save-item">
                                     <a
                                         href="#"
                                         class="button button-primary button-small"
                                         @click.prevent="save"
-                                    >{{ i18n.save }}</a>
+                                    >{{ __('Save') }}</a>
                                 </li>
                             </ul>
                         </div>

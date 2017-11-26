@@ -1,4 +1,8 @@
 import { momentMap, format } from './date.js';
+import { __, sprintf } from './i18n/index.js';
+
+weMail.__ = __;
+weMail.sprintf = sprintf;
 
 // Vue Store
 const global = {

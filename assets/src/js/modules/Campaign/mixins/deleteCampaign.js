@@ -4,7 +4,7 @@ export default {
             const vm = this;
             const warn = {
                 confirmButtonText: vm.i18n.delete,
-                cancelButtonText: vm.i18n.cancel
+                cancelButtonText: __('Cancel')
             };
 
             let api = weMail.api;

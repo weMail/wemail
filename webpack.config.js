@@ -95,7 +95,9 @@ const plugins = [
         VueRouter: 'VueRouter',
         _: '_',
         swal2: 'swal2',
-        Sortable: 'Sortable'
+        Sortable: 'Sortable',
+        __: '__',
+        sprintf: 'sprintf'
     }),
 
     new ExtractTextPlugin({
@@ -164,7 +166,9 @@ module.exports = {
         VueRouter: 'weMail.VueRouter',
         _: 'weMail._',
         swal2: 'weMail.swal2',
-        Sortable: 'weMail.Sortable'
+        Sortable: 'weMail.Sortable',
+        __: 'weMail.__',
+        sprintf: 'weMail.sprintf'
     },
 
     plugins,

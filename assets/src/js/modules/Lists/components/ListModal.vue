@@ -37,12 +37,12 @@
                                 type="button"
                                 class="button button-link"
                                 data-dismiss="wemail-modal"
-                            >{{ i18n.cancel }}</button>&nbsp;&nbsp;
+                            >{{ __('Cancel') }}</button>&nbsp;&nbsp;
 
                             <button
                                 type="submit"
                                 class="button button-primary"
-                            >{{ i18n.save }}</button>
+                            >{{ __('Save') }}</button>
                         </div>
                     </fieldset>
                 </form>

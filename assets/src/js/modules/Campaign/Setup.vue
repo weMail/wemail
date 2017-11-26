@@ -40,7 +40,7 @@
                                 :multiple="true"
                                 :close-on-select="false"
                                 :preserve-search="true"
-                                :placeholder="i18n.selectLists"
+                                :placeholder="__('Select Lists')"
                                 label="name"
                                 track-by="name"
                                 :custom-label="customLabel"

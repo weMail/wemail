@@ -5,6 +5,7 @@
   "scripts": {
     "install": "webpack",
     "dev": "npm run clean && npm run bootstrap:js && webpack --watch",
+    "gettext-strings": "cross-env BABEL_ENV=gettext webpack",
     "lint:webpack": "eslint webpack.config.js",
     "bootstrap:js": "sh +x assets/src/vendor/bootstrap/build/build.sh",
     "clean": "shx rm -rf assets/css && shx rm -rf assets/js && shx rm -rf assets/fonts && shx rm -f assets/images/*.*"
@@ -25,6 +26,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
     "eslint": "^4.6.1",
     "eslint-config-standard": "^10.2.1",
@@ -37,6 +39,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
+    "gettext-parser": "^1.3.0",
     "node-sass": "^4.5.3",
     "postcss-cssnext": "^3.0.2",
     "postcss-flexbugs-fixes": "^3.2.0",
@@ -58,6 +61,7 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
+    "jed": "^1.1.1",
     "lodash": "^4.17.4",
     "sortablejs": "^1.6.1",
     "sweetalert2": "^6.6.10",

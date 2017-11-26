@@ -22,7 +22,7 @@
         >
             <input slot="search" type="search" v-model="search" :placeholder="i18n.searchLists">
 
-            <span slot="no-data-found">{{ i18n.noListFound }}</span>
+            <span slot="no-data-found">{{ __('No List Found') }}</span>
         </list-table>
 
         <router-view></router-view>

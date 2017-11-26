@@ -1,6 +1,7 @@
 import routeComponent from './mixins/routeComponent.js';
 import settings from './modules/Settings/mixins/settings.js';
 import alert from './mixins/alert.js';
+import i18n from './mixins/i18n.js';
 import dataValidators from './mixins/dataValidators.js';
 import helpers from './mixins/helpers.js';
 import imageUploader from './mixins/imageUploader.js';
@@ -17,6 +18,7 @@ import InlineEditor from './components/InlineEditor.vue';
 
 // Global Mixins
 Vue.mixin(alert);
+Vue.mixin(i18n);
 
 // Local mixins
 weMail.registerMixins({

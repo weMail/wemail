@@ -11,5 +11,14 @@
     ],
     "stage-2"
   ],
-  "plugins": ["transform-runtime"]
+  "plugins": ["transform-runtime"],
+  "env": {
+    "gettext": {
+      "plugins": [
+        ["./assets/src/js/i18n/babel-plugin", {
+          "output": "i18n/languages/wemail.pot"
+        }]
+      ]
+    }
+  }
 }

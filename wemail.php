@@ -71,6 +71,15 @@ final class WeDevs_WeMail {
     public $min_php = '5.4.0';
 
     /**
+     * weMail text domain
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $text_domain = 'wemail';
+
+    /**
      * Contains the core related class instance
      *
      * @since 1.0.0
@@ -273,7 +282,19 @@ final class WeDevs_WeMail {
     private function init_hooks() {
         register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
 
+        add_action( 'plugins_loaded', [ $this, 'load_plugin_textdomain' ] );
         add_action( 'init', [ $this, 'init' ], 0 );
+    }
+
+    /**
+     * Load plugin i18n text domain
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    public function load_plugin_textdomain() {
+        load_plugin_textdomain( 'wemail', false, WEMAIL_PATH . '/i18n/languages/' );
     }
 
     /**
@@ -286,9 +307,6 @@ final class WeDevs_WeMail {
     public function init() {
         // Before init action.
         do_action( 'wemail_before_init' );
-
-        // Set up localization.
-        $this->load_plugin_textdomain();
 
         $this->core = new StdClass();
 
@@ -306,17 +324,6 @@ final class WeDevs_WeMail {
 
         // Init action.
         do_action( 'wemail_init' );
-    }
-
-    /**
-     * Load plugin i18n text domain
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function load_plugin_textdomain() {
-        load_plugin_textdomain( 'wemail', false, WEMAIL_PATH . '/i18n/languages/' );
     }
 
     /**

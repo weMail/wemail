@@ -93,22 +93,50 @@ class Scripts {
             'actions'               => apply_filters( 'wemail_component_actions', [] ),
             'customizerIframe'      => WEMAIL_URL . '/views/customizer.html',
             'lists'                 => wemail()->lists->items(),
-            'i18n'                  => [
-                'selectLists'       => __( 'Select Lists', 'wemail' ),
-                'noListFound'       => __( 'No List Found', 'wemail' ),
-                'cancel'            => __( 'Cancel', 'wemail' ),
-                'addImage'          => __( 'Add Image', 'wemail' ),
-                'missingImgMethod'  => __( 'Component is missing onSelectImages method', 'wemail' ),
-                'ok'                => __( 'OK', 'wemail' ),
-                'cancel'            => __( 'Cancel', 'wemail' ),
-                'save'              => __( 'Save', 'wemail' )
-            ],
+            'locale_data'           => $this->get_locale_data(),
             'hideAdminNoticesIn'    => [
                 'campaignEditDesign'
             ]
         ];
 
         return $wemail;
+    }
+
+    /**
+     * Load the translation strings
+     *
+     * src: https://github.com/WordPress/gutenberg/blob/25a2003c7faac2dcdb723161fefd10ef44d147b6/lib/i18n.php#L12
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    private function get_locale_data() {
+        $domain = wemail()->text_domain;
+
+        $translations = get_translations_for_domain( $domain );
+
+        $locale = [
+            'domain'      => $domain,
+            'locale_data' => [
+                $domain => [
+                    '' => [
+                        'domain' => $domain,
+                        'lang'   => is_admin() ? get_user_locale() : get_locale(),
+                    ],
+                ],
+            ],
+        ];
+
+        if ( ! empty( $translations->headers['Plural-Forms'] ) ) {
+            $locale['locale_data'][ $domain ]['']['plural_forms'] = $translations->headers['Plural-Forms'];
+        }
+
+        foreach ( $translations->entries as $msgid => $entry ) {
+            $locale['locale_data'][ $domain ][ $msgid ] = $entry->translations;
+        }
+
+        return $locale;
     }
 
 }
