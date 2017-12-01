@@ -176,9 +176,6 @@ class Subscriber extends Module {
             'lastName'           => __( 'Last Name', 'wemail' ),
         ];
 
-        $social_networks = wemail()->settings->social_networks->i18n();
-        $i18n = array_merge( $i18n, $social_networks );
-
         $social_networks = wemail()->settings->social_networks->networks();
         array_unshift($social_networks, 'website');
 

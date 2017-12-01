@@ -6,18 +6,18 @@
             class="button float-left"
             @click="gotoPrevStep"
             :disabled="isPrevBtnDisabled"
-        ><i class="fa fa-angle-double-left"></i> {{ i18n.previous }}</button>
+        ><i class="fa fa-angle-double-left"></i> {{ __('Previous') }}</button>
 
         <div class="steps">
             <ul>
                 <li v-for="step in steps" :class="[(currentStep === step) ? 'active' : '']">
                     <a v-if="scope === 'create'" href="#" @click.prevent :class="getStepLinkClass(step)">
-                        <span>{{ i18n[step] }}</span>
+                        <span>{{ stepsI18n[step] }}</span>
                     </a>
                     <router-link
                         v-else
                         :to="getStepLink(step)"
-                    ><span>{{ i18n[step] }}</span></router-link>
+                    ><span>{{ stepsI18n[step] }}</span></router-link>
                 </li>
             </ul>
         </div>
@@ -28,7 +28,7 @@
             class="button float-right"
             @click="gotoNextStep"
             :disabled="isNextBtnDisabled"
-        >{{ i18n.next }} <i class="fa fa-angle-double-right"></i></button>
+        >{{ __('Next') }} <i class="fa fa-angle-double-right"></i></button>
     </div>
 </template>
 
@@ -38,17 +38,18 @@
             scope: {
                 type: String,
                 default: 'edit'
-            },
-
-            i18n: {
-                type: Object,
-                default: {}
             }
         },
 
         data() {
             return {
-                steps: ['setup', 'template', 'design', 'send']
+                steps: ['setup', 'template', 'design', 'send'],
+                stepsI18n: {
+                    setup: __('Setup'),
+                    template: __('Template'),
+                    design: __('Design'),
+                    send: __('Send')
+                }
             };
         },
 

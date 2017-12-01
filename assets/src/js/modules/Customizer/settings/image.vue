@@ -9,12 +9,12 @@
                     <div class="col-8">
                         <div>
                             <h3>
-                                <strong>{{ i18n.uploadAnImage }}</strong>
+                                <strong>{{ __('Upload an image') }}</strong>
                             </h3>
                             <ul class="list-inline-dots">
                                 <li>
                                     <a href="#upload" @click.prevent="browseImage">
-                                        {{ i18n.browseImage }}
+                                        {{ __('Browse Image') }}
                                     </a>
                                 </li>
                             </ul>
@@ -31,45 +31,45 @@
                     <div class="col-8">
                         <div>
                             <h3>
-                                <strong>{{ image.alt ? image.alt : i18n.untitled }}</strong>
+                                <strong>{{ image.alt ? image.alt : __('Untitled') }}</strong>
                             </h3>
                             <ul class="list-inline-dots">
                                 <li>
                                     <a href="#replace" @click.prevent="browseImage(index)">
-                                        {{ i18n.replace }}
+                                        {{ __('Replace') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#link" @click.prevent="image.openAttrEditor = 'link'">
-                                        {{ i18n.link }}
+                                        {{ __('Link') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#alt" @click.prevent="image.openAttrEditor = 'alt'">
-                                        {{ i18n.alt }}
+                                        {{ __('Alt') }}
                                     </a>
                                 </li>
                                 <li v-if="content.images.length !== 1">
-                                    <a href="#remove" @click.prevent="removeImage(index)">{{ i18n.remove }}</a>
+                                    <a href="#remove" @click.prevent="removeImage(index)">{{ __('Remove') }}</a>
                                 </li>
                             </ul>
 
                             <div v-if="image.openAttrEditor === 'link'" class="image-attr-editor">
-                                <strong>{{ i18n.setImageLink }}</strong>
+                                <strong>{{ __('Set image link') }}</strong>
                                 <input class="form-control" type="text" v-model="image.link" autofocus>
-                                <p><button type="button" class="button button-small" @click="image.openAttrEditor = ''">{{ i18n.close }}</button></p>
+                                <p><button type="button" class="button button-small" @click="image.openAttrEditor = ''">{{ __('Close') }}</button></p>
                             </div>
                             <div v-if="image.openAttrEditor === 'alt'" class="image-attr-editor" >
-                                <strong>{{ i18n.setImageAltText }}</strong>
+                                <strong>{{ __('Set image alt text') }}</strong>
                                 <input class="form-control" type="text" v-model="image.alt" autofocus>
-                                <p><button type="button" class="button button-small" @click="image.openAttrEditor = ''">{{ i18n.close }}</button></p>
+                                <p><button type="button" class="button button-small" @click="image.openAttrEditor = ''">{{ __('Close') }}</button></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <p v-if="content.images.length === 1">
-                    <button class="button" @click="browseImage">{{ i18n.addAnotherImage }}</button>
+                    <button class="button" @click="browseImage">{{ __('Add another image') }}</button>
                 </p>
             </template>
         </div>
@@ -77,7 +77,7 @@
         <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ style.backgroundColor ? style.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -87,7 +87,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.padding }}
+                    {{ __('Padding') }}
                     <span class="property-value">{{ style.paddingLeft }}</span>
                 </h4>
                 <div class="property">
@@ -97,7 +97,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.border }}
+                    {{ __('Border') }}
                     <span class="property-value">
                         {{ style.borderWidth ? style.borderWidth : '0px' }} &nbsp;
                         {{ style.borderColor ? style.borderColor : '######' }}
@@ -112,7 +112,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.bottomMargin }}
+                    {{ __('Bottom Margin') }}
                     <span class="property-value">{{ style.marginBottom }}</span>
                 </h4>
                 <div class="property">
@@ -128,11 +128,6 @@
         props: {
             settingsTab: {
                 type: String,
-                required: true
-            },
-
-            i18n: {
-                type: Object,
                 required: true
             },
 
@@ -207,7 +202,7 @@
                 if (this.content.images.length === 1) {
                     this.alert({
                         type: 'error',
-                        text: this.i18n.oneImageIsRequired
+                        text: __('At least one image is required')
                     });
 
                     return;
@@ -233,19 +228,19 @@
                     new wp.media.controller.Library({
                         library: wp.media.query(),
                         multiple: false,
-                        title: vm.i18n.selectAnImage,
+                        title: __('Select an image'),
                         priority: 20,
                         filterable: 'uploaded'
                     })
                 ];
 
                 vm.fileFrame = wp.media({
-                    title: vm.i18n.selectAnImage,
+                    title: __('Select an image'),
                     library: {
                         type: ''
                     },
                     button: {
-                        text: vm.i18n.selectAnImage
+                        text: __('Select an image')
                     },
                     multiple: false,
                     states: fileStates
@@ -296,7 +291,7 @@
                 if (!image.id || (image.type !== 'image')) {
                     this.alert({
                         type: 'error',
-                        text: this.i18n.pleaseSelectAnImage
+                        text: __('Please select an image')
                     });
 
                     return;
@@ -305,11 +300,11 @@
                 const alt = image.alt ? image.alt : image.title;
 
                 if (index >= 0) {
-                    this.content.images[index].alt = alt || this.i18n.untitled;
+                    this.content.images[index].alt = alt || __('Untitled');
                     this.content.images[index].src = image.url;
                 } else {
                     this.content.images.push({
-                        alt: alt || this.i18n.untitled,
+                        alt: alt || __('Untitled'),
                         src: image.url,
                         link: '',
                         openAttrEditor: ''

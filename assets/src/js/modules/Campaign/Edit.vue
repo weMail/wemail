@@ -1,7 +1,7 @@
 <template>
     <div v-if="isLoaded">
         <router-view></router-view>
-        <progress-bar :i18n="i18n"></progress-bar>
+        <progress-bar></progress-bar>
     </div>
 </template>
 
@@ -12,6 +12,10 @@
         routeName: 'campaignEdit',
 
         mutations: {
+            updateCampaign(state, payload) {
+                state.campaign = payload;
+            },
+
             setEmailTemplate(state, payload) {
                 state.campaign.email.template = payload;
             }
@@ -21,10 +25,6 @@
 
         components: {
             ProgressBar
-        },
-
-        computed: {
-            ...Vuex.mapState('campaignEdit', ['i18n'])
         }
     };
 </script>

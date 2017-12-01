@@ -613,7 +613,7 @@
             },
 
             columnCreatedAt(campaign) {
-                return this.toWPDate(campaign.created_at);
+                return this.toWPDateTime(campaign.created_at);
             }
         }
     };

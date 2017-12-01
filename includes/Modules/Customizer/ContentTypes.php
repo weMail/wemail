@@ -58,6 +58,7 @@ class ContentTypes {
     public static function text() {
         return [
             'type'       => 'text',
+            'title'      => __( 'Text', 'wemail' ),
             'image'      => self::$image_dir . '/text.png',
             'default'    => [
                 'style'      => [
@@ -93,6 +94,7 @@ class ContentTypes {
     public static function image() {
         return [
             'type'    => 'image',
+            'title'   => __( 'Image', 'wemail' ),
             'image'   => self::$image_dir . '/image.png',
             'default' => [
                 'style'  => [
@@ -122,6 +124,7 @@ class ContentTypes {
     public static function image_caption() {
         return [
             'type'        => 'imageCaption',
+            'title'       => __( 'Image Caption', 'wemail' ),
             'image'       => self::$image_dir . '/image-caption.png',
             'default'     => [
                 'style'       => [
@@ -177,6 +180,7 @@ class ContentTypes {
 
         return [
             'type'       => 'socialFollow',
+            'title'      => __( 'Social Follow', 'wemail' ),
             'image'      => self::$image_dir . '/social-follow.png',
             'default'    => [
                 'style'      => [
@@ -227,6 +231,7 @@ class ContentTypes {
     public static function button() {
         return [
             'type'      => 'button',
+            'title'     => __( 'Button', 'wemail' ),
             'image'     => self::$image_dir . '/button.png',
             'default'   => [
                 'style' => [
@@ -272,6 +277,7 @@ class ContentTypes {
     public static function divider() {
         return [
             'type'            => 'divider',
+            'title'           => __( 'Divider', 'wemail' ),
             'image'           => self::$image_dir . '/divider.png',
             'default'         => [
                 'dividerType'    => 'line',
@@ -301,7 +307,8 @@ class ContentTypes {
 
     public static function video() {
         return [
-            'type'        => 'video',
+            'type'      => 'video',
+            'title'     => __( 'Video', 'wemail' ),
             'image'     => self::$image_dir . '/video.png',
             'default'   => [
                 'style' => [
@@ -332,7 +339,8 @@ class ContentTypes {
 
     public static function footer() {
         return [
-            'type'        => 'footer',
+            'type'       => 'footer',
+            'title'      => __( 'Footer', 'wemail' ),
             'image'      => self::$image_dir . '/footer.png',
             'default'    => [
                 'style'      => [

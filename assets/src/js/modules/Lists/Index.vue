@@ -232,7 +232,7 @@
             },
 
             columnCreatedAt(list) {
-                return this.toWPDate(list.created_at);
+                return this.toWPDateTime(list.created_at);
             }
         }
     };

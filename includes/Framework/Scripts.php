@@ -64,6 +64,7 @@ class Scripts {
             'ajaxurl'              => admin_url( 'admin-ajax.php' ),
             'assetsURL'            => WEMAIL_ASSETS,
             'scriptDebug'          => $this->script_debug,
+            'version'              => WEMAIL_VERSION,
             'dateTime'             => [
                 'server'           => [
                     'timezone'     => wemail_get_wp_timezone(),

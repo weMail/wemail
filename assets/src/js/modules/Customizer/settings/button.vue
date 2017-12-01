@@ -3,7 +3,7 @@
         <div v-show="settingsTab === 'content'" class="settings-button-content">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.buttonText }}
+                    {{ __('Button Text') }}
                 </h4>
                 <div class="property">
                     <input type="text" class="form-control" v-model="content.text">
@@ -12,7 +12,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.buttonLink }}
+                    {{ __('Button Link') }}
                 </h4>
                 <div class="property">
                     <input type="text" class="form-control" v-model="content.href">
@@ -21,7 +21,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.titleAttribute }}
+                    {{ __('Title Attribute') }}
                 </h4>
                 <div class="property">
                     <input type="text" class="form-control" v-model="content.title">
@@ -31,7 +31,7 @@
         <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ style.backgroundColor ? style.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -41,7 +41,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontColor }}
+                    {{ __('Font Color') }}
                     <span class="property-value">{{ style.color ? style.color : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -51,7 +51,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontSize }}
+                    {{ __('Font Size') }}
                     <span class="property-value">{{ style.fontSize ? style.fontSize : '14px' }}</span>
                 </h4>
                 <div class="property">
@@ -61,7 +61,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.paddingTopBottom }}
+                    {{ __('Padding Top-Bottom') }}
                     <span class="property-value">{{ style.paddingTop }}</span>
                 </h4>
                 <div class="property">
@@ -71,7 +71,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.paddingLeftRight }}
+                    {{ __('Padding Left-Right') }}
                     <span class="property-value">{{ style.paddingLeft }}</span>
                 </h4>
                 <div class="property">
@@ -81,7 +81,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.border }}
+                    {{ __('Border') }}
                     <span class="property-value">
                         {{ style.borderWidth ? style.borderWidth : '0px' }} &nbsp;
                         {{ style.borderColor ? style.borderColor : '######' }}
@@ -96,7 +96,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.borderRadius }}
+                    {{ __('Border Radius') }}
                     <span class="property-value">{{ style.borderRadius }}</span>
                 </h4>
                 <div class="property">
@@ -106,10 +106,10 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.upperCase }}
+                    {{ __('Uppercase') }}
                 </h4>
                 <div class="property">
-                    <label><input type="checkbox" v-model="upperCase"> {{ i18n.yes }}</label>
+                    <label><input type="checkbox" v-model="upperCase"> {{ __('Yes') }}</label>
                 </div>
             </div>
         </div>
@@ -117,15 +117,15 @@
         <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.width }}
+                    {{ __('Width') }}
                 </h4>
                 <div class="property">
                     <ul class="list-inline no-margin">
                         <li class="list-inline-item">
-                            <label><input type="radio" value="inline-block" v-model="style.display"> {{ i18n.default }}</label>
+                            <label><input type="radio" value="inline-block" v-model="style.display"> {{ __('Default') }}</label>
                         </li>
                         <li class="list-inline-item">
-                            <label><input type="radio" value="block" v-model="style.display"> {{ i18n.block }}</label>
+                            <label><input type="radio" value="block" v-model="style.display"> {{ __('Block') }}</label>
                         </li>
                     </ul>
                 </div>
@@ -133,7 +133,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.containerBackground }}
+                    {{ __('Container Background') }}
                     <span class="property-value">{{ containerStyle.backgroundColor ? containerStyle.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -143,20 +143,17 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.align }}
-                    <span class="property-value">
-                        {{ containerStyle.textAlign ? i18n[containerStyle.textAlign] : i18n.center }} &nbsp;
-                    </span>
+                    {{ __('Align') }}
                 </h4>
                 <div class="property text-center">
                     <div class="button-group button-group-extra-padding">
                         <button
                             v-for="textAlign in textAligns"
                             type="button"
-                            :class="['button', (containerStyle.textAlign === textAlign) ? 'active' : '']"
-                            @click="containerStyle.textAlign = textAlign"
+                            :class="['button', (containerStyle.textAlign === textAlign.name) ? 'active' : '']"
+                            @click="containerStyle.textAlign = textAlign.name"
                         >
-                            <i :class="['fa fa-align-' + textAlign]"></i>
+                            <i :class="['fa fa-align-' + textAlign.name]"></i>
                         </button>
                     </div>
                 </div>
@@ -164,7 +161,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.containerPadding }}
+                    {{ __('Container Padding') }}
                     <span class="property-value">{{ containerStyle.padding }}</span>
                 </h4>
                 <div class="property">
@@ -174,7 +171,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.containerBottomMargin }}
+                    {{ __('Container Bottom Margin') }}
                     <span class="property-value">{{ containerStyle.marginBottom }}</span>
                 </h4>
                 <div class="property">
@@ -190,11 +187,6 @@
         props: {
             settingsTab: {
                 type: String,
-                required: true
-            },
-
-            i18n: {
-                type: Object,
                 required: true
             },
 
@@ -221,7 +213,20 @@
 
         data() {
             return {
-                textAligns: ['left', 'center', 'right']
+                textAligns: [
+                    {
+                        name: 'left',
+                        title: __('Left')
+                    },
+                    {
+                        name: 'center',
+                        title: __('Center')
+                    },
+                    {
+                        name: 'right',
+                        title: __('Right')
+                    }
+                ]
             };
         },
 

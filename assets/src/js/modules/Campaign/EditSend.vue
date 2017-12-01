@@ -1,19 +1,19 @@
 <template>
     <div>
-        <h1>{{ i18n.campaignSummery }}</h1>
+        <h1>{{ __('Campaign Summery') }}</h1>
 
         <table class="form-table">
             <tbody>
                 <tr>
-                    <th>{{ i18n.emailSubject }}</th>
+                    <th>{{ __('Email Subject') }}</th>
                     <td class="edit-send-email-subject">
                         <div class="row">
                             <div class="col-6">
                                 <div class="validate-field">
                                     <p class="top-hint clearfix">
-                                        <span class="invalid-msg">{{ i18n.thisFieldIsRequired }}</span>
+                                        <span class="invalid-msg">{{ __('This field is required') }}</span>
                                         <span :class="['float-right', subRemainingCharClass]">
-                                            {{ subRemainingChar }} {{ i18n.charactersRemaining }}
+                                            {{ subRemainingChar }} {{ __('characters remaining') }}
                                         </span>
                                     </p>
 
@@ -54,25 +54,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>{{ i18n.preHeader }}</th>
+                    <th>{{ __('Preheader') }}</th>
                     <td>
                         <div class="row">
                             <div class="col-6">
                                 <input type="text" class="block" v-model="email.pre_header">
-                                <p class="hint">{{ i18n.preHeaderHint }}</p>
+                                <p class="hint">{{ __('A preheader is the short summary text that follows the subject line when an email is viewed in the inbox.') }}</p>
                             </div>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <th>{{ i18n.sender }}</th>
+                    <th>{{ __('Sender') }}</th>
                     <td>
                         <div class="row">
                             <div class="col-3">
                                 <div class="validate-field">
                                     <p class="top-hint clearfix">
-                                        <span class="field-placeholder">{{ i18n.name }}</span>
-                                        <span class="invalid-msg">{{ i18n.thisFieldIsRequired }}</span>
+                                        <span class="field-placeholder">{{ __('Name') }}</span>
+                                        <span class="invalid-msg">{{ __('This field is required') }}</span>
                                     </p>
 
                                     <input
@@ -88,8 +88,8 @@
                             <div class="col-3">
                                 <div class="validate-field">
                                     <p class="top-hint clearfix">
-                                        <span class="field-placeholder">{{ i18n.email }}</span>
-                                        <span class="invalid-msg">{{ i18n.invalidEmailAddress }}</span>
+                                        <span class="field-placeholder">{{ __('Email') }}</span>
+                                        <span class="invalid-msg">{{ __('Invalid email address') }}</span>
                                     </p>
 
                                     <input
@@ -103,18 +103,18 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="hint">{{ i18n.senderHint }}</p>
+                        <p class="hint">{{ __('Name & email of yourself or your company.') }}</p>
                     </td>
                 </tr>
                 <tr>
-                    <th>{{ i18n.replyTo }}</th>
+                    <th>{{ __('Reply To') }}</th>
                     <td>
                         <div class="row">
                             <div class="col-3">
                                 <div class="validate-field">
                                     <p class="top-hint clearfix">
-                                        <span class="field-placeholder">{{ i18n.name }}</span>
-                                        <span class="invalid-msg">{{ i18n.thisFieldIsRequired }}</span>
+                                        <span class="field-placeholder">{{ __('Name') }}</span>
+                                        <span class="invalid-msg">{{ __('This field is required') }}</span>
                                     </p>
 
                                     <input
@@ -130,8 +130,8 @@
                             <div class="col-3">
                                 <div class="validate-field">
                                     <p class="top-hint clearfix">
-                                        <span class="field-placeholder">{{ i18n.email }}</span>
-                                        <span class="invalid-msg">{{ i18n.invalidEmailAddress }}</span>
+                                        <span class="field-placeholder">{{ __('Email') }}</span>
+                                        <span class="invalid-msg">{{ __('Invalid email address') }}</span>
                                     </p>
 
                                     <input
@@ -145,44 +145,44 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="hint">{{ i18n.reply_toHint }}</p>
+                        <p class="hint">{{ __('When the subscribers hit "reply" this is who will receive their emails.') }}</p>
                     </td>
                 </tr>
                 <tr>
-                    <th>{{ i18n.subscribers }}</th>
+                    <th>{{ __('Subscribers') }}</th>
                     <td>
                     <div class="row">
                         <div class="col-6">
                             <p class="clearfix">
-                                <strong>{{ i18n.lists }}</strong>
+                                <strong>{{ __('Lists') }}</strong>
                             </p>
                             <ul class="list-disc" v-if="lists.length">
                                 <li v-for="list in lists">{{ list.name }}</li>
                             </ul>
                             <ul v-else >
-                                <li><em class="text-muted">{{ i18n.noListSelected }}</em></li>
+                                <li><em class="text-muted">{{ __('No list selected') }}</em></li>
                             </ul>
 
                             <hr>
 
                             <p class="clearfix">
-                                <strong>{{ i18n.segments }}</strong>
+                                <strong>{{ __('Segments') }}</strong>
                             </p>
                             <ul class="list-disc" v-if="segments.length">
                                 <li v-for="segment in segments">{{ segment.name }}</li>
                             </ul>
                             <ul v-else>
-                                <li><em class="text-muted">{{ i18n.noSegmentSelected }}</em></li>
+                                <li><em class="text-muted">{{ __('No segment selected') }}</em></li>
                             </ul>
                         </div>
                     </div>
                     </td>
                 </tr>
                 <tr>
-                    <th>{{ i18n.scheduleCampaign }}</th>
+                    <th>{{ __('Schedule Campaign') }}</th>
                     <td>
                         <label v-if="!isScheduled">
-                            <input type="checkbox" v-model="isScheduled"> {{ i18n.yesScheduleIt }}
+                            <input type="checkbox" v-model="isScheduled"> {{ __('Yes, schedule it') }}
                         </label>
 
                         <div v-else>
@@ -190,42 +190,47 @@
                             <datepicker v-model="deliverDate" :placeholder="serverDate"></datepicker>&nbsp;&nbsp;@&nbsp;
                             <timepicker v-model="deliverTime" :placeholder="serverTime"></timepicker>
                             <br>
-
-                            <p class="hint">{{ i18n.currentServerTimeIs }} {{ serverDate }} {{ serverTime }}</p>
+                            <p class="hint">{{ sprintf( __('Current server time is %s %s'), serverDate, serverTime ) }}</p>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <th>{{ i18n.googleAnalyticCampaign }}</th>
+                    <th>{{ __('Google Analytic Campaign') }}</th>
                     <td>
                         <div class="row">
                             <div class="col-6">
                                 <input type="text" class="block" v-model="campaign.utm_campaign">
-                                <p class="hint">{{ i18n.utmHint }}</p>
+                                <p class="hint">{{ __('For example "New year sale"') }}</p>
                             </div>
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <button
+                            type="button"
+                            class="button button-primary"
+                            @click="saveCampaign"
+                        >{{ __('Save Campaign') }}</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
-
-        <!-- <pre>{{ campaign }}</pre> -->
     </div>
 </template>
 
 <script>
     export default {
-        mixins: [weMail.mixins.dataValidators],
+        mixins: weMail.getMixins('dataValidators', 'helpers'),
 
         data() {
             return {
-                subMaxLength: 150,
-                isScheduled: false
+                subMaxLength: 150
             };
         },
 
         computed: {
-            ...Vuex.mapState('campaignEdit', ['i18n', 'campaign', 'customizer']),
+            ...Vuex.mapState('campaignEdit', ['campaign', 'customizer']),
 
             email() {
                 return this.campaign.email;
@@ -258,14 +263,14 @@
             deliverDate: {
                 get() {
                     if (!this.campaign.deliver_at) {
-                        return moment.tz(weMail.dateTime.server.timezone).add(1, 'd').format('YYYY-MM-DD');
+                        return moment.tz(weMail.dateTime.server.timezone).add(1, 'h').format('YYYY-MM-DD');
                     }
 
-                    return this.campaign.deliver_at.split(' ')[0];
+                    return this.toWPDateTime(this.campaign.deliver_at, 'YYYY-MM-DD');
                 },
 
                 set(date) {
-                    this.campaign.deliver_at = `${date} ${this.deliverTime}`;
+                    this.campaign.deliver_at = this.toMomentDateTime(`${date} ${this.deliverTime}`);
                 }
             },
 
@@ -275,11 +280,11 @@
                         return moment.tz(weMail.dateTime.server.timezone).add(1, 'd').format('HH:mm:ss');
                     }
 
-                    return this.campaign.deliver_at.split(' ')[1];
+                    return this.toWPDateTime(this.campaign.deliver_at, 'HH:mm:ss');
                 },
 
                 set(time) {
-                    this.campaign.deliver_at = `${this.deliverDate} ${time}`;
+                    this.campaign.deliver_at =  this.toMomentDateTime(`${this.deliverDate} ${time}`);
                 }
             },
 
@@ -309,6 +314,16 @@
 
             serverTime() {
                 return weMail.dateTime.toMoment(weMail.dateTime.server.timeFormat, this.serverDateTime);
+            },
+
+            isScheduled: {
+                get() {
+                    return this.campaign.deliver_at || false;
+                },
+
+                set(isScheduled) {
+                    this.campaign.deliver_at = isScheduled ? this.deliverDate : null;
+                }
             }
         },
 
@@ -364,6 +379,16 @@
                 $(this.$el).find('.campaign-subject-input').focus();
 
                 // should be move cursor to end also
+            },
+
+            saveCampaign() {
+                const vm = this;
+
+                weMail.api.campaigns(this.campaign.id).update(this.campaign).done((reponse) => {
+                    if (reponse.data && reponse.data.id) {
+                        vm.$store.commit('campaignEdit/updateCampaign', reponse.data);
+                    }
+                });
             }
         }
     };

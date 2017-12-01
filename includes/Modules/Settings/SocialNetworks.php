@@ -90,8 +90,8 @@ class SocialNetworks extends AbstractSettings {
         ];
     }
 
-    public function i18n() {
-        $i18n = [
+    public function title() {
+        $title = [
             'facebook'     => __( 'Facebook', 'wemail' ),
             'twitter'      => __( 'Twitter', 'wemail' ),
             'linkedin'     => __( 'LinkedIn', 'wemail' ),
@@ -108,13 +108,13 @@ class SocialNetworks extends AbstractSettings {
         ];
 
         /**
-         * Social network i18n strings
+         * Social network titles
          *
          * @since 1.0.0
          *
-         * @param array $default_links
+         * @param array $title
          */
-        return apply_filters( 'wemail_social_network_i18n', $i18n );
+        return apply_filters( 'wemail_social_network_title', $title );
     }
 
     public function default_links() {

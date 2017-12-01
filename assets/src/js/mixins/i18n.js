@@ -4,8 +4,8 @@ export default {
             return __(text);
         },
 
-        sprintf(fmt, args) {
-            return sprintf(fmt, args);
+        sprintf(fmt, ...args) {
+            return sprintf(fmt, ...args);
         }
     }
 };

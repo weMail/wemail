@@ -9,20 +9,20 @@
             <h1 class="edit-template-title">{{ pageTitle }}</h1>
 
             <div v-if="isPreview" class="preview-header clearfix">
-                <strong class="preview-template-name">{{ i18n.template }}: {{ templateName }}</strong>
+                <strong class="preview-template-name">{{ __('Template') }}: {{ templateName }}</strong>
 
                 <span class="float-right">
                     <button
                         type="button"
                         class="button button-primary"
                         @click="selectTemplate"
-                    >{{ i18n.selectTemplate }}</button>
+                    >{{ __('Select Template') }}</button>
 
                     <button
                         type="button"
                         class="button"
                         @click="closePreview"
-                    >{{ i18n.close }}</button>
+                    >{{ __('Close') }}</button>
                 </span>
             </div>
         </div>
@@ -70,7 +70,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('campaignEdit', ['i18n', 'customizer']),
+            ...Vuex.mapState('campaignEdit', ['customizer']),
 
             emailTemplate() {
                 if (!this.isPreview) {
@@ -82,7 +82,7 @@
 
             pageTitle() {
                 if (!this.title) {
-                    return this.i18n.editCampaign;
+                    return __('Edit Campaign');
                 }
 
                 return this.title;

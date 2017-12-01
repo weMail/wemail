@@ -3,19 +3,19 @@
         <div v-show="settingsTab === 'content'" class="settings-divider-content">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.dividerType }}
+                    {{ __('Divider Type') }}
                 </h4>
                 <div class="property">
                     <div class="button-group button-group-extra-padding text-center d-block">
                         <button
                             :class="['button', content.dividerType === 'line' ? 'active' : '']"
                             @click="content.dividerType = 'line'"
-                        >{{ i18n.line }}</button>
+                        >{{ __('Line') }}</button>
 
                         <button
                             :class="['button', content.dividerType === 'image' ? 'active' : '']"
                             @click="content.dividerType = 'image'"
-                        >{{ i18n.image }}</button>
+                        >{{ __('Image') }}</button>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <template v-if="content.dividerType === 'line'">
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.height }}
+                        {{ __('Height') }}
                         <span class="property-value">{{ style.borderTopWidth ? style.borderTopWidth : '0px' }}</span>
                     </h4>
                     <div class="property">
@@ -33,7 +33,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.width }}
+                        {{ __('Width') }}
                         <span class="property-value">{{ style.width ? style.width : '0px' }}</span>
                     </h4>
                     <div class="property">
@@ -43,7 +43,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.color }}
+                        {{ __('Color') }}
                         <span class="property-value">{{ style.borderTopColor ? style.borderTopColor : '######' }}</span>
                     </h4>
                     <div class="property">
@@ -53,7 +53,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.style }}
+                        {{ __('Style') }}
                     </h4>
                     <div class="property">
                         <ul class="border-style-switcher">
@@ -70,14 +70,14 @@
                 <div v-if="!displayGallery" class="control-divider-image">
                     <div class="control-property">
                         <h4 class="property-title clearfix">
-                            {{ i18n.image }}
+                            {{ __('Image') }}
 
                             <ul class="list-inline-dots property-value">
                                 <li>
-                                    <a href="#gallery" @click.prevent="showGallery">{{ i18n.gallery }}</a>
+                                    <a href="#gallery" @click.prevent="showGallery">{{ __('Gallery') }}</a>
                                 </li>
                                 <li>
-                                    <a href="#upload" @click.prevent="browseImage">{{ i18n.browse }}</a>
+                                    <a href="#upload" @click.prevent="browseImage">{{ __('Browse') }}</a>
                                 </li>
                             </ul>
                         </h4>
@@ -88,7 +88,7 @@
 
                     <div class="control-property">
                         <h4 class="property-title clearfix">
-                            {{ i18n.width }}
+                            {{ __('Width') }}
                             <span class="property-value">{{ content.image.style.width ? content.image.style.width : '0px' }}</span>
                         </h4>
                         <div class="property">
@@ -98,7 +98,7 @@
 
                     <div class="control-property">
                         <h4 class="property-title clearfix">
-                            {{ i18n.height }}
+                            {{ __('Height') }}
                             <span class="property-value">{{ content.image.style.height ? content.image.style.height : '0px' }}</span>
                         </h4>
                         <div class="property">
@@ -109,7 +109,7 @@
                 </div>
                 <div  v-else class="control-property control-divider-image">
                     <h4 class="property-title clearfix">
-                        {{ i18n.chooseDivider }}
+                        {{ __('Choose Divider') }}
 
                         <ul class="list-inline-dots property-value">
                             <li>
@@ -137,7 +137,7 @@
         <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ content.containerStyle.backgroundColor ? content.containerStyle.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -147,7 +147,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.containerPadding }}
+                    {{ __('Container Padding') }}
                     <span class="property-value">{{ content.containerStyle.padding ? content.containerStyle.padding : '0px' }}</span>
                 </h4>
                 <div class="property">
@@ -157,7 +157,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.containerBottomMargin }}
+                    {{ __('Container Bottom Margin') }}
                     <span class="property-value">{{ content.containerStyle.marginBottom ? content.containerStyle.marginBottom : '0px' }}</span>
                 </h4>
                 <div class="property">
@@ -173,11 +173,6 @@
         props: {
             settingsTab: {
                 type: String,
-                required: true
-            },
-
-            i18n: {
-                type: Object,
                 required: true
             },
 
@@ -356,19 +351,19 @@
                     new wp.media.controller.Library({
                         library: wp.media.query(),
                         multiple: false,
-                        title: vm.i18n.selectAnImage,
+                        title: __('Select an image'),
                         priority: 20,
                         filterable: 'uploaded'
                     })
                 ];
 
                 vm.fileFrame = wp.media({
-                    title: vm.i18n.selectAnImage,
+                    title: __('Select an image'),
                     library: {
                         type: ''
                     },
                     button: {
-                        text: vm.i18n.selectAnImage
+                        text: __('Select an image')
                     },
                     multiple: false,
                     states: fileStates
@@ -404,8 +399,6 @@
                             selectedFile.height = image.height;
                         }
 
-                        console.log(image);
-
                         vm.insertImage(selectedFile);
 
                         return null;
@@ -425,7 +418,7 @@
                 if (!image.id || (image.type !== 'image')) {
                     this.alert({
                         type: 'error',
-                        text: this.i18n.pleaseSelectAnImage
+                        text: __('Please select an image')
                     });
 
                     return;

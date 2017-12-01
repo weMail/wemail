@@ -28,7 +28,6 @@ class Editor {
         self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
 
         $this->add_filter( 'wemail_customizer_content_type_settings_campaign', 'content_type_settings' );
-        $this->add_filter( 'wemail_customizer_i18n_campaign', 'customizer_i18n' );
     }
 
     /**
@@ -40,18 +39,18 @@ class Editor {
      */
     public function get_setup_data() {
         return [
-            'i18n'         => $this->i18n(),
             'lists'        => wemail()->lists->items(),
             'segments'     => wemail()->segment->items(),
             'events'       => wemail()->campaign->event->all(),
             'campaign'     => [
                 'name'     => '',
                 'type'     => 'standard',
+                'version'  => WEMAIL_VERSION,
                 'lists'    => [],
                 'segments' => [],
                 'event'    => [
                     'action'          => 'wemail_subscribed_to_list',
-                    'option_value'    => '',
+                    'value'           => '',
                     'schedule_type'   => 'immediately',
                     'schedule_offset' => 1
                 ]
@@ -193,7 +192,8 @@ class Editor {
      */
     public static function wp_posts() {
         return [
-            'type' => 'wpPosts',
+            'type'       => 'wpPosts',
+            'title'      => __( 'WP Posts', 'wemail' ),
             'image'      => self::$image_dir . '/wp.png',
             'default'    => [
                 'style'      => [
@@ -226,6 +226,8 @@ class Editor {
      */
     public static function wp_latest_contents() {
         return [
+            'type'       => 'wpLatestContents',
+            'title'      => __( 'Latest Contents', 'wemail' ),
             'image'      => self::$image_dir . '/wp-latest.png',
             'default'    => [
                 'style'      => [
@@ -247,22 +249,6 @@ class Editor {
                 'valign'     => 'top',
             ]
         ];
-    }
-
-    /**
-     * i18n strings for email customizer
-     *
-     * @since 1.0.0
-     *
-     * @param array $i18n
-     *
-     * @return array
-     */
-    public function customizer_i18n( $i18n ) {
-        return array_merge( $i18n, [
-            'wpPosts'           => __( 'WP Posts', 'wemail' ),
-            'wpLatestContents'  => __( 'Latest Contents', 'wemail' ),
-        ] );
     }
 
 }

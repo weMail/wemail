@@ -25,12 +25,12 @@
                             </div>
                         </div>
                         <p>
-                            <label><strong>{{ i18n.pageLink }}</strong>
+                            <label><strong>{{ __('Page Link') }}</strong>
                                 <input type="text" class="form-control" v-model="icon.link">
                             </label>
                         </p>
                         <p>
-                            <label><strong>{{ i18n.linkText }}</strong>
+                            <label><strong>{{ __('Link Text') }}</strong>
                                 <input type="text" class="form-control" v-model="icon.text">
                             </label>
                         </p>
@@ -38,13 +38,13 @@
                 </div>
             </div>
             <p>
-                <button type="button" class="button button-block" @click="addMoreNetwork">{{ i18n.addMoreNetwork }}</button>
+                <button type="button" class="button button-block" @click="addMoreNetwork">{{ __('Add More Network') }}</button>
             </p>
         </div>
         <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ style.backgroundColor ? style.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -54,7 +54,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontColor }}
+                    {{ __('Font Color') }}
                     <span class="property-value">{{ style.color ? style.color : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -64,7 +64,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontSize }}
+                    {{ __('Font Size') }}
                     <span class="property-value">
                         {{ style.fontSize ? style.fontSize : '0px' }}
                     </span>
@@ -76,27 +76,27 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.upperCase }}
+                    {{ __('Uppercase') }}
                 </h4>
                 <div class="property">
-                    <label><input type="checkbox" v-model="upperCase"> {{ i18n.yes }}</label>
+                    <label><input type="checkbox" v-model="upperCase"> {{ __('Yes') }}</label>
                 </div>
             </div>
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontWeight }}
+                    {{ __('Font Weight') }}
                 </h4>
                 <div class="property">
                     <ul class="list-inline no-margin">
                         <li class="list-inline-item">
                             <label class="fix-radio">
-                                <input type="radio" value="normal" v-model="style.fontWeight"> {{ i18n.normal }}
+                                <input type="radio" value="normal" v-model="style.fontWeight"> {{ __('Normal') }}
                             </label>
                         </li>
                         <li class="list-inline-item">
                             <label class="fix-radio">
-                                <input type="radio" value="bold" v-model="style.fontWeight"> {{ i18n.bold }}
+                                <input type="radio" value="bold" v-model="style.fontWeight"> {{ __('Bold') }}
                             </label>
                         </li>
                     </ul>
@@ -105,7 +105,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.iconMargin }}
+                    {{ __('Icon Margin') }}
                     <span class="property-value">
                         {{ iconMargin ? iconMargin + 'px' : '0px' }}
                     </span>
@@ -117,7 +117,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.padding }}
+                    {{ __('Padding') }}
                     <span class="property-value">{{ style.padding }}</span>
                 </h4>
                 <div class="property">
@@ -127,7 +127,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.border }}
+                    {{ __('Border') }}
                     <span class="property-value">
                         {{ style.borderWidth ? style.borderWidth : '0px' }} &nbsp;
                         {{ style.borderColor ? style.borderColor : '######' }}
@@ -142,7 +142,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.bottomMargin }}
+                    {{ __('Bottom Margin') }}
                     <span class="property-value">{{ style.marginBottom }}</span>
                 </h4>
                 <div class="property">
@@ -153,13 +153,13 @@
         <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.display }}
+                    {{ __('Display') }}
                 </h4>
                 <div class="property">
                     <ul class="list-inline no-margin text-center">
                         <li v-for="displayType in displayTypes" class="list-inline-item">
                             <label>
-                                <input type="radio" :value="displayType.type" v-model="content.display"> {{ i18n[displayType.title] }}
+                                <input type="radio" :value="displayType.type" v-model="content.display"> {{ displayType.title }}
                             </label>
                         </li>
                     </ul>
@@ -168,10 +168,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.align }}
-                    <span class="property-value">
-                        {{ style.textAlign ? i18n[style.textAlign] : i18n.center }} &nbsp;
-                    </span>
+                    {{ __('Align') }}
                 </h4>
                 <div class="property text-center">
                     <div class="button-group button-group-extra-padding">
@@ -189,7 +186,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.layout }}
+                    {{ __('Layout') }}
                 </h4>
 
                 <div class="property">
@@ -221,11 +218,6 @@
                 required: true
             },
 
-            i18n: {
-                type: Object,
-                required: true
-            },
-
             sectionIndex: {
                 type: Number,
                 required: true
@@ -252,15 +244,15 @@
                 displayTypes: [
                     {
                         type: 'icon',
-                        title: 'iconOnly'
+                        title: __('Icon Only')
                     },
                     {
                         type: 'text',
-                        title: 'textOnly'
+                        title: __('Text Only')
                     },
                     {
                         type: 'both',
-                        title: 'both'
+                        title: __('Both')
                     }
                 ],
                 textAligns: ['left', 'center', 'right'],
@@ -399,7 +391,7 @@
                 return this.customizer.socialNetworks.networks.map((network) => {
                     return {
                         name: network,
-                        title: vm.i18n[network]
+                        title: vm.customizer.socialNetworks.title[network]
                     };
                 });
             },
@@ -410,7 +402,7 @@
                 return this.content.icons.map((icon) => {
                     return {
                         name: icon.site,
-                        title: vm.i18n[icon.site]
+                        title: vm.customizer.socialNetworks.title[icon.site] || __('Website')
                     };
                 });
             }
@@ -420,14 +412,14 @@
             onSelectNetwork(option, index) {
                 this.content.icons[index].site = option.name;
                 this.content.icons[index].link = this.customizer.socialNetworks.defaults[option.name];
-                this.content.icons[index].text = this.i18n[option.name];
+                this.content.icons[index].text = this.customizer.socialNetworks.title[option.name];
             },
 
             addMoreNetwork() {
                 const newService = {
                     site: 'website',
                     link: this.customizer.socialNetworks.defaults.website,
-                    text: this.i18n.website
+                    text: __('Website')
                 };
 
                 this.content.icons.push(newService);

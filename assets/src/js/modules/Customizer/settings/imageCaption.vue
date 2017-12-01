@@ -3,14 +3,14 @@
         <div v-show="settingsTab === 'content'" class="settings-image-content">
             <ul class="list-inline settings-tab-list clearfix">
                 <li :class="['list-inline-item', (listTab === 1) ? 'active' : '']">
-                    <a href="#" @click.prevent="setListTab(1)">{{ i18n.caption1 }}</a>
+                    <a href="#" @click.prevent="setListTab(1)">{{ __('Caption 1') }}</a>
                 </li>
                 <li :class="['list-inline-item', (listTab === 2) ? 'active' : '']">
-                    <a href="#" :class="[!content.twoCaptions ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ i18n.caption2 }}</a>
+                    <a href="#" :class="[!content.twoCaptions ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ __('Caption 2') }}</a>
                 </li>
                 <li class="list-inline-item float-right">
                     <label>
-                        <input type="checkbox" v-model="content.twoCaptions"> {{ i18n.twoCaptions }}
+                        <input type="checkbox" v-model="content.twoCaptions"> {{ __('Two Captions') }}
                     </label>
                 </li>
             </ul>
@@ -25,12 +25,12 @@
                                 <div class="col-8">
                                     <div>
                                         <h3>
-                                            <strong>{{ i18n.uploadAnImage }}</strong>
+                                            <strong>{{ __('Upload an image') }}</strong>
                                         </h3>
                                         <ul class="list-inline-dots">
                                             <li>
                                                 <a href="#upload" @click.prevent="browseImage(index)">
-                                                    {{ i18n.browseImage }}
+                                                    {{ __('Browse Image') }}
                                                 </a>
                                             </li>
                                         </ul>
@@ -48,38 +48,38 @@
                                 <div class="col-8">
                                     <div>
                                         <h3>
-                                            <strong>{{ caption.image.alt ? caption.image.alt : i18n.untitled }}</strong>
+                                            <strong>{{ caption.image.alt ? caption.image.alt : __('Untitled') }}</strong>
                                         </h3>
                                         <ul class="list-inline-dots">
                                             <li>
                                                 <a href="#replace" @click.prevent="browseImage(index)">
-                                                    {{ i18n.replace }}
+                                                    {{ __('Replace') }}
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#link" @click.prevent="caption.image.openAttrEditor = 'link'">
-                                                    {{ i18n.link }}
+                                                    {{ __('Link') }}
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#alt" @click.prevent="caption.image.openAttrEditor = 'alt'">
-                                                    {{ i18n.alt }}
+                                                    {{ __('Alt') }}
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#remove" @click.prevent="removeImage(index)">{{ i18n.remove }}</a>
+                                                <a href="#remove" @click.prevent="removeImage(index)">{{ __('Remove') }}</a>
                                             </li>
                                         </ul>
 
                                         <div v-if="caption.image.openAttrEditor === 'link'" class="image-attr-editor">
-                                            <strong>{{ i18n.setImageLink }}</strong>
+                                            <strong>{{ __('Set image link') }}</strong>
                                             <input class="form-control" type="text" v-model="caption.image.link" autofocus>
-                                            <p><button type="button" class="button button-small" @click="caption.image.openAttrEditor = ''">{{ i18n.close }}</button></p>
+                                            <p><button type="button" class="button button-small" @click="caption.image.openAttrEditor = ''">{{ __('Close') }}</button></p>
                                         </div>
                                         <div v-if="caption.image.openAttrEditor === 'alt'" class="image-attr-editor" >
-                                            <strong>{{ i18n.setImageAltText }}</strong>
+                                            <strong>{{ __('Set image alt text') }}</strong>
                                             <input class="form-control" type="text" v-model="caption.image.alt" autofocus>
-                                            <p><button type="button" class="button button-small" @click="caption.image.openAttrEditor = ''">{{ i18n.close }}</button></p>
+                                            <p><button type="button" class="button button-small" @click="caption.image.openAttrEditor = ''">{{ __('Close') }}</button></p>
                                         </div>
                                     </div>
                                 </div>
@@ -89,15 +89,15 @@
             </template>
 
             <div v-if="displayEditor" class="settings-text-editor">
-                <text-editor v-if="listTab === 1" v-model="content.captions[0].text" :i18n="i18n" :shortcodes="customizer.shortcodes"></text-editor>
-                <text-editor v-else v-model="content.captions[1].text" :i18n="i18n" :shortcodes="customizer.shortcodes"></text-editor>
+                <text-editor v-if="listTab === 1" v-model="content.captions[0].text" :shortcodes="customizer.shortcodes"></text-editor>
+                <text-editor v-else v-model="content.captions[1].text" :shortcodes="customizer.shortcodes"></text-editor>
             </div>
         </div>
 
         <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ style.backgroundColor ? style.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -107,7 +107,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontColor }}
+                    {{ __('Font Color') }}
                     <span class="property-value">{{ style.color ? style.color : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -117,7 +117,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.padding }}
+                    {{ __('Padding') }}
                     <span class="property-value">{{ style.padding }}</span>
                 </h4>
                 <div class="property">
@@ -127,7 +127,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.border }}
+                    {{ __('Border') }}
                     <span class="property-value">
                         {{ style.borderWidth ? style.borderWidth : '0px' }} &nbsp;
                         {{ style.borderColor ? style.borderColor : '######' }}
@@ -142,7 +142,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.bottomMargin }}
+                    {{ __('Bottom Margin') }}
                     <span class="property-value">{{ style.marginBottom }}</span>
                 </h4>
                 <div class="property">
@@ -154,13 +154,13 @@
         <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.captionPosition }}
+                    {{ __('Caption Position') }}
                 </h4>
                 <div class="property">
                     <ul class="list-inline no-margin text-center">
                         <li v-for="position in captionPositions" class="list-inline-item">
                             <label>
-                                <input type="radio" :value="position" v-model="content.capPosition"> {{ i18n[position] }}
+                                <input type="radio" :value="position.name" v-model="content.capPosition"> {{ position.title }}
                             </label>
                         </li>
                     </ul>
@@ -175,11 +175,6 @@
         props: {
             settingsTab: {
                 type: String,
-                required: true
-            },
-
-            i18n: {
-                type: Object,
                 required: true
             },
 
@@ -209,7 +204,24 @@
                 listTab: 1,
                 displayEditor: true,
                 TWO_CAPTIONS: 2,
-                captionPositions: ['top', 'bottom', 'left', 'right']
+                captionPositions: [
+                    {
+                        name: 'top',
+                        title: __('Top')
+                    },
+                    {
+                        name: 'bottom',
+                        title: __('Bottom')
+                    },
+                    {
+                        name: 'left',
+                        title: __('Left')
+                    },
+                    {
+                        name: 'right',
+                        title: __('Right')
+                    }
+                ]
             };
         },
 
@@ -291,19 +303,19 @@
                     new wp.media.controller.Library({
                         library: wp.media.query(),
                         multiple: false,
-                        title: vm.i18n.selectAnImage,
+                        title: __('Select an image'),
                         priority: 20,
                         filterable: 'uploaded'
                     })
                 ];
 
                 vm.fileFrame = wp.media({
-                    title: vm.i18n.selectAnImage,
+                    title: __('Select an image'),
                     library: {
                         type: ''
                     },
                     button: {
-                        text: vm.i18n.selectAnImage
+                        text: __('Select an image')
                     },
                     multiple: false,
                     states: fileStates
@@ -354,7 +366,7 @@
                 if (!image.id || (image.type !== 'image')) {
                     this.alert({
                         type: 'error',
-                        text: this.i18n.pleaseSelectAnImage
+                        text: __('Please select an image')
                     });
 
                     return;
@@ -363,7 +375,7 @@
                 const alt = image.alt ? image.alt : image.title;
 
                 if (index >= 0) {
-                    this.content.captions[index].image.alt = alt || this.i18n.untitled;
+                    this.content.captions[index].image.alt = alt || __('Untitled');
                     this.content.captions[index].image.src = image.url;
                 }
 

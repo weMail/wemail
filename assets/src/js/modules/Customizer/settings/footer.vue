@@ -1,7 +1,6 @@
 <template>
     <customizer-content-settings-text
         :settings-tab="settingsTab"
-        :i18n="i18n"
         :section-index="sectionIndex"
         :content-index="contentIndex"
         :content="content"
@@ -20,11 +19,6 @@
         props: {
             settingsTab: {
                 type: String,
-                required: true
-            },
-
-            i18n: {
-                type: Object,
                 required: true
             },
 

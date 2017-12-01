@@ -32,15 +32,13 @@ weMail.event = new Vue();
 
 // jQuery ajax wrapper
 function Ajax(url, method, headers, data) {
-    const test = $.ajax({
+    return $.ajax({
         url,
         method,
         dataType: 'json',
         headers,
         data
     });
-
-    return test;
 }
 
 // Ajax get method

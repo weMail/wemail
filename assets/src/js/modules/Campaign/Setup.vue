@@ -2,63 +2,51 @@
     <table class="form-table">
         <tbody>
             <tr>
-                <th>{{ i18n.campaignName }}</th>
+                <th>{{ __('Campaign Name') }}</th>
                 <td>
                     <div class="row">
                         <div class="col-6">
                             <input type="text" class="block" v-model="campaign.name">
-                            <p class="hint">{{ i18n.campaignNameHint }}</p>
+                            <p class="hint">{{ __('Enter a name to help you remember what this campaign is all about. Only you will see this.') }}</p>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>{{ i18n.campaignType }}</th>
+                <th>{{ __('Campaign Type') }}</th>
                 <td>
                     <ul class="list-inline">
                         <li class="list-inline-item">
-                            <label><input type="radio" value="standard" v-model="campaign.type"> {{ i18n.standard }}</label>
+                            <label><input type="radio" value="standard" v-model="campaign.type"> {{ __('Standard') }}</label>
                         </li>
                         <li class="list-inline-item">
-                            <label><input type="radio" value="automatic" v-model="campaign.type"> {{ i18n.automatic }}</label>
+                            <label><input type="radio" value="automatic" v-model="campaign.type"> {{ __('Automatic') }}</label>
                         </li>
                     </ul>
                 </td>
             </tr>
             <tr v-if="campaign.type === 'standard'">
-                <th>{{ i18n.subscribers }}</th>
+                <th>{{ __('Subscribers') }}</th>
                 <td>
                     <div class="row">
                         <div class="col-6">
                             <p class="clearfix">
-                                <strong>{{ i18n.lists }}</strong>
+                                <strong>{{ __('Lists') }}</strong>
                             </p>
 
-                            <multiselect
-                                v-model="selectedLists"
-                                :options="lists"
-                                :multiple="true"
-                                :close-on-select="false"
-                                :preserve-search="true"
-                                :placeholder="__('Select Lists')"
-                                label="name"
-                                track-by="name"
-                                :custom-label="customLabel"
-                                class="margin-bottom-20"
-                            >
-                                <template slot="option" slot-scope="props">{{ props.option.name }}</template>
-                            </multiselect>
+                            <lists-dropdown v-model="campaign.lists" class="margin-bottom-20"></lists-dropdown>
 
                             <p class="clearfix">
-                                <strong>{{ i18n.segments }}</strong>
+                                <strong>{{ __('Segments') }}</strong>
                             </p>
+
                             <multiselect
                                 v-model="selectedSegments"
                                 :options="segments"
                                 :multiple="true"
                                 :close-on-select="false"
                                 :preserve-search="true"
-                                :placeholder="i18n.selectSegments"
+                                :placeholder="__('Select Segments')"
                                 label="name"
                                 track-by="name"
                                 :custom-label="customLabel"
@@ -70,7 +58,7 @@
                 </td>
             </tr>
             <tr v-else>
-                <th>{{ i18n.automaticallySend }}</th>
+                <th>{{ __('Automatically Send') }}</th>
                 <td>
                     <div class="row">
                         <div class="col-4">
@@ -80,7 +68,7 @@
                         </div>
 
                         <div v-if="eventOptions.length" class="col-4">
-                            <select v-model="campaign.event.option_value" class="form-control">
+                            <select v-model="campaign.event.value" class="form-control">
                                 <option v-for="option in eventOptions" :value="option.id">
                                     {{ option.name }}
                                 </option>
@@ -90,15 +78,15 @@
                         <div v-if="eventOptions.length" class="col-4 automatic-schedule">
                             <input v-if="campaign.event.schedule_type !== 'immediately'" class="small-text" type="number" min="1" v-model="campaign.event.schedule_offset">
                             <select v-model="campaign.event.schedule_type">
-                                <option value="immediately">{{ i18n.immediately }}</option>
-                                <option value="hour">{{ i18n.hoursAfter }}</option>
-                                <option value="day">{{ i18n.daysAfter }}</option>
-                                <option value="week">{{ i18n.weeksAfter }}</option>
+                                <option value="immediately">{{ __('Immediately') }}</option>
+                                <option value="hour">{{ __('hour(s) after') }}</option>
+                                <option value="day">{{ __('day(s) after') }}</option>
+                                <option value="week">{{ __('week(s) after') }}</option>
                             </select>
                         </div>
 
                         <div v-if="!eventOptions.length" class="col-8">
-                            <p><em>{{ i18n.noOptionFoundForAction }}</em></p>
+                            <p><em>{{ __('no option found for this action') }}</em></p>
                         </div>
                     </div>
                 </td>
@@ -118,10 +106,6 @@
         },
 
         computed: {
-            i18n() {
-                return this.$store.state[this.namespace].i18n;
-            },
-
             lists() {
                 return this.$store.state[this.namespace].lists;
             },
@@ -140,22 +124,6 @@
 
             events() {
                 return this.$store.state[this.namespace].events;
-            },
-
-            selectedLists: {
-                get() {
-                    const vm = this;
-
-                    return this.lists.filter((list) => {
-                        return vm.campaign.lists.indexOf(list.id) >= 0;
-                    });
-                },
-
-                set(lists) {
-                    this.campaign.lists = lists.map((list) => {
-                        return list.id;
-                    });
-                }
             },
 
             selectedSegments: {
@@ -186,7 +154,7 @@
         },
 
         created() {
-            if (!this.campaign.event.option_value) {
+            if (!this.campaign.event.value) {
                 this.setFirstEventOption(this.campaign.event.action);
             }
         },
@@ -210,7 +178,7 @@
 
             setFirstEventOption(action) {
                 if (this.eventOptions.length) {
-                    this.campaign.event.option_value = this.eventOptions[0].id;
+                    this.campaign.event.value = this.eventOptions[0].id;
                 }
             }
         }

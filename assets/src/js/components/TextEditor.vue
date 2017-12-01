@@ -10,11 +10,6 @@
                 required: true
             },
 
-            i18n: {
-                type: Object,
-                required: true
-            },
-
             shortcodes: {
                 type: Object,
                 required: false
@@ -129,19 +124,19 @@
                     new wp.media.controller.Library({
                         library: wp.media.query(),
                         multiple: false,
-                        title: vm.i18n.selectAnImage,
+                        title: __('Select an image'),
                         priority: 20,
                         filterable: 'uploaded'
                     })
                 ];
 
                 vm.fileFrame = wp.media({
-                    title: vm.i18n.selectAnImage,
+                    title: __('Select an image'),
                     library: {
                         type: ''
                     },
                     button: {
-                        text: vm.i18n.selectAnImage
+                        text: __('Select an image')
                     },
                     multiple: false,
                     states: fileStates
@@ -184,7 +179,7 @@
                 if (!image.id || (image.type !== 'image')) {
                     this.alert({
                         type: 'error',
-                        text: this.i18n.pleaseSelectAnImage
+                        text: __('Please select an image')
                     });
 
                     return;

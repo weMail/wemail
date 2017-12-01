@@ -1,16 +1,16 @@
 <template>
     <div>
         <div v-if="!showPreview">
-            <h1>{{ i18n.cam }}</h1>
+            <h1>{{ __('Edit Campaign') }}</h1>
 
             <div class="edit-template-filters">
                 <div class="clearfix">
                     <ul class="list-sub float-left">
                         <li class="active">
-                            <a href="#">{{ i18n.templates }}</a>
+                            <a href="#">{{ __('Templates') }}</a>
                         </li>
                         <li>
-                            <a href="#">{{ i18n.myTemplates }}</a>
+                            <a href="#">{{ __('My Templates') }}</a>
                         </li>
                     </ul>
 
@@ -19,14 +19,14 @@
                         :options="templateCategories"
                         key="slug"
                         label="name"
-                        :placeholder="i18n.chooseTemplateCategory"
+                        :placeholder="__('Choose a template category')"
                         class="float-left"
                         @select="onSelectCategory"
                     >
-                        <span slot="noResult">{{ i18n.noTemplateFound }}</span>
+                        <span slot="noResult">{{ __('No template found') }}</span>
                     </multiselect>
 
-                    <input type="search" class="form-control float-right" :placeholder="i18n.searchTemplate">
+                    <input type="search" class="form-control float-right" :placeholder="__('Search Templates')">
                 </div>
             </div>
 
@@ -46,13 +46,13 @@
                                         type="button"
                                         class="button template-select"
                                         @click="selectTemplate(template)"
-                                    ><i class="fa fa-check"></i> {{ i18n.useThisTemplate }}</button>
+                                    ><i class="fa fa-check"></i> {{ __('Use this template') }}</button>
 
                                     <button
                                         type="button"
                                         class="button template-preview"
                                         @click="previewTemplate(template)"
-                                    ><i class="fa fa-eye"></i> {{ i18n.preview }}</button>
+                                    ><i class="fa fa-eye"></i> {{ __('Preview') }}</button>
                                 </div>
                             </div>
 
@@ -66,7 +66,7 @@
             <edit-design
                 :is-preview="true"
                 :template="template"
-                :title="i18n.previewTemplate"
+                :title="__('Preview Template')"
                 :template-name="selectedTemplate.name"
             ></edit-design>
         </div>
@@ -99,7 +99,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('campaignEdit', ['i18n', 'campaign']),
+            ...Vuex.mapState('campaignEdit', ['campaign']),
 
             templateCategories() {
                 let i = 0;
@@ -115,7 +115,7 @@
 
                 categories.unshift({
                     slug: 'all',
-                    name: `${this.i18n.all} (${i})`
+                    name: `${__('All')} (${i})`
                 });
 
                 return categories;
@@ -156,7 +156,7 @@
                     if (_.isEmpty(template)) {
                         this.alert({
                             type: 'error',
-                            text: vm.i18n.templateNotFound
+                            text: __('Template not found')
                         });
                     }
 

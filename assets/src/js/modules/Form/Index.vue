@@ -401,7 +401,7 @@
             },
 
             columnCreatedAt(form) {
-                return this.toWPDate(form.created_at);
+                return this.toWPDateTime(form.created_at);
             }
         }
     };

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>{{ i18n.editCampaign }}</h1>
+        <h1>{{ __('Edit Campaign') }}</h1>
         <setup namespace="campaignEdit"></setup>
     </div>
 </template>
@@ -13,10 +13,6 @@
 
         components: {
             Setup
-        },
-
-        computed: {
-            ...Vuex.mapState('campaignEdit', ['i18n'])
         }
     };
 </script>

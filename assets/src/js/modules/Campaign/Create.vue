@@ -1,17 +1,17 @@
 <template>
     <div v-if="isLoaded">
-        <h1>{{ i18n.createCampaign }}</h1>
+        <h1>{{ __('Create Campaign') }}</h1>
 
         <setup namespace="campaignCreate">
             <tr>
                 <td></td>
                 <td>
-                    <button class="button button-primary" @click="create">{{ i18n.createCampaign }}</button>
+                    <button class="button button-primary" @click="create">{{ __('Create Campaign') }}</button>
                 </td>
             </tr>
         </setup>
 
-        <progress-bar :i18n="i18n" scope="create"></progress-bar>
+        <progress-bar scope="create"></progress-bar>
     </div>
 </template>
 
@@ -30,7 +30,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('campaignCreate', ['i18n', 'campaign'])
+            ...Vuex.mapState('campaignCreate', ['campaign'])
         },
 
         methods: {
@@ -38,11 +38,11 @@
                 const vm = this;
 
                 weMail.api.campaigns().create(this.campaign).done((response) => {
-                    if (response.id) {
+                    if (response.data && response.data.id) {
                         vm.$router.push({
                             name: 'campaignEditTemplate',
                             params: {
-                                id: response.id
+                                id: response.data.id
                             }
                         });
                     }

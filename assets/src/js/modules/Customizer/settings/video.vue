@@ -10,11 +10,6 @@
                 required: true
             },
 
-            i18n: {
-                type: Object,
-                required: true
-            },
-
             sectionIndex: {
                 type: Number,
                 required: true

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>A Responsive Email Template</title>
+    <title>weMail Email Campaign</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -73,7 +73,7 @@
                             <tr v-if="!section.contents.length">
                                 <td>
                                     <div class="content-dropzone-placeholder">
-                                      {{ i18n[section.name] }} - {{ i18n.dropContentHere }}
+                                      {{ templateSections[section.name] }} - {{ __('Drop content here') }}
                                     </div>
                                 </td>
                             </tr>

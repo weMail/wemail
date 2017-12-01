@@ -3,28 +3,28 @@
         <div v-show="settingsTab === 'content'">
             <ul class="list-inline settings-tab-list clearfix">
                 <li :class="['list-inline-item', (listTab === 1) ? 'active' : '']">
-                    <a href="#" @click.prevent="setListTab(1)">{{ i18n.column1 }}</a>
+                    <a href="#" @click.prevent="setListTab(1)">{{ __('Column 1') }}</a>
                 </li>
                 <li :class="['list-inline-item', (listTab === 2) ? 'active' : '']">
-                    <a href="#" :class="[!content.twoColumns ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ i18n.column2 }}</a>
+                    <a href="#" :class="[!content.twoColumns ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ __('Column 2') }}</a>
                 </li>
                 <li class="list-inline-item float-right">
                     <label>
-                        <input type="checkbox" v-model="content.twoColumns"> {{ i18n.twoColumns }}
+                        <input type="checkbox" v-model="content.twoColumns"> {{ __('Two Columns') }}
                     </label>
                 </li>
             </ul>
 
             <div v-if="displayEditor">
-                <text-editor v-if="listTab === 1" v-model="content.texts[0]" :i18n="i18n" :shortcodes="customizer.shortcodes"></text-editor>
-                <text-editor v-else v-model="content.texts[1]" :i18n="i18n" :shortcodes="customizer.shortcodes"></text-editor>
+                <text-editor v-if="listTab === 1" v-model="content.texts[0]" :shortcodes="customizer.shortcodes"></text-editor>
+                <text-editor v-else v-model="content.texts[1]" :shortcodes="customizer.shortcodes"></text-editor>
             </div>
         </div>
 
         <div v-show="settingsTab === 'style'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ style.backgroundColor ? style.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -34,7 +34,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontColor }}
+                    {{ __('Font Color') }}
                     <span class="property-value">{{ style.color ? style.color : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -44,7 +44,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.paddingTopBottom }}
+                    {{ __('Padding Top-Bottom') }}
                     <span class="property-value">{{ style.paddingTop }}</span>
                 </h4>
                 <div class="property">
@@ -54,7 +54,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.paddingLeftRight }}
+                    {{ __('Padding Left-Right') }}
                     <span class="property-value">{{ style.paddingLeft }}</span>
                 </h4>
                 <div class="property">
@@ -64,7 +64,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.border }}
+                    {{ __('Border') }}
                     <span class="property-value">
                         {{ style.borderWidth ? style.borderWidth : '0px' }} &nbsp;
                         {{ style.borderColor ? style.borderColor : '######' }}
@@ -79,7 +79,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.bottomMargin }}
+                    {{ __('Bottom Margin') }}
                     <span class="property-value">{{ style.marginBottom }}</span>
                 </h4>
                 <div class="property">
@@ -91,7 +91,7 @@
         <div v-show="settingsTab === 'settings'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.columnSplit }}
+                    {{ __('Column Split') }}
                 </h4>
                 <div class="property">
                     <ul v-if="content.twoColumns" class="list-inline text-center column-split-list">
@@ -104,7 +104,7 @@
                             </a>
                         </li>
                     </ul>
-                    <em v-else class="text-muted">{{ i18n.columnSplitDisableMsg }}</em>
+                    <em v-else class="text-muted">{{ __('Column splitting is available when "Two Columns" is set') }}</em>
                 </div>
             </div>
         </div>
@@ -116,11 +116,6 @@
         props: {
             settingsTab: {
                 type: String,
-                required: true
-            },
-
-            i18n: {
-                type: Object,
                 required: true
             },
 

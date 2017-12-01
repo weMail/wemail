@@ -3,7 +3,7 @@
         <div v-show="editingSection === 'global'">
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.backgroundColor }}
+                    {{ __('Background Color') }}
                     <span class="property-value">{{ template.globalCss.backgroundColor ? template.globalCss.backgroundColor : '######' }}</span>
                 </h4>
                 <div class="property">
@@ -13,7 +13,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.borderTop }}
+                    {{ __('Border Top') }}
                     <span class="property-value">
                         {{ template.globalCss.borderTopWidth ? template.globalCss.borderTopWidth : '0px' }} &nbsp;
                         {{ template.globalCss.borderColor ? template.globalCss.borderColor : '######' }}
@@ -28,7 +28,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontFamily }}
+                    {{ __('Font Family') }}
                 </h4>
                 <div class="property">
                     <select v-model="template.globalCss.fontFamily" class="form-control">
@@ -39,7 +39,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.fontSize }}
+                    {{ __('Font Size') }}
                     <span class="property-value">
                         {{ template.globalCss.fontSize ? template.globalCss.fontSize : '0px' }}
                     </span>
@@ -51,7 +51,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.textColor }}
+                    {{ __('Text Color') }}
                     <span class="property-value">
                         {{ template.globalCss.color ? template.globalCss.color : '######' }}
                     </span>
@@ -63,7 +63,7 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.linkColor }}
+                    {{ __('Link Color') }}
                     <span class="property-value">
                         {{ template.globalElementStyles.a.color ? template.globalElementStyles.a.color : '######' }}
                     </span>
@@ -75,18 +75,18 @@
 
             <div class="control-property">
                 <h4 class="property-title clearfix">
-                    {{ i18n.linkUnderline }}
+                    {{ __('Link Underline') }}
                 </h4>
                 <div class="property">
                     <ul class="list-inline text-center">
                         <li class="list-inline-item">
                             <label>
-                                <input type="radio" value="underline" v-model="template.globalElementStyles.a.textDecoration"> {{ i18n.underline }}
+                                <input type="radio" value="underline" v-model="template.globalElementStyles.a.textDecoration"> {{ __('Underline') }}
                             </label>
                         </li>
                         <li class="list-inline-item">
                             <label>
-                                <input type="radio" value="none" v-model="template.globalElementStyles.a.textDecoration"> {{ i18n.none }}
+                                <input type="radio" value="none" v-model="template.globalElementStyles.a.textDecoration"> {{ __('None') }}
                             </label>
                         </li>
                     </ul>
@@ -98,7 +98,7 @@
             <div v-show="editingSection === section">
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.backgroundColor }}
+                        {{ __('Background Color') }}
                         <span class="property-value">{{ style.backgroundColor ? style.backgroundColor : '######' }}</span>
                     </h4>
                     <div class="property">
@@ -108,7 +108,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.textColor }}
+                        {{ __('Text Color') }}
                         <span class="property-value">{{ style.color ? style.color : '######' }}</span>
                     </h4>
                     <div class="property">
@@ -118,7 +118,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.marginBottom }}
+                        {{ __('Margin Bottom') }}
                         <span class="property-value">
                             {{ style.marginBottom ? style.marginBottom : '0px' }}
                         </span>
@@ -130,7 +130,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.borderTop }}
+                        {{ __('Border Top') }}
                         <span class="property-value">
                             {{ style.borderTopWidth ? style.borderTopWidth : '0px' }} &nbsp;
                             {{ style.borderTopColor ? style.borderTopColor : '######' }}
@@ -145,7 +145,7 @@
 
                 <div class="control-property">
                     <h4 class="property-title clearfix">
-                        {{ i18n.borderBottom }}
+                        {{ __('Border Bottom') }}
                         <span class="property-value">
                             {{ style.borderBottomWidth ? style.borderBottomWidth : '0px' }} &nbsp;
                             {{ style.borderBottomColor ? style.borderBottomColor : '######' }}
@@ -165,11 +165,6 @@
 <script>
     export default {
         props: {
-            i18n: {
-                type: Object,
-                required: true
-            },
-
             template: {
                 type: Object,
                 required: true
@@ -187,7 +182,7 @@
                 fontFamilies: [
                     {
                         id: 'inherit',
-                        text: this.i18n.inherit
+                        text: __('Inherit')
                     },
                     {
                         id: 'arial,helvetica,sans-serif',

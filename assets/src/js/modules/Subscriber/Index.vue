@@ -389,7 +389,7 @@
             },
 
             columnCreatedAt(subscriber) {
-                return this.toWPDate(subscriber.created_at);
+                return this.toWPDateTime(subscriber.created_at);
             }
         }
     };

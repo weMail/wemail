@@ -68,8 +68,16 @@ class Campaign extends Module {
      *
      * @return array
      */
-    public function get( $id, $query = [] ) {
-        $campaign = wemail()->api->campaigns( $id )->query( $query )->get();
+    public function get( $id, $include = [] ) {
+        $campaign = wemail()->api->campaigns( $id );
+
+        if ( ! empty( $include ) ) {
+            $campaign = $campaign->query( [
+                'include' => implode( ',', $include )
+            ] );
+        }
+
+        $campaign = $campaign->get();
 
         if ( isset( $campaign['data'] ) ) {
             $campaign = $campaign['data'];

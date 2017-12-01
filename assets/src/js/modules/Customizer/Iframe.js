@@ -18,16 +18,19 @@ export default function (Customizer) {
                 height: '0px',
                 opacity: '0',
                 zIndex: '-1'
+            },
+            templateSections: {
+                global: __('Global'),
+                top:  __('Top'),
+                head: __('Head'),
+                body: __('Body'),
+                footer: __('Footer')
             }
         },
 
         computed: {
             customizerObj() {
                 return Customizer.customizer;
-            },
-
-            i18n() {
-                return this.customizerObj.i18n;
             },
 
             template() {
@@ -321,10 +324,10 @@ export default function (Customizer) {
             deleteContent(sectionIndex, contentIndex) {
                 this.alert({
                     type: 'warning',
-                    text: this.i18n.deleteContentWarnMsg,
+                    text: __('Are you sure you want to delete this content?'),
                     showCancelButton: true,
-                    confirmButtonText: this.i18n.confirmDeleteContent,
-                    cancelButtonText: this.i18n.cancelDeleteContent,
+                    confirmButtonText: __('Yes, delete it'),
+                    cancelButtonText: __('No, cancel it'),
                     confirmButtonColor: '#dc3232',
                     cancelButtonColor: '#cccccc'
                 }).then((deleteIt) => {

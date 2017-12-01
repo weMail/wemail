@@ -7,13 +7,13 @@
                         type="button"
                         :class="['button', currentWindow === 'contentTypes' ? 'active button-primary' : '']"
                         @click="currentWindow = 'contentTypes'"
-                    >{{ i18n.content }}</button>
+                    >{{ __('Content') }}</button>
 
                     <button
                         type="button"
                         :class="['button', currentWindow === 'design' ? 'active button-primary' : '']"
                         @click="currentWindow = 'design'"
-                    >{{ i18n.design }}</button>
+                    >{{ __('Design') }}</button>
                 </div>
             </div>
 
@@ -22,7 +22,7 @@
                     <tbody>
                         <tr v-for="type in contentTypes.types" data-source="settings" :data-content-type="type">
                             <td>
-                                <div class="button" :style="getContentTypeBtnStyle(type)">{{ i18n[type] }}</div>
+                                <div class="button" :style="getContentTypeBtnStyle(type)">{{ contentTypeTitle[type] }}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -35,10 +35,10 @@
                         href="#"
                         class="section-title clearfix"
                         @click.prevent="openSectionSettings(section)"
-                        @mouseenter="mouseenterSection(section)"
-                        @mouseout="mouseoutSection(section)"
+                        @mouseenter="mouseenterSection(section.name)"
+                        @mouseout="mouseoutSection(section.name)"
                     >
-                        {{ i18n[section] }}
+                        {{ section.title }}
                         <span class="float-right">
                             <i class="fa fa-angle-right"></i>
                         </span>
@@ -52,26 +52,26 @@
                 v-if="currentWindow === 'content-settings'"
                 :class="headerClass"
             >
-                <h3>{{ i18n[content.type] }}</h3>
+                <h3>{{ contentTypeTitle[content.type] }}</h3>
 
                 <div class="button-group">
                     <button
                         type="button"
                         :class="['button', settingsTab === 'content' ? 'active button-primary' : '']"
                         @click="settingsTab = 'content'"
-                    >{{ i18n.content }}</button>
+                    >{{ __('Content') }}</button>
                     <button
                         v-if="hasStyleTab"
                         type="button"
                         :class="['button', settingsTab === 'style' ? 'active button-primary' : '']"
                         @click="settingsTab = 'style'"
-                    >{{ i18n.style }}</button>
+                    >{{ __('Style') }}</button>
                     <button
                         v-if="hasSettingsTab"
                         type="button"
                         :class="['button', settingsTab === 'settings' ? 'active button-primary' : '']"
                         @click="settingsTab = 'settings'"
-                    >{{ i18n.settings }}</button>
+                    >{{ __('Settings') }}</button>
                 </div>
             </div>
 
@@ -79,7 +79,6 @@
                 <component
                     :is="getSettingsComponentName()"
                     :settings-tab="settingsTab"
-                    :i18n="i18n"
                     :section-index="sectionIndex"
                     :content-index="contentIndex"
                     :content="content"
@@ -88,14 +87,14 @@
             </div>
 
             <button v-if="currentWindow === 'content-settings'" type="button" class="button button-link content-settings-bottom-btns" @click="saveAndClose('contentTypes')">
-                {{ i18n.saveAndClose }}
+                {{ __('Save and Close') }}
             </button>
         </template>
 
         <template>
             <div v-show="currentWindow === 'section-settings'" class="customizer-settings-header">
                 <h3 class="section-settings-title">
-                    {{ i18n[editingSection] }}
+                    {{ editingSectionTitle }}
                     <button type="button" class="button back-button" @click="saveAndClose('design')">
                         <i class="fa fa-angle-left"></i>
                     </button>
@@ -104,13 +103,12 @@
 
             <section-settings
                 v-show="currentWindow === 'section-settings'"
-                :i18n="i18n"
                 :template="template"
                 :editing-section="editingSection"
             ></section-settings>
 
             <button v-show="currentWindow === 'section-settings'" type="button" class="button button-link content-settings-bottom-btns" @click="saveAndClose('design')">
-                {{ i18n.saveAndClose }}
+                {{ __('Save and Close') }}
             </button>
         </template>
     </div>
@@ -148,14 +146,43 @@
                 settingsTab: 'content',
                 sectionIndex: 0,
                 contentIndex: 0,
-                sections: ['global', 'top', 'head', 'body', 'footer'],
-                editingSection: 'global'
+                editingSection: 'global',
+                editingSectionTitle: __('Global'),
+                sections: [
+                    {
+                        name: 'global',
+                        title: __('Global')
+                    },
+                    {
+                        name: 'top',
+                        title: __('Top')
+                    },
+                    {
+                        name: 'head',
+                        title: __('Head')
+                    },
+                    {
+                        name: 'body',
+                        title: __('Body')
+                    },
+                    {
+                        name: 'footer',
+                        title: __('Footer')
+                    }
+                ]
             };
         },
 
         computed: {
-            i18n() {
-                return this.customizer.i18n;
+            contentTypeTitle() {
+                const vm = this;
+                const title = {};
+
+                vm.customizer.contentTypes.types.forEach((type) => {
+                    title[type] = vm.customizer.contentTypes.settings[type].title;
+                });
+
+                return title;
             },
 
             contentTypes() {
@@ -217,7 +244,8 @@
 
             openSectionSettings(section) {
                 this.currentWindow = 'section-settings';
-                this.editingSection = section;
+                this.editingSection = section.name;
+                this.editingSectionTitle = section.title;
             },
 
             saveAndClose(currentWindow) {

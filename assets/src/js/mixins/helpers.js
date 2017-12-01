@@ -8,11 +8,18 @@ export default {
             });
         },
 
-        toWPDate(dateTime) {
+        toWPDateTime(dateTime, format = weMail.momentDateFormat) {
             return moment
                 .tz(dateTime, moment.defaultFormat, 'Etc/UTC')
                 .tz(weMail.dateTime.server.timezone)
-                .format(`${weMail.momentDateFormat}`);
+                .format(format);
+        },
+
+        toMomentDateTime(dateTime, format = 'YYYY-MM-DD HH:mm:ss') {
+            return moment
+                .tz(dateTime, 'YYYY-MM-DD HH:mm:ss', weMail.dateTime.server.timezone)
+                .tz('Etc/UTC')
+                .format(moment.defaultFormat);
         },
 
         md5(string) {
