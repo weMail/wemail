@@ -84,7 +84,7 @@ class SocialNetworks extends AbstractSettings {
      */
     public function get_route_data() {
         return [
-            'i18n'      => $this->i18n(),
+            'title'      => $this->title(),
             'settings'  => $this->get_settings(),
             'networks'  => $this->networks()
         ];

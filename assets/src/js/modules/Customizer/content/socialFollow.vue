@@ -180,7 +180,7 @@
                 const urls = {};
 
                 this.content.icons.forEach((icon) => {
-                    urls[icon.site] = `${weMail.assetsURL}/images/social-icons/${vm.content.iconStyle}-${icon.site}.png`;
+                    urls[icon.site] = `${vm.customizer.cdn}/social-icons/${vm.content.iconStyle}-${icon.site}.png`;
                 });
 
                 return urls;

@@ -51,6 +51,15 @@ export default {
                     getters
                 });
 
+                // Trigger registeredStoreModule.
+                if (typeof vm.registeredStoreModule === 'function') {
+                    const shouldContinue = vm.registeredStoreModule();
+
+                    if (!shouldContinue) {
+                        return;
+                    }
+                }
+
                 // we have our state data at this point, so render the dom
                 vm.isLoaded = true;
 

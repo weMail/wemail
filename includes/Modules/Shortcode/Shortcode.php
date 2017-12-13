@@ -7,28 +7,18 @@ class Shortcode {
     public function get( $type = '' ) {
         $shortcodes = [];
 
-        $shortcodes['user'] = [
-            'title' => __( 'User', 'wemail' ),
+        $shortcodes['subscriber'] = [
+            'title' => __( 'Subscriber', 'wemail' ),
             'codes' => [
                 'first_name'        => [ 'title' => __( 'First Name', 'wemail' ), 'default' => 'reader' ],
                 'last_name'         => [ 'title' => __( 'Last Name', 'wemail' ), 'default' => 'reader' ],
                 'email'             => [ 'title' => __( 'Email', 'wemail' ), 'placeholder' => 'recipient@example.com' ],
-                'company'           => [ 'title' => __( 'Company', 'wemail' ), 'placeholder' => __( 'Company Name', 'wemail' ) ],
+                'life_stage'        => [ 'title' => __( 'Life Stage', 'wemail' ), 'placeholder' => 'life stage' ],
+                'date_of_birth'     => [ 'title' => __( 'Date of Birth', 'wemail' ), 'placeholder' => 'MM/DD/YYYY' ],
+                'source'            => [ 'title' => __( 'Source', 'wemail' ), 'placeholder' => '' ],
                 'phone'             => [ 'title' => __( 'Phone', 'wemail' ), 'placeholder' => '8801000000000' ],
                 'mobile'            => [ 'title' => __( 'Mobile', 'wemail' ), 'placeholder' => '8801000000000' ],
-                'other'             => [ 'title' => __( 'Other', 'wemail' ), 'placeholder' => __( 'other informations', 'wemail' ) ],
-                'website'           => [ 'title' => __( 'Website', 'wemail' ), 'placeholder' => 'http://example.com' ],
-                'fax'               => [ 'title' => __( 'Fax', 'wemail' ), 'placeholder' => '(880) 100 0000000' ],
-                'notes'             => [ 'title' => __( 'Notes', 'wemail' ), 'placeholder' => __( 'notes', 'wemail' ) ],
-                'street_1'          => [ 'title' => __( 'Street 1', 'wemail' ), 'placeholder' => __( 'Street address 1', 'wemail' ) ],
-                'street_2'          => [ 'title' => __( 'Street 2', 'wemail' ), 'placeholder' => __( 'Street address 2', 'wemail' ) ],
-                'city'              => [ 'title' => __( 'City', 'wemail' ), 'placeholder' => __( 'City Name', 'wemail' ) ],
-                'state'             => [ 'title' => __( 'State', 'wemail' ), 'placeholder' => __( 'State Name', 'wemail' ) ],
-                'postal_code'       => [ 'title' => __( 'Postal Code', 'wemail' ), 'placeholder' => '1216' ],
-                'country'           => [ 'title' => __( 'Country', 'wemail' ), 'placeholder' => __( 'Country Name', 'wemail' ) ],
-                'currency_code'     => [ 'title' => __( 'Currency Code', 'wemail' ), 'placeholder' => 'USD' ],
-                'currency_symbol'   => [ 'title' => __( 'Currency Symbol', 'wemail' ), 'placeholder' => '$' ],
-                'currency_name'     => [ 'title' => __( 'Currency Name', 'wemail' ), 'placeholder' => __( 'US Dollar', 'wemail' ) ],
+                'address'           => [ 'title' => __( 'Address', 'wemail' ) ],
             ]
         ];
 
@@ -52,10 +42,10 @@ class Shortcode {
                 'name'      => [ 'title' => __( 'Name', 'wemail' ) ],
                 'address'   => [ 'title' => __( 'Mailing Address', 'wemail' ) ],
                 'phone'     => [ 'title' => __( 'Phone', 'wemail' ) ],
-                'fax'       => [ 'title' => __( 'Fax', 'wemail' ) ],
+                // 'fax'       => [ 'title' => __( 'Fax', 'wemail' ) ],
                 'mobile'    => [ 'title' => __( 'Mobile', 'wemail' ) ],
                 'website'   => [ 'title' => __( 'Website', 'wemail' ) ],
-                'currency'  => [ 'title' => __( 'Currency', 'wemail' ) ],
+                // 'currency'  => [ 'title' => __( 'Currency', 'wemail' ) ],
             ]
         ];
 

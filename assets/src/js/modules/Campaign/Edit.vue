@@ -25,6 +25,20 @@
 
         components: {
             ProgressBar
+        },
+
+        methods: {
+            registeredStoreModule() {
+                if (!this.$store.state.campaignEdit.campaign) {
+                    this.$router.push({
+                        name: 'campaign404'
+                    });
+
+                    return false;
+                }
+
+                return true;
+            }
         }
     };
 </script>

@@ -84,7 +84,7 @@
             },
 
             href() {
-                return this.content.href ? this.content.href : weMail.siteURL;
+                return this.content.href ? this.content.href : this.customizer.siteURL;
             }
         }
     };

@@ -50,6 +50,12 @@ function EditSend(resolve) {
     });
 }
 
+function FourZeroFour(resolve) {
+    require.ensure(['./FourZeroFour.vue'], () => {
+        resolve(require('./FourZeroFour.vue'));
+    });
+}
+
 export default {
     path: '/campaigns',
     component: RouterView,
@@ -114,6 +120,11 @@ export default {
                     ]
                 }
             ]
+        },
+        {
+            path: '404',
+            component: FourZeroFour,
+            name: 'campaign404'
         }
     ]
 };

@@ -94,13 +94,13 @@
         white-space: nowrap;
 
         &:not(:last-child) {
-            margin-right: 10px;
+            margin-right: 12px;
         }
 
         &:after {
             position: absolute;
             top: -1px;
-            right: -9px;
+            right: -8px;
             content: "|";
         }
 

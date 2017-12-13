@@ -5,6 +5,7 @@ input {
 
     &[type="text"],
     &[type="email"],
+    &[type="password"],
     &[type="search"] {
         padding: 4px 5px 5px;
         margin: 0;
@@ -18,13 +19,6 @@ input {
 }
 
 .form-table {
-
-    .hint {
-        margin: 4px 0 5px;
-        font-size: 0.85em;
-        font-style: italic;
-        color: rgba(35, 40, 45, 0.7);
-    }
 
     .list-inline {
         margin-top: 0;

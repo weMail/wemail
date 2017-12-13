@@ -9,3 +9,10 @@ a.disabled {
     pointer-events: none;
     opacity: 0.4 !important;
 }
+
+.hint {
+    margin: 4px 0 5px;
+    font-size: 0.85em;
+    font-style: italic;
+    color: rgba(35, 40, 45, 0.7);
+}

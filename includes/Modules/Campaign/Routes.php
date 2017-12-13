@@ -150,9 +150,6 @@ class Routes {
 
         $campaign = wemail()->campaign->get( $params['id'], [ 'event', 'lists', 'segments', 'email' ] );
 
-        // this line will be deleted
-        $campaign = wemail()->campaign->testTemplate( $campaign );
-
         $data['campaign']     = $campaign;
         $data['customizer']   = wemail()->campaign->editor->get_customizer_data();
 

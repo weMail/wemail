@@ -232,6 +232,12 @@
                     height: 'auto'
                 };
             }
+        },
+
+        created() {
+            if (!this.content.images) {
+                this.content.images = [];
+            }
         }
     };
 </script>

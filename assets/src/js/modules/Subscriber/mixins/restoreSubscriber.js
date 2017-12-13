@@ -6,7 +6,7 @@ export default {
             if (_.isArray(id)) {
                 api = api.subscribers().restore()
                     .query({
-                        ids: id
+                        id
                     });
             } else {
                 api = api.subscribers(id).restore();

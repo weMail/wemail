@@ -54,6 +54,12 @@
         });
     }
 
+    function EmailOutbound(resolve) {
+        require.ensure(['./EmailOutbound.vue'], () => {
+            resolve(require('./EmailOutbound.vue'));
+        });
+    }
+
     export default {
         routeName: 'settings',
 
@@ -64,7 +70,8 @@
         components: {
             Company,
             LifeStages,
-            SocialNetworks
+            SocialNetworks,
+            EmailOutbound
         },
 
         data() {
@@ -217,6 +224,7 @@
             }
 
             input[type="text"],
+            input[type="password"],
             select {
                 width: 100%;
             }

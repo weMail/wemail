@@ -162,7 +162,7 @@
                 const subscriber = vm.snakeKeys(vm.subscriber);
 
                 weMail.api.subscribers().create(subscriber).done((response) => {
-                    if (response && response.id) {
+                    if (response && response.data.id && response.data.id) {
                         vm.$emit('subscriber-created', response);
 
                         if (typeof callback === 'function') {
@@ -187,7 +187,7 @@
                     vm.$router.push({
                         name: 'subscriberShow',
                         params: {
-                            id: response.id
+                            id: response.data.id
                         }
                     });
                 });

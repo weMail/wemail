@@ -12,7 +12,7 @@ export default {
             if (_.isArray(id)) {
                 warn.text = vm.i18n.deleteSubsWarnMsg;
                 api = api.subscribers().query({
-                    ids: id
+                    id
                 });
             } else {
                 warn.text = vm.i18n.deleteSubWarnMsg;

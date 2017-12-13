@@ -60,6 +60,9 @@ class Customizer {
         $social_network_title = wemail()->settings->social_networks->title();
 
         return [
+            'assetsURL'        => WEMAIL_ASSETS,
+            'siteURL'          => site_url('/'),
+            'cdn'              => apply_filters( 'wemail_cdn_root', 'https://cdn.wemail.com' ),
             'contentTypes'     => [
                 'types'        => $this->content_types,
                 'settings'     => $this->get_content_type_settings()

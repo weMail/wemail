@@ -2,7 +2,7 @@
     <div v-if="isLoaded" class="row">
         <div class="col-6">
             <label v-for="network in networks">
-                <strong>{{ i18n[network] }}</strong>
+                <strong>{{ title[network] }}</strong>
                 <input type="text" v-model="settings[network]">
             </label>
         </div>
@@ -18,6 +18,10 @@
         computed: {
             networks() {
                 return this.$store.state.settingsSocialNetworks.networks;
+            },
+
+            title() {
+                return this.$store.state.settingsSocialNetworks.title;
             }
         }
     };

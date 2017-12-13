@@ -38,13 +38,6 @@ class Campaign extends Module {
         $this->editor = new Editor();
     }
 
-    // this will remove after finishing the templating system
-    public function testTemplate( $campaign ) {
-        $campaign['email']['template'] = wemail()->api->templates('basic')->get();
-
-        return $campaign;
-    }
-
     /**
      * Get a collection of campaigns
      *
