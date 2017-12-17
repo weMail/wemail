@@ -23,7 +23,7 @@
                         </tr>
                     </table>
                 </div>
-                <div v-if="content.twoColumns" class="wrapper" :style="wrapperStyle.right">
+                <div v-if="isTwoColumns" class="wrapper" :style="wrapperStyle.right">
                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" :style="{maxWidth: wrapperStyle.right.minWidth}">
                         <tr>
                             <td align="center" valign="top" :style="wrapperTdStyle[1]">
@@ -81,6 +81,10 @@
                 return this.content.style;
             },
 
+            isTwoColumns() {
+                return JSON.parse(this.content.twoColumns);
+            },
+
             hasBorder() {
                 return parseInt(this.style.borderWidth, 10);
             },
@@ -100,7 +104,7 @@
             },
 
             centerPadding() {
-                if (!this.content.twoColumns) {
+                if (!this.isTwoColumns) {
                     return this.style.paddingRight;
                 }
 
@@ -142,7 +146,7 @@
                 let rightMaxWidth = 0;
                 let rightMinWidth = 0;
 
-                if (!this.content.twoColumns) {
+                if (!this.isTwoColumns) {
                     leftMaxWidth = '100%';
                     leftMinWidth = '600';
 
@@ -190,7 +194,7 @@
             },
 
             wrapperTdStyle() {
-                const padding = (this.hasBorder && this.content.twoColumns) ? this.centerPadding : 0;
+                const padding = (this.hasBorder && this.isTwoColumns) ? this.centerPadding : 0;
 
                 return [
                     {

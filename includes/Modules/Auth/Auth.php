@@ -113,8 +113,6 @@ class Auth {
     }
 
     public function validate_me() {
-        error_log( print_r( $_REQUEST, true ) );
-
         $data = [
             'success' => true
         ];

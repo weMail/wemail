@@ -108,7 +108,9 @@ class ContentTypes {
                     'borderColor'     => '#e5e5e5',
                     'marginBottom'    => '0px',
                 ],
-                'images' => []
+                'images' => [
+                    []
+                ]
             ],
             'noSettingsTab' => true
         ];

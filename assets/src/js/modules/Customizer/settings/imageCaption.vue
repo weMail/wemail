@@ -6,11 +6,11 @@
                     <a href="#" @click.prevent="setListTab(1)">{{ __('Caption 1') }}</a>
                 </li>
                 <li :class="['list-inline-item', (listTab === 2) ? 'active' : '']">
-                    <a href="#" :class="[!content.twoCaptions ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ __('Caption 2') }}</a>
+                    <a href="#" :class="[!isTwoCaptions ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ __('Caption 2') }}</a>
                 </li>
                 <li class="list-inline-item float-right">
                     <label>
-                        <input type="checkbox" v-model="content.twoCaptions"> {{ __('Two Captions') }}
+                        <input type="checkbox" v-model="isTwoCaptions"> {{ __('Two Captions') }}
                     </label>
                 </li>
             </ul>
@@ -230,6 +230,20 @@
                 return this.content.style;
             },
 
+            isTwoCaptions: {
+                get() {
+                    return JSON.parse(this.content.twoCaptions);
+                },
+
+                set(twoCaptions) {
+                    this.content.twoCaptions = twoCaptions;
+
+                    if (!twoCaptions) {
+                        this.setListTab(1);
+                    }
+                }
+            },
+
             padding: {
                 get() {
                     return parseInt(this.style.padding, 10);
@@ -261,10 +275,6 @@
             }
         },
 
-        watch: {
-            'content.twoCaptions': 'onChangeTwoCaptions'
-        },
-
         methods: {
             setListTab(tab) {
                 if (tab !== this.listTab) {
@@ -277,12 +287,6 @@
                         vm.listTab = tab;
                         vm.displayEditor = true;
                     }, TIMEOUT);
-                }
-            },
-
-            onChangeTwoCaptions(newVal, oldVal) {
-                if (oldVal) {
-                    this.setListTab(1);
                 }
             },
 

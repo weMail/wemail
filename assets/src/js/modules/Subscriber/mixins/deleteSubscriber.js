@@ -1,6 +1,6 @@
 export default {
     methods: {
-        deleteSubscriber(id, callback, softDelete) {
+        deleteSubscriber(id, callback, permaDelete) {
             const vm = this;
             const warn = {
                 confirmButtonText: vm.i18n.delete,
@@ -19,16 +19,12 @@ export default {
                 api = api.subscribers(id);
             }
 
-            if (softDelete) {
-                api = api.query({
-                    soft_delete: true
-                });
-            }
-
-            if (!softDelete) {
+            if (permaDelete) {
                 vm.warn(warn).then((deleteIt) => {
                     if (deleteIt) {
-                        api.delete().done((response) => {
+                        api.query({
+                            permanent: true
+                        }).delete().done((response) => {
                             // this success alert will be replaced by some notification library
                             vm.success({
                                 text: vm.i18n.subscriberDeleted,

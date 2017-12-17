@@ -6,11 +6,11 @@
                     <a href="#" @click.prevent="setListTab(1)">{{ __('Column 1') }}</a>
                 </li>
                 <li :class="['list-inline-item', (listTab === 2) ? 'active' : '']">
-                    <a href="#" :class="[!content.twoColumns ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ __('Column 2') }}</a>
+                    <a href="#" :class="[!isTwoColumns ? 'disabled' : '']" @click.prevent="setListTab(2)">{{ __('Column 2') }}</a>
                 </li>
                 <li class="list-inline-item float-right">
                     <label>
-                        <input type="checkbox" v-model="content.twoColumns"> {{ __('Two Columns') }}
+                        <input type="checkbox" v-model="isTwoColumns"> {{ __('Two Columns') }}
                     </label>
                 </li>
             </ul>
@@ -94,7 +94,7 @@
                     {{ __('Column Split') }}
                 </h4>
                 <div class="property">
-                    <ul v-if="content.twoColumns" class="list-inline text-center column-split-list">
+                    <ul v-if="isTwoColumns" class="list-inline text-center column-split-list">
                         <li
                             v-for="split in columnSplits"
                             :class="['list-inline-item', content.columnSplit === split ? 'active' : '']"
@@ -153,6 +153,23 @@
                 return this.content.style;
             },
 
+            isTwoColumns: {
+                get() {
+                    return JSON.parse(this.content.twoColumns);
+                },
+
+                set(twoColumns) {
+                    this.content.twoColumns = twoColumns;
+
+                    if (!twoColumns) {
+                        this.setListTab(1);
+                        this.content.columnSplit = null;
+                    } else {
+                        this.content.columnSplit = '1-1';
+                    }
+                }
+            },
+
             paddingTopBottom: {
                 get() {
                     return parseInt(this.style.paddingTop, 10);
@@ -196,10 +213,6 @@
             }
         },
 
-        watch: {
-            'content.twoColumns': 'onChangeTwoColumns'
-        },
-
         methods: {
             setListTab(tab) {
                 if (tab !== this.listTab) {
@@ -212,15 +225,6 @@
                         vm.listTab = tab;
                         vm.displayEditor = true;
                     }, TIMEOUT);
-                }
-            },
-
-            onChangeTwoColumns(newVal, oldVal) {
-                if (oldVal) {
-                    this.setListTab(1);
-                    this.content.columnSplit = null;
-                } else {
-                    this.content.columnSplit = '1-1';
                 }
             },
 

@@ -4,7 +4,7 @@
   "description": "weMail plugin description...",
   "scripts": {
     "install": "webpack",
-    "dev": "npm run clean && npm run bootstrap:js && webpack --watch",
+    "dev": "npm run clean && npm run bootstrap:js && webpack --progress --watch",
     "gettext-strings": "cross-env BABEL_ENV=gettext webpack",
     "lint:webpack": "eslint webpack.config.js",
     "bootstrap:js": "sh +x assets/src/vendor/bootstrap/build/build.sh",
@@ -63,11 +63,12 @@
     "font-awesome": "^4.7.0",
     "jed": "^1.1.1",
     "lodash": "^4.17.4",
+    "md5": "^2.2.1",
     "sortablejs": "^1.6.1",
     "sweetalert2": "^6.6.10",
-    "vue": "^2.5.2",
+    "vue": "^2.5.11",
     "vue-multiselect": "^2.0.3",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.0"
+    "vuex": "^3.0.1"
   }
 }

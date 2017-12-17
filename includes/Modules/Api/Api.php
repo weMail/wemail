@@ -26,7 +26,7 @@ class Api {
      *
      * @var string
      */
-    public $api_key;
+    private $api_key;
 
     /**
      * Holds the generated api url
@@ -54,13 +54,34 @@ class Api {
      * @return void
      */
     public function __construct() {
+        /**
+         * Filter the wemail api root
+         *
+         * @since 1.0.0
+         */
         $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
         $this->root  = untrailingslashit( $root );
 
         $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
-        $api_key = apply_filters( 'wemail_api_key', $api_key );
-
         $this->set_api_key( $api_key );
+    }
+
+    /**
+     * Get the api key
+     *
+     * @since 1.0.0
+     *
+     * @return string
+     */
+    public function get_api_key() {
+        /**
+         * Filter the current user api key
+         *
+         * @since 1.0.0
+         *
+         * @param string $api_key
+         */
+        return apply_filters( 'wemail_api_key', $this->api_key );
     }
 
     /**
@@ -108,7 +129,7 @@ class Api {
     public function get_props() {
         return [
             'root'     => $this->root,
-            'api_key'  => $this->api_key
+            'api_key'  => $this->get_api_key()
         ];
     }
 
@@ -124,7 +145,7 @@ class Api {
     private function args( $args ) {
         $defaults = [
             'headers' => [
-                'x-api-key' => $this->api_key
+                'x-api-key' => $this->get_api_key()
             ]
         ];
 

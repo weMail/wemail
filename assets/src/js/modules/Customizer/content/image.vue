@@ -235,7 +235,7 @@
         },
 
         created() {
-            if (!this.content.images) {
+            if (!this.content.images || !this.content.images.length || !this.content.images[0].src) {
                 this.content.images = [];
             }
         }

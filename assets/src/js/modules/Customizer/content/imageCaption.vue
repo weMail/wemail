@@ -130,7 +130,7 @@
             },
 
             twoCaptions() {
-                return this.content.twoCaptions;
+                return JSON.parse(this.content.twoCaptions);
             },
 
             twoCaptionsSideBySide() {

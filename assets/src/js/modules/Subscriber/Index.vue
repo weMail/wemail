@@ -257,7 +257,11 @@
             },
 
             onClickRowActionTrash(subscriber) {
-                this.onClickRowActionDelete(subscriber, true);
+                const vm = this;
+
+                this.deleteSubscriber(subscriber.id, () => {
+                    vm.fetchData();
+                });
             },
 
             showRowActionDelete(subscriber, currentRoute) {
@@ -268,12 +272,12 @@
                 return weMail.user.permissions.delete_subscriber;
             },
 
-            onClickRowActionDelete(subscriber, softDelete) {
+            onClickRowActionDelete(subscriber) {
                 const vm = this;
 
                 this.deleteSubscriber(subscriber.id, () => {
                     vm.fetchData();
-                }, softDelete);
+                }, true);
             },
 
             showRowActionView(subscriber, currentRoute) {
@@ -323,20 +327,20 @@
 
             onBulkAction(action, ids) {
                 if (action === 'delete') {
-                    this.deleteBulkSubscribers(ids);
-                } else if (action === 'trash') {
                     this.deleteBulkSubscribers(ids, true);
+                } else if (action === 'trash') {
+                    this.deleteBulkSubscribers(ids);
                 } else if (action === 'restore') {
                     this.restoreBulkSubscribers(ids);
                 }
             },
 
-            deleteBulkSubscribers(ids, softDelete) {
+            deleteBulkSubscribers(ids, permaDelete) {
                 const vm = this;
 
                 vm.deleteSubscriber(ids, () => {
                     vm.fetchData();
-                }, softDelete);
+                }, permaDelete);
             },
 
             restoreBulkSubscribers(ids) {
