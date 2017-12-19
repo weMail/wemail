@@ -1,12 +1,12 @@
 <template>
     <div v-if="isLoaded">
         <h1>
-            {{ i18n.lists }}
+            {{ __('Lists') }}
 
             <router-link
                 :to="{name: 'listsCreate'}"
                 class="page-title-action"
-            >{{ i18n.addNew }}</router-link>
+            >{{ __('Add New') }}</router-link>
         </h1>
 
         <list-table
@@ -20,7 +20,7 @@
             :row-actions="rowActions"
             @bulk-action="onBulkAction"
         >
-            <input slot="search" type="search" v-model="search" :placeholder="i18n.searchLists">
+            <input slot="search" type="search" v-model="search" :placeholder="__('Search Lists')">
 
             <span slot="no-data-found">{{ __('No List Found') }}</span>
         </list-table>
@@ -59,19 +59,34 @@
                     abort() {
                         //
                     }
+                },
+
+                filterMenus: {
+                    all: __('All'),
+                    public: __('Public'),
+                    private: __('Private')
+                },
+
+                i18n: {
+                    name: __('Name'),
+                    description: __('Description'),
+                    subscribed: __('Subscribed'),
+                    unsubscribed: __('Unsubscribed'),
+                    unconfirmed: __('Unconfirmed'),
+                    createdAt: __('Created At')
                 }
             };
         },
 
         computed: {
-            ...Vuex.mapState('listsIndex', ['i18n', 'lists', 'listTable']),
+            ...Vuex.mapState('listsIndex', ['lists', 'listTable']),
 
             filterMenu() {
                 return _.map(this.lists.meta.filter_menu, (count, name) => {
                     const menu = {
                         name,
                         count,
-                        title: this.i18n[name],
+                        title: this.filterMenus[name],
                         route: {}
                     };
 
@@ -100,7 +115,7 @@
                 return [
                     {
                         name: 'delete',
-                        title: this.i18n.delete
+                        title: __('Delete')
                     }
                 ];
             },
@@ -109,19 +124,19 @@
                 return [
                     {
                         action: 'edit',
-                        title: this.i18n.edit,
+                        title: __('Edit'),
                         classNames: ['edit'],
                         route: 'rowActionEditRoute'
                     },
                     {
                         action: 'viewSubscribers',
-                        title: this.i18n.viewSubscribers,
+                        title: __('View Subscribers'),
                         classNames: ['view'],
                         route: 'rowActionViewSubscribersRoute'
                     },
                     {
                         action: 'delete',
-                        title: this.i18n.delete,
+                        title: __('Delete'),
                         classNames: ['delete'],
                         showIf: 'showRowActionDelete',
                         onClick: 'onClickRowActionDelete'
@@ -222,11 +237,20 @@
             },
 
             columnName(list) {
+                let icon = '';
+
+                if (list.type === 'private') {
+                    icon += `<span title="${__('This list is private')}" class="dashicons dashicons-hidden"></span>`;
+
+                }
+
                 return {
                     html: `
-                        <router-link :to="{name: 'subscriberShow', params: {id: '${list.id}'}}" class="list-table-title">
-                            ${list.name}
-                        </router-link>
+                        <span>
+                            <router-link :to="{name: 'listsSubscribers', params: {id: '${list.id}'}}" class="list-table-title">
+                                ${list.name}
+                            </router-link> ${icon}
+                        </span>
                     `
                 };
             },

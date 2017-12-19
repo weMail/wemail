@@ -60,32 +60,6 @@ class Lists extends Module {
      */
     public function index( $params, $query ) {
         return [
-            'i18n'      => [
-                'lists'              => __( 'Lists', 'wemail' ),
-                'addNew'             => __( 'Add New', 'wemail' ),
-                'bulkActions'        => __( 'Bulk Actions', 'wemail' ),
-                'apply'              => __( 'Apply', 'wemail' ),
-                'items'              => __( 'items', 'wemail' ),
-                'delete'             => __( 'Delete', 'wemail' ),
-                'edit'               => __( 'Edit', 'wemail' ),
-                'viewSubscribers'    => __( 'View Subscribers', 'wemail' ),
-                'name'               => __( 'Name', 'wemail' ),
-                'description'        => __( 'Description', 'wemail' ),
-                'subscribed'         => __( 'Subscribed', 'wemail' ),
-                'unsubscribed'       => __( 'Unsubscribed', 'wemail' ),
-                'unconfirmed'        => __( 'Unconfirmed', 'wemail' ),
-                'createdAt'          => __( 'Created At', 'wemail' ),
-                'searchLists'        => __( 'Search Lists', 'wemail' ),
-                'noListFound'        => __( 'no list found', 'wemail' ),
-                'all'                => __( 'All', 'wemail' ),
-                'public'             => __( 'Public', 'wemail' ),
-                'private'            => __( 'Private', 'wemail' ),
-                'cancel'             => __( 'Cancel', 'wemail' ),
-                'deleteListsWarnMsg' => __( 'Are you sure you want to delete these lists?', 'wemail' ),
-                'deleteListWarnMsg'  => __( 'Are you sure you want to delete this list?', 'wemail' ),
-                'selectLists'        => __( 'Select lists', 'wemail' ),
-                'noListFound'        => __( 'No list found', 'wemail' ),
-            ],
             'lists'     => $this->all( $query ),
             'listTable' => [
                 'columns' => [
@@ -107,22 +81,8 @@ class Lists extends Module {
         ];
     }
 
-    private function modal_i18n() {
-        return [
-            'addNewList'        => __( 'Add New List', 'wemail' ),
-            'name'              => __( 'Name', 'wemail' ),
-            'description'       => __( 'Description', 'wemail' ),
-            'makeItPrivate'     => __( 'Make it private', 'wemail' ),
-            'requiredField'     => __( 'Required field', 'wemail' ),
-            'cancel'            => __( 'Cancel', 'wemail' ),
-            'save'              => __( 'Save', 'wemail' ),
-            'whatIsPrivateMsg'  => __( "Subscribers cannot unsubscribe from a private list. Also, they don't need to double opt-in for a private list.", 'wemail' )
-        ];
-    }
-
     public function create() {
         return [
-            'i18n' => $this->modal_i18n(),
             'list' => [
                 'name'        => '',
                 'description' => '',
@@ -133,7 +93,6 @@ class Lists extends Module {
 
     public function edit( $params ) {
         return [
-            'i18n' => $this->modal_i18n(),
             'list' => $this->get( $params['id'] )
         ];
     }

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "weMail plugin description...",
   "scripts": {
-    "install": "webpack",
+    "install": "npm run dev",
     "dev": "npm run clean && npm run bootstrap:js && webpack --progress --watch",
     "gettext-strings": "cross-env BABEL_ENV=gettext webpack",
     "lint:webpack": "eslint webpack.config.js",

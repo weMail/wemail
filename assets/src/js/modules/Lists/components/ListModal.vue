@@ -5,14 +5,14 @@
                 <form @submit.prevent="saveForm">
                     <fieldset :disabled="isDisabled">
                         <div class="wemail-modal-header">
-                            <h5 class="wemail-modal-title">{{ i18n.addNewList }}</h5>
+                            <h5 class="wemail-modal-title">{{ modalTitle }}</h5>
                             <button type="button" class="close" data-dismiss="wemail-modal" :disabled="isDisabled">
                                 <span>&times;</span>
                             </button>
                         </div>
                         <div class="wemail-modal-body">
                             <label class="d-block margin-bottom-20">
-                                <strong>{{ i18n.name }}</strong>
+                                <strong>{{ __('Name') }}</strong>
                                 <input
                                     type="text"
                                     :class="['form-control', isInvalidName ? 'form-control-danger' : '']"
@@ -22,14 +22,14 @@
                             </label>
 
                             <label class="d-block margin-bottom-20">
-                                <strong>{{ i18n.description }}</strong>
+                                <strong>{{ __('Description') }}</strong>
                                 <textarea rows="5" class="form-control" v-model="list.description"></textarea>
                             </label>
 
                             <label class="d-block margin-bottom-20">
-                                <input type="checkbox" v-model="isPrivate"> {{ i18n.makeItPrivate }}
+                                <input type="checkbox" v-model="isPrivate"> {{ __('Make it private') }}
 
-                                <small class="d-block">{{ i18n.whatIsPrivateMsg }}</small>
+                                <small class="d-block">{{ __("Subscribers cannot unsubscribe from a private list. Also, they don't need to double opt-in for a private list.") }}</small>
                             </label>
                         </div>
                         <div class="wemail-modal-footer">
@@ -56,11 +56,6 @@
         mixins: weMail.getMixins('dataValidators'),
 
         props: {
-            i18n: {
-                type: Object,
-                required: true
-            },
-
             list: {
                 type: Object,
                 required: true
@@ -81,6 +76,10 @@
         },
 
         computed: {
+            modalTitle() {
+                return this.edit ? __('Edit List') : __('Add New List');
+            },
+
             isPrivate: {
                 get() {
                     return (this.list.type === 'private') || false;

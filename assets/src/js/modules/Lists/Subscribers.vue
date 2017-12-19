@@ -1,6 +1,6 @@
 <template>
     <div v-if="isLoaded">
-        <h1> List:
+        <h1> {{ __('List') }}:
             <span>{{ list.name }}</span>
         </h1>
         <pre>{{ list }}</pre>

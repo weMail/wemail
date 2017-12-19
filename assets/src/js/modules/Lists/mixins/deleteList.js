@@ -3,20 +3,20 @@ export default {
         deleteList(id, callback) {
             const vm = this;
             const warn = {
-                confirmButtonText: vm.i18n.delete,
+                confirmButtonText: __('Delete'),
                 cancelButtonText: __('Cancel')
             };
 
             let api = weMail.api;
 
             if (_.isArray(id)) {
-                warn.text = vm.i18n.deleteListsWarnMsg;
+                warn.text = __('Are you sure you want to delete these lists?');
                 api = api.lists().query({
                     ids: id
                 });
 
             } else {
-                warn.text = vm.i18n.deleteListWarnMsg;
+                warn.text = __('Are you sure you want to delete this list?');
                 api.lists(id);
             }
 

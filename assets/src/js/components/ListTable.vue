@@ -20,11 +20,11 @@
                     <div class="list-table-filter-dropdowns">
                         <div v-if="bulkActions.length" class="list-table-bulk-action">
                             <select v-model="bulkActionSelected">
-                                <option value="">{{ i18n.bulkActions }}</option>
+                                <option value="">{{ __('Bulk Actions') }}</option>
                                 <option v-for="action in bulkActionOptions" :value="action.name">{{ action.title }}</option>
                             </select>
 
-                            <button type="button" class="button" @click="triggerBulkAction">{{ i18n.apply }}</button>
+                            <button type="button" class="button" @click="triggerBulkAction">{{ __('Apply') }}</button>
                         </div>
 
                         <slot name="filter-dropdown"></slot>
@@ -34,7 +34,7 @@
                         <div class="list-table-pagination">
                             <ul class="list-inline">
                                 <li v-if="pagination.total" class="list-inline-item total-items">
-                                    {{ pagination.total }} {{ i18n.items }}
+                                    {{ pagination.total }} {{ __('items') }}
                                 </li>
                                 <li
                                     v-if="pagination.hasPagination"
@@ -147,7 +147,7 @@
                             <tr>
                                 <td :colspan="columns.length + 1">
                                     <slot name="no-data-found">
-                                        <span>{{ i18n.noDataFound }}</span>
+                                        <span>{{ __('No data found') }}</span>
                                     </slot>
                                 </td>
                             </tr>
@@ -186,11 +186,11 @@
                     <div class="list-table-filter-dropdowns bottom">
                         <div v-if="bulkActions.length" class="list-table-bulk-action">
                             <select v-model="bulkActionSelected">
-                                <option value="">{{ i18n.bulkActions }}</option>
+                                <option value="">{{ __('Bulk Actions') }}</option>
                                 <option v-for="action in bulkActions" :value="action.name">{{ action.title }}</option>
                             </select>
 
-                            <button type="button" class="button" @click="triggerBulkAction">{{ i18n.apply }}</button>
+                            <button type="button" class="button" @click="triggerBulkAction">{{ __('Apply') }}</button>
                         </div>
                     </div>
 
@@ -198,7 +198,7 @@
                         <div class="list-table-pagination bottom">
                             <ul class="list-inline">
                                 <li v-if="pagination.total" class="list-inline-item total-items">
-                                    {{ pagination.total }} {{ i18n.items }}
+                                    {{ pagination.total }} {{ __('items') }}
                                 </li>
                                 <li
                                     v-if="pagination.hasPagination"
