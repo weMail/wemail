@@ -182,6 +182,8 @@
 
                 api.done((response) => {
                     if (response && response.data.id && response.data.id) {
+                        $(vm.$el).off('hide.wemail.modal');
+
                         if (typeof callback === 'function') {
                             callback(vm, response);
                         } else {
@@ -198,8 +200,6 @@
                         });
                     }
 
-                }).always(() => {
-                    $(vm.$el).off('hide.wemail.modal');
                     vm.isDisabled = false;
                 });
             },

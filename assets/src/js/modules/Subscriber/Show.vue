@@ -10,22 +10,24 @@
                             type="button"
                             class="button button-link edit-image"
                             @click="setProfileImage"
-                        >{{ i18n.edit }}</button>
+                        >{{ __('Edit') }}</button>
 
                         <button
                             v-if="hasUploadedImage"
                             type="button"
                             class="button button-link remove-image"
                             @click="removeImage"
-                        >{{ i18n.remove }}</button>
+                        >{{ __('Remove') }}</button>
                     </div>
 
                     <div class="profile-summery">
-                        <inline-editor v-model="name" :options="nameOptions">
+                        <inline-editor v-model="name" :options="nameOptions" @input="updateNames">
                             <h1 class="subscriber-name">{{ fullName }}</h1>
                         </inline-editor>
 
-                        <a class="subscriber-email" :href="`mailto:${subscriber.email}`">{{ subscriber.email }}</a>
+                        <inline-editor v-model="subscriber.email" @input="updateSubscriber('email')">
+                            <span>{{ subscriber.email }}</span>
+                        </inline-editor>
 
                         <ul v-if="networks.length" class="subscriber-networks list-inline">
                             <li v-for="network in networks" class="list-inline-item">
@@ -33,7 +35,7 @@
                             </li>
                         </ul>
 
-                        <div class="subscriber-action wemail-dropdown">
+                        <div class="subscriber-action wemail-dropdown float-right">
                             <button
                                 class="button button-link"
                                 type="button"
@@ -45,8 +47,8 @@
                                 <a
                                     class="wemail-dropdown-item"
                                     href="#delete-subscriber"
-                                    @click.prevent="deleteItem"
-                                >{{ i18n.deleteSubscriber }}</a>
+                                    @click.prevent="deleteSubscriber"
+                                >{{ __('Delete Subscriber') }}</a>
                             </div>
                         </div>
                     </div>
@@ -54,94 +56,57 @@
 
                 <div class="wemail-box-plain">
                     <h4 class="box-title">
-                        {{ i18n.informations }}
-
-                        <a
-                            v-if="!isEditingInformations"
-                            href="#"
-                            class="button button-link float-right"
-                            @click.prevent="editInfo"
-                        >{{ i18n.editInfo }}</a>
+                        {{ __('Informations') }}
                     </h4>
 
                     <ul class="list-two-columns">
                         <li>
-                            <label>{{ i18n.lists }}</label>
+                            <label>{{ __('Lists') }}</label>
                             <div>
-                                <template v-if="!isEditingInformations">
-                                    <span v-for="list in inLists" class="badge-tag">
-                                        <i :class="['fa', list.classNames]"></i> {{ list.name }}
-                                    </span>
+                                <p v-if="!inLists.length && !editLists">
+                                    <a href="#" @click.prevent="editLists = true">{{ __('Add to lists') }}</a>
+                                </p>
+
+                                <template v-else-if="!editLists">
+                                    <div class="editable-content" @click="editLists = true">
+                                        <span v-for="list in inLists" class="badge-tag">
+                                            <i :class="['fa', list.classNames]"></i> {{ list.name }}
+                                        </span>
+                                    </div>
                                 </template>
 
                                 <template v-else>
                                     <ul>
                                         <li v-for="list in lists">
                                             <label>
-                                                <input type="checkbox" :value="list.id" v-model="editLists"> {{ list.name }}
+                                                <input type="checkbox" :value="list.id" v-model="subscribedLists"> {{ list.name }}
                                                 <p class="list-status-info" v-html="showListInfo(list.id)"></p>
                                             </label>
                                         </li>
                                     </ul>
+
+                                    <div class="clearfix">
+                                        <button
+                                            type="button"
+                                            class="button button-link"
+                                            @click="editLists = false"
+                                        >{{ __('Cancel') }}</button>
+
+                                        <button
+                                            type="button"
+                                            class="button button-small button-primary float-right"
+                                            @click="updateLists"
+                                        >{{ __('Update Lists') }}</button>
+                                    </div>
                                 </template>
                             </div>
                         </li>
-                        <li>
-                            <label>{{ i18n.address1 }}</label>
-                            <div>-</div>
-                        </li>
-                        <li>
-                            <label>{{ i18n.address2 }}</label>
-                            <div>-</div>
-                        </li>
-                        <li>
-                            <label>{{ i18n.city }}</label>
-                            <div>-</div>
-                        </li>
-                        <li>
-                            <label>{{ i18n.state }}</label>
-                            <div>-</div>
-                        </li>
-                        <li>
-                            <label>{{ i18n.country }}</label>
-                            <div>-</div>
-                        </li>
-                        <li>
-                            <label>{{ i18n.zip }}</label>
-                            <div>-</div>
-                        </li>
-                        <li>
-                            <label>{{ i18n.dob }}</label>
-                            <div>-</div>
-                        </li>
                     </ul>
-
-                    <hr v-if="isEditingInformations">
-
-                    <p v-if="isEditingInformations" class="text-right">
-                        <button
-                            type="button"
-                            class="button button-link"
-                            @click.prevent="canceEditInfo"
-                        >{{ __('Cancel') }}</button>&nbsp;&nbsp;
-
-                        <button
-                            type="button"
-                            class="button button-success button-extra-padding"
-                            @click.prevent="saveEditInfo"
-                        >{{ __('Save') }}</button>
-                    </p>
                 </div>
             </div>
             <div class="col-md-7">
-                editLists
-                <pre>{{ editLists }}</pre>
-
-                subsriber lists
+                <pre>{{ subscribedLists }}</pre>
                 <pre>{{ subscriber.lists }}</pre>
-
-                informations.lists
-                <pre>{{ informations.lists }}</pre>
             </div>
         </div>
 
@@ -155,6 +120,12 @@
     export default {
         routeName: 'subscriberShow',
 
+        mutations: {
+            updateSubscriber(state, payload) {
+                state.subscriber = payload;
+            }
+        },
+
         mixins: [
             ...weMail.getMixins('routeComponent', 'helpers', 'imageUploader'),
             deleteSubscriber
@@ -163,12 +134,8 @@
         data() {
             return {
                 fileFrame: null,
-                isEditingInformations: false,
-                editLists: [],
-                informations: {
-                    lists: [],
-                    meta: {}
-                }
+                editLists: false,
+                subscribedLists: []
             };
         },
 
@@ -181,7 +148,7 @@
 
             fullName() {
                 if (!this.subscriber.first_name) {
-                    return this.i18n.noName;
+                    return __('no name');
                 }
 
                 const name = [this.subscriber.first_name, this.subscriber.last_name];
@@ -206,11 +173,11 @@
             nameOptions() {
                 return [
                     {
-                        label: this.i18n.firstName,
+                        label: __('First Name'),
                         name: 'firstName'
                     },
                     {
-                        label: this.i18n.lastName,
+                        label: __('Last Name'),
                         name: 'lastName'
                     }
                 ];
@@ -265,8 +232,8 @@
                     this.subscriber.lists = [];
                 }
 
-                const lists = this.subscriber.lists.map((list) => {
-                    list = $.extend(true, {}, list);
+                const lists = this.subscriber.lists.map((subscriberist) => {
+                    const list = $.extend(true, {}, subscriberist);
 
                     const weMailList = _.find(vm.lists, {
                         id: list.id
@@ -308,20 +275,35 @@
                 });
 
                 return subscribed.concat(unconfirmed).concat(unsubscribed);
-            },
-
-            unconfirmedLists() {
-                return this.inLists.filter((list) => {
-                    return list.status === 'unconfirmed';
-                });
             }
         },
 
         watch: {
-            editLists: 'updateListSubscription'
+            editLists: 'onEditLists'
         },
 
         methods: {
+            updateSubscriber(prop) {
+                const vm = this;
+                const data = {};
+
+                data[prop] = this.subscriber[prop];
+
+                weMail.api.subscribers(this.subscriber.id).update(data).done((response) => {
+                    vm.$store.commit('subscriberShow/updateSubscriber', response.data);
+                });
+            },
+
+            deleteSubscriber() {
+                const vm = this;
+
+                this.deleteSubscriber(this.subscriber.id, () => {
+                    vm.$router.push({
+                        name: 'subscriberIndex'
+                    });
+                }, true);
+            },
+
             setProfileImage() {
                 this.openImageManager();
             },
@@ -354,113 +336,9 @@
                 this.updateSubscriber('image');
             },
 
-            editInfo() {
-                const lists = $.extend(true, [], this.subscriber.lists);
-
-                this.informations = {
-                    lists
-                };
-
-                this.editLists = this.subscriber.lists.filter((list) => {
-                    return list.status === 'subscribed';
-                }).map((list) => {
-                    return list.id;
-                });
-
-                this.isEditingInformations = true;
-            },
-
-            canceEditInfo() {
-                this.resetInformations();
-            },
-
-            saveEditInfo() {
-                this.subscriber.lists = $.extend(true, [], this.informations.lists);
-
-                this.resetInformations();
-            },
-
-            resetInformations() {
-                this.isEditingInformations = false;
-                this.editLists = [];
-                this.informations = {
-                    lists: [],
-                    meta: {}
-                };
-            },
-
-            updateListSubscription(newLists, oldLists) {
-                // When we start editing informations, we first deep clone the original
-                // subscriber.lists to a temporary informations.lists. We'll manipulate
-                // this informations.lists and set it as subscriber.lists when editing is
-                // saved. So, when we toggle any list checkbox, we can fetch the original
-                // data from subscriber.lists and set it in informations.lists.
-                let infoListNonSubList = {};
-                let infoListSubList = {};
-                let unconfirmedList = [];
-
-                // First, with array diff, find out which id is to be subscribed or to be unsubscribed.
-                // unconfirmed list will restore as status: unconfirmed, not unsubscribed
-                const newSubId = _.chain(newLists).difference(oldLists).first().value();
-                const newUnsubId = _.chain(oldLists).difference(newLists).first().value();
-
-                if (newSubId) {
-                    // We are subscribing to a new or an existing list here. First, check if this id is
-                    // already in the temporary information.list or not.
-                    infoListNonSubList = _.chain(this.informations.lists).filter((list) => {
-                        return (list.id === newSubId) && (list.status !== 'subscribed');
-                    }).first().value();
-
-                    if (infoListNonSubList) {
-                        // We have an existing list whose status is either unsubscribed or unconfirmed.
-                        // Let's set the status as subscribed
-                        infoListNonSubList.status = 'subscribed';
-
-                    } else {
-                        // Here we don't have any existing list in subscriber.lists, so we'll push a
-                        // new list item in informations.list whose status is subscribed
-                        const newSubList = _.find(this.lists, {
-                            id: newSubId
-                        });
-
-                        if (newSubList && !_.find(this.informations.lists, { id: newSubId })) { // eslint-disable-line object-curly-newline
-                            this.informations.lists.push({
-                                id: newSubList.id,
-                                status: 'subscribed',
-                                subscribed_at: null,
-                                unsubscribed_at: null
-                            });
-                        }
-                    }
-                }
-
-                if (newUnsubId) {
-                    // We are unsubscribing to an existing list here. First, make sure if this id is
-                    // in the temporary information.list.
-                    infoListSubList = _.chain(this.informations.lists).filter((list) => {
-                        return (list.id === newUnsubId) && (list.status === 'subscribed');
-                    }).first().value();
-
-                    if (infoListSubList) {
-                        // Before unsubscribing, let's check what's if it exists in subscriber.lists
-                        unconfirmedList = this.subscriber.lists.filter((list) => {
-                            return (list.id === infoListSubList.id);
-                        });
-
-                        if (unconfirmedList.length) {
-                            // If original status is subscribed then unsubscribed it, otherwise set back
-                            // the original status. Keep in mind that, user can check and then uncheck before
-                            // save the changes.
-                            infoListSubList.status = unconfirmedList[0].status === 'subscribed' ? 'unsubscribed' : unconfirmedList[0].status;
-
-                        } else {
-                            // The list doesn't exist in subscriber.lists
-                            _.remove(this.informations.lists, (list) => {
-                                return list.id === infoListSubList.id;
-                            });
-                        }
-                    }
-                }
+            updateNames() {
+                this.updateSubscriber('first_name');
+                this.updateSubscriber('last_name');
             },
 
             showListInfo(listId) {
@@ -475,7 +353,7 @@
                     switch (list.status) {
                         case 'unconfirmed':
                             elem += '<span class="text-warning">';
-                            elem += `status: ${this.i18n.unconfirmed}`;
+                            elem += __('Unconfirmed');
                             elem += '</span>';
                             break;
 
@@ -487,7 +365,7 @@
                                 .tz(weMail.dateTime.server.timezone)
                                 .format(`${weMail.momentDateFormat} ${weMail.momentTimeFormat}`);
 
-                            elem += `status: ${this.i18n.unsubscribed} @ ${time}`;
+                            elem += `${__('Unsubscribed')} @ ${time}`;
                             elem += '</span>';
                             break;
 
@@ -500,7 +378,7 @@
                                 .tz(weMail.dateTime.server.timezone)
                                 .format(`${weMail.momentDateFormat} ${weMail.momentTimeFormat}`);
 
-                            elem += `status: ${this.i18n.subscribed} @ ${time}`;
+                            elem += `${__('Subscribed')} @ ${time}`;
                             elem += '</span>';
                             break;
                     }
@@ -509,22 +387,27 @@
                 return elem;
             },
 
-            deleteItem() {
-                const vm = this;
-
-                this.deleteSubscriber(this.subscriber.id, () => {
-                    vm.$router.push({
-                        name: 'subscriberIndex'
+            onEditLists(edit) {
+                if (edit) {
+                    this.subscribedLists = this.inLists.filter((lists) => {
+                        return lists.status === 'subscribed';
+                    }).map((list) => {
+                        return list.id;
                     });
-                });
+                }
             },
 
-            updateSubscriber(prop) {
-                const data = {};
+            updateLists() {
+                const vm = this;
 
-                data[prop] = this.subscriber[prop];
+                const data = {
+                    lists: this.subscribedLists
+                };
 
-                weMail.api.subscribers(this.subscriber.id).update(data);
+                weMail.api.subscribers(this.subscriber.id).update(data).done((response) => {
+                    vm.$store.commit('subscriberShow/updateSubscriber', response.data);
+                    vm.editLists = false;
+                });
             }
         }
     };
@@ -600,6 +483,7 @@
         .profile-summery {
             position: relative;
             float: left;
+            width: calc(100% - 110px);
 
             .subscriber-name {
                 padding: 0;

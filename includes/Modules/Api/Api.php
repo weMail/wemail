@@ -221,10 +221,6 @@ class Api {
         $response = wp_remote_get( $url, $args );
 
         if ( ! is_wp_error( $response ) ) {
-            // if ( !empty( $response['response']['code'] ) ) {
-            //     status_header( $response['response']['code'] );
-            // }
-
             if ( !empty( $response['body'] ) ) {
                 return json_decode( $response['body'], true );
             }
