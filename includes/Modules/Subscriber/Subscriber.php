@@ -26,6 +26,7 @@ class Subscriber extends Module {
         $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
 
         $this->add_filter( 'wemail_get_route_data_subscriberIndex', 'index', 10, 2 );
+        $this->add_filter( 'wemail_get_route_data_subscriberEdit', 'edit', 10, 2 );
         $this->add_filter( 'wemail_get_route_data_subscriberShow', 'show', 10, 2 );
     }
 
@@ -135,6 +136,22 @@ class Subscriber extends Module {
     }
 
     /**
+     * Subscribers list table data
+     *
+     * @since 1.0.0
+     *
+     * @param array $params
+     * @param array $query
+     *
+     * @return array
+     */
+    public function edit( $params, $query ) {
+        return [
+            'subscriber' => $this->get( $params['id'] )
+        ];
+    }
+
+    /**
      * Single subscriber page route data
      *
      * @since 1.0.0
@@ -213,11 +230,13 @@ class Subscriber extends Module {
      *
      * @since 1.0.0
      *
-     * @param string $id or email
+     * @param string $id
      *
      * @return array
      */
-    public function get( $id_or_email ) {
-        return wemail()->api->subscribers( $id_or_email )->get();
+    public function get( $id ) {
+        $subscriber = wemail()->api->subscribers( $id )->get();
+
+        return !empty( $subscriber['data'] ) ? $subscriber['data'] : null;
     }
 }

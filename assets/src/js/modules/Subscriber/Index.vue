@@ -1,12 +1,12 @@
 <template>
     <div v-if="isLoaded">
         <h1>
-            {{ i18n.subscribers }}
-            <a
-                href="#add-new-subscriber"
+            {{ __('Subscribers') }}
+
+            <router-link
+                :to="{name: 'subscriberCreate'}"
                 class="page-title-action"
-                @click.prevent="showNewSubscriberModal"
-            >{{ i18n.addNew }}</a>
+            >{{ __('Add New') }}</router-link>
 
             <a
                 href="#"
@@ -30,17 +30,11 @@
             <span slot="no-data-found">{{ i18n.noSubscriberFound }}</span>
         </list-table>
 
-        <new-subscriber-modal
-            scope="subscriber-index"
-            :i18n="i18n"
-            :lists="lists"
-            @subscriber-created="fetchData"
-        ></new-subscriber-modal>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-    import NewSubscriberModal from './components/NewSubscriberModal.vue';
     import deleteSubscriber from './mixins/deleteSubscriber.js';
     import restoreSubscriber from './mixins/restoreSubscriber.js';
 
@@ -62,7 +56,6 @@
         ],
 
         components: {
-            NewSubscriberModal,
             ListTable
         },
 
@@ -146,7 +139,7 @@
                         title: this.i18n.quickEdit,
                         classNames: ['quick-edit'],
                         showRowIf: 'showRowActionQuickEdit',
-                        onClick: 'onClickRowActionQuickEdit'
+                        route: 'rowActionEditRoute'
                     },
                     {
                         action: 'trash',
@@ -217,10 +210,6 @@
                     });
             },
 
-            showNewSubscriberModal() {
-                weMail.event.$emit('show-new-subscriber-modal-subscriber-index');
-            },
-
             onChangeSearch(search) {
                 const query = $.extend(true, {}, this.$router.currentRoute.query);
 
@@ -243,9 +232,13 @@
                 return weMail.user.permissions.edit_subscriber;
             },
 
-            onClickRowActionQuickEdit(subscriber) {
-                console.log('onClickEditAction');
-                console.log(subscriber);
+            rowActionEditRoute(subscriber) {
+                return {
+                    name: 'subscriberEdit',
+                    params: {
+                        id: subscriber.id
+                    }
+                };
             },
 
             showRowActionTrash(subscriber, currentRoute) {
@@ -318,7 +311,7 @@
             },
 
             showBulkActionDelete(currentRoute) {
-                return !this.showBulkActionTrash(currentRoute);
+                return (currentRoute.params.status === 'trashed');
             },
 
             showBulkActionRestore(currentRoute) {

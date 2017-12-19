@@ -187,7 +187,7 @@
                         <div v-if="bulkActions.length" class="list-table-bulk-action">
                             <select v-model="bulkActionSelected">
                                 <option value="">{{ __('Bulk Actions') }}</option>
-                                <option v-for="action in bulkActions" :value="action.name">{{ action.title }}</option>
+                                <option v-for="action in bulkActionOptions" :value="action.name">{{ action.title }}</option>
                             </select>
 
                             <button type="button" class="button" @click="triggerBulkAction">{{ __('Apply') }}</button>

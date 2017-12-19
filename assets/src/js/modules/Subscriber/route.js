@@ -8,6 +8,18 @@ function Index(resolve) {
     });
 }
 
+function Create(resolve) {
+    require.ensure(['./Create.vue'], () => {
+        resolve(require('./Create.vue'));
+    });
+}
+
+function Edit(resolve) {
+    require.ensure(['./Edit.vue'], () => {
+        resolve(require('./Edit.vue'));
+    });
+}
+
 function Show(resolve) {
     require.ensure(['./Show.vue'], () => {
         resolve(require('./Show.vue'));
@@ -30,6 +42,16 @@ export default {
                 {
                     path: 'life-stage/:lifeStage',
                     name: 'subscriberIndexLifeStage'
+                },
+                {
+                    path: 'create',
+                    name: 'subscriberCreate',
+                    component: Create
+                },
+                {
+                    path: ':id/edit',
+                    name: 'subscriberEdit',
+                    component: Edit
                 }
             ]
         },

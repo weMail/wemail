@@ -145,7 +145,7 @@
             </div>
         </div>
 
-        <div v-else class="error"><p>{{ i18n.subscriberNotFound }}</p></div>
+        <div v-else class="error"><p>{{ __('Subscriber not found') }}</p></div>
     </div>
 </template>
 
@@ -173,11 +173,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('subscriberShow', ['i18n', 'lists', 'socialNetworks']),
-
-            subscriber() {
-                return this.$store.state.subscriberShow.subscriber.data || {};
-            },
+            ...Vuex.mapState('subscriberShow', ['i18n', 'subscriber', 'lists', 'socialNetworks']),
 
             meta() {
                 return this.subscriber.meta;
