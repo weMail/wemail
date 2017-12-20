@@ -28,9 +28,6 @@ class Routes {
      */
     public function auth_site() {
         return [
-            'i18n' => [
-                'connectWeMail' => __( 'Connect weMail', 'wemail' )
-            ]
         ];
     }
 

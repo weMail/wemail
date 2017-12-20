@@ -140,11 +140,6 @@ class Settings extends Module {
      */
     public function get_route_data() {
         return [
-            'i18n' => [
-                'settings'      => __( 'Settings', 'wemail' ),
-                'saveSettings'  => __( 'Save Settings', 'wemail' ),
-                'optional'      => __( 'optional', 'wemail' )
-            ],
             'settings' => $this->settings->map( function ( $setting ) {
                 return [
                     'name'  => $setting->name,

@@ -5,7 +5,7 @@
             class="button button-primary button-hero"
             @click="authSite"
             :disabled="isLoading"
-        >{{ i18n.connectWeMail }}</button>
+        >{{ __('Connect weMail') }}</button>
     </div>
 </template>
 
@@ -19,10 +19,6 @@
             return {
                 isLoading: false
             };
-        },
-
-        computed: {
-            ...Vuex.mapState('authSite', ['i18n'])
         },
 
         created() {

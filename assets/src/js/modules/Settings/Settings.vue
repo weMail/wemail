@@ -1,6 +1,6 @@
 <template>
     <div v-if="isLoaded">
-        <h1>{{ i18n.settings }}</h1>
+        <h1>{{ __('Settings') }}</h1>
 
         <div class="wemail-settings d-flex">
             <div class="wemail-settings-sidebar">
@@ -26,7 +26,7 @@
                         v-if="!hideSaveButton"
                         type="submit"
                         class="button button-primary submit-button"
-                    >{{ i18n.saveSettings }}</button>
+                    >{{ __('Save Settings') }}</button>
                 </form>
             </div>
         </div>
@@ -83,7 +83,7 @@
         },
 
         computed: {
-            ...Vuex.mapState('settings', ['i18n', 'settings'])
+            ...Vuex.mapState('settings', ['settings'])
         },
 
         watch: {
@@ -114,6 +114,9 @@
 
                 api[settings]()
                     .save(vm.$store.state[namespace].settings)
+                    .done((response) => {
+                        weMail.event.$emit(`updated-setting-${settings}`);
+                    })
                     .always((response) => {
                         if (response.msg) {
                             vm.alert({

@@ -44,6 +44,7 @@ class Auth {
 
         $data = [
             'site_name'     => get_bloginfo( 'name' ),
+            'site_email'    => get_bloginfo( 'admin_email' ),
             'site_url'      => site_url( '/' ),
             'home_url'      => home_url( '/' ),
             'start_of_week' => $week_days[ $start_of_week ],
@@ -58,6 +59,8 @@ class Auth {
         $response = wemail()->api->auth()->sites()->post( $data );
 
         if ( !empty( $response['access_token'] ) ) {
+            update_option( 'wemail_site_slug', $response['data']['slug'] );
+
             update_user_meta( $user->ID, 'wemail_api_key', $response['access_token'] );
 
             wemail()->api->set_api_key( $response['access_token'] );
