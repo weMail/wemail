@@ -47,7 +47,7 @@
                                 <a
                                     class="wemail-dropdown-item"
                                     href="#delete-subscriber"
-                                    @click.prevent="deleteSubscriber"
+                                    @click.prevent="deleteThisSubscriber"
                                 >{{ __('Delete Subscriber') }}</a>
                             </div>
                         </div>
@@ -294,7 +294,7 @@
                 });
             },
 
-            deleteSubscriber() {
+            deleteThisSubscriber() {
                 const vm = this;
 
                 this.deleteSubscriber(this.subscriber.id, () => {
