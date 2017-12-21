@@ -1,6 +1,6 @@
 <template>
     <div v-if="isLoaded" id="wemail-list-edit">
-        <list-modal :i18n="i18n" :list="list" :edit="true"></list-modal>
+        <list-modal :list="list" :edit="true"></list-modal>
     </div>
 </template>
 
@@ -23,7 +23,7 @@
         mixins: weMail.getMixins('routeComponent'),
 
         computed: {
-            ...Vuex.mapState('listsEdit', ['i18n', 'list'])
+            ...Vuex.mapState('listsEdit', ['list'])
         }
     };
 </script>

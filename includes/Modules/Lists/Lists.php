@@ -151,7 +151,9 @@ class Lists extends Module {
      * @return array
      */
     public function get( $id ) {
-        return wemail()->api->lists( $id )->get();
+        $list = wemail()->api->lists( $id )->get();
+
+        return !empty( $list['data'] ) ? $list['data'] : null;
     }
 
 }

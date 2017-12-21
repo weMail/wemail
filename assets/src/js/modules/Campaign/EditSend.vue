@@ -148,7 +148,7 @@
                         <p class="hint">{{ __('When the subscribers hit "reply" this is who will receive their emails.') }}</p>
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="campaign.type === 'standard'">
                     <th>{{ __('Subscribers') }}</th>
                     <td>
                     <div class="row">
@@ -159,7 +159,7 @@
                             <ul class="list-disc" v-if="lists.length">
                                 <li v-for="list in lists">{{ list.name }}</li>
                             </ul>
-                            <ul v-else >
+                            <ul v-else>
                                 <li><em class="text-muted">{{ __('No list selected') }}</em></li>
                             </ul>
 
@@ -178,7 +178,7 @@
                     </div>
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="campaign.type === 'standard'">
                     <th>{{ __('Schedule Campaign') }}</th>
                     <td>
                         <label v-if="!isScheduled">
@@ -194,6 +194,10 @@
                         </div>
                     </td>
                 </tr>
+                <tr v-if="campaign.type === 'automatic'">
+                    <td></td>
+                    <td v-html="automaticPhrase(campaign)"></td>
+                </tr>
                 <tr>
                     <th>{{ __('Google Analytic Campaign') }}</th>
                     <td>
@@ -206,12 +210,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <button
                             type="button"
                             class="button button-primary"
-                            @click="saveCampaign"
-                        >{{ __('Save Campaign') }}</button>
+                            @click="sendCampaign"
+                        >{{ campaign.type === 'standard' ? __('Start sending') : __('Activate Now') }}</button>
+
+                        <button
+                            type="button"
+                            class="button"
+                            @click="saveAsDraft"
+                        >{{ __('Save as draft') }}</button>
                     </td>
                 </tr>
             </tbody>
@@ -220,8 +230,10 @@
 </template>
 
 <script>
+    import automaticPhrase from './mixins/automaticPhrase.js';
+
     export default {
-        mixins: weMail.getMixins('dataValidators', 'helpers'),
+        mixins: [...weMail.getMixins('dataValidators', 'helpers'), automaticPhrase],
 
         data() {
             return {
@@ -381,14 +393,34 @@
                 // should be move cursor to end also
             },
 
-            saveCampaign() {
+            saveCampaign(campaign) {
                 const vm = this;
 
-                weMail.api.campaigns(this.campaign.id).update(this.campaign).done((reponse) => {
+                if (!campaign || !campaign.id) {
+                    campaign = $.extend(true, {}, this.campaign);
+                }
+
+                weMail.api.campaigns(this.campaign.id).update(campaign).done((reponse) => {
                     if (reponse.data && reponse.data.id) {
                         vm.$store.commit('campaignEdit/updateCampaign', reponse.data);
                     }
                 });
+            },
+
+            sendCampaign() {
+                const campaign = $.extend(true, {}, this.campaign);
+
+                campaign.status = 'active';
+
+                this.saveCampaign(campaign);
+            },
+
+            saveAsDraft() {
+                const campaign = $.extend(true, {}, this.campaign);
+
+                campaign.status = 'draft';
+
+                this.saveCampaign(campaign);
             }
         }
     };

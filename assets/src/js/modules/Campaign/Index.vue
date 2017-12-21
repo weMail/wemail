@@ -51,12 +51,17 @@
 
         data() {
             return {
-                testString: 'this is from index.vue',
                 search: '',
                 apiHandler: {
                     abort() {
                         //
                     }
+                },
+                campaignStatuses: {
+                    draft: __('Draft'),
+                    active: __('Active'),
+                    completed: __('Completed'),
+                    paused: __('Paused')
                 }
             };
         },
@@ -371,6 +376,14 @@
                             ${campaign.name}
                         </router-link>
                     `
+                };
+            },
+
+            columnStatus(campaign) {
+                const status = this.campaignStatuses[campaign.status] || campaign.status;
+
+                return {
+                    html: `<div>${status}</div>`
                 };
             },
 
