@@ -225,8 +225,8 @@
 
             reset() {
                 this.subscriber.email = '';
-                this.subscriber.firstName = '';
-                this.subscriber.lastName = '';
+                this.subscriber.first_name = '';
+                this.subscriber.last_name = '';
                 this.subscriber.phone = '';
                 this.subscriber.lists = [];
 

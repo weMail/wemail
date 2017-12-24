@@ -401,7 +401,7 @@
                 const vm = this;
 
                 const data = {
-                    lists: this.subscribedLists
+                    lists: this.subscribedLists.length ? this.subscribedLists : null
                 };
 
                 weMail.api.subscribers(this.subscriber.id).update(data).done((response) => {

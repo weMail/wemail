@@ -6,7 +6,6 @@ use WP_REST_Response;
 use WeDevs\WeMail\Framework\Traits\Ajax;
 use WeDevs\WeMail\Framework\Traits\Hooker;
 
-
 class Auth {
 
     use Ajax;
@@ -108,11 +107,18 @@ class Auth {
         $this->send_error( ['message' => $message ] );
     }
 
+    /**
+     * Add /validate-me REST endpoint
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function add_validate_me_endpoint() {
-        register_rest_route( 'wemail', '/validate-me', array(
+        register_rest_route( 'wemail', '/validate-me', [
             'methods' => 'GET',
             'callback' => [ $this, 'validate_me' ],
-        ) );
+        ] );
     }
 
     public function validate_me() {
