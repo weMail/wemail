@@ -13,8 +13,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/database": "~5.0",
-        "tareq1988/wp-eloquent": "dev-master"
+        "danielstjules/stringy": "^3.1"
     },
     "autoload" : {
         "psr-4": {

@@ -42,11 +42,11 @@ class Settings extends Module {
 
         $settings = null;
 
-        $this->settings->each(function($settings_class) use ($name, &$settings) {
-            if (get_class($settings_class) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
-                $settings = $settings_class->get_settings();
+        foreach ( $this->settings as $setting ) {
+            if (get_class($setting) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
+                $settings = $setting->get_settings();
             }
-        });
+        }
 
         return $settings;
     }
@@ -65,11 +65,11 @@ class Settings extends Module {
 
         $settings = null;
 
-        $this->settings->each(function($settings_class) use ($name, &$settings) {
-            if (get_class($settings_class) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
-                $settings = $settings_class;
+        foreach ( $this->settings as $setting ) {
+            if (get_class($setting) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
+                $settings = $setting;
             }
-        });
+        }
 
         return $settings ? $settings : $name;
     }
@@ -100,7 +100,17 @@ class Settings extends Module {
 
         $settings = apply_filters( 'wemail_register_settings', $settings );
 
-        $this->settings = collect( $settings )->sortBy( 'priority' );
+        usort( $settings, [ $this, 'sort_by_priority' ] );
+
+        $this->settings = $settings;
+    }
+
+    public function sort_by_priority($a, $b) {
+        if ($a->priority == $b->priority) {
+            return 0;
+        }
+
+        return ($a->priority < $b->priority) ? -1 : 1;
     }
 
 }

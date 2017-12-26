@@ -28,13 +28,24 @@ class Routes {
      */
     public function get_route_data() {
         return [
-            'settings' => wemail()->settings->settings->map( function ( $setting ) {
-                return [
-                    'name'  => $setting->name,
-                    'path'  => $setting->path,
-                    'title' => $setting->title
-                ];
-            } )
+            'settings' => array_map( [ $this, 'map_settings' ], wemail()->settings->settings )
+        ];
+    }
+
+    /**
+     * Map settings callback method
+     *
+     * @since 1.0.0
+     *
+     * @param object $setting
+     *
+     * @return array
+     */
+    public function map_settings( $setting ) {
+        return [
+            'name'  => $setting->name,
+            'path'  => $setting->path,
+            'title' => $setting->title
         ];
     }
 }
