@@ -16,6 +16,23 @@
 
         computed: {
             ...Vuex.mapState('campaignShow', ['i18n', 'campaign'])
+        },
+
+        methods: {
+            registeredStoreModule() {
+                if (this.campaign.status !== 'active') {
+                    this.$router.push({
+                        name: 'campaignEdit',
+                        params: {
+                            id: this.campaign.id
+                        }
+                    });
+
+                    return false;
+                }
+
+                return true;
+            }
         }
     };
 </script>

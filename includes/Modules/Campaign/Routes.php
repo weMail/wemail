@@ -82,6 +82,7 @@ class Routes {
             'campaigns' => wemail()->campaign->all( $query ),
             'listTable' => [
                 'columns' => [
+                    'icon',
                     'name',
                     'status',
                     'lists',

@@ -28,6 +28,7 @@
 
 <script>
     import deleteCampaign from './mixins/deleteCampaign.js';
+    import automaticPhrase from './mixins/automaticPhrase.js';
 
     const ListTable = weMail.components.ListTable;
 
@@ -42,7 +43,8 @@
 
         mixins: [
             ...weMail.getMixins('routeComponent', 'helpers'),
-            deleteCampaign
+            deleteCampaign,
+            automaticPhrase
         ],
 
         components: {
@@ -164,6 +166,20 @@
                         classNames: ['view'],
                         showIf: 'showRowActionView',
                         route: 'rowActionViewRoute'
+                    },
+                    {
+                        action: 'pause',
+                        title: __('Pause'),
+                        classNames: ['pause'],
+                        showIf: 'showRowActionPause',
+                        onClick: 'onClickRowActionPause'
+                    },
+                    {
+                        action: 'resume',
+                        title: __('Resume'),
+                        classNames: ['resume'],
+                        showIf: 'showRowActionResume',
+                        onClick: 'onClickRowActionResume'
                     },
                     {
                         action: 'restore',
@@ -321,7 +337,7 @@
             },
 
             showRowActionView(campaign, currentRoute) {
-                if (currentRoute.params.status === 'trashed') {
+                if (currentRoute.params.status !== 'active') {
                     return false;
                 }
 
@@ -335,6 +351,46 @@
                         id: campaign.id
                     }
                 };
+            },
+
+            showRowActionPause(campaign, currentRoute) {
+                if (currentRoute.params.status === 'trashed') {
+                    return false;
+                }
+
+                if (campaign.status !== 'active') {
+                    return false;
+                }
+
+                return weMail.user.permissions.update_campaign;
+            },
+
+            onClickRowActionPause(campaign) {
+                weMail.api.campaigns(campaign.id).pause().update().done((response) => {
+                    if (response.data && response.data.status === 'paused') {
+                        campaign.status = 'paused';
+                    }
+                });
+            },
+
+            showRowActionResume(campaign, currentRoute) {
+                if (currentRoute.params.status === 'trashed') {
+                    return false;
+                }
+
+                if (campaign.status !== 'paused') {
+                    return false;
+                }
+
+                return weMail.user.permissions.update_campaign;
+            },
+
+            onClickRowActionResume(campaign) {
+                weMail.api.campaigns(campaign.id).resume().update().done((response) => {
+                    if (response.data && response.data.status === 'active') {
+                        campaign.status = 'active';
+                    }
+                });
             },
 
             showRowActionRestore(campaign, currentRoute) {
@@ -369,10 +425,31 @@
                 }, softDelete);
             },
 
-            columnName(campaign) {
+            columnIcon(campaign) {
+                let image;
+                let alt = '';
+
+                if (campaign.type === 'standard') {
+                    image = 'email-type-standard';
+                    alt = __('Standard Newsletter');
+                } else {
+                    image = 'email-type-automatic';
+                    alt = __('Automatic Newsletter');
+                }
+
                 return {
                     html: `
-                        <router-link :to="{name: 'campaignShow', params: {id: '${campaign.id}'}}" class="list-table-title">
+                        <img src="${weMail.assetsURL}/images/misc/${image}.png" alt="${alt}">
+                    `
+                };
+            },
+
+            columnName(campaign) {
+                const routeName = (campaign.status === 'active') ? 'campaignShow' : 'campaignEdit';
+
+                return {
+                    html: `
+                        <router-link :to="{name: '${routeName}', params: {id: '${campaign.id}'}}" class="list-table-title">
                             ${campaign.name}
                         </router-link>
                     `
@@ -380,6 +457,10 @@
             },
 
             columnStatus(campaign) {
+                if (campaign.type === 'automatic' && campaign.status === 'active') {
+                    return this.automaticPhrase(campaign);
+                }
+
                 const status = this.campaignStatuses[campaign.status] || campaign.status;
 
                 return {
@@ -400,7 +481,7 @@
                     }
                 });
 
-                return lists.join(', ');
+                return lists.length ? lists.join(', ') : '&mdash;';
             }
         }
     };
@@ -408,6 +489,16 @@
 
 <style lang="scss">
     .wemail-list-table-campaigns {
+
+        .column-icon {
+            width: 25px;
+            padding: 8px 0 0 4px;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
 
         .column-status {
             width: 180px;
