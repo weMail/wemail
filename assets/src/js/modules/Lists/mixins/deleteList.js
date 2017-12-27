@@ -26,6 +26,14 @@ export default {
                         if (typeof callback === 'function') {
                             callback(response);
                         }
+
+                        if (_.isArray(id)) {
+                            id.forEach((listId) => {
+                                this.$store.commit('global/removeList', listId);
+                            });
+                        } else {
+                            this.$store.commit('global/removeList', id);
+                        }
                     });
                 }
             });

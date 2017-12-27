@@ -17,6 +17,7 @@
                                 <input
                                     type="email"
                                     :class="['form-control', isInvalidEmail ? 'form-control-danger' : '']"
+                                    id="subscriber-modal-email-input"
                                     v-model="subscriber.email"
                                     @input="removeErrors"
                                 >
@@ -134,17 +135,22 @@
             },
 
             lists() {
-                return weMail.lists;
+                return this.$store.state.global.lists;
             }
         },
 
         mounted() {
-            $(this.$el)
-                .wemailModal('show')
-                .on('hidden.wemail.modal', this.onCloseModal);
+            $(this.$el).on('shown.wemail.modal', this.onShownModal);
+            $(this.$el).on('hidden.wemail.modal', this.onCloseModal);
+
+            $(this.$el).wemailModal('show');
         },
 
         methods: {
+            onShownModal() {
+                $('#subscriber-modal-email-input').focus();
+            },
+
             onCloseModal() {
                 this.$router.push({
                     name: 'subscriberIndex'
@@ -177,7 +183,13 @@
                 if (!vm.edit) {
                     api = weMail.api.subscribers().create(vm.subscriber);
                 } else {
-                    api = weMail.api.subscribers(vm.$route.params.id).update(vm.subscriber);
+                    const subscriber = $.extend(true, {}, vm.subscriber);
+
+                    if (!subscriber.lists.length) {
+                        subscriber.lists = null;
+                    }
+
+                    api = weMail.api.subscribers(vm.$route.params.id).update(subscriber);
                 }
 
                 api.done((response) => {

@@ -1,3 +1,4 @@
+import store from './store.js';
 import { momentMap, format } from './date.js';
 import { __, sprintf } from './i18n/index.js';
 
@@ -5,27 +6,7 @@ weMail.__ = __;
 weMail.sprintf = sprintf;
 
 // Vue Store
-const global = {
-    namespaced: true,
-
-    state: {
-        lists: weMail.lists,
-        i18n: weMail.i18n
-    },
-
-    mutations: {
-        updateLists(state, list) {
-            const lists = state.lists.concat(list);
-            state.lists = _.orderBy(lists, 'name', 'asc');
-        }
-    }
-};
-
-weMail.store = new Vuex.Store({
-    modules: {
-        global
-    }
-});
+weMail.store = store;
 
 // Global Event Bus
 weMail.event = new Vue();

@@ -16,6 +16,7 @@
                                 <input
                                     type="text"
                                     :class="['form-control', isInvalidName ? 'form-control-danger' : '']"
+                                    id="list-modal-name-input"
                                     v-model="list.name"
                                     @input="isInvalidName = false"
                                 >
@@ -92,12 +93,17 @@
         },
 
         mounted() {
-            $(this.$el)
-                .wemailModal('show')
-                .on('hidden.wemail.modal', this.onCloseModal);
+            $(this.$el).on('shown.wemail.modal', this.onShownModal);
+            $(this.$el).on('hidden.wemail.modal', this.onCloseModal);
+
+            $(this.$el).wemailModal('show');
         },
 
         methods: {
+            onShownModal() {
+                $('#list-modal-name-input').focus();
+            },
+
             onCloseModal() {
                 this.$router.push({
                     name: 'listsIndex'
@@ -128,11 +134,19 @@
                 }
 
                 api.done((response) => {
-                    this.$store.commit('global/updateLists', {
-                        id: response.id,
-                        name: response.name,
-                        type: response.type
-                    });
+                    if (response.data && response.data.id) {
+                        const list = {
+                            id: response.data.id,
+                            name: response.data.name,
+                            type: response.data.type
+                        };
+
+                        if (!vm.edit) {
+                            this.$store.commit('global/addList', list);
+                        } else {
+                            this.$store.commit('global/updateList', list);
+                        }
+                    }
 
                     vm.isDisabled = false;
                     $(vm.$el).off('hide.wemail.modal').wemailModal('hide');
