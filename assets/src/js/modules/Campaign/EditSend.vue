@@ -393,7 +393,7 @@
                 // should be move cursor to end also
             },
 
-            saveCampaign(campaign) {
+            saveCampaign(campaign, callback) {
                 const vm = this;
 
                 if (!campaign || !campaign.id) {
@@ -403,16 +403,26 @@
                 weMail.api.campaigns(this.campaign.id).update(campaign).done((reponse) => {
                     if (reponse.data && reponse.data.id) {
                         vm.$store.commit('campaignEdit/updateCampaign', reponse.data);
+
+                        if (typeof callback === 'function') {
+                            callback();
+                        }
                     }
                 });
             },
 
             sendCampaign() {
-                const campaign = $.extend(true, {}, this.campaign);
+                const vm = this;
+
+                const campaign = $.extend(true, {}, vm.campaign);
 
                 campaign.status = 'active';
 
-                this.saveCampaign(campaign);
+                vm.saveCampaign(campaign, () => {
+                    vm.$router.push({
+                        name: 'campaignIndex'
+                    });
+                });
             },
 
             saveAsDraft() {

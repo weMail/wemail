@@ -154,18 +154,25 @@
                         route: 'rowActionEditRoute'
                     },
                     {
-                        action: 'trash',
-                        title: this.i18n.trash,
-                        classNames: ['trash'],
-                        showIf: 'showRowActionTrash',
-                        onClick: 'onClickRowActionTrash'
-                    },
-                    {
                         action: 'view',
                         title: this.i18n.view,
                         classNames: ['view'],
                         showIf: 'showRowActionView',
                         route: 'rowActionViewRoute'
+                    },
+                    {
+                        action: 'duplicate',
+                        title: __('Duplicate'),
+                        classNames: ['duplicate'],
+                        showIf: 'showRowActionDuplicate',
+                        onClick: 'onClickRowActionDuplicate'
+                    },
+                    {
+                        action: 'trash',
+                        title: this.i18n.trash,
+                        classNames: ['trash'],
+                        showIf: 'showRowActionTrash',
+                        onClick: 'onClickRowActionTrash'
                     },
                     {
                         action: 'pause',
@@ -324,18 +331,6 @@
                 };
             },
 
-            showRowActionTrash(campaign, currentRoute) {
-                if (currentRoute.params.status === 'trashed') {
-                    return false;
-                }
-
-                return weMail.user.permissions.delete_campaign;
-            },
-
-            onClickRowActionTrash(campaign) {
-                this.onClickRowActionDelete(campaign, true);
-            },
-
             showRowActionView(campaign, currentRoute) {
                 if (currentRoute.params.status !== 'active') {
                     return false;
@@ -351,6 +346,34 @@
                         id: campaign.id
                     }
                 };
+            },
+
+            showRowActionDuplicate(campaign, currentRoute) {
+                if (currentRoute.params.status === 'trashed') {
+                    return false;
+                }
+
+                return weMail.user.permissions.create_campaign;
+            },
+
+            onClickRowActionDuplicate(campaign) {
+                const vm = this;
+
+                weMail.api.campaigns(campaign.id).duplicate().post().done((response) => {
+                    vm.fetchData();
+                });
+            },
+
+            showRowActionTrash(campaign, currentRoute) {
+                if (currentRoute.params.status === 'trashed') {
+                    return false;
+                }
+
+                return weMail.user.permissions.delete_campaign;
+            },
+
+            onClickRowActionTrash(campaign) {
+                this.onClickRowActionDelete(campaign, true);
             },
 
             showRowActionPause(campaign, currentRoute) {
