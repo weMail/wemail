@@ -27,11 +27,26 @@
             ProgressBar
         },
 
+        computed: {
+            ...Vuex.mapState('campaignEdit', ['campaign'])
+        },
+
         methods: {
             registeredStoreModule() {
                 if (!this.$store.state.campaignEdit.campaign) {
                     this.$router.push({
                         name: 'campaign404'
+                    });
+
+                    return false;
+                }
+
+                if (this.campaign.status === 'active' || this.campaign.status === 'completed') {
+                    this.$router.push({
+                        name: 'campaignShow',
+                        params: {
+                            id: this.campaign.id
+                        }
                     });
 
                     return false;

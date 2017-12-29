@@ -20,18 +20,26 @@
 
         methods: {
             registeredStoreModule() {
-                if (this.campaign.status !== 'active') {
+                if (!this.campaign) {
                     this.$router.push({
-                        name: 'campaignEdit',
-                        params: {
-                            id: this.campaign.id
-                        }
+                        name: 'campaign404'
                     });
 
                     return false;
                 }
 
-                return true;
+                if (this.campaign.status === 'active' || this.campaign.status === 'completed') {
+                    return true;
+                }
+
+                this.$router.push({
+                    name: 'campaignEdit',
+                    params: {
+                        id: this.campaign.id
+                    }
+                });
+
+                return false;
             }
         }
     };

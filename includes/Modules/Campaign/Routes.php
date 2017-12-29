@@ -56,9 +56,9 @@ class Routes {
                 'name'                      => __( 'Name', 'wemail' ),
                 'status'                    => __( 'Status', 'wemail' ),
                 'lists'                     => __( 'Lists', 'wemail' ),
+                'sent'                      => __( 'Sent', 'wemail' ),
                 'opened'                    => __( 'Open', 'wemail' ),
                 'clicked'                   => __( 'Click', 'wemail' ),
-                'bounced'                   => __( 'Bounce', 'wemail' ),
                 'unsubscribed'              => __( 'Unsub', 'wemail' ),
                 'createdAt'                 => __( 'Created At', 'wemail' ),
                 'moveToTrash'               => __( 'Move to Trash', 'wemail' ),
@@ -86,17 +86,17 @@ class Routes {
                     'name',
                     'status',
                     'lists',
+                    'sent',
                     'opened',
                     'clicked',
-                    'bounced',
                     'unsubscribed',
                     'createdAt'
                 ],
                 'sortableColumns' => [
                     'name'          => 'name',
+                    'sent'          => 'sent',
                     'opened'        => 'opened',
                     'clicked'       => 'clicked',
-                    'bounced'       => 'bounced',
                     'unsubscribed'  => 'unsubscribed',
                     'createdAt'     => 'created_at'
                 ]

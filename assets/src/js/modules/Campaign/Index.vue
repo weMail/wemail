@@ -332,11 +332,15 @@
             },
 
             showRowActionView(campaign, currentRoute) {
-                if (currentRoute.params.status !== 'active') {
+                if (currentRoute.params.status === 'trashed') {
                     return false;
                 }
 
-                return true;
+                if (campaign.status === 'active' || campaign.status === 'completed') {
+                    return true;
+                }
+
+                return false;
             },
 
             rowActionViewRoute(campaign) {
@@ -468,7 +472,13 @@
             },
 
             columnName(campaign) {
-                const routeName = (campaign.status === 'active') ? 'campaignShow' : 'campaignEdit';
+                if (campaign.deleted_at) {
+                    return `<strong>${campaign.name}</strong>`;
+                }
+
+                const routeName = (campaign.status === 'active' || campaign.status === 'completed')
+                    ? 'campaignShow'
+                    : 'campaignEdit';
 
                 return {
                     html: `
@@ -531,11 +541,11 @@
             width: 155px;
         }
 
+        .column-sent,
         .column-opened,
         .column-clicked,
-        .column-bounced,
         .column-unsubscribed {
-            width: 85px;
+            width: 76px;
         }
     }
 </style>
