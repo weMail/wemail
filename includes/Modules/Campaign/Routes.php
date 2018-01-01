@@ -130,10 +130,8 @@ class Routes {
      */
     public function show( $params, $query ) {
         return [
-            'i18n' => [
-                'campaign' => __( 'List', 'wemail' )
-            ],
-            'campaign' => wemail()->campaign->get( $params['id'] )
+            'campaign' => wemail()->campaign->get( $params['id'] ),
+            'subscribers' => wemail()->api->campaigns( $params['id'] )->subscribers()->query( $query )->get()
         ];
     }
     /**

@@ -87,7 +87,14 @@ export default {
                 {
                     path: '',
                     component: Show,
-                    name: 'campaignShow'
+                    name: 'campaignShow',
+                    children: [
+                        {
+                            path: 'subscribers/:status',
+                            component: RouterView,
+                            name: 'campaignSubscriber'
+                        }
+                    ]
                 },
                 {
                     path: 'edit',

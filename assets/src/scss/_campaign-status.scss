@@ -1,0 +1,43 @@
+.campaign-email-status {
+    display: block;
+    font-weight: 700;
+
+    &.active {
+        font-weight: 400;
+        color: $wp-black;
+    }
+
+    &.scheduled {
+        color: $wp-black;
+    }
+
+    &.paused {
+        color: #90a4ae;
+    }
+
+    &.completed {
+        color: #0b9017;
+    }
+
+    &.draft {
+        color: #555;
+    }
+
+    &.trashed {
+        color: $wp-red;
+    }
+
+    .schedule-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+        color: lighten($wp-black, 40%);
+
+        .dashicons {
+            width: 13px;
+            height: 13px;
+            margin-top: 4px;
+            font-size: 13px;
+        }
+    }
+}

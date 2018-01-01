@@ -248,3 +248,4 @@ weMail.dateTime.getMomentFormat = function (dateFormat) {
 
 weMail.momentDateFormat = weMail.dateTime.getMomentFormat(weMail.dateTime.server.dateFormat);
 weMail.momentTimeFormat = weMail.dateTime.getMomentFormat(weMail.dateTime.server.timeFormat);
+weMail.momentDateTimeFormat = `${weMail.momentDateFormat} ${weMail.momentTimeFormat}`;

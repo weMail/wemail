@@ -49,11 +49,11 @@ weMail.admin = new Vue({
                     .addClass('current');
             }
 
-            const INTERVAL = 300;
+            // const INTERVAL = 300;
 
-            $('html, body').animate({
-                scrollTop: 0
-            }, INTERVAL);
+            // $('html, body').animate({
+            //     scrollTop: 0
+            // }, INTERVAL);
 
             // hide admin notices in certain pages
             if (weMail.hideAdminNoticesIn.indexOf(to.name) >= 0) {
