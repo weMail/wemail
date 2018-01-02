@@ -55,8 +55,14 @@
 
         <div v-if="showDriver === 'sparkpost'" class="col-sm-6">
             <label>
-                <strong>{{ __('Enable Sparkpost') }}</strong>
-                <input type="checkbox" v-model="activeDriver">
+                <input type="checkbox" class="margin-right-5" v-model="activeDriver">
+                <strong class="d-inline">{{ __('Enable SparkPost') }}</strong>
+            </label>
+
+            <label>
+                <strong>{{ __('API Key') }}</strong>
+                <input type="text" v-model="settings.sparkpost.secret">
+                <em class="hint" v-html="sparkpostHelper"></em>
             </label>
         </div>
     </div>
@@ -78,7 +84,7 @@
                     },
                     {
                         name: 'sparkpost',
-                        title: __('Sparkpost')
+                        title: __('SparkPost')
                     }
                 ]
             };
@@ -97,16 +103,16 @@
                         this.settings.driver = false;
                     }
                 }
+            },
+
+            sparkpostHelper() {
+                return sprintf('Set your SparkPost api key. <a href="%s" target="_blank">See SparkPost documentation</a>', 'https://www.sparkpost.com/docs/getting-started/create-api-keys/');
             }
         },
 
         methods: {
             afterLoaded() {
                 this.showDriver = this.settings.driver || 'smtp';
-            },
-
-            showDriverSettings(driver) {
-                console.log(driver);
             }
         }
     };
