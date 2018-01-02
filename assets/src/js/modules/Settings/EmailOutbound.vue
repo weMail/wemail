@@ -65,6 +65,25 @@
                 <em class="hint" v-html="sparkpostHelper"></em>
             </label>
         </div>
+
+        <div v-if="showDriver === 'mailgun'" class="col-sm-6">
+            <label>
+                <input type="checkbox" class="margin-right-5" v-model="activeDriver">
+                <strong class="d-inline">{{ __('Enable Mailgun') }}</strong>
+            </label>
+
+            <label>
+                <strong>{{ __('Domain') }}</strong>
+                <input type="text" v-model="settings.mailgun.domain">
+                <em class="hint">{{ __('Your Mailgun domain') }}</em>
+            </label>
+
+            <label>
+                <strong>{{ __('API Key') }}</strong>
+                <input type="text" v-model="settings.mailgun.secret">
+                <em class="hint" v-html="mailgunHelper"></em>
+            </label>
+        </div>
     </div>
 </template>
 
@@ -85,6 +104,10 @@
                     {
                         name: 'sparkpost',
                         title: __('SparkPost')
+                    },
+                    {
+                        name: 'mailgun',
+                        title: __('Mailgun')
                     }
                 ]
             };
@@ -106,7 +129,17 @@
             },
 
             sparkpostHelper() {
-                return sprintf('Set your SparkPost api key. <a href="%s" target="_blank">See SparkPost documentation</a>', 'https://www.sparkpost.com/docs/getting-started/create-api-keys/');
+                return sprintf(
+                    'Set your SparkPost api key. <a href="%s" target="_blank">See SparkPost documentation</a>',
+                    'https://www.sparkpost.com/docs/getting-started/create-api-keys/'
+                );
+            },
+
+            mailgunHelper() {
+                return sprintf(
+                    'Set your Mailgun api key. <a href="%s" target="_blank">See Mailgun documentation</a>',
+                    'https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-via-api'
+                );
             }
         },
 
