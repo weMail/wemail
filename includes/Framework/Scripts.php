@@ -94,6 +94,7 @@ class Scripts {
             'actions'               => apply_filters( 'wemail_component_actions', [] ),
             'customizerIframe'      => WEMAIL_URL . '/views/customizer.html',
             'lists'                 => wemail()->lists->items(),
+            'lifeStages'            => wemail()->settings->life_stages(),
             'locale_data'           => $this->get_locale_data(),
             'hideAdminNoticesIn'    => [
                 'campaignEditDesign'

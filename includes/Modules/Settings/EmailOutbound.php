@@ -36,7 +36,7 @@ class EmailOutbound extends AbstractSettings {
     public function get_settings() {
         $settings = wemail()->api->settings()->email_outbound()->get();
 
-        return $settings;
+        return !empty($settings['settings']) ? $settings['settings'] : [];
     }
 
     /**

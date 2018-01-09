@@ -44,7 +44,7 @@ class Settings extends Module {
 
         foreach ( $this->settings as $setting ) {
             if (get_class($setting) === "WeDevs\\WeMail\\Modules\\Settings\\$name") {
-                $settings = $setting->get_settings();
+                return $setting->get_settings();
             }
         }
 

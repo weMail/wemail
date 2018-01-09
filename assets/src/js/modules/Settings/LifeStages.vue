@@ -15,7 +15,7 @@
                             <span v-if="stage === settings.default" class="item-default">
                                 <span class="text-muted">-</span>
                                 <span class="text-success">
-                                    <i class="fa fa-check-circle"></i> {{ i18n.default }}
+                                    <i class="fa fa-check-circle"></i> {{ __('default') }}
                                 </span>
                             </span>
                         </span>
@@ -41,19 +41,19 @@
 
                     <div v-if="lifeStage.index === index" class="item-content">
                         <label>
-                            {{ i18n.name }}
+                            {{ __('Name') }}
                             <input type="text" class="form-control" v-model="lifeStage.i18n">
                         </label>
 
                         <label>
-                            {{ i18n.key }}
+                            {{ __('Key') }}
                             <input type="text" class="form-control" v-model="lifeStage.name">
-                            <span class="hint">{{ i18n.nameHint }}</span>
+                            <span class="hint">{{ __('only lowercased a-z, 0-9 and underscore are allowed') }}</span>
                         </label>
 
                         <label class="strong">
                             <input type="checkbox" v-model="lifeStage.default" :disabled="stage === settings.default">
-                            {{ i18n.makeItDefault }}
+                            {{ __('Make it the default life stage') }}
                         </label>
 
                         <div class="item-content-footer">
@@ -63,7 +63,7 @@
                                         href="#"
                                         :class="['text-danger', (stage === settings.default) ? 'disabled' : '']"
                                         @click.prevent="remove"
-                                    >{{ i18n.remove }}</a>
+                                    >{{ __('Remove') }}</a>
                                 </li>
                                 <li>
                                     <a href="#" @click.prevent="reset">{{ __('Cancel') }}</a>
@@ -82,7 +82,7 @@
             </ul>
 
             <button type="button" class="button button-primary button-block" @click="addNewLifeStage">
-                <i class="fa fa-plus-circle"></i> {{ i18n.addNewLifeStage }}
+                <i class="fa fa-plus-circle"></i> {{ __('Add new life stage') }}
             </button>
         </div>
     </div>
@@ -158,19 +158,19 @@
                 const vm = this;
 
                 if (vm.settings.names.length === 1) {
-                    vm.error(vm.i18n.atLeastOneMsg);
+                    vm.error(__('At least one life stage is required'));
                     return;
                 }
 
                 if (vm.lifeStage.default) {
-                    vm.error(vm.i18n.errorMsgDefault);
+                    vm.error(__('You cannot remove the default life stage'));
                     return;
                 }
 
                 vm.warn({
-                    title: vm.i18n.delStageWarnTitle,
-                    text: vm.i18n.delStageWarnText,
-                    confirmButtonText: vm.i18n.yesDeleteIt
+                    title: __('Are you sure you want to remove this life stage?'),
+                    text: __('All the subscriber belongs to this stage will be moved to default life stage'),
+                    confirmButtonText: __('Yes delete it')
                 }).then((deleteIt) => {
                     if (deleteIt) {
                         Vue.delete(vm.settings.i18n, vm.lifeStage.name);
@@ -187,7 +187,7 @@
                 const vm = this;
 
                 if (vm.isEmpty(vm.lifeStage.i18n) || vm.isEmpty(vm.lifeStage.name)) {
-                    vm.error(vm.i18n.requiredMsg);
+                    vm.error(__('Both name and key fields are required'));
                     return;
                 }
 
@@ -219,7 +219,7 @@
 
                 this.settings.names.splice(index, 1, newStageName);
 
-                this.settings.i18n[newStageName] = 'New life stage';
+                this.settings.i18n[newStageName] = __('New life stage');
 
                 this.open(index);
 

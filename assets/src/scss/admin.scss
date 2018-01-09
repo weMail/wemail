@@ -31,6 +31,10 @@
         }
     }
 
+    .progress {
+        background-color: #b1b1b1;
+    }
+
     @import "../vendor/bootstrap/scss/bootstrap.scss";
     @import "multiselect";
     @import "type";

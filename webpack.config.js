@@ -6,6 +6,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const eslintFriendlyFormatter = require('eslint-friendly-formatter');
 const postcssFlexbugsFixes = require('postcss-flexbugs-fixes');
 const postcssCssnext = require('postcss-cssnext');
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 function srcDir(dir) {
     return path.join(__dirname, 'assets/src/', dir);
@@ -118,7 +119,13 @@ const plugins = [
     }),
 
     // Ignore all optional deps of moment.js
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+    // webpack build notifier
+    new WebpackBuildNotifierPlugin({
+      title: "weMail",
+      suppressSuccess: true
+    })
 ];
 
 if (isProduction()) {

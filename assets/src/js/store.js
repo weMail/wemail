@@ -4,8 +4,9 @@ const store = new Vuex.Store({
             namespaced: true,
 
             state: {
+                i18n: weMail.i18n,
                 lists: weMail.lists,
-                i18n: weMail.i18n
+                lifeStages: weMail.lifeStages
             },
 
             mutations: {
