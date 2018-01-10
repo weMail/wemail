@@ -9,6 +9,13 @@ class User {
     use Hooker;
 
     /**
+     * WP User ID
+     *
+     * @var integer
+     */
+    public $user_id = 0;
+
+    /**
      * User API key
      *
      * @since 1.0.0
@@ -63,19 +70,31 @@ class User {
      * @return void
      */
     public function boot() {
-        $api_key  = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
-        $api_key  = apply_filters( 'wemail_api_key', $api_key );
+        $user_id = get_current_user_id();
 
-        if ($api_key) {
-            $me = wemail()->api->auth()->users()->me()->query( ['include' => 'role,permissions'] )->get();
+        $api_key  = get_user_meta( $user_id, 'wemail_api_key', true );
+        $api_key  = apply_filters( 'wemail_api_key', $api_key, $user_id );
 
-            if ( !empty( $me['data'] ) ) {
-                $this->hash = $me['data']['hash'];
-                $this->role = $me['data']['role'];
-                $this->permissions = $me['data']['permissions'];
+        if ( $api_key ) {
+            $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
+
+            if ( ! $user_data ) {
+                $user_data = wemail()->api->auth()->users()->me()->query( ['include' => 'role,permissions'] )->get();
+
+                if ( ! empty( $user_data['data'] ) ) {
+                    $user_data = $user_data['data'];
+
+                    update_user_meta( $user_id, 'wemail_user_data', $user_data );
+                }
             }
+
+
+            $this->hash = $user_data['hash'];
+            $this->role = $user_data['role'];
+            $this->permissions = $user_data['permissions'];
         }
 
+        $this->user_id = $user_id;
         $this->api_key  = $api_key;
     }
 
