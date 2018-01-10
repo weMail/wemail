@@ -197,7 +197,7 @@ final class WeDevs_WeMail {
                 break;
 
             case 'frontend' :
-                $request = ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' );
+                $request = ! is_admin() && defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' );
                 break;
 
             default:
@@ -312,6 +312,7 @@ final class WeDevs_WeMail {
 
         $this->core->scripts = new WeDevs\WeMail\Framework\Scripts();
         $this->core->modules = new WeDevs\WeMail\Modules\Modules();
+        $this->core->rest    = new WeDevs\WeMail\Rest();
 
         if ( $this->is_request( 'admin' ) ) {
             $this->core->admin_scripts = new WeDevs\WeMail\Admin\Scripts();

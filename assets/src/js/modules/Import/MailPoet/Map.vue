@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!settings.map.length">
-            <p class="text-center">{{ __('Fetching MailChimp Merge Fields') }}...</p>
+            <p class="text-center">{{ __('Fetching MailPoet Merge Fields') }}...</p>
         </div>
 
         <div v-else class="row">
@@ -11,7 +11,7 @@
                 <table class="wp-list-table widefat fixed striped valign-top margin-bottom-20">
                     <thead>
                         <tr>
-                            <th>{{ __('MailChimp *|MERGE|* field') }}</th>
+                            <th>{{ __('MailPoet field') }}</th>
                             <th>{{ __('weMail meta field') }}</th>
                         </tr>
                     </thead>
@@ -19,7 +19,7 @@
                     <tbody>
                         <tr v-for="map in settings.map">
                             <td>
-                                <strong>{{ getMergeField(map.mailchimp) }}</strong>
+                                <strong>{{ getMetaField(map.mailpoet) }}</strong>
                             </td>
 
                             <td>
@@ -59,7 +59,7 @@
 
         data() {
             return {
-                mailChimpFields: [],
+                mailPoetFields: [],
                 wemailMeta: []
             };
         },
@@ -67,17 +67,16 @@
         created() {
             const vm = this;
 
-            if (!vm.settings.mailchimp_list_id) {
+            if (!vm.settings.mailpoet_list_id) {
                 return vm.$router.push({
-                    name: 'importMailChimpSettings'
+                    name: 'importMailPoetList'
                 });
             }
 
             weMail.api
                 .import()
-                .mailchimp()
-                .lists(vm.settings.mailchimp_list_id)
-                .merge_fields()
+                .mailpoet('v2')
+                .meta_fields()
                 .get()
                 .done((fieldResponse) => {
                     weMail.api
@@ -88,12 +87,12 @@
                             if (fieldResponse && fieldResponse.fields && fieldResponse.fields.length) {
                                 fieldResponse.fields.forEach((field) => {
                                     vm.settings.map.push({
-                                        mailchimp: field.name,
-                                        wemail: (field.name === 'EMAIL') ? 'email' : ''
+                                        mailpoet: field.name,
+                                        wemail: (field.name === 'email') ? 'email' : ''
                                     });
                                 });
 
-                                vm.mailChimpFields = fieldResponse.fields;
+                                vm.mailPoetFields = fieldResponse.fields;
                                 vm.wemailMeta = metaResponse.meta;
                             }
                         });
@@ -103,8 +102,8 @@
         },
 
         methods: {
-            getMergeField(name) {
-                return _.find(this.mailChimpFields, {
+            getMetaField(name) {
+                return _.find(this.mailPoetFields, {
                     name
                 }).title;
             },
@@ -119,7 +118,7 @@
 
             goToNext() {
                 this.$router.push({
-                    name: 'importMailChimpProgress'
+                    name: 'importMailPoetProgress'
                 });
             }
         }

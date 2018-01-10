@@ -3,12 +3,12 @@
         <h1 class="margin-bottom-10">{{ __('Import') }}</h1>
 
         <div class="row">
-            <div class="col-md-4">
+            <div v-for="integration in integrations" class="col-md-4">
                 <div class="postbox postbox-import">
-                    <h3 class="title">{{ __('MailChimp') }}</h3>
+                    <h3 class="title">{{ integration.title }}</h3>
 
-                    <router-link :to="{name: 'importMailChimpSettings'}">
-                        <img :src="logo.mailchimp" alt="">
+                    <router-link :to="{name: integration.route}">
+                        <img :src="integration.logo" alt="">
                     </router-link>
                 </div>
             </div>
@@ -20,9 +20,20 @@
     export default {
         data() {
             return {
-                logo: {
-                    mailchimp: `${weMail.cdn}/third-party/mailchimp-logo.png`
-                }
+                integrations: [
+                    {
+                        name: 'mailchimp',
+                        title: __('MailChimp'),
+                        logo: `${weMail.cdn}/vendor/mailchimp.png`,
+                        route: 'importMailChimpSettings'
+                    },
+                    {
+                        name: 'mailpoet',
+                        title: __('MailPoet 2'),
+                        logo: `${weMail.cdn}/vendor/mailpoet-2.png`,
+                        route: 'importMailPoetList'
+                    }
+                ]
             };
         }
     };

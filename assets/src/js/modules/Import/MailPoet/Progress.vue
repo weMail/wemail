@@ -3,8 +3,8 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="clearfix">
-                <h3 v-if="!finishedImporting" class="float-left">{{ sprintf('Importing %d MailChimp Subscribers', total) }}...</h3>
-                <h3 v-else class="float-left text-success">{{ sprintf('Finished importing %d MailChimp Subscribers', total) }}...</h3>
+                <h3 v-if="!finishedImporting" class="float-left">{{ sprintf('Importing %d MailPoet Subscribers', total) }}...</h3>
+                <h3 v-else class="float-left text-success">{{ sprintf('Finished importing %d MailPoet Subscribers', total) }}...</h3>
             </div>
             <div class="progress">
                 <div
@@ -86,15 +86,15 @@
                 return vm.import();
             }
 
-            if (!vm.settings.mailchimp_list_id || !vm.settings.map.length) {
+            if (!vm.settings.mailpoet_list_id || !vm.settings.map.length) {
                 return vm.$router.push({
-                    name: 'importMailChimpSettings'
+                    name: 'importMailPoetList'
                 });
             }
 
             vm.finishedImporting = false;
 
-            vm.apiHandler = weMail.api.import().mailchimp().save(vm.settings).done((response) => {
+            vm.apiHandler = weMail.api.import().mailpoet('v2').save(vm.settings).done((response) => {
                 if (response.total && response.completed) {
                     vm.total = response.total;
                     vm.completed = response.completed;
@@ -133,10 +133,10 @@
                     this.import();
 
                 } else if (this.completed >= this.total) {
-                    this.settings.mailchimp_list_id = '';
+                    this.settings.mailpoet_list_id = '';
                     this.settings.wemail_list_id = '';
                     this.settings.import_confirmed_only = false;
-                    this.settings.import_mailchimp_list = true;
+                    this.settings.import_mailpoet_list = true;
                     this.settings.overwite_existing_subscriber = true;
                     this.settings.life_stage = '';
                     this.settings.map = [];

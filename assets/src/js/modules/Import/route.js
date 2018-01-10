@@ -38,6 +38,30 @@ function MailChimpProgress(resolve) {
     });
 }
 
+function MailPoet(resolve) {
+    require.ensure(['./MailPoet/MailPoet.vue'], () => {
+        resolve(require('./MailPoet/MailPoet.vue'));
+    });
+}
+
+function MailPoetList(resolve) {
+    require.ensure(['./MailPoet/List.vue'], () => {
+        resolve(require('./MailPoet/List.vue'));
+    });
+}
+
+function MailPoetMap(resolve) {
+    require.ensure(['./MailPoet/Map.vue'], () => {
+        resolve(require('./MailPoet/Map.vue'));
+    });
+}
+
+function MailPoetProgress(resolve) {
+    require.ensure(['./MailPoet/Progress.vue'], () => {
+        resolve(require('./MailPoet/Progress.vue'));
+    });
+}
+
 export default {
     path: '/import',
     component: RouterView,
@@ -72,14 +96,31 @@ export default {
                     component: MailChimpProgress
                 }
             ]
+        },
+        {
+            path: 'mailpoet-v2',
+            component: MailPoet,
+            children: [
+                {
+                    path: '',
+                    name: 'importMailPoetList',
+                    component: MailPoetList
+                },
+                {
+                    path: 'field-map',
+                    name: 'importMailPoetMap',
+                    component: MailPoetMap
+                },
+                {
+                    path: 'progress',
+                    name: 'importMailPoetProgress',
+                    component: MailPoetProgress
+                }
+            ]
         }
         // {
         //     path: 'csv',
         //     name: 'importCsv'
         // },
-        // {
-        //     path: 'mailpoet',
-        //     name: 'importMailPoet'
-        // }
     ]
 };

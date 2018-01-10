@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>{{ __('Import: MailChimp') }}</h1>
+        <h1>{{ __('Import: MailPoet') }}</h1>
 
         <template v-if="!isReady">
             <p class="text-center">{{ __('Preparing Importer') }}...</p>
@@ -27,28 +27,24 @@
                 isReady: false,
                 routes: [
                     {
-                        name: 'importMailChimpSettings',
-                        title: __('Settings')
-                    },
-                    {
-                        name: 'importMailChimpList',
+                        name: 'importMailPoetList',
                         title: __('Select List')
                     },
                     {
-                        name: 'importMailChimpMap',
+                        name: 'importMailPoetMap',
                         title: __('Map Fields')
                     },
                     {
-                        name: 'importMailChimpProgress',
+                        name: 'importMailPoetProgress',
                         title: __('Progress')
                     }
                 ],
 
                 settings: {
-                    mailchimp_list_id: '',
+                    mailpoet_list_id: '',
                     wemail_list_id: '',
                     import_confirmed_only: false,
-                    import_mailchimp_list: true,
+                    import_mailpoet_list: true,
                     overwite_existing_subscriber: true,
                     life_stage: '',
                     map: []
@@ -60,10 +56,10 @@
             const vm = this;
 
             weMail.api.import().get().done((response) => {
-                if (response && response.settings && response.settings.type === 'mailchimp') {
+                if (response && response.settings && response.settings.type === 'mailpoet') {
                     vm.settings = response.settings;
                     vm.$router.push({
-                        name: 'importMailChimpProgress'
+                        name: 'importMailPoetProgress'
                     });
                 }
 
