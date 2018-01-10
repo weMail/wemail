@@ -3,8 +3,8 @@
 namespace WeDevs\WeMail\Modules\Auth;
 
 use WP_REST_Response;
-use WeDevs\WeMail\Framework\Traits\Ajax;
-use WeDevs\WeMail\Framework\Traits\Hooker;
+use WeDevs\WeMail\Traits\Ajax;
+use WeDevs\WeMail\Traits\Hooker;
 
 class Auth {
 

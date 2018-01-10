@@ -1,7 +1,7 @@
 <?php
 namespace WeDevs\WeMail;
 
-use WeDevs\WeMail\Framework\Traits\Ajax as AjaxTrait;
+use WeDevs\WeMail\Traits\Ajax as AjaxTrait;
 
 class Ajax {
 

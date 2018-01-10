@@ -2,7 +2,7 @@
 
 namespace WeDevs\WeMail\Modules\Lists;
 
-use WeDevs\WeMail\Framework\Traits\Hooker;
+use WeDevs\WeMail\Traits\Hooker;
 
 class Routes {
 

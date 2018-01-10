@@ -4,7 +4,7 @@ namespace WeDevs\WeMail\Modules\Api;
 
 use Illuminate\Support\Pluralizer;
 use Stringy\StaticStringy;
-use WeDevs\WeMail\Framework\Traits\Hooker;
+use WeDevs\WeMail\Traits\Hooker;
 
 class Api {
 

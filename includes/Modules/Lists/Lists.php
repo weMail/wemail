@@ -2,19 +2,7 @@
 
 namespace WeDevs\WeMail\Modules\Lists;
 
-use WeDevs\WeMail\Framework\Module;
-
-class Lists extends Module {
-
-    /**
-     * Class constructor
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function __construct() {
-    }
+class Lists {
 
     /**
      * Get a list of lists

@@ -2,8 +2,8 @@
 
 namespace WeDevs\WeMail\Framework;
 
-use WeDevs\WeMail\Framework\Traits\Ajax;
-use WeDevs\WeMail\Framework\Traits\Hooker;
+use WeDevs\WeMail\Traits\Ajax;
+use WeDevs\WeMail\Traits\Hooker;
 
 abstract class Module {
 

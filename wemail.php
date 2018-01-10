@@ -128,7 +128,7 @@ final class WeDevs_WeMail {
     public static function get_instance() {
         if (! isset( self::$instance ) && ! ( self::$instance instanceof WeDevs_WeMail ) ) {
             self::$instance = new WeDevs_WeMail;
-            self::$instance->bootstrap();
+            self::$instance->boot();
         }
 
         return self::$instance;
@@ -141,7 +141,7 @@ final class WeDevs_WeMail {
      *
      * @return void
      */
-    private function bootstrap() {
+    private function boot() {
         // Check requirements
         if ( ! $this->met_requirements() ) {
             add_action( 'admin_notices', [ $this, 'admin_notices' ] );
@@ -325,19 +325,6 @@ final class WeDevs_WeMail {
 
         // Init action.
         do_action( 'wemail_init' );
-    }
-
-    /**
-     * Check if wemail has a registered module
-     *
-     * @since 1.0.0
-     *
-     * @param $string $module_name All lowercase-underscored module name
-     *
-     * @return boolean
-     */
-    public function has_module( $module_name ) {
-        return $this->core->modules->has_module( $module_name );
     }
 
 }

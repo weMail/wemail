@@ -115,28 +115,4 @@ class Modules {
         }
     }
 
-    /**
-     * Check if wemail has a registered module
-     *
-     * @since 1.0.0
-     *
-     * @param $string $module_name All lowercase-underscored module name
-     *
-     * @return boolean
-     */
-    public function has_module( $module_name ) {
-        return array_key_exists( $module_name, $this->modules ) || false;
-    }
-
-    /**
-     * Get wemail registered module names
-     *
-     * @since 1.0.0
-     *
-     * @return array
-     */
-    public function get_module_names() {
-        return array_keys( $this->modules );
-    }
-
 }

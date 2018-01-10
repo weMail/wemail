@@ -4,7 +4,7 @@ namespace WeDevs\WeMail\Modules\Import\MailPoet;
 
 use WP_REST_Response;
 use WP_REST_Server;
-use WeDevs\WeMail\Framework\Traits\Hooker;
+use WeDevs\WeMail\Traits\Hooker;
 
 class Rest {
 

@@ -1,5 +1,5 @@
 <?php
-namespace WeDevs\WeMail\Framework\Traits;
+namespace WeDevs\WeMail\Traits;
 
 trait Ajax {
 
