@@ -17,6 +17,7 @@ class Menu {
      */
     public function __construct() {
         $this->add_action( 'admin_menu', 'register_admin_menu' );
+        $this->add_action( 'admin_print_styles', 'add_menu_icon_style' );
     }
 
     /**
@@ -32,7 +33,9 @@ class Menu {
         if ( current_user_can( 'manage_options' ) || wemail()->user->can( 'view_wemail' ) ) {
             $capability = 'read';
 
-            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'dashicons-email-alt', 1 );
+            $icon = WEMAIL_ASSETS . '/images/misc/wemail-menu-icon.svg';
+
+            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], $icon, 1 );
 
             $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
 
@@ -72,5 +75,16 @@ class Menu {
      */
     public function admin_view() {
         include_once WEMAIL_VIEWS . '/admin.php';
+    }
+
+    public function add_menu_icon_style() {
+        ?>
+            <style>
+                .menu-top.toplevel_page_wemail .wp-menu-image img {
+                    width: 20px;
+                    padding-top: 10px !important;
+                }
+            </style>
+        <?php
     }
 }
