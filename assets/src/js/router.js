@@ -1,12 +1,12 @@
-import Auth from './modules/Auth/route.js';
-import Overview from './modules/Overview/route.js';
-import Campaign from './modules/Campaign/route.js';
-import Subscriber from './modules/Subscriber/route.js';
-import Lists from './modules/Lists/route.js';
-import Form from './modules/Form/route.js';
-import Settings from './modules/Settings/route.js';
-import Import from './modules/Import/route.js';
-import FourZeroFour from './modules/FourZeroFour/route.js';
+import Auth from './core/Auth/route.js';
+import Overview from './core/Overview/route.js';
+import Campaign from './core/Campaign/route.js';
+import Subscriber from './core/Subscriber/route.js';
+import Lists from './core/Lists/route.js';
+import Form from './core/Form/route.js';
+import Settings from './core/Settings/route.js';
+import Import from './core/Import/route.js';
+import FourZeroFour from './core/FourZeroFour/route.js';
 
 const routes = [
     Auth,

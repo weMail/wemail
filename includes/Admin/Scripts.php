@@ -15,7 +15,7 @@ class Scripts {
     public function enqueue_styles() {
         do_action( 'wemail_admin_before_enqueue_styles' );
 
-        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', ['wemail-jquery-ui', 'wemail-tiny-mce', 'wemail-timepicker'], wemail()->core->scripts->version );
+        wp_enqueue_style( 'wemail-admin', WEMAIL_ASSETS . '/css/admin.css', ['wemail-jquery-ui', 'wemail-tiny-mce', 'wemail-timepicker'], wemail()->framework->scripts->version );
     }
 
     public function enqueue_scripts() {
@@ -31,7 +31,7 @@ class Scripts {
             'wemail-common',
         ];
 
-        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', $dependencies , wemail()->core->scripts->version, true );
+        wp_enqueue_script( 'wemail-admin', WEMAIL_ASSETS . '/js/admin.js', $dependencies , wemail()->framework->scripts->version, true );
 
         $this->localized_script();
     }
@@ -39,7 +39,7 @@ class Scripts {
     public function localized_script() {
         wp_enqueue_media();
 
-        $wemail = wemail()->core->scripts->localized_script_vars();
+        $wemail = wemail()->framework->scripts->localized_script_vars();
 
         $admin_local_vars = apply_filters( 'wemail_admin_localized_vars', [] );
 
