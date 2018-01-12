@@ -1,6 +1,6 @@
 <template>
-    <div v-if="isLoaded" id="wemail-list-create">
-        <list-modal :i18n="i18n" :list="list"></list-modal>
+    <div id="wemail-list-create">
+        <list-modal :list="list"></list-modal>
     </div>
 </template>
 
@@ -14,16 +14,20 @@
     }
 
     export default {
-        routeName: 'listsCreate',
+        // routeName: 'listsCreate',
+
+        data() {
+            return {
+                list: {
+                    name: '',
+                    description: '',
+                    type: 'public'
+                }
+            };
+        },
 
         components: {
             ListModal
-        },
-
-        mixins: weMail.getMixins('routeComponent'),
-
-        computed: {
-            ...Vuex.mapState('listsCreate', ['i18n', 'list'])
         }
     };
 </script>

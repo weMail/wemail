@@ -11,12 +11,12 @@
 
         <list-table
             name="lists"
-            :i18n="i18n"
             :filter-menu="filterMenu"
+            :pagination="pagination"
             :bulk-actions="bulkActions"
             :table-data="lists"
-            :columns="listTable.columns"
-            :sortable-columns="listTable.sortableColumns"
+            :columns="columns"
+            :sortable-columns="sortableColumns"
             :row-actions="rowActions"
             @bulk-action="onBulkAction"
         >
@@ -35,11 +35,16 @@
     const ListTable = weMail.components.ListTable;
 
     export default {
-        routeName: 'listsIndex',
+        name: 'listsIndex',
+
+        apiEndpoint: '/lists',
+
+        expects: ['lists', 'meta'],
 
         mutations: {
             updateLists(state, payload) {
-                state.lists = payload;
+                state.lists = payload.data;
+                state.meta = payload.meta;
             }
         },
 
@@ -67,22 +72,48 @@
                     private: __('Private')
                 },
 
-                i18n: {
-                    name: __('Name'),
-                    description: __('Description'),
-                    subscribed: __('Subscribed'),
-                    unsubscribed: __('Unsubscribed'),
-                    unconfirmed: __('Unconfirmed'),
-                    createdAt: __('Created At')
+                columns: [
+                    {
+                        name: 'name',
+                        title: __('Name')
+                    },
+                    {
+                        name: 'description',
+                        title: __('Description')
+                    },
+                    {
+                        name: 'subscribed',
+                        title: __('Subscribed')
+                    },
+                    {
+                        name: 'unsubscribed',
+                        title: __('Unsubscribed')
+                    },
+                    {
+                        name: 'unconfirmed',
+                        title: __('Unconfirmed')
+                    },
+                    {
+                        name: 'createdAt',
+                        title: __('Created At')
+                    }
+                ],
+
+                sortableColumns: {
+                    name: 'name',
+                    subscribed: 'subscribed',
+                    unsubscribed: 'unsubscribed',
+                    unconfirmed: 'unconfirmed',
+                    createdAt: 'created_at'
                 }
             };
         },
 
         computed: {
-            ...Vuex.mapState('listsIndex', ['lists', 'listTable']),
+            ...Vuex.mapState('listsIndex', ['lists', 'meta']),
 
             filterMenu() {
-                return _.map(this.lists.meta.filter_menu, (count, name) => {
+                return _.map(this.meta.filter_menu, (count, name) => {
                     const menu = {
                         name,
                         count,
@@ -109,6 +140,10 @@
 
                     return menu;
                 });
+            },
+
+            pagination() {
+                return this.meta.pagination;
             },
 
             bulkActions() {

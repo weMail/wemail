@@ -16,9 +16,9 @@ class Routes {
      * @return void
      */
     public function __construct() {
-        $this->add_filter( 'wemail_get_route_data_listsIndex', 'index', 10, 2 );
-        $this->add_filter( 'wemail_get_route_data_listsCreate', 'create', 10, 2 );
-        $this->add_filter( 'wemail_get_route_data_listsEdit', 'edit', 10, 2 );
+        // $this->add_filter( 'wemail_get_route_data_listsIndex', 'index', 10, 2 );
+        // $this->add_filter( 'wemail_get_route_data_listsCreate', 'create', 10, 2 );
+        // $this->add_filter( 'wemail_get_route_data_listsEdit', 'edit', 10, 2 );
         $this->add_filter( 'wemail_get_route_data_listsSubscribers', 'subscribers', 10, 2 );
     }
 

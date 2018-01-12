@@ -23,11 +23,43 @@ export default {
                 return;
             }
 
-            weMail.ajax.get('get_route_data', {
-                name: vm.$options.routeName,
-                params: to.params,
-                query: to.query
-            }).done((response) => {
+            let endpoint = vm.$options.apiEndpoint;
+
+            const params = endpoint.match(/:[^/]+/g);
+
+            if (params) {
+                params.forEach((rawParam) => {
+                    const routerParam = vm.$route.params[rawParam.replace(':', '')];
+
+                    endpoint = endpoint.replace(rawParam, routerParam);
+                });
+            }
+
+            const query = vm.$route.query;
+
+            weMail.api.query(query).get(endpoint).done((response) => {
+                // `expects` array contains the data we expects from weMail API
+                const expects = vm.$options.expects || ['data'];
+                const expectedData = {};
+
+                expects.forEach((prop, index) => {
+                    if (index === 0) {
+                        expectedData.data = prop;
+                    } else {
+                        expectedData[prop] = prop;
+                    }
+                });
+
+                if (!Object.keys(expectedData).every(key => key in response)) { // eslint-disable-line arrow-parens
+                    return vm.error(__('API error. Expected data not found.'));
+                }
+
+                // make an object with the expected keys as its properties having empty values
+                const state = Object.keys(expectedData).reduce((acc, val) => {
+                    acc[expectedData[val]] = response[val];
+                    return acc;
+                }, {});
+
                 let _mutations = vm.$options.mutations;
 
                 if (vm.getMutations) {
@@ -40,13 +72,13 @@ export default {
 
                 // first unregister the module if it already exists
                 // Note: I've faced duplicating error only for getters :: Edi Amin
-                if (vm.$store.state[vm.$options.routeName]) {
-                    vm.$store.unregisterModule(vm.$options.routeName);
+                if (vm.$store.state[vm.$options.name]) {
+                    vm.$store.unregisterModule(vm.$options.name);
                 }
 
-                vm.$store.registerModule(vm.$options.routeName, {
+                vm.$store.registerModule(vm.$options.name, {
                     namespaced: true,
-                    state: response.data,
+                    state,
                     mutations,
                     getters
                 });
@@ -56,7 +88,7 @@ export default {
                     const shouldContinue = vm.registeredStoreModule();
 
                     if (!shouldContinue) {
-                        return;
+                        return false;
                     }
                 }
 
@@ -67,6 +99,8 @@ export default {
                 // so, we'll wait to finish the render, and do our things
                 // after vue triggered the nextTick method
                 vm.callAfterLoaded();
+
+                return true;
             });
         });
     },

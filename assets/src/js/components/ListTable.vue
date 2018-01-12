@@ -33,43 +33,30 @@
                     <div class="float-right">
                         <div class="list-table-pagination">
                             <ul class="list-inline">
-                                <li v-if="pagination.total" class="list-inline-item total-items">
-                                    {{ pagination.total }} {{ __('items') }}
+                                <li v-if="pages.total" class="list-inline-item total-items">
+                                    {{ pages.total }} <slot name="displaying-num">{{ __('items') }}</slot>
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    :class="['list-inline-item', pagination.currentPage === 1 ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.firstPageRoute">«</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === 1 ? 'disabled' : '']">
+                                    <router-link :to="pages.firstPageRoute">«</router-link>
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    class="list-inline-item"
-                                    :class="['list-inline-item', pagination.currentPage === 1 ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.prevPageRoute">‹</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === 1 ? 'disabled' : '']">
+                                    <router-link :to="pages.prevPageRoute">‹</router-link>
                                 </li>
-                                <li v-if="pagination.hasPagination" class="list-inline-item">
+                                <li class="list-inline-item">
                                     <input
                                         type="text"
                                         :style="{width: currentPageNumberInputWidth}"
                                         v-model="currentPageNumber"
                                     >
                                 </li>
-                                <li v-if="pagination.hasPagination" class="list-inline-item">
-                                    of {{ pagination.lastPage }}
+                                <li class="list-inline-item">
+                                    {{ sprintf('of %d', pages.lastPage) }}
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    :class="['list-inline-item', pagination.currentPage === pagination.lastPage ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.nextPageRoute">›</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === pages.lastPage ? 'disabled' : '']">
+                                    <router-link :to="pages.nextPageRoute">›</router-link>
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    :class="['list-inline-item', pagination.currentPage === pagination.lastPage ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.lastPageRoute">»</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === pages.lastPage ? 'disabled' : '']">
+                                    <router-link :to="pages.lastPageRoute">»</router-link>
                                 </li>
                             </ul>
                         </div>
@@ -85,17 +72,17 @@
 
                             <template v-for="column in columns">
                                 <th
-                                    v-if="!sortableColumns[column]"
-                                    :class="columnTitles[column].classNames"
-                                    v-html="columnTitles[column].title"
+                                    v-if="!sortableColumns[column.name]"
+                                    :class="columnTitles[column.name].classNames"
+                                    v-html="columnTitles[column.name].title"
                                 ></th>
 
                                 <th
                                     v-else
-                                    :class="columnTitles[column].classNames"
+                                    :class="columnTitles[column.name].classNames"
                                 >
-                                    <router-link :to="columnTitles[column].route">
-                                        <span>{{ columnTitles[column].title }}</span>
+                                    <router-link :to="columnTitles[column.name].route">
+                                        <span>{{ columnTitles[column.name].title }}</span>
                                         <span class="sorting-indicator"></span>
                                     </router-link>
                                 </th>
@@ -111,15 +98,15 @@
                                 </td>
 
                                 <template v-for="column in columns">
-                                    <td :class="[getColumnClass(column)]">
-                                        <div v-if="!record[column].html" class="list-table-content clearfix" v-html="record[column]"></div>
-                                        <render-html v-else :html="record[column].html" :scope="$parent"></render-html>
+                                    <td :class="[getColumnClass(column.name)]">
+                                        <div v-if="!record[column.name].html" class="list-table-content clearfix" v-html="record[column.name]"></div>
+                                        <render-html v-else :html="record[column.name].html" :scope="$parent"></render-html>
 
-                                        <div v-if="(showRowActionIn === column) && rowActions.length" class="row-actions">
-                                            <template v-for="rowAction in rowActions" v-if="showRowAction(rowAction, tableData.data[recordIndex])">
+                                        <div v-if="(showRowActionIn === column.name) && rowActions.length" class="row-actions">
+                                            <template v-for="rowAction in rowActions" v-if="showRowAction(rowAction, tableData[recordIndex])">
                                                 <template v-if="rowAction.route">
                                                     <router-link
-                                                        :to="rowActionRoute(rowAction.route, tableData.data[recordIndex])"
+                                                        :to="rowActionRoute(rowAction.route, tableData[recordIndex])"
                                                         :class="rowAction.classNames"
                                                         tag="span"
                                                     >
@@ -131,7 +118,7 @@
                                                     <span :class="rowAction.classNames">
                                                         <a
                                                             :href="`#${rowAction.action}`"
-                                                            @click.prevent="onClickRowAction(rowAction, tableData.data[recordIndex])"
+                                                            @click.prevent="onClickRowAction(rowAction, tableData[recordIndex])"
                                                             v-text="rowAction.title"
                                                         ></a>
                                                     </span>
@@ -162,17 +149,17 @@
 
                             <template v-for="column in columns">
                                 <th
-                                    v-if="!sortableColumns[column]"
-                                    :class="columnTitles[column].classNames"
-                                    v-html="columnTitles[column].title"
+                                    v-if="!sortableColumns[column.name]"
+                                    :class="columnTitles[column.name].classNames"
+                                    v-html="columnTitles[column.name].title"
                                 ></th>
 
                                 <th
                                     v-else
-                                    :class="columnTitles[column].classNames"
+                                    :class="columnTitles[column.name].classNames"
                                 >
-                                    <router-link :to="columnTitles[column].route">
-                                        <span>{{ columnTitles[column].title }}</span>
+                                    <router-link :to="columnTitles[column.name].route">
+                                        <span>{{ columnTitles[column.name].title }}</span>
                                         <span class="sorting-indicator"></span>
                                     </router-link>
                                 </th>
@@ -197,43 +184,30 @@
                     <div class="float-right">
                         <div class="list-table-pagination bottom">
                             <ul class="list-inline">
-                                <li v-if="pagination.total" class="list-inline-item total-items">
-                                    {{ pagination.total }} {{ __('items') }}
+                                <li v-if="pages.total" class="list-inline-item total-items">
+                                    {{ pages.total }} <slot name="displaying-num">{{ __('items') }}</slot>
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    :class="['list-inline-item', pagination.currentPage === 1 ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.firstPageRoute">«</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === 1 ? 'disabled' : '']">
+                                    <router-link :to="pages.firstPageRoute">«</router-link>
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    class="list-inline-item"
-                                    :class="['list-inline-item', pagination.currentPage === 1 ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.prevPageRoute">‹</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === 1 ? 'disabled' : '']">
+                                    <router-link :to="pages.prevPageRoute">‹</router-link>
                                 </li>
-                                <li v-if="pagination.hasPagination" class="list-inline-item">
+                                <li class="list-inline-item">
                                     <input
                                         type="text"
                                         :style="{width: currentPageNumberInputWidth}"
                                         v-model="currentPageNumber"
                                     >
                                 </li>
-                                <li v-if="pagination.hasPagination" class="list-inline-item">
-                                    of {{ pagination.lastPage }}
+                                <li class="list-inline-item">
+                                    {{ sprintf('of %d', pages.lastPage) }}
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    :class="['list-inline-item', pagination.currentPage === pagination.lastPage ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.nextPageRoute">›</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === pages.lastPage ? 'disabled' : '']">
+                                    <router-link :to="pages.nextPageRoute">›</router-link>
                                 </li>
-                                <li
-                                    v-if="pagination.hasPagination"
-                                    :class="['list-inline-item', pagination.currentPage === pagination.lastPage ? 'disabled' : '']"
-                                >
-                                    <router-link :to="pagination.lastPageRoute">»</router-link>
+                                <li :class="['list-inline-item', pages.currentPage === pages.lastPage ? 'disabled' : '']">
+                                    <router-link :to="pages.lastPageRoute">»</router-link>
                                 </li>
                             </ul>
                         </div>
@@ -255,8 +229,8 @@
                 default: ''
             },
 
-            i18n: {
-                type: Object,
+            tableData: {
+                type: Array,
                 required: true
             },
 
@@ -268,17 +242,20 @@
                 }
             },
 
+            pagination: {
+                type: Object,
+                required: false,
+                default() {
+                    return {};
+                }
+            },
+
             bulkActions: {
                 type: Array,
                 required: false,
                 default() {
                     return [];
                 }
-            },
-
-            tableData: {
-                type: Object,
-                required: true
             },
 
             columns: {
@@ -335,27 +312,27 @@
             records() {
                 const vm = this;
 
-                if (!vm.tableData.data.length) {
+                if (!vm.tableData.length) {
                     return [];
                 }
 
-                return vm.tableData.data.map((record) => {
+                return vm.tableData.map((record) => {
                     const data = {};
 
                     data[vm.primaryKey] = record[vm.primaryKey];
 
                     vm.columns.forEach((column) => {
-                        const methodName = _.camelCase(`column-${column}`);
+                        const methodName = _.camelCase(`column-${column.name}`);
 
                         if (typeof vm.$parent[methodName] === 'function') {
-                            return data[column] = vm.$parent[methodName](record);
+                            return data[column.name] = vm.$parent[methodName](record);
                         } else if (typeof vm[methodName] === 'function') {
-                            return data[column] = vm[methodName](record);
+                            return data[column.name] = vm[methodName](record);
                         }
 
-                        const columnName = _.snakeCase(column);
+                        const columnName = _.snakeCase(column.name);
 
-                        return data[column] = ((record[columnName] !== undefined) && (record[columnName] !== null))
+                        return data[column.name] = ((record[columnName] !== undefined) && (record[columnName] !== null))
                             ? record[columnName]
                             : '&mdash;';
                     });
@@ -382,22 +359,22 @@
                 });
             },
 
-            pagination() {
-                const pagination = this.tableData.meta.pagination;
+            pages() {
+                const pages = this.pagination;
 
                 const firstPage = 1;
-                const lastPage = pagination.total_pages;
+                const lastPage = pages.total_pages;
 
                 let nextPage = 0;
                 let prevPage = 0;
 
-                let match = (pagination.links && pagination.links.next) ? pagination.links.next.match(/page=(\d+)/) : nextPage;
+                let match = (pages.links && pages.links.next) ? pages.links.next.match(/page=(\d+)/) : nextPage;
 
                 if (match && match[1]) {
                     nextPage = parseInt(match[1], 10) || nextPage;
                 }
 
-                match = (pagination.links && pagination.links.previous) ? pagination.links.previous.match(/page=(\d+)/) : prevPage;
+                match = (pages.links && pages.links.previous) ? pages.links.previous.match(/page=(\d+)/) : prevPage;
 
                 if (match && match[1]) {
                     prevPage = parseInt(match[1], 10) || prevPage;
@@ -421,16 +398,16 @@
                 nextPageRoute.query.page = nextPage;
                 prevPageRoute.query.page = (prevPage === 1) ? undefined : prevPage;
 
-                let hasPagination = false;
+                let hasPages = false;
 
                 if (nextPage || prevPage) {
-                    hasPagination = true;
+                    hasPages = true;
                 }
 
                 return {
-                    currentPage: pagination.current_page,
-                    total: pagination.total,
-                    hasPagination,
+                    currentPage: pages.current_page,
+                    total: pages.total,
+                    hasPages,
                     firstPage,
                     lastPage,
                     nextPage,
@@ -466,12 +443,12 @@
                 const titles = {};
 
                 vm.columns.forEach((column) => {
-                    titles[column] = {
-                        title: vm.i18n[column],
-                        classNames: [vm.getColumnClass(column)]
+                    titles[column.name] = {
+                        title: column.title,
+                        classNames: [vm.getColumnClass(column.name)]
                     };
 
-                    if (vm.sortableColumns[column]) {
+                    if (vm.sortableColumns[column.name]) {
                         const currentRoute = $.extend(true, {}, vm.currentRoute);
 
                         const route = {
@@ -482,7 +459,7 @@
 
                         let classNames = ['sortable'];
 
-                        if (route.query.orderby === vm.sortableColumns[column]) {
+                        if (route.query.orderby === vm.sortableColumns[column.name]) {
                             route.query.order = (route.query.order === 'asc') ? 'desc' : 'asc';
 
                             classNames = ['sorted'];
@@ -492,12 +469,12 @@
 
                         classNames.push(route.query.order === 'asc' ? 'desc' : 'asc');
 
-                        route.query.orderby = vm.sortableColumns[column];
+                        route.query.orderby = vm.sortableColumns[column.name];
 
-                        classNames.push(vm.getColumnClass(column));
+                        classNames.push(vm.getColumnClass(column.name));
 
-                        titles[column] = {
-                            title: vm.i18n[column],
+                        titles[column.name] = {
+                            title: column.title,
                             route,
                             classNames
                         };
@@ -608,8 +585,8 @@
                 }
             },
 
-            getColumnClass(column) {
-                return `column-${_.kebabCase(column)}`;
+            getColumnClass(columnName) {
+                return `column-${_.kebabCase(columnName)}`;
             },
 
             columnCreatedAt(campaign) {

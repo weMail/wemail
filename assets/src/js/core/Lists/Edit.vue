@@ -14,7 +14,11 @@
     }
 
     export default {
-        routeName: 'listsEdit',
+        name: 'listsEdit',
+
+        apiEndpoint: '/lists/:id',
+
+        expects: ['list'],
 
         components: {
             ListModal

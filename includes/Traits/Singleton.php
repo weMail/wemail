@@ -21,7 +21,7 @@ trait Singleton
         if (! isset(self::$instance) && !(self::$instance instanceof self)) {
             self::$instance = new self;
 
-            if (method_exists(self::class, 'boot')) {
+            if ( method_exists( self::$instance, 'boot') ) {
                 self::$instance->boot();
             }
         }
