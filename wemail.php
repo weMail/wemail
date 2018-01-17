@@ -89,6 +89,15 @@ final class WeDevs_WeMail {
     public $core = [];
 
     /**
+     * weMail CDN URL
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $cdn = '';
+
+    /**
      * @var object
      *
      * @since 1.0.0
@@ -302,9 +311,10 @@ final class WeDevs_WeMail {
         do_action( 'wemail_before_init' );
 
         $this->include_core();
+        $this->set_cdn();
 
-        $this->framework = new StdClass();
-        $this->framework->scripts = new WeDevs\WeMail\Framework\Scripts();
+        // $this->framework = new StdClass();
+        // $this->framework->scripts = new WeDevs\WeMail\Framework\Scripts();
         new WeDevs\WeMail\Rest();
 
         if ( $this->is_request( 'admin' ) ) {
@@ -313,7 +323,8 @@ final class WeDevs_WeMail {
         }
 
         if ( $this->is_request( 'ajax' ) ) {
-            $this->framework->ajax = new WeDevs\WeMail\Ajax();
+            // $this->framework->ajax = new WeDevs\WeMail\Ajax();
+            new WeDevs\WeMail\Ajax();
         }
 
         // Init action.
@@ -329,18 +340,25 @@ final class WeDevs_WeMail {
 
             $core_class = "\\WeDevs\\WeMail\\Core\\$class_name\\$class_name";
             $menu_class = "\\WeDevs\\WeMail\\Core\\$class_name\\Menu";
-            $route_class = "\\WeDevs\\WeMail\\Core\\$class_name\\Routes";
 
             $this->core[ $class_slug ] = $core_class;
 
             if ( class_exists( $menu_class ) ) {
                 new $menu_class();
             }
-
-            if ( class_exists( $route_class ) ) {
-                new $route_class();
-            }
         }
+    }
+
+    private function set_cdn() {
+        /**
+         * weMail CDN url
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
+        $cdn = apply_filters( 'wemail_cdn_root', 'https://cdn.getwemail.io' );
+        $this->cdn = untrailingslashit( $cdn );
     }
 
 }

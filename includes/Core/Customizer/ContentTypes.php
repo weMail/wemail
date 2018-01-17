@@ -23,7 +23,7 @@ class ContentTypes {
      * @return array
      */
     public static function get_content_type_settings( $context ) {
-        self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
+        self::$image_dir = wemail()->cdn . '/images/content-types';
 
         $settings = [
             'text'          => self::text(),
@@ -296,7 +296,7 @@ class ContentTypes {
                     'margin'          => '0 auto'
                 ],
                 'image'     => [
-                    'image' => WEMAIL_ASSETS . '/images/dividers/brush-stroke-lite.png',
+                    'image' => wemail()->cdn . '/images/dividers/brush-stroke-lite.png',
                     'style' => [
                         'height' => '7px',
                         'width'  => '600px',

@@ -63,16 +63,15 @@ class Customizer {
         $social_network_title = wemail()->settings->social_networks->title();
 
         return [
-            'assetsURL'        => WEMAIL_ASSETS,
             'siteURL'          => site_url('/'),
-            'cdn'              => apply_filters( 'wemail_cdn_root', 'https://cdn.wemail.com' ),
+            'cdn'              => wemail()->cdn,
             'contentTypes'     => [
                 'types'        => $this->content_types,
                 'settings'     => $this->get_content_type_settings()
             ],
             'shortcodes'       => wemail()->shortcode->get(),
-            'shortcodeImg'     => WEMAIL_ASSETS . '/images/shortcode.png',
-            'placeholderImage' => WEMAIL_ASSETS . '/images/misc/placeholder-image.png',
+            'shortcodeImg'     => wemail()->cdn . '/images/shortcode.png',
+            'placeholderImage' => wemail()->cdn . '/images/placeholder-image.png',
             'socialNetworks'   => [
                 'networks'     => $networks,
                 'defaults'     => $social_networks,
@@ -90,11 +89,11 @@ class Customizer {
      * @return array
      */
     public function get_content_type_settings() {
-        $types = ContentTypes::get_content_type_settings( $this->context );
+        $content_types = ContentTypes::get_content_type_settings( $this->context );
 
-        return array_filter( $types, function ( $type ) {
-            return in_array( $type , $this->content_types );
-        }, ARRAY_FILTER_USE_KEY );
+        return array_filter( $content_types, function ( $content_type ) {
+            return in_array( $content_type['type'] , $this->content_types );
+        } );
     }
 
     /**
@@ -106,7 +105,7 @@ class Customizer {
      */
     public function dividers() {
         $dividers = [
-            'baseURL' => WEMAIL_ASSETS . '/images/dividers/',
+            'baseURL' => wemail()->cdn . '/images/dividers/',
             'images'  => [
                 [ 'name' => 'brush-stroke-lite.png', 'height' => '24px' ],
                 [ 'name' => 'brush-stroke-orange.png', 'height' => '24px' ],

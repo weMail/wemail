@@ -25,7 +25,7 @@ class Editor {
      * @return void
      */
     public function __construct() {
-        self::$image_dir = WEMAIL_ASSETS . '/images/content-types';
+        self::$image_dir = wemail()->cdn . '/images/content-types';
 
         $this->add_filter( 'wemail_customizer_content_type_settings_campaign', 'content_type_settings' );
     }

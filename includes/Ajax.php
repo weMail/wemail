@@ -17,6 +17,7 @@ class Ajax {
     public function __construct() {
         $this->add_ajax_action( 'get_route_data' );
         $this->add_ajax_action( 'get_country_states' );
+        $this->add_ajax_action( 'get_customizer_data' );
     }
 
     /**
@@ -71,6 +72,18 @@ class Ajax {
         }
 
         $this->send_success(['states' => $states]);
+    }
+
+    public function get_customizer_data() {
+        $this->verify_nonce();
+
+        // check context then return data. using hardcoded for now
+
+        $customizer = wemail()->campaign->editor->get_customizer_data();
+
+        $this->send_success( [
+            'customizer' => $customizer
+        ] );
     }
 
 }

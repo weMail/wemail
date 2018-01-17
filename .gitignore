@@ -9,11 +9,3 @@ nbproject
 debug.log
 npm-debug.log
 .netbeans.xml
-assets/css/
-assets/js/
-assets/fonts/
-assets/images/*
-!assets/images/content-types/
-!assets/images/dividers/
-!assets/images/misc/
-!assets/images/social-icons/

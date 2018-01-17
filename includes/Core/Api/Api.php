@@ -61,7 +61,7 @@ class Api {
          *
          * @since 1.0.0
          */
-        $root = apply_filters( 'wemail_api_root', 'https://api.wemail.com' );
+        $root = apply_filters( 'wemail_api_root', 'https://api.getwemail.io' );
         $this->root  = untrailingslashit( $root );
 
         $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
