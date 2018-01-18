@@ -19,6 +19,8 @@ class Ajax {
         $this->add_ajax_action( 'get_countries' );
         $this->add_ajax_action( 'get_country_states' );
         $this->add_ajax_action( 'get_customizer_data' );
+
+        add_action( 'wp_ajax_wemail_auth_site', [ wemail()->auth, 'auth_site' ] );
     }
 
     /**

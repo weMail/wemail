@@ -21,7 +21,6 @@ class Auth {
      * @return void
      */
     public function boot() {
-        $this->add_ajax_action( 'auth_site' );
         $this->add_action( 'rest_api_init', 'add_validate_me_endpoint' );
     }
 
