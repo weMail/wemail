@@ -313,8 +313,6 @@ final class WeDevs_WeMail {
         $this->include_core();
         $this->set_cdn();
 
-        // $this->framework = new StdClass();
-        // $this->framework->scripts = new WeDevs\WeMail\Framework\Scripts();
         new WeDevs\WeMail\Rest();
 
         if ( $this->is_request( 'admin' ) ) {
@@ -323,7 +321,6 @@ final class WeDevs_WeMail {
         }
 
         if ( $this->is_request( 'ajax' ) ) {
-            // $this->framework->ajax = new WeDevs\WeMail\Ajax();
             new WeDevs\WeMail\Ajax();
         }
 

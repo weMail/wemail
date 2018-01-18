@@ -16,6 +16,7 @@ class Ajax {
      */
     public function __construct() {
         $this->add_ajax_action( 'get_route_data' );
+        $this->add_ajax_action( 'get_countries' );
         $this->add_ajax_action( 'get_country_states' );
         $this->add_ajax_action( 'get_customizer_data' );
     }
@@ -56,6 +57,21 @@ class Ajax {
     }
 
     /**
+     * Get list of countries
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    public function get_countries() {
+        $this->verify_nonce();
+
+        $this->send_success([
+            'countries' => wemail_get_countries()
+        ]);
+    }
+
+    /**
      * Get states/province/divisions for a country
      *
      * @since 1.0.0
@@ -74,12 +90,26 @@ class Ajax {
         $this->send_success(['states' => $states]);
     }
 
+    /**
+     * Get customizer static data
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function get_customizer_data() {
         $this->verify_nonce();
 
-        // check context then return data. using hardcoded for now
+        if ( empty( $_GET['context'] ) ) {
+            $this->send_error( [ 'msg' => __( 'context is required', 'wemail' ) ] );
+        }
 
-        $customizer = wemail()->campaign->editor->get_customizer_data();
+        switch ($_GET['context']) {
+            case 'campaign':
+            default:
+                $customizer = wemail()->campaign->editor->get_customizer_data();
+                break;
+        }
 
         $this->send_success( [
             'customizer' => $customizer

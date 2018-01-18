@@ -53,14 +53,14 @@ class Customizer {
         $this->content_types = apply_filters( "wemail_customizer_content_types_{$context}", $content_types );
 
         // Add website in the social network links
-        $company = wemail()->settings->company();
-        $social_networks = wemail()->settings->social_networks();
-        $social_networks['website'] = $company['website'] ? $company['website'] : 'http://example.com';
+        // $company = wemail()->settings->company();
+        // $social_networks = wemail()->settings->social_networks();
+        // $social_networks['website'] = $company['website'] ? $company['website'] : 'http://example.com';
 
-        $networks = wemail()->settings->social_networks->networks();
-        array_unshift( $networks, 'website' );
+        // $networks = wemail()->settings->social_networks->networks();
+        // array_unshift( $networks, 'website' );
 
-        $social_network_title = wemail()->settings->social_networks->title();
+        // $social_network_title = wemail()->settings->social_networks->title();
 
         return [
             'siteURL'          => site_url('/'),
@@ -72,11 +72,11 @@ class Customizer {
             'shortcodes'       => wemail()->shortcode->get(),
             'shortcodeImg'     => wemail()->cdn . '/images/shortcode.png',
             'placeholderImage' => wemail()->cdn . '/images/placeholder-image.png',
-            'socialNetworks'   => [
-                'networks'     => $networks,
-                'defaults'     => $social_networks,
-                'title'        => $social_network_title,
-            ],
+            // 'socialNetworks'   => [
+            //     'networks'     => $networks,
+            //     'defaults'     => $social_networks,
+            //     'title'        => $social_network_title,
+            // ],
             'dividers'         => $this->dividers()
         ];
     }

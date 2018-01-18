@@ -177,9 +177,6 @@ class ContentTypes {
      * @return array
      */
     public static function social_follow() {
-        $company = wemail()->settings->company();
-        $social_networks = wemail()->settings->social_networks();
-
         return [
             'type'       => 'socialFollow',
             'title'      => __( 'Social Follow', 'wemail' ),
@@ -205,17 +202,17 @@ class ContentTypes {
                 'icons'      => [
                     [
                         'site' => 'facebook',
-                        'link' => $social_networks['facebook'],
+                        'link' => 'https://facebook.com',
                         'text' => 'Facebook',
                     ],
                     [
                         'site' => 'twitter',
-                        'link' => $social_networks['twitter'],
+                        'link' => 'https://twitter.com',
                         'text' => 'Twitter',
                     ],
                     [
                         'site' => 'website',
-                        'link' => $company['website'] ? $company['website'] : 'http://example.com',
+                        'link' => 'http://example.com',
                         'text' => 'Website'
                     ]
                 ],
