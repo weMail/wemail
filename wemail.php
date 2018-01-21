@@ -86,7 +86,16 @@ final class WeDevs_WeMail {
      *
      * @var object
      */
-    public $core;
+    public $core = [];
+
+    /**
+     * weMail CDN URL
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $cdn = '';
 
     /**
      * @var object
@@ -96,15 +105,6 @@ final class WeDevs_WeMail {
      * @var WeDevs_WeMail
      */
     private static $instance;
-
-    /**
-     * Contains all registerd modules
-     *
-     * @since 1.0.0
-     *
-     * @var array
-     */
-    private $modules = [];
 
     /**
      * Admin notice messages
@@ -125,10 +125,10 @@ final class WeDevs_WeMail {
      *
      * @return WeDevs_WeMail
      */
-    public static function get_instance() {
+    public static function instance() {
         if (! isset( self::$instance ) && ! ( self::$instance instanceof WeDevs_WeMail ) ) {
             self::$instance = new WeDevs_WeMail;
-            self::$instance->bootstrap();
+            self::$instance->boot();
         }
 
         return self::$instance;
@@ -141,7 +141,7 @@ final class WeDevs_WeMail {
      *
      * @return void
      */
-    private function bootstrap() {
+    private function boot() {
         // Check requirements
         if ( ! $this->met_requirements() ) {
             add_action( 'admin_notices', [ $this, 'admin_notices' ] );
@@ -168,8 +168,10 @@ final class WeDevs_WeMail {
      * @return mixed
      */
     public function __get( $prop ) {
-        if ( array_key_exists( $prop, $this->core->modules->modules ) ) {
-            return $this->core->modules->modules[ $prop ];
+        if ( array_key_exists( $prop, $this->core ) ) {
+            $core_class = $this->core[ $prop ];
+
+            return $core_class::instance();
         }
 
         return $this->{$prop};
@@ -254,7 +256,7 @@ final class WeDevs_WeMail {
         define( 'WEMAIL_FILE', __FILE__ );
         define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
         define( 'WEMAIL_INCLUDES', WEMAIL_PATH . '/includes' );
-        define( 'WEMAIL_MODULES', WEMAIL_INCLUDES . '/Modules' );
+        define( 'WEMAIL_CORE', WEMAIL_INCLUDES . '/Core' );
         define( 'WEMAIL_URL', plugins_url( '', WEMAIL_FILE ) );
         define( 'WEMAIL_ASSETS', WEMAIL_URL . '/assets' );
         define( 'WEMAIL_VIEWS', WEMAIL_PATH . '/views' );
@@ -308,36 +310,52 @@ final class WeDevs_WeMail {
         // Before init action.
         do_action( 'wemail_before_init' );
 
-        $this->core = new StdClass();
+        $this->include_core();
+        $this->set_cdn();
 
-        $this->core->scripts = new WeDevs\WeMail\Framework\Scripts();
-        $this->core->modules = new WeDevs\WeMail\Modules\Modules();
-        $this->core->rest    = new WeDevs\WeMail\Rest();
+        new WeDevs\WeMail\Rest();
 
         if ( $this->is_request( 'admin' ) ) {
-            $this->core->admin_scripts = new WeDevs\WeMail\Admin\Scripts();
-            $this->core->admin_menu    = new WeDevs\WeMail\Admin\Menu();
+            new WeDevs\WeMail\Admin\Scripts();
+            new WeDevs\WeMail\Admin\Menu();
         }
 
         if ( $this->is_request( 'ajax' ) ) {
-            $this->core->ajax = new WeDevs\WeMail\Ajax();
+            new WeDevs\WeMail\Ajax();
         }
 
         // Init action.
         do_action( 'wemail_init' );
     }
 
-    /**
-     * Check if wemail has a registered module
-     *
-     * @since 1.0.0
-     *
-     * @param $string $module_name All lowercase-underscored module name
-     *
-     * @return boolean
-     */
-    public function has_module( $module_name ) {
-        return $this->core->modules->has_module( $module_name );
+    private function include_core() {
+        $class_dirs = glob( WEMAIL_CORE . '/*', GLOB_ONLYDIR );
+
+        foreach ( $class_dirs as $class_dir ) {
+            $class_name  = str_replace( WEMAIL_CORE . '/', '', $class_dir );
+            $class_slug  = Stringy\StaticStringy::underscored( $class_name );
+
+            $core_class = "\\WeDevs\\WeMail\\Core\\$class_name\\$class_name";
+            $menu_class = "\\WeDevs\\WeMail\\Core\\$class_name\\Menu";
+
+            $this->core[ $class_slug ] = $core_class;
+
+            if ( class_exists( $menu_class ) ) {
+                new $menu_class();
+            }
+        }
+    }
+
+    private function set_cdn() {
+        /**
+         * weMail CDN url
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
+        $cdn = apply_filters( 'wemail_cdn_root', 'https://cdn.getwemail.io' );
+        $this->cdn = untrailingslashit( $cdn );
     }
 
 }
@@ -350,7 +368,7 @@ final class WeDevs_WeMail {
  * @return WeDevs_WeMail
  */
 function wemail() {
-    return WeDevs_WeMail::get_instance();
+    return WeDevs_WeMail::instance();
 }
 
 // kick it off

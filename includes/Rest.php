@@ -4,7 +4,7 @@ namespace WeDevs\WeMail;
 class Rest {
 
     public function __construct() {
-        new \WeDevs\WeMail\Modules\Import\MailPoet\Rest();
+        new \WeDevs\WeMail\Core\Import\MailPoet\Rest();
     }
 
 }
