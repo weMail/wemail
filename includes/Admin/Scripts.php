@@ -67,9 +67,9 @@ class Scripts {
 
         $wemail = [
             'version'              => wemail()->version,
-            'nonce'                => wp_create_nonce( 'wemail-nonce' ),
             'siteURL'              => site_url( '/' ),
-            'ajaxurl'              => admin_url( 'admin-ajax.php' ),
+            'restURL'              => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
+            'nonce'                => wp_create_nonce( 'wp_rest' ),
             'api'                  => wemail()->api->get_props(),
             'cdn'                  => wemail()->cdn,
             'dateTime'             => [

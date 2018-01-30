@@ -71,6 +71,15 @@ final class WeDevs_WeMail {
     public $min_php = '5.4.0';
 
     /**
+     * Minimum WordPress version required
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $min_wp = '4.4.0';
+
+    /**
      * weMail text domain
      *
      * @since 1.0.0
@@ -228,6 +237,19 @@ final class WeDevs_WeMail {
             return false;
         }
 
+        $current_wp_version = get_bloginfo('version');
+
+        if ( version_compare( $current_wp_version, $this->min_wp, '<' ) ) {
+            $this->admin_notices['unmet_wordpress_version'] = sprintf(
+                __( '%s requires WordPress version %s but you are using version %s', 'wemail' ),
+                '<strong>weMail</strong>',
+                '<strong>' . $this->min_wp . '</strong>',
+                '<strong>' . $current_wp_version . '</strong>'
+            );
+
+            return false;
+        }
+
         return true;
     }
 
@@ -313,21 +335,24 @@ final class WeDevs_WeMail {
         $this->include_core();
         $this->set_cdn();
 
-        new WeDevs\WeMail\Rest();
+        new WeDevs\WeMail\Rest\Rest();
 
         if ( $this->is_request( 'admin' ) ) {
             new WeDevs\WeMail\Admin\Scripts();
             new WeDevs\WeMail\Admin\Menu();
         }
 
-        if ( $this->is_request( 'ajax' ) ) {
-            new WeDevs\WeMail\Ajax();
-        }
-
         // Init action.
         do_action( 'wemail_init' );
     }
 
+    /**
+     * Include core classes
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function include_core() {
         $class_dirs = glob( WEMAIL_CORE . '/*', GLOB_ONLYDIR );
 
@@ -346,6 +371,13 @@ final class WeDevs_WeMail {
         }
     }
 
+    /**
+     * Set weMail CDN URL
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function set_cdn() {
         /**
          * weMail CDN url

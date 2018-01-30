@@ -1,34 +1,61 @@
 <?php
 
-namespace WeDevs\WeMail\Core\Import\MailPoet;
+namespace WeDevs\WeMail\Rest;
 
 use WP_REST_Response;
 use WP_REST_Server;
-use WeDevs\WeMail\Traits\Hooker;
+use WP_User_Query;
 
-class Rest {
+class MailPoet {
 
-    use Hooker;
+    public $namespace = 'wemail/v1';
+
+    public $rest_base = '/mailpoet/v2';
 
     public function __construct() {
-        $this->add_action( 'rest_api_init', 'endpoints' );
+        $this->register_routes();
     }
 
-    public function endpoints() {
-        register_rest_route( 'wemail/v1', '/mailpoet/v2/lists/(?P<id>[\d]+)/subscribers', [
+    public function register_routes() {
+        register_rest_route( 'wemail/v1', $this->rest_base . '/lists', [
             'methods' => WP_REST_Server::READABLE,
-            'callback' => [ $this, 'subscribers' ]
-        ] );
-
-        register_rest_route( 'wemail/v1', '/mailpoet/v2/lists', [
-            'methods' => WP_REST_Server::READABLE,
+            'permission_callback' => [ $this, 'permission' ],
             'callback' => [ $this, 'lists' ]
         ] );
 
-        register_rest_route( 'wemail/v1', '/mailpoet/v2/meta-fields', [
+        register_rest_route( $this->namespace, $this->rest_base . '/lists/(?P<id>[\d]+)/subscribers', [
+            'methods' => WP_REST_Server::READABLE,
+            'permission_callback' => [ $this, 'permission' ],
+            'callback' => [ $this, 'subscribers' ]
+        ] );
+
+        register_rest_route( 'wemail/v1', $this->rest_base . '/meta-fields', [
             'methods' => WP_REST_Server::READABLE,
             'callback' => [ $this, 'meta_fields' ],
         ] );
+    }
+
+    public function permission( $request ) {
+        $api_key = $request->get_header( 'X-WeMail-Key' );
+
+        if ( ! empty( $api_key ) ) {
+            $query = new WP_User_Query([
+                'fields' => 'ID',
+                'meta_key' => 'wemail_api_key',
+                'meta_value' => $api_key
+            ]);
+
+            if ( $query->get_total() ) {
+                $results = $query->get_results();
+                $user_id = array_pop( $results );
+
+                wp_set_current_user( $user_id );
+
+                return wemail()->user->can( 'create_subscriber' );
+            }
+        }
+
+        return false;
     }
 
     public function lists() {

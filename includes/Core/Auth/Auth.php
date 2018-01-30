@@ -2,27 +2,12 @@
 
 namespace WeDevs\WeMail\Core\Auth;
 
-use WP_REST_Response;
-use WeDevs\WeMail\Traits\Ajax;
-use WeDevs\WeMail\Traits\Hooker;
 use WeDevs\WeMail\Traits\Singleton;
+use WP_Error;
 
 class Auth {
 
     use Singleton;
-    use Ajax;
-    use Hooker;
-
-    /**
-     * Executes during instance creation
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function boot() {
-        $this->add_action( 'rest_api_init', 'add_validate_me_endpoint' );
-    }
 
     /**
      * Authenticate the site
@@ -31,7 +16,7 @@ class Auth {
      *
      * @return void
      */
-    public function auth_site() {
+    public function site() {
         $start_of_week = get_option( 'start_of_week', 1 );
         $week_days = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
 
@@ -84,50 +69,21 @@ class Auth {
                 }
             }
 
-            $this->send_success();
+            return true;
         }
 
         $message = __( 'Could not connect your site, please try again', 'wemail' );
+        $data = [];
 
-        if ( !empty( $response['message'] ) ) {
+        if ( ! empty( $response['message'] ) ) {
             $message = $response['message'];
         }
 
-        if ( !empty( $response['errors'] ) ) {
-            $message .= '<ul>';
-
-            foreach ( $response['errors'] as $field => $error ) {
-                $message .= "<li>{$field} : " . implode( ' ', $error );
-            }
-
-            $message .= '</ul>';
+        if ( ! empty( $response['errors'] ) ) {
+            $data = $response['errors'];
         }
 
-        status_header( 422 );
-
-        $this->send_error( ['message' => $message ] );
-    }
-
-    /**
-     * Add /validate-me REST endpoint
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function add_validate_me_endpoint() {
-        register_rest_route( 'wemail', '/validate-me', [
-            'methods' => 'GET',
-            'callback' => [ $this, 'validate_me' ],
-        ] );
-    }
-
-    public function validate_me() {
-        $data = [
-            'success' => true
-        ];
-
-        return new WP_REST_Response( $data, 200 );
+        return new WP_Error( 'failed_to_connect_wemail', $message, $data );
     }
 
 }
