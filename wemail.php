@@ -98,6 +98,15 @@ final class WeDevs_WeMail {
     public $core = [];
 
     /**
+     * weMail Site URL
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $wemail_site = '';
+
+    /**
      * weMail CDN URL
      *
      * @since 1.0.0
@@ -333,6 +342,7 @@ final class WeDevs_WeMail {
         do_action( 'wemail_before_init' );
 
         $this->include_core();
+        $this->set_wemail_site();
         $this->set_cdn();
 
         new WeDevs\WeMail\Rest\Rest();
@@ -369,6 +379,11 @@ final class WeDevs_WeMail {
                 new $menu_class();
             }
         }
+    }
+
+    private function set_wemail_site() {
+        $site = apply_filters( 'wemail_site_url', 'https://getwemail.io' );
+        $this->wemail_site = untrailingslashit( $site );
     }
 
     /**

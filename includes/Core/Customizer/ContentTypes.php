@@ -107,9 +107,15 @@ class ContentTypes {
                     'borderStyle'     => 'solid',
                     'borderColor'     => '#e5e5e5',
                     'marginBottom'    => '0px',
+                    'textAlign'       => 'center'
                 ],
                 'images' => [
-                    []
+                    [
+                        'alt' => '',
+                        'src' => wemail()->cdn . '/images/placeholder-image-full.png',
+                        'link' => '',
+                        'openAttrEditor' => '',
+                    ]
                 ]
             ],
             'noSettingsTab' => true
@@ -136,6 +142,7 @@ class ContentTypes {
                     'borderWidth'           => '0px',
                     'borderColor'           => '#e5e5e5',
                     'marginBottom'          => '0px',
+                    'textAlign'             => 'center',
                     'text'  => [
                         'paddingTop'        => '0px',
                         'paddintRight'      => '0px',
@@ -148,7 +155,7 @@ class ContentTypes {
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                         'image' => [
                             'alt' => '',
-                            'src' => '',
+                            'src' => wemail()->cdn . '/images/placeholder-image-full.png',
                             'link' => '',
                             'openAttrEditor' => '',
                         ]
@@ -157,7 +164,7 @@ class ContentTypes {
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                         'image' => [
                             'alt' => '',
-                            'src' => '',
+                            'src' => wemail()->cdn . '/images/placeholder-image-full.png',
                             'link' => '',
                             'openAttrEditor' => '',
                         ]
