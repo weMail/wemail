@@ -17,7 +17,7 @@ class MailPoet {
     }
 
     public function register_routes() {
-        register_rest_route( 'wemail/v1', $this->rest_base . '/lists', [
+        register_rest_route( $this->namespace, $this->rest_base . '/lists', [
             'methods' => WP_REST_Server::READABLE,
             'permission_callback' => [ $this, 'permission' ],
             'callback' => [ $this, 'lists' ]
@@ -29,7 +29,7 @@ class MailPoet {
             'callback' => [ $this, 'subscribers' ]
         ] );
 
-        register_rest_route( 'wemail/v1', $this->rest_base . '/meta-fields', [
+        register_rest_route( $this->namespace, $this->rest_base . '/meta-fields', [
             'methods' => WP_REST_Server::READABLE,
             'callback' => [ $this, 'meta_fields' ],
         ] );
@@ -39,11 +39,11 @@ class MailPoet {
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query([
-                'fields' => 'ID',
-                'meta_key' => 'wemail_api_key',
-                'meta_value' => $api_key
-            ]);
+            $query = new WP_User_Query( [
+                'fields'        => 'ID',
+                'meta_key'      => 'wemail_api_key',
+                'meta_value'    => $api_key
+            ] );
 
             if ( $query->get_total() ) {
                 $results = $query->get_results();

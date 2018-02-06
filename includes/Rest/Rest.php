@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\Rest\Countries;
+use WeDevs\WeMail\Rest\Csv;
 use WeDevs\WeMail\Rest\Customizer;
 use WeDevs\WeMail\Rest\MailPoet;
 use WeDevs\WeMail\Rest\States;
@@ -22,6 +23,7 @@ class Rest {
         new Customizer();
         new Auth();
         new MailPoet();
+        new Csv();
     }
 
 }

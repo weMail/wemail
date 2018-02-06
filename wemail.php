@@ -217,7 +217,7 @@ final class WeDevs_WeMail {
                 break;
 
             case 'frontend' :
-                $request = ! is_admin() && defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' );
+                $request = ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' );
                 break;
 
             default:
