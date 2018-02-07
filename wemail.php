@@ -352,6 +352,8 @@ final class WeDevs_WeMail {
             new WeDevs\WeMail\Admin\Menu();
         }
 
+        new WeDevs\WeMail\FrontEnd\FrontEnd();
+
         // Init action.
         do_action( 'wemail_init' );
     }
