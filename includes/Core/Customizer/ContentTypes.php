@@ -322,7 +322,8 @@ class ContentTypes {
                     'padding'         => '15px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
+                    'borderColor'     => '#e5e5e5',
+                    'textAlign'       => 'center'
                 ],
                 'textStyle' => [
                     'backgroundColor' => '#333333',
@@ -335,7 +336,6 @@ class ContentTypes {
                     'link'           => '',
                     'image'          => '',
                     'alt'            => '',
-                    'openAttrEditor' => ''
                 ],
                 'text'        => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                 'capPosition' => 'bottom',

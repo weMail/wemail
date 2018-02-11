@@ -8,6 +8,7 @@ use WeDevs\WeMail\Rest\Customizer;
 use WeDevs\WeMail\Rest\Forms;
 use WeDevs\WeMail\Rest\MailPoet;
 use WeDevs\WeMail\Rest\States;
+use WeDevs\WeMail\Rest\Video;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Rest {
@@ -26,6 +27,7 @@ class Rest {
         new MailPoet();
         new Csv();
         new Forms();
+        new Video();
     }
 
 }
