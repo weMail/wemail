@@ -5,6 +5,7 @@ namespace WeDevs\WeMail\Rest;
 use WeDevs\WeMail\Rest\Countries;
 use WeDevs\WeMail\Rest\Csv;
 use WeDevs\WeMail\Rest\Customizer;
+use WeDevs\WeMail\Rest\Forms;
 use WeDevs\WeMail\Rest\MailPoet;
 use WeDevs\WeMail\Rest\States;
 use WeDevs\WeMail\Traits\Hooker;
@@ -24,6 +25,7 @@ class Rest {
         new Auth();
         new MailPoet();
         new Csv();
+        new Forms();
     }
 
 }

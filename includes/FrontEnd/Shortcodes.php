@@ -15,6 +15,17 @@ class Shortcodes {
 
         $id = $attrs['id'];
 
+        $form = wemail()->form->get( $id );
+
+        if ( ! $form ) {
+            return null;
+        }
+
+        unset( $form['entries'] );
+        unset( $form['created_at'] );
+        unset( $form['deleted_at'] );
+        unset( $form['settings']['actions'] );
+
         ob_start();
         include WEMAIL_VIEWS . '/form.php';
         return ob_get_clean();

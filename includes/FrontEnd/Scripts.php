@@ -30,7 +30,9 @@ class Scripts {
         wp_enqueue_script( 'wemail-frontend', wemail()->cdn . '/js/frontend.js', ['wemail-frontend-vendor'], $this->version, true );
 
         $wemail = [
-            'cdn' => wemail()->cdn,
+            'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
+            'nonce'     => wp_create_nonce( 'wp_rest' ),
+            'cdn'       => wemail()->cdn,
         ];
 
         wp_localize_script( 'wemail-frontend-vendor', 'weMail', $wemail );

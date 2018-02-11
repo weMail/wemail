@@ -31,6 +31,12 @@ class Form {
      * @return array
      */
     public function get( $id ) {
-        return wemail()->api->forms($id)->get();
+        $form =  wemail()->api->forms($id)->get();
+
+        if ( ! empty( $form['data'] ) ) {
+            return $form['data'];
+        }
+
+        return null;
     }
 }

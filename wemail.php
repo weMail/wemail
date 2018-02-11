@@ -348,8 +348,7 @@ final class WeDevs_WeMail {
         new WeDevs\WeMail\Rest\Rest();
 
         if ( $this->is_request( 'admin' ) ) {
-            new WeDevs\WeMail\Admin\Scripts();
-            new WeDevs\WeMail\Admin\Menu();
+            new WeDevs\WeMail\Admin\Admin();
         }
 
         new WeDevs\WeMail\FrontEnd\FrontEnd();

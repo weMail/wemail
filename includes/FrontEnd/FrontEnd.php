@@ -14,6 +14,8 @@ class FrontEnd {
     }
 
     public function init() {
+        wemail_set_owner_api_key();
+
         new Scripts();
         new Shortcodes();
     }

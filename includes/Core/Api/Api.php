@@ -97,6 +97,8 @@ class Api {
      */
     public function set_api_key( $api_key ) {
         $this->api_key = $api_key;
+
+        return $this;
     }
 
     /**
@@ -260,6 +262,22 @@ class Api {
         }
 
         return null;
+    }
+
+    /**
+     * API - PUT request caller
+     *
+     * @since 1.0.0
+     *
+     * @param array  $data PUT data
+     * @param array  $args wp_remote_request argument overrides
+     *
+     * @return array|null Array on success, null on failure
+     */
+    public function put( $data, $args = [] ) {
+        $args['_method'] = 'put';
+
+        return $this->post( $data, $args );
     }
 
 }

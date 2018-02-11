@@ -87,7 +87,6 @@ class Scripts {
                 'momentTimeFormat' => '',
             ],
 
-            'ajax'                 => function () {}, // function will be render as object
             'user'                 => [
                 'hash'             => $user->hash,
                 'role'             => $user->role,
