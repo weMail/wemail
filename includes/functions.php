@@ -183,3 +183,42 @@ function wemail_set_owner_api_key() {
 
     wemail()->api->set_api_key( $owner_api_key );
 }
+
+/**
+ * Image URL without any image tag
+ *
+ * @since 1.0.0
+ *
+ * @param string $image_id image id
+ * @param string $size image size either a string keyword (thumbnail, medium, large or full)
+ *        or a 2-item array representing width and height in pixels, e.g. array(32,32).
+ * @return string image relative url
+ */
+function wemail_get_image_url( $image_id, $size = 'full' ) {
+    $image_id = absint( $image_id );
+
+    /**
+     * If image does not exists, then return nothing.
+     * You can set a default image instead for non-existing image
+     */
+    $args = array(
+        'p' => $image_id,
+        'post_type' => 'attachment',
+        'fields' => 'ids',
+
+    );
+    $attachment = new WP_Query( $args );
+
+    if ( $attachment->have_posts() ) {
+        $url_array = wp_get_attachment_image_src( $image_id, $size, true );
+        $url = $url_array[0];
+
+    } else {
+        $url = null;
+    }
+
+    /* Restore original Post Data */
+    wp_reset_postdata();
+
+    return $url;
+}

@@ -28,6 +28,7 @@ class Rest {
         new Csv();
         new Forms();
         new Video();
+        new WP();
     }
 
 }

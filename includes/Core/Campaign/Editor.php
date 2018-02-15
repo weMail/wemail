@@ -196,23 +196,122 @@ class Editor {
             'title'      => __( 'WP Posts', 'wemail' ),
             'image'      => self::$image_dir . '/wp.png',
             'default'    => [
-                'style'      => [
-                    'backgroundColor' => '#ffffff',
-                    'paddingTop'      => '15px',
-                    'paddingBottom'   => '15px',
-                    'paddingLeft'     => '15px',
-                    'paddingRight'    => '15px',
-                    'borderWidth'     => '0px',
-                    'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
+                'style' => [
+                    'padding' => '15px',
                 ],
-                'twoColumns' => false,
-                'texts'      => [
-                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) ),
-                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) )
+                'posts' => [
+                    [
+                        'id' => 0,
+                        'image' => wemail()->cdn . '/images/placeholder-image-full.png',
+                        'title' => 'Example post title',
+                        'postType' => '',
+                        'postStatus' => '',
+                        'url' => site_url( '/' ),
+                        'content' => 'This is an example of post content',
+                        'excerpt' => 'This is an example of post excerpt',
+                    ]
                 ],
-
-                'valign'     => 'top',
+                'layout' => 'i1-tc1',
+                'column' => 1,
+                'title' => [
+                    'container' => [
+                        'tag' => 'h2',
+                        'style' => [
+                            'lineHeight' => '30px',
+                            'marginBottom' => '15px'
+                        ]
+                    ],
+                    'style' => [
+                        'fontSize' => '22px',
+                        'color' => '#333333',
+                        'textAlign' => 'left',
+                        'fontWeight' => 'normal',
+                        'textTransform' => 'none',
+                    ],
+                ],
+                'image' => [
+                    'active' => true,
+                    'style' => [
+                        'width' => '100%',
+                        'float' => 'none',
+                        'borderWidth' => '0px',
+                        'borderStyle' => 'solid',
+                        'borderColor' => '#cccccc',
+                        'padding' => '0px',
+                        'backgroundColor' => '#ffffff',
+                        'marginTop' => '0px',
+                        'marginRight' => '0px',
+                        'marginBottom' => '0px',
+                        'marginLeft' => '0px',
+                    ]
+                ],
+                'postContent' => [
+                    'length' => 'excerpt',
+                    'containerStyle' => [
+                        'marginBottom' => '15px',
+                    ],
+                    'style' => [
+                        'fontSize' => '14px',
+                        'color' => '#333333',
+                        'textAlign' => 'left',
+                        'lineHeight' => '20px',
+                    ],
+                ],
+                'readMore' => [
+                    'show' => 'display',
+                    'style' => [
+                        'display' => 'inline-block',
+                        'paddingTop' => '0px',
+                        'paddingRight' => '0px',
+                        'paddingBottom' => '0px',
+                        'paddingLeft' => '0px',
+                        'fontSize' => '14px',
+                        'fontWeight' => 'normal',
+                        'lineHeight' => '1',
+                        'color' => '#0073aa',
+                        'textAlign' => 'center',
+                        'textDecoration' => 'underline',
+                        'textTransform' => 'none',
+                        'backgroundColor' => '',
+                        'borderRadius' => '0px',
+                        'borderWidth' => '0px',
+                        'borderStyle' => 'solid',
+                        'borderColor' => '#e5e5e5'
+                    ],
+                    'text' => __( 'Read More', 'wemail' ),
+                    'containerStyle' => [
+                        'textAlign' => 'left',
+                    ]
+                ],
+                'divider' => [
+                    'display' => 'show',
+                    'containerStyle' => [
+                        'marginTop' => '15px',
+                        'marginBottom' => '15px'
+                    ],
+                    'style' => [
+                        'width' => '570px',
+                        'borderTopWidth' => '1px',
+                        'borderTopStyle' => 'dashed',
+                        'borderTopColor' => '#e5e5e5',
+                    ],
+                    'useImage' => true,
+                    'image' => [
+                        'image' => wemail()->cdn . '/images/dividers/brush-stroke-lite.png',
+                        'style' => [
+                            'height' => '7px',
+                            'width' => '600px',
+                        ]
+                    ]
+                ],
+                'author' => [
+                    'position' => 'above',
+                    'precededBy' => 'Author:',
+                ],
+                'categories' => [
+                    'position' => 'above',
+                    'precededBy' => 'Categories:'
+                ],
             ]
         ];
     }
