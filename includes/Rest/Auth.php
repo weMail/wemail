@@ -23,6 +23,14 @@ class Auth extends WP_REST_Controller {
                 'callback'            => [ $this, 'site' ],
             ]
         ] );
+
+        register_rest_route( $this->namespace, '/' . $this->rest_base . '/validate-me', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'permission_callback' => [ $this, 'permission_for_validate_me' ],
+                'callback'            => [ $this, 'validate_me' ],
+            ]
+        ] );
     }
 
     public function permission( $request ) {
@@ -41,6 +49,24 @@ class Auth extends WP_REST_Controller {
         ] );
 
         return $response;
+    }
+
+    public function permission_for_validate_me( $request ) {
+        $key = $request->get_header('X-WeMail-Key');
+
+        if ( ! empty( $key ) ) {
+            $transient_key = get_transient( 'wemail_validate_me_key' );
+
+            if ( $key === $transient_key ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function validate_me( $request ) {
+        return rest_ensure_response(true);
     }
 
 }

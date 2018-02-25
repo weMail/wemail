@@ -27,18 +27,24 @@ class Auth {
         $lang = get_option( 'WPLANG', 'en' );
         $lang = !empty( $lang ) ? $lang : 'en';
 
+        $key = wp_generate_password(32);
+
+        set_transient( 'wemail_validate_me_key', $key, 5 * MINUTE_IN_SECONDS );
+
         $data = [
             'site_name'     => get_bloginfo( 'name' ),
             'site_email'    => get_bloginfo( 'admin_email' ),
-            'site_url'      => site_url( '/' ),
-            'home_url'      => home_url( '/' ),
+            'site_url'      => untrailingslashit( site_url( '/' ) ),
+            'home_url'      => untrailingslashit( home_url( '/' ) ),
             'start_of_week' => $week_days[ $start_of_week ],
             'timezone'      => wemail_get_wp_timezone(),
             'language'      => $lang,
             'date_format'   => get_option( 'date_format', 'F j, Y' ),
             'time_format'   => get_option( 'time_format', 'g:i a' ),
             'admin_name'    => $admin_name,
-            'admin_email'   => $user->data->user_email
+            'admin_email'   => $user->data->user_email,
+            'rest_url'      => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
+            'key'           => $key
         ];
 
         $response = wemail()->api->auth()->sites()->post( $data );
