@@ -64,14 +64,14 @@ class Customizer {
 
         return [
             'siteURL'          => site_url('/'),
-            'cdn'              => wemail()->cdn,
+            'cdn'              => wemail()->wemail_cdn,
             'contentTypes'     => [
                 'types'        => $this->content_types,
                 'settings'     => $this->get_content_type_settings()
             ],
             'shortcodes'       => wemail()->shortcode->get(),
-            'shortcodeImg'     => wemail()->cdn . '/images/shortcode.png',
-            'placeholderImage' => wemail()->cdn . '/images/placeholder-image.png',
+            'shortcodeImg'     => wemail()->wemail_cdn . '/images/shortcode.png',
+            'placeholderImage' => wemail()->wemail_cdn . '/images/placeholder-image.png',
             // 'socialNetworks'   => [
             //     'networks'     => $networks,
             //     'defaults'     => $social_networks,
@@ -105,7 +105,7 @@ class Customizer {
      */
     public function dividers() {
         $dividers = [
-            'baseURL' => wemail()->cdn . '/images/dividers/',
+            'baseURL' => wemail()->wemail_cdn . '/images/dividers/',
             'images'  => [
                 [ 'name' => 'brush-stroke-lite.png', 'height' => '24px' ],
                 [ 'name' => 'brush-stroke-orange.png', 'height' => '24px' ],

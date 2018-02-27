@@ -23,7 +23,7 @@ class ContentTypes {
      * @return array
      */
     public static function get_content_type_settings( $context ) {
-        self::$image_dir = wemail()->cdn . '/images/content-types';
+        self::$image_dir = wemail()->wemail_cdn . '/images/content-types';
 
         $settings = [
             'text'          => self::text(),
@@ -112,7 +112,7 @@ class ContentTypes {
                 'images' => [
                     [
                         'alt' => '',
-                        'src' => wemail()->cdn . '/images/placeholder-image-full.png',
+                        'src' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                         'link' => '',
                         'openAttrEditor' => '',
                     ]
@@ -155,7 +155,7 @@ class ContentTypes {
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                         'image' => [
                             'alt' => '',
-                            'src' => wemail()->cdn . '/images/placeholder-image-full.png',
+                            'src' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                             'link' => '',
                             'openAttrEditor' => '',
                         ]
@@ -164,7 +164,7 @@ class ContentTypes {
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                         'image' => [
                             'alt' => '',
-                            'src' => wemail()->cdn . '/images/placeholder-image-full.png',
+                            'src' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                             'link' => '',
                             'openAttrEditor' => '',
                         ]
@@ -300,7 +300,7 @@ class ContentTypes {
                     'margin'          => '0 auto'
                 ],
                 'image'     => [
-                    'image' => wemail()->cdn . '/images/dividers/brush-stroke-lite.png',
+                    'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
                     'style' => [
                         'height' => '7px',
                         'width'  => '600px',

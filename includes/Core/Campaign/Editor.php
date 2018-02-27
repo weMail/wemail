@@ -25,7 +25,7 @@ class Editor {
      * @return void
      */
     public function __construct() {
-        self::$image_dir = wemail()->cdn . '/images/content-types';
+        self::$image_dir = wemail()->wemail_cdn . '/images/content-types';
 
         $this->add_filter( 'wemail_customizer_content_type_settings_campaign', 'content_type_settings' );
     }
@@ -202,7 +202,7 @@ class Editor {
                 'posts' => [
                     [
                         'id' => 0,
-                        'image' => wemail()->cdn . '/images/placeholder-image-full.png',
+                        'image' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                         'title' => 'Example post title',
                         'postType' => '',
                         'postStatus' => '',
@@ -297,7 +297,7 @@ class Editor {
                     ],
                     'useImage' => true,
                     'image' => [
-                        'image' => wemail()->cdn . '/images/dividers/brush-stroke-lite.png',
+                        'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
                         'style' => [
                             'height' => '7px',
                             'width' => '600px',

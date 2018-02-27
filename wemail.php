@@ -98,7 +98,7 @@ final class WeDevs_WeMail {
     public $core = [];
 
     /**
-     * weMail Site URL
+     * weMail site URL
      *
      * @since 1.0.0
      *
@@ -107,13 +107,28 @@ final class WeDevs_WeMail {
     public $wemail_site = '';
 
     /**
-     * weMail CDN URL
-     *
+     * weMail API URL
      * @since 1.0.0
      *
      * @var string
      */
-    public $cdn = '';
+    public $wemail_api = '';
+
+    /**
+     * weMail CDN URL
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $wemail_cdn = '';
+
+    /**
+     * weMail wemail_app URL
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $wemail_app = '';
 
     /**
      * @var object
@@ -343,7 +358,9 @@ final class WeDevs_WeMail {
 
         $this->include_core();
         $this->set_wemail_site();
-        $this->set_cdn();
+        $this->set_wemail_api();
+        $this->set_wemail_cdn();
+        $this->set_wemail_app();
 
         new WeDevs\WeMail\Rest\Rest();
 
@@ -382,9 +399,42 @@ final class WeDevs_WeMail {
         }
     }
 
+    /**
+     * Set weMail site URL
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function set_wemail_site() {
+        /**
+         * weMail site URL
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
         $site = apply_filters( 'wemail_site_url', 'https://getwemail.io' );
         $this->wemail_site = untrailingslashit( $site );
+    }
+
+    /**
+     * Set weMail API URL
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    private function set_wemail_api() {
+        /**
+         * weMail API URL
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
+        $api = apply_filters( 'wemail_api_url', 'http://api.getwemail.io' );
+        $this->wemail_api = untrailingslashit( $api );
     }
 
     /**
@@ -394,7 +444,7 @@ final class WeDevs_WeMail {
      *
      * @return void
      */
-    private function set_cdn() {
+    private function set_wemail_cdn() {
         /**
          * weMail CDN url
          *
@@ -402,8 +452,27 @@ final class WeDevs_WeMail {
          *
          * @param string
          */
-        $cdn = apply_filters( 'wemail_cdn_root', 'https://cdn.getwemail.io' );
-        $this->cdn = untrailingslashit( $cdn );
+        $cdn = apply_filters( 'wemail_cdn_url', 'http://cdn.getwemail.io' );
+        $this->wemail_cdn = untrailingslashit( $cdn );
+    }
+
+    /**
+     * Set weMail APP URL
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    private function set_wemail_app() {
+        /**
+         * weMail APP url
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
+        $app = apply_filters( 'wemail_app_url', 'http://app.getwemail.io' );
+        $this->wemail_app = untrailingslashit( $app );
     }
 
 }

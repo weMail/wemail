@@ -17,8 +17,8 @@ class Scripts {
     }
 
     public function enqueue_styles() {
-        wp_register_style( 'wemail-jquery-ui', wemail()->cdn . '/vendor/jquery-ui/jquery-ui.min.css', [], $this->version );
-        wp_register_style( 'wemail-timepicker', wemail()->cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.css', [], $this->version );
+        wp_register_style( 'wemail-jquery-ui', wemail()->wemail_cdn . '/vendor/jquery-ui/jquery-ui.min.css', [], $this->version );
+        wp_register_style( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.css', [], $this->version );
         wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), ['wp-color-picker'], $this->version );
 
         $dependencies = [
@@ -27,22 +27,22 @@ class Scripts {
             'wemail-tiny-mce',
         ];
 
-        wp_enqueue_style( 'wemail', wemail()->cdn . '/css/wemail.css', $dependencies, $this->version );
+        wp_enqueue_style( 'wemail', wemail()->wemail_cdn . '/css/wemail.css', $dependencies, $this->version );
     }
 
     public function enqueue_scripts() {
         wp_enqueue_media();
 
         wp_register_script( 'wemail-tiny-mce', site_url( '/wp-includes/js/tinymce/tinymce.min.js' ), [] );
-        wp_register_script( 'wemail-tiny-mce-code', wemail()->cdn . '/vendor/tinymce/plugins/code/plugin.min.js', [ 'wemail-tiny-mce' ], $this->version, true );
-        wp_register_script( 'wemail-tiny-mce-hr', wemail()->cdn . '/vendor/tinymce/plugins/hr/plugin.min.js', [ 'wemail-tiny-mce-code' ], $this->version, true );
+        wp_register_script( 'wemail-tiny-mce-code', wemail()->wemail_cdn . '/vendor/tinymce/plugins/code/plugin.min.js', [ 'wemail-tiny-mce' ], $this->version, true );
+        wp_register_script( 'wemail-tiny-mce-hr', wemail()->wemail_cdn . '/vendor/tinymce/plugins/hr/plugin.min.js', [ 'wemail-tiny-mce-code' ], $this->version, true );
 
-        wp_register_script( 'wemail-moment', wemail()->cdn . '/vendor/moment/moment.min.js', [], $this->version, true );
-        wp_register_script( 'wemail-moment-timezone', wemail()->cdn . '/vendor/moment/moment-timezone-with-data-2012-2022.min.js', ['wemail-moment'], $this->version, true );
+        wp_register_script( 'wemail-moment', wemail()->wemail_cdn . '/vendor/moment/moment.min.js', [], $this->version, true );
+        wp_register_script( 'wemail-moment-timezone', wemail()->wemail_cdn . '/vendor/moment/moment-timezone-with-data-2012-2022.min.js', ['wemail-moment'], $this->version, true );
 
-        wp_register_script( 'wemail-timepicker', wemail()->cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.js', ['jquery'], $this->version, true );
-        wp_register_script( 'wemail-popper-js', wemail()->cdn . '/vendor/popper.js/popper.min.js', [], $this->version, true );
-        wp_register_script( 'wemail-bootstrap', wemail()->cdn . '/js/bootstrap.js', ['jquery', 'wemail-popper-js'], $this->version, true );
+        wp_register_script( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.js', ['jquery'], $this->version, true );
+        wp_register_script( 'wemail-popper-js', wemail()->wemail_cdn . '/vendor/popper.js/popper.min.js', [], $this->version, true );
+        wp_register_script( 'wemail-bootstrap', wemail()->wemail_cdn . '/js/bootstrap.js', ['jquery', 'wemail-popper-js'], $this->version, true );
 
         $dependencies = [
             'jquery',
@@ -60,8 +60,8 @@ class Scripts {
             'wemail-bootstrap',
         ];
 
-        wp_enqueue_script( 'wemail-vendor', wemail()->cdn . '/js/vendor.js', $dependencies, $this->version, true );
-        wp_enqueue_script( 'wemail', wemail()->cdn . '/js/wemail.js', ['wemail-vendor'], $this->version, true );
+        wp_enqueue_script( 'wemail-vendor', wemail()->wemail_cdn . '/js/vendor.js', $dependencies, $this->version, true );
+        wp_enqueue_script( 'wemail', wemail()->wemail_cdn . '/js/wemail.js', ['wemail-vendor'], $this->version, true );
 
         $user = wemail()->user;
 
@@ -70,10 +70,11 @@ class Scripts {
             'siteURL'              => site_url( '/' ),
             'restURL'              => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
             'wpRestURL'            => untrailingslashit( get_rest_url( null, '/wp/v2' ) ),
-            'wemailSiteURL'        => wemail()->wemail_site,
             'nonce'                => wp_create_nonce( 'wp_rest' ),
+            'wemailSiteURL'        => wemail()->wemail_site,
             'api'                  => wemail()->api->get_props(),
-            'cdn'                  => wemail()->cdn,
+            'cdn'                  => wemail()->wemail_cdn,
+            'app'                  => wemail()->wemail_app,
             'dateTime'             => [
                 'server'           => [
                     'timezone'     => wemail_get_wp_timezone(),

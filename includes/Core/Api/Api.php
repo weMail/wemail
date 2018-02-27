@@ -56,14 +56,6 @@ class Api {
      * @return void
      */
     public function boot() {
-        /**
-         * Filter the wemail api root
-         *
-         * @since 1.0.0
-         */
-        $root = apply_filters( 'wemail_api_root', 'https://api.getwemail.io' );
-        $this->root  = untrailingslashit( $root );
-
         $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
         $this->set_api_key( $api_key );
     }
@@ -132,7 +124,7 @@ class Api {
      */
     public function get_props() {
         return [
-            'root'     => $this->root,
+            'root'     => wemail()->wemail_api,
             'api_key'  => $this->get_api_key()
         ];
     }
