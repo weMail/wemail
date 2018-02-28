@@ -33,7 +33,7 @@ class Menu {
         if ( current_user_can( 'manage_options' ) || wemail()->user->can( 'view_wemail' ) ) {
             $capability = 'read';
 
-            $icon = WEMAIL_ASSETS . '/images/wemail-menu-icon.svg';
+            $icon = wemail()->wemail_cdn . '/images/logo/wemail.svg';
 
             $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], $icon, 1 );
 
