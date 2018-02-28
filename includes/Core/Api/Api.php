@@ -56,6 +56,7 @@ class Api {
      * @return void
      */
     public function boot() {
+        $this->root = wemail()->wemail_api;
         $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
         $this->set_api_key( $api_key );
     }
@@ -124,7 +125,7 @@ class Api {
      */
     public function get_props() {
         return [
-            'root'     => wemail()->wemail_api,
+            'root'     => $this->root,
             'api_key'  => $this->get_api_key()
         ];
     }
