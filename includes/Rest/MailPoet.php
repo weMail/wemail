@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Rest;
 
+use WP_Error;
 use WP_REST_Response;
 use WP_REST_Server;
 use WP_User_Query;
@@ -59,6 +60,10 @@ class MailPoet {
     }
 
     public function lists() {
+        if ( ! class_exists( 'WYSIJA' )) {
+            return new WP_Error( 'mailpoet_is_not_active', __( 'MailPoet is not active', 'wemail' ), ['status' => 422] );
+        }
+
         $mailpoet_form_engine = \WYSIJA::get('form_engine', 'helper');
 
         $lists = $mailpoet_form_engine->get_lists();
@@ -85,6 +90,10 @@ class MailPoet {
     }
 
     public function meta_fields() {
+        if ( ! class_exists( 'WYSIJA' )) {
+            return new WP_Error( 'mailpoet_is_not_active', __( 'MailPoet is not active', 'wemail' ), ['status' => 422] );
+        }
+
         $data = [
             'fields' => []
         ];
@@ -104,6 +113,10 @@ class MailPoet {
     }
 
     public function subscribers( $request ) {
+        if ( ! class_exists( 'WYSIJA' )) {
+            return new WP_Error( 'mailpoet_is_not_active', __( 'MailPoet is not active', 'wemail' ), ['status' => 422] );
+        }
+
         $data = [
             'subscribers' => []
         ];
