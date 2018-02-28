@@ -433,7 +433,7 @@ final class WeDevs_WeMail {
          *
          * @param string
          */
-        $api = apply_filters( 'wemail_api_url', 'http://api.getwemail.io' );
+        $api = apply_filters( 'wemail_api_url', 'http://api.getwemail.io/v1' );
         $this->wemail_api = untrailingslashit( $api );
     }
 
