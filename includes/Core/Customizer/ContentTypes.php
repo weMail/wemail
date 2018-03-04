@@ -184,6 +184,18 @@ class ContentTypes {
      * @return array
      */
     public static function social_follow() {
+        $settings = wemail()->api->settings()->social_networks()->get();
+
+        $facebook = 'https://facebook.com';
+        $twitter  = 'https://twitter.com';
+        $website  = 'http://example.com';
+
+        if ( ! empty( $settings['data'] ) ) {
+            $facebook = $settings['data']['facebook'];
+            $twitter = $settings['data']['twitter'];
+            $website = $settings['data']['website'];
+        }
+
         return [
             'type'       => 'socialFollow',
             'title'      => __( 'Social Follow', 'wemail' ),
@@ -209,17 +221,17 @@ class ContentTypes {
                 'icons'      => [
                     [
                         'site' => 'facebook',
-                        'link' => 'https://facebook.com',
+                        'link' => $facebook,
                         'text' => 'Facebook',
                     ],
                     [
                         'site' => 'twitter',
-                        'link' => 'https://twitter.com',
+                        'link' => $twitter,
                         'text' => 'Twitter',
                     ],
                     [
                         'site' => 'website',
-                        'link' => 'http://example.com',
+                        'link' => $website,
                         'text' => 'Website'
                     ]
                 ],
