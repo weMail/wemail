@@ -27,7 +27,14 @@ class Auth {
         $lang = get_option( 'WPLANG', 'en' );
         $lang = !empty( $lang ) ? $lang : 'en';
 
-        $key = wp_generate_password(32);
+        /**
+         * app.getwemail.io will validate this site using this key
+         *
+         * @since 1.0.0
+         *
+         * @param string
+         */
+        $key = apply_filters( 'wemail_validate_me_key', wp_generate_password(32) );
 
         set_transient( 'wemail_validate_me_key', $key, 5 * MINUTE_IN_SECONDS );
 
