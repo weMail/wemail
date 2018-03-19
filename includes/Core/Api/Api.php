@@ -268,7 +268,7 @@ class Api {
      * @return array|null Array on success, null on failure
      */
     public function put( $data, $args = [] ) {
-        $args['_method'] = 'put';
+        $data['_method'] = 'put';
 
         return $this->post( $data, $args );
     }

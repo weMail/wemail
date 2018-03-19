@@ -34,7 +34,13 @@ class Forms {
     }
 
     public function permission( $request ) {
-        return true;
+        $nonce = $request->get_header('X-WP-Nonce');
+
+        if ( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return true;
+        }
+
+        return false;
     }
 
     public function submit( $request ) {
@@ -107,7 +113,6 @@ class Forms {
                     }
 
                     $first_name = trim( implode( ' ', $full_name ) );
-
                     break;
 
                 case 'firstName':
@@ -124,18 +129,10 @@ class Forms {
 
         $subscriber = wemail()->subscriber->get( $email );
 
-        $data = [
-            'email'         => $email,
-            'first_name'    => $first_name,
-            'last_name'     => $last_name,
-        ];
-
         if ( $subscriber ) {
-            $subscriber = wemail()->subscriber->update( $subscriber->id, $data );
+            $subscriber = wemail()->subscriber->subscribe_to_lists( $subscriber['id'], [ $list_id ] );
 
-            if ( $subscriber ) {
-                $subscriber = wemail()->subscriber->subscribe_to_lists( $subscriber->id, [ $list_id ] );
-            }
+            $status_code = 200;
 
         } else {
             $subscriber = wemail()->subscriber->create( [
@@ -144,6 +141,8 @@ class Forms {
                 'last_name'     => $last_name,
                 'lists'         => [ $list_id ]
             ] );
+
+            $status_code = 201;
         }
 
         if ( ! $subscriber ) {
@@ -154,7 +153,14 @@ class Forms {
             );
         }
 
-        return new WP_REST_Response( [ 'success' => true ], 200 );
+        $data = [
+            'success' => true,
+            'on_submit' => $form['settings']['onSubmit'],
+            'message' => $form['settings']['message'],
+            'redirect_to' => $form['settings']['redirectTo'],
+        ];
+
+        return new WP_REST_Response( $data, $status_code );
     }
 
 }
