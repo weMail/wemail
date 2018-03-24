@@ -41,6 +41,27 @@ class Form {
     }
 
     /**
+     * Get all form items
+     *
+     * id-name paired items
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    public function items() {
+        $forms = wemail()->api->forms()->items()->get();
+
+        if ( is_wp_error( $forms ) ) {
+            return $forms;
+        } else if ( ! empty( $forms['data'] ) ) {
+            return $forms['data'];
+        }
+
+        return null;
+    }
+
+    /**
      * Post a form submission
      *
      * @since 1.0.0

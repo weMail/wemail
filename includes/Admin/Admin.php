@@ -19,6 +19,10 @@ class Admin {
     private function includes() {
         new Scripts();
         new Menu();
+
+        if ( current_user_can( 'edit_posts' ) && wemail_validate_boolean( get_user_option('rich_editing') ) ) {
+            new Shortcode();
+        }
     }
 
     public function remove_admin_notice() {
