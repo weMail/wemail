@@ -39,4 +39,26 @@ class Form {
 
         return null;
     }
+
+    /**
+     * Post a form submission
+     *
+     * @since 1.0.0
+     *
+     * @param string $id
+     * @param array $data
+     *
+     * @return null|array|WP_Error
+     */
+    public function submit( $id, $data ) {
+        $form = wemail()->api->forms( $id )->submit()->post( $data );
+
+        if ( is_wp_error( $form ) ) {
+            return $form;
+        } else if ( ! empty( $form['data'] ) ) {
+            return $form['data'];
+        }
+
+        return null;
+    }
 }

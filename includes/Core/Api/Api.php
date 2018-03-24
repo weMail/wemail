@@ -4,6 +4,7 @@ namespace WeDevs\WeMail\Core\Api;
 
 use Illuminate\Support\Pluralizer;
 use Stringy\StaticStringy;
+use WP_Error;
 use WeDevs\WeMail\Traits\Hooker;
 use WeDevs\WeMail\Traits\Singleton;
 
@@ -217,13 +218,7 @@ class Api {
 
         $response = wp_remote_get( $url, $args );
 
-        if ( ! is_wp_error( $response ) ) {
-            if ( !empty( $response['body'] ) ) {
-                return json_decode( $response['body'], true );
-            }
-        }
-
-        return false;
+        return $this->response( $response );
     }
 
     /**
@@ -246,15 +241,7 @@ class Api {
 
         $response = wp_remote_post( $url, $args );
 
-        if ( is_wp_error( $response ) ) {
-            $error_message = $response->get_error_message();
-        } else {
-            if ( ! empty( $response['body'] ) ) {
-                return json_decode( $response['body'], true );
-            }
-        }
-
-        return null;
+        return $this->response( $response );
     }
 
     /**
@@ -271,6 +258,33 @@ class Api {
         $data['_method'] = 'put';
 
         return $this->post( $data, $args );
+    }
+
+    /**
+     * Response handler for API calls
+     *
+     * @since 1.0.0
+     *
+     * @param array|WP_Error $response
+     *
+     * @return array|WP_Error
+     */
+    private function response( $response ) {
+        if ( is_wp_error( $response ) ) {
+            return $response;
+        }
+
+        $response_code = wp_remote_retrieve_response_code($response);
+        $body = json_decode( $response['body'], true );
+
+        if ( $response_code >= 200 && $response_code <= 299 ) {
+            return $body;
+
+        } else {
+            $message = array_key_exists( 'message', $body ) ? $body['message'] : __( 'Something went wrong', 'wemail' );
+
+            return new WP_Error( 'error', $message, [ 'status' => $response_code ] );
+        }
     }
 
 }
