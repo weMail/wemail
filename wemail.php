@@ -9,7 +9,7 @@
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
- * Domain Path: /languages
+ * Domain Path: /i18n/languages
  *
  * Copyright (c) 2017 weDevs LLC (email: info@wedevs.com). All rights reserved.
  *
@@ -329,20 +329,7 @@ final class WeDevs_WeMail {
      */
     private function init_hooks() {
         register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
-
-        add_action( 'plugins_loaded', [ $this, 'load_plugin_textdomain' ] );
         add_action( 'init', [ $this, 'init' ], 0 );
-    }
-
-    /**
-     * Load plugin i18n text domain
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function load_plugin_textdomain() {
-        load_plugin_textdomain( 'wemail', false, WEMAIL_PATH . '/i18n/languages/' );
     }
 
     /**
