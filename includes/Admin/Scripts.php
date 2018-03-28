@@ -19,7 +19,7 @@ class Scripts {
     public function enqueue_styles() {
         wp_register_style( 'wemail-jquery-ui', wemail()->wemail_cdn . '/vendor/jquery-ui/jquery-ui.min.css', [], $this->version );
         wp_register_style( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.css', [], $this->version );
-        wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), ['wp-color-picker'], $this->version );
+        wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), [], $this->version );
 
         $dependencies = [
             'wemail-jquery-ui',
@@ -49,7 +49,6 @@ class Scripts {
             'jquery-ui-datepicker',
             'jquery-ui-sortable',
             'jquery-ui-draggable',
-            'wp-color-picker',
             'wemail-tiny-mce',
             'wemail-tiny-mce-code',
             'wemail-tiny-mce-hr',
