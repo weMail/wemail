@@ -281,7 +281,9 @@ class Api {
             return $body;
 
         } else {
-            $message = array_key_exists( 'message', $body ) ? $body['message'] : __( 'Something went wrong', 'wemail' );
+            $message = is_array( $body ) && array_key_exists( 'message', $body )
+                ? $body['message']
+                : __( 'Something went wrong', 'wemail' );
 
             return new WP_Error( 'error', $message, [ 'status' => $response_code ] );
         }

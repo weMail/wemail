@@ -56,6 +56,10 @@ class Auth {
 
         $response = wemail()->api->auth()->sites()->post( $data );
 
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error( 'failed_to_connect_wemail', $response->get_error_message() );
+        }
+
         if ( !empty( $response['access_token'] ) ) {
             update_option( 'wemail_site_slug', $response['data']['slug'] );
 
