@@ -420,7 +420,7 @@ final class WeDevs_WeMail {
          *
          * @param string
          */
-        $api = apply_filters( 'wemail_api_url', 'http://api.getwemail.io/v1' );
+        $api = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
         $this->wemail_api = untrailingslashit( $api );
     }
 
@@ -439,7 +439,7 @@ final class WeDevs_WeMail {
          *
          * @param string
          */
-        $cdn = apply_filters( 'wemail_cdn_url', 'http://cdn.getwemail.io' );
+        $cdn = apply_filters( 'wemail_cdn_url', 'https://cdn.getwemail.io' );
         $this->wemail_cdn = untrailingslashit( $cdn );
     }
 
@@ -458,7 +458,7 @@ final class WeDevs_WeMail {
          *
          * @param string
          */
-        $app = apply_filters( 'wemail_app_url', 'http://app.getwemail.io' );
+        $app = apply_filters( 'wemail_app_url', 'https://app.getwemail.io' );
         $this->wemail_app = untrailingslashit( $app );
     }
 
