@@ -50,7 +50,7 @@ class Auth {
             'time_format'   => get_option( 'time_format', 'g:i a' ),
             'admin_name'    => $admin_name,
             'admin_email'   => $user->data->user_email,
-            'rest_url'      => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
+            'rest_url'      => untrailingslashit( get_rest_url( null, '/wemail/v1/auth/validate-me') ),
             'key'           => $key
         ];
 
