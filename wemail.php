@@ -349,6 +349,7 @@ final class WeDevs_WeMail {
         $this->set_wemail_cdn();
         $this->set_wemail_app();
 
+        new WeDevs\WeMail\Hooks();
         new WeDevs\WeMail\Rest\Rest();
 
         if ( $this->is_request( 'admin' ) ) {

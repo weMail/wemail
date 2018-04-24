@@ -163,6 +163,7 @@ class WP extends WP_REST_Controller {
         global $wpdb;
 
         $roles        = $request->get_param( 'roles' );
+        $include      = $request->get_param( 'include' );
         $current_page = $request->get_param( 'page' );
 
         /**
@@ -174,29 +175,24 @@ class WP extends WP_REST_Controller {
          */
         $users_per_page = apply_filters( 'wemail_import_wp_users_per_page', 100 );
 
-        $total_users    = $wpdb->get_var('select count(*) from ' . $wpdb->users);
-        $last_page      = max( (int) ceil( $total_users / $users_per_page ), 1 );
-
-        $current_page   = absint( $current_page );
-
-        if ( $current_page <= 0 ) {
-            $current_page = 1;
-        }
-
-        if ( $current_page > $last_page ) {
-            $current_page = $last_page;
-        }
-
-        $offset = ($current_page - 1) * $users_per_page;
+        $current_page = absint( $current_page );
 
         $args = [
-            'role__in'  => ! empty( $roles ) ? $roles : [],
-            'number'    => $users_per_page,
-            'offset'    => $offset,
-            'fields'    => 'all_with_meta'
+            'role__in'    => ! empty( $roles ) ? $roles : [],
+            'number'      => $users_per_page,
+            'orderby'     => 'ID',
+            'order'       => 'ASC',
+            'fields'      => 'all_with_meta',
+            'count_total' => true,
+            'paged'       => ( $current_page <= 0 ) ? 1 : $current_page,
         ];
 
-        $wp_users = get_users( $args );
+        if ( ! empty( $include ) ) {
+            $args['include'] = $include;
+        }
+
+        $user_query = new \WP_User_Query( $args );
+        $wp_users = $user_query->get_results();
 
         $users = [];
 
@@ -210,7 +206,14 @@ class WP extends WP_REST_Controller {
             ];
         }
 
-        $next_page = ($current_page + 1) <= $last_page ? ($current_page + 1) : 0;
+        $total_users    = $user_query->get_total();
+        $last_page      = max( (int) ceil( $total_users / $users_per_page ), 1 );
+
+        if ( $current_page > $last_page ) {
+            $current_page = $last_page;
+        }
+
+        $next_page = ( ( $current_page + 1 ) <= $last_page ) ? ( $current_page + 1 ) : 0;
 
         $data = [
             'users'     => $users,

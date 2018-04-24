@@ -2,8 +2,8 @@
 
 namespace WeDevs\WeMail\Traits;
 
-trait Singleton
-{
+trait Singleton {
+
     /**
      * Singleton class instance holder
      *
@@ -16,17 +16,16 @@ trait Singleton
      *
      * @return object
      */
-    public static function instance()
-    {
-        if (! isset(self::$instance) && !(self::$instance instanceof self)) {
+    public static function instance() {
+        if (! isset( self::$instance ) && !( self::$instance instanceof self ) ) {
             self::$instance = new self;
 
-            if ( method_exists( self::$instance, 'boot') ) {
+            if ( method_exists( self::$instance, 'boot' ) ) {
                 self::$instance->boot();
             }
         }
 
-
         return self::$instance;
     }
+
 }

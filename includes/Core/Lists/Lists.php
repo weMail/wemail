@@ -2,11 +2,11 @@
 
 namespace WeDevs\WeMail\Core\Lists;
 
-use WeDevs\WeMail\Traits\Singleton;
+use WeDevs\WeMail\Traits\Core;
 
 class Lists {
 
-    use Singleton;
+    use Core;
 
     /**
      * Get a list of lists
@@ -31,7 +31,9 @@ class Lists {
      * @return array
      */
     public function items() {
-        return wemail()->api->lists()->items()->get();
+        $items = wemail()->api->lists()->items()->get();
+
+        return $this->data( $items );
     }
 
     /**

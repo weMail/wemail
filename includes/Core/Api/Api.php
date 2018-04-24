@@ -11,6 +11,7 @@ use WeDevs\WeMail\Traits\Singleton;
 class Api {
 
     use Singleton;
+
     use Hooker;
 
     /**
@@ -209,7 +210,7 @@ class Api {
      * @param array  $query Additional query
      * @param array  $args  wp_remote_get argument overrides
      *
-     * @return array|boolean Array on success, false on failure
+     * @return mixed
      */
     public function get( $url = '', $query = [], $args = [] ) {
         $args = $this->args( $args );
@@ -230,7 +231,7 @@ class Api {
      * @param array  $data POST data
      * @param array  $args wp_remote_post argument overrides
      *
-     * @return array|null Array on success, null on failure
+     * @return mixed
      */
     public function post( $data, $args = [] ) {
         $args = $this->args( $args );
@@ -252,12 +253,36 @@ class Api {
      * @param array  $data PUT data
      * @param array  $args wp_remote_request argument overrides
      *
-     * @return array|null Array on success, null on failure
+     * @return mixed
      */
     public function put( $data, $args = [] ) {
         $data['_method'] = 'put';
 
         return $this->post( $data, $args );
+    }
+
+    /**
+     * API - DELETE request caller
+     *
+     * @since 1.0.0
+     *
+     * @param [type] $data Additional query data
+     * @param array $args wp_remote_request argument overrides
+     *
+     * @return mixed
+     */
+    public function delete( $data, $args = [] ) {
+        $args = $this->args( $args );
+
+        $args['method'] = 'delete';
+
+        $args['body'] = ! empty( $data ) ? $data : null;
+
+        $url = $this->build_url();
+
+        $response = wp_remote_request( $url, $args );
+
+        return $this->response( $response );
     }
 
     /**

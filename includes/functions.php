@@ -161,8 +161,8 @@ function wemail_get_wp_timezone() {
  *
  * @return void
  */
-function wemail_set_owner_api_key() {
-    if ( get_current_user_id() ) {
+function wemail_set_owner_api_key( $check_user_is_logged_in = true ) {
+    if ( $check_user_is_logged_in && get_current_user_id() ) {
         return;
     }
 
