@@ -163,6 +163,7 @@ class WP extends WP_REST_Controller {
     public function users( $request ) {
         global $wpdb;
 
+        $roles        = $request->get_param( 'roles' );
         $current_page = $request->get_param( 'page' );
 
         /**
@@ -189,46 +190,28 @@ class WP extends WP_REST_Controller {
 
         $offset = ($current_page - 1) * $users_per_page;
 
-        $users = $wpdb->get_results(
-            $wpdb->prepare(
-                'select ID, user_login, user_email'
-                . ' from ' . $wpdb->users
-                . ' order by ID asc'
-                . ' limit %d, %d',
-                $offset,
-                $users_per_page
-            ),
-            ARRAY_A
-        );
+        $args = [
+            'role__in'  => ! empty( $roles ) ? $roles : [],
+            'number'    => $users_per_page,
+            'offset'    => $offset,
+            'fields'    => 'all_with_meta'
+        ];
 
-        $user_ids = wp_list_pluck( $users, 'ID' );
+        $wp_users = get_users( $args );
 
-        $users_meta = $wpdb->get_results(
-            $wpdb->prepare(
-                'select user_id, meta_key, meta_value'
-                . ' from ' . $wpdb->usermeta
-                . ' where user_id in (%s) and meta_key in (%s, %s)',
-                implode(', ', $user_ids),
-                'first_name',
-                'last_name'
-            ),
-            ARRAY_A
-        );
+        $users = [];
+
+        foreach ($wp_users as $user) {
+            $users[] = [
+                'ID' => $user->ID,
+                'first_name'    => $user->get('first_name'),
+                'last_name'     => $user->get('last_name'),
+                'user_email'    => $user->user_email,
+                'user_login'    => $user->user_login
+            ];
+        }
 
         $next_page = ($current_page + 1) <= $last_page ? ($current_page + 1) : 0;
-
-        $users = array_map( function ( &$user ) use ( $users_meta ) {
-            $user['first_name'] = null;
-            $user['last_name']  = null;
-
-            foreach ( $users_meta as $meta ) {
-                if (absint( $user['ID'] ) === absint( $meta['user_id'] )) {
-                    $user[ $meta['meta_key'] ] = $meta['meta_value'];
-                }
-            }
-
-            return $user;
-        }, $users );
 
         $data = [
             'users'     => $users,
