@@ -29,6 +29,7 @@ class Rest {
         new Forms();
         new Video();
         new WP();
+        new Site();
     }
 
 }

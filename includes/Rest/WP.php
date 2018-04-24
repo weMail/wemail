@@ -2,7 +2,6 @@
 
 namespace WeDevs\WeMail\Rest;
 
-use WP_Error;
 use WP_Query;
 use WP_REST_Controller;
 use WP_REST_Server;
