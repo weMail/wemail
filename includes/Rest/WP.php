@@ -21,14 +21,20 @@ class WP extends WP_REST_Controller {
     public function register_routes() {
         register_rest_route( $this->namespace, '/' . $this->rest_base . '/post-types', [
             'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'permission' ],
+            'permission_callback' => [ $this, 'can_update_campaign' ],
             'callback'            => [ $this, 'post_types' ],
         ] );
 
         register_rest_route( $this->namespace, '/' . $this->rest_base . '/posts', [
             'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'permission' ],
+            'permission_callback' => [ $this, 'can_update_campaign' ],
             'callback'            => [ $this, 'posts' ],
+        ] );
+
+        register_rest_route( $this->namespace, '/' . $this->rest_base . '/user-roles', [
+            'methods'             => WP_REST_Server::READABLE,
+            'permission_callback' => [ $this, 'can_manage_settings' ],
+            'callback'            => [ $this, 'user_roles' ],
         ] );
 
         register_rest_route( $this->namespace, '/' . $this->rest_base . '/users', [
@@ -61,8 +67,12 @@ class WP extends WP_REST_Controller {
         return false;
     }
 
-    public function permission( $request ) {
+    public function can_update_campaign( $request ) {
         return wemail()->user->can( 'update_campaign' );
+    }
+
+    public function can_manage_settings( $request ) {
+        return wemail()->user->can( 'manage_settings' );
     }
 
     public function can_create_subscriber( $request ) {
@@ -131,6 +141,23 @@ class WP extends WP_REST_Controller {
         }
 
         return rest_ensure_response( $posts );
+    }
+
+    public function user_roles( $request ) {
+        global $wp_roles;
+
+        $user_roles = [];
+
+        $roles = $wp_roles->get_names();
+
+        foreach ($roles as $name => $title) {
+            array_push($user_roles, [
+                'name' => $name,
+                'title' => $title
+            ]);
+        }
+
+        return rest_ensure_response( [ 'data' => $user_roles ] );
     }
 
     public function users( $request ) {
