@@ -17,7 +17,7 @@ class Shortcode {
                 'first_name'        => [ 'title' => __( 'First Name', 'wemail' ), 'default' => 'reader' ],
                 'last_name'         => [ 'title' => __( 'Last Name', 'wemail' ), 'default' => 'reader' ],
                 'email'             => [ 'title' => __( 'Email', 'wemail' ), 'placeholder' => 'recipient@example.com' ],
-                'life_stage'        => [ 'title' => __( 'Life Stage', 'wemail' ), 'placeholder' => 'life stage' ],
+                // 'life_stage'        => [ 'title' => __( 'Life Stage', 'wemail' ), 'placeholder' => 'life stage' ],
                 'date_of_birth'     => [ 'title' => __( 'Date of Birth', 'wemail' ), 'placeholder' => 'MM/DD/YYYY' ],
                 'source'            => [ 'title' => __( 'Source', 'wemail' ), 'placeholder' => '' ],
                 'phone'             => [ 'title' => __( 'Phone', 'wemail' ), 'placeholder' => '8801000000000' ],
