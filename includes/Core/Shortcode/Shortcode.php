@@ -57,7 +57,7 @@ class Shortcode {
             'title' => __( 'Links', 'wemail' ),
             'codes' => [
                 'unsubscribe'       => [ 'title' => __( 'Unsubscribe Link', 'wemail' ), 'text' => __( 'Unsubscribe', 'wemail' ) ],
-                'edit_subscription' => [ 'title' => __( 'Edit Subscription Page Link', 'wemail' ), 'text' => __( 'Edit your subscription', 'wemail' ) ],
+                // 'edit_subscription' => [ 'title' => __( 'Edit Subscription Page Link', 'wemail' ), 'text' => __( 'Edit your subscription', 'wemail' ) ],
                 'archive'           => [ 'title' => __( 'Email Archive Link', 'wemail' ), 'text' => __( 'View this email in your browser', 'wemail' ) ],
             ]
         ];
