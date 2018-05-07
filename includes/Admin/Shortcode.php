@@ -66,7 +66,7 @@ class Shortcode {
             <script type="text/javascript">
                 var wemail_forms_shortcode_button = {
                     title: '<?php echo __( 'Insert weMail form', 'wemail' ); ?>',
-                    forms: <?php echo json_encode( $forms ); ?>,
+                    forms: <?php echo $forms ? json_encode( $forms ) : json_encode( [] ); ?>,
                     icon: '<?php echo $icon; ?>'
                 };
             </script>

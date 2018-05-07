@@ -12,6 +12,14 @@
                 };
             });
 
+            if (!menuItems.length) {
+                menuItems = [
+                    {
+                        text: 'No form found'
+                    }
+                ];
+            }
+
             editor.addButton('wemail_forms_button', {
                 title : wemail_forms_shortcode_button.title,
                 image: wemail_forms_shortcode_button.icon,
