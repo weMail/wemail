@@ -82,4 +82,18 @@ class Form {
 
         return null;
     }
+
+    /**
+     * Name of supported form integrations
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    public function integrations() {
+        return [
+            'contact_form_7' => __( 'Contact Form 7', 'wemail' ),
+            'gravity_forms' => __( 'Gravity Forms', 'wemail' )
+        ];
+    }
 }

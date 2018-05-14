@@ -1,6 +1,7 @@
 <?php
 namespace WeDevs\WeMail;
 
+use WeDevs\WeMail\Core\Form\Integrations\Hooks as FormIntegrations;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Hooks {
@@ -11,6 +12,8 @@ class Hooks {
         $this->add_action( 'user_register', 'update_wp_subscriber' );
         $this->add_action( 'profile_update', 'update_wp_subscriber' );
         $this->add_action( 'delete_user', 'delete_wp_subscriber' );
+
+        new FormIntegrations();
     }
 
     /**

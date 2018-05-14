@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Rest;
 
+use WeDevs\WeMail\Core\Form\Integrations\Rest as FormIntegrations;
 use WeDevs\WeMail\Rest\Countries;
 use WeDevs\WeMail\Rest\Csv;
 use WeDevs\WeMail\Rest\Customizer;
@@ -30,6 +31,7 @@ class Rest {
         new Video();
         new WP();
         new Site();
+        new FormIntegrations();
     }
 
 }
