@@ -88,7 +88,7 @@ class Rest extends RestController {
         $integration = $request->get_param( 'name' );
 
         if ( ! $this->$integration->is_active ) {
-            return $this->$integration->inactive_message();
+            return $this->$integration->inactivity_message();
         }
 
         $forms = $this->$integration->forms();
@@ -114,7 +114,7 @@ class Rest extends RestController {
         $integration = StaticStringy::underscored( $integration );
 
         if ( ! $this->$integration->is_active ) {
-            return $this->$integration->inactive_message();
+            return $this->$integration->inactivity_message();
         }
 
         $data = $request->get_param( 'settings' );

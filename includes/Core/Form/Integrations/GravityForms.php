@@ -3,10 +3,9 @@
 namespace WeDevs\WeMail\Core\Form\Integrations;
 
 use WP_Error;
-use WP_Query;
 use WeDevs\WeMail\Traits\Singleton;
 
-class ContactForm7 {
+class GravityForms {
 
     use Singleton;
 
@@ -27,7 +26,7 @@ class ContactForm7 {
      * @return void
      */
     public function boot() {
-        if ( class_exists( 'WPCF7_ContactForm' ) ) {
+        if ( class_exists( 'GFForms' ) ) {
             $this->is_active = true;
         }
     }
@@ -42,7 +41,7 @@ class ContactForm7 {
     public function inactivity_message() {
         return new WP_Error(
             'integration_is_not_active',
-            __('Contact Form 7 plugin is not active', 'wemail'),
+            __('Gravity Forms plugin is not active', 'wemail'),
             ['status' => 422]
         );
     }
@@ -57,39 +56,40 @@ class ContactForm7 {
     public function forms() {
         $forms = [];
 
-        $args = [
-            'post_type' => 'wpcf7_contact_form',
-            'posts_per_page' => -1,
-        ];
+        $gf_forms = \GFFormsModel::get_forms( true );
 
-        $cf7_query = new WP_Query( $args );
+        foreach ( $gf_forms as $gf_form ) {
+            $form_id = absint( $gf_form->id );
+            $form = [
+                'id'     => $form_id,
+                'title'  => $gf_form->title,
+                'fields' => [],
+            ];
 
-        if ( ! $cf7_query->have_posts() ) {
-            return $forms;
+            $form_meta = \GFFormsModel::get_form_meta( $form_id );
 
-        } else {
-            while ( $cf7_query->have_posts() ) {
-                $cf7_query->the_post();
+            foreach ( $form_meta['fields'] as $field ) {
+                $field = \GF_Fields::create( $field );
 
-                global $post;
-
-                $cf7 = \WPCF7_ContactForm::get_instance( $post->ID );
-
-                $form = [
-                    'id'     => $post->ID,
-                    'title'  => $post->post_title,
-                    'fields' => []
-                ];
-
-                foreach ( $cf7->collect_mail_tags() as $tag ) {
+                if ( empty( $field['inputs'] ) ) {
                     $form['fields'][] = [
-                        'id'    => $tag,
-                        'label' => "[{$tag}]"
+                        'id'    => $field->id,
+                        'label' => $field->label
                     ];
-                }
 
-                $forms[] = $form;
+                } else {
+                    foreach ( $field['inputs'] as $i => $group_field) {
+                        if ( empty( $group_field['isHidden'] ) ) {
+                            $form['fields'][] = [
+                                'id'    => $group_field['id'],
+                                'label' => $group_field['label']
+                            ];
+                        }
+                    }
+                }
             }
+
+            $forms[] = $form;
         }
 
         return $forms;
@@ -131,13 +131,13 @@ class ContactForm7 {
             $form_ids[] = $form_id;
         }
 
-        $response = wemail()->api->forms()->integrations( 'contact-form-7' )->post( $settings );
+        $response = wemail()->api->forms()->integrations( 'gravity-forms' )->post( $settings );
 
         if ( is_wp_error( $response ) ) {
             return $response;
         }
 
-        update_option( 'wemail_form_integration_contact_form_7', $form_ids );
+        update_option( 'wemail_form_integration_gravity_forms', $form_ids );
 
         return $response;
     }
@@ -152,38 +152,37 @@ class ContactForm7 {
      *
      * @return void
      */
-    public function submit( $wpcf7, $result ) {
-        if ( ! empty( $result['invalid_fields'] ) ) {
-            return;
-        }
+    public function submit( $lead, $form ) {
+        $form_id = $lead['form_id'];
 
-        $form_id = $wpcf7->id();
-
-        $settings = get_option( 'wemail_form_integration_contact_form_7', [] );
+        $settings = get_option( 'wemail_form_integration_gravity_forms', [] );
 
         if ( ! in_array( $form_id, $settings ) ) {
             return;
         }
 
-        $form_tags   = $wpcf7->scan_form_tags();
-        $submission  = \WPCF7_Submission::get_instance();
-        $posted_data = $submission->get_posted_data();
-
         $data = [
             'id' => $form_id
         ];
 
-        foreach ( $form_tags as $form_tag ) {
-            $tag = $form_tag->name;
+        foreach ( $form['fields'] as $field ) {
+            $field = \GF_Fields::create( $field );
 
-            if ( ! empty( $tag ) && isset( $posted_data[ $tag ] ) ) {
-                $data['data'][ $tag ] = $posted_data[ $tag ];
+            if ( empty( $field['inputs'] ) ) {
+                $data['data'][ $field->id ] = $lead[ $field->id ];
+
+            } else {
+                foreach ( $field['inputs'] as $group_field ) {
+                    if ( empty( $group_field['isHidden'] ) ) {
+                        $data['data'][ $group_field['id'] ] = $lead[ $group_field['id'] ];
+                    }
+                }
             }
         }
 
         if ( ! empty( $data ) ) {
             wemail_set_owner_api_key();
-            wemail()->api->forms()->integrations( 'contact-form-7' )->submit()->post( $data );
+            wemail()->api->forms()->integrations( 'gravity-forms' )->submit()->post( $data );
         }
     }
 

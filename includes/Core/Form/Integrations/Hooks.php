@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Core\Form\Integrations;
 
 use WeDevs\WeMail\Core\Form\Integrations\ContactForm7;
+use WeDevs\WeMail\Core\Form\Integrations\GravityForms;
 
 class Hooks {
 
@@ -15,5 +16,6 @@ class Hooks {
      */
     public function __construct() {
         add_action( 'wpcf7_submit', [ContactForm7::instance(), 'submit'], 10, 2 );
+        add_action( 'gform_after_submission', [GravityForms::instance(), 'submit'], 10, 2 );
     }
 }
