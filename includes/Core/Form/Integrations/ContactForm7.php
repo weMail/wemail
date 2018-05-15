@@ -13,8 +13,6 @@ class ContactForm7 extends AbstractIntegration {
     /**
      * Integration title
      *
-     * For example: Contact Form 7, Gravity Forms etc
-     *
      * @since 1.0.0
      *
      * @var string
@@ -23,8 +21,6 @@ class ContactForm7 extends AbstractIntegration {
 
     /**
      * Integration slug
-     *
-     * For example: contact_form_7, gravity_forms etc
      *
      * @since 1.0.0
      *

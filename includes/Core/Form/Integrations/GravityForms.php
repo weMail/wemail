@@ -12,8 +12,6 @@ class GravityForms extends AbstractIntegration {
     /**
      * Integration title
      *
-     * For example: Contact Form 7, Gravity Forms etc
-     *
      * @since 1.0.0
      *
      * @var string
@@ -22,8 +20,6 @@ class GravityForms extends AbstractIntegration {
 
     /**
      * Integration slug
-     *
-     * For example: contact_form_7, gravity_forms etc
      *
      * @since 1.0.0
      *
@@ -98,8 +94,8 @@ class GravityForms extends AbstractIntegration {
      *
      * @since 1.0.0
      *
-     * @param  \WPCF7_ContactForm $wpcf7
-     * @param  array $result
+     * @param  array $lead
+     * @param  array $form
      *
      * @return void
      */
