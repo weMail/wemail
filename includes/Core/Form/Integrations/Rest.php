@@ -71,8 +71,8 @@ class Rest extends RestController {
      * @return void
      */
     public function register_routes() {
-        $this->get('/{name}/forms', 'forms', 'can_create_form');
-        $this->post('/{name}', 'save', 'can_create_form');
+        $this->get( '/{name}/forms', 'forms', 'can_create_form' );
+        $this->post( '/{name}', 'save', 'can_create_form' );
     }
 
     /**

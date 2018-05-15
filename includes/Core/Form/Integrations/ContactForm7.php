@@ -2,22 +2,35 @@
 
 namespace WeDevs\WeMail\Core\Form\Integrations;
 
-use WP_Error;
 use WP_Query;
+use WeDevs\WeMail\Core\Form\Integrations\AbstractIntegration;
 use WeDevs\WeMail\Traits\Singleton;
 
-class ContactForm7 {
+class ContactForm7 extends AbstractIntegration {
 
     use Singleton;
 
     /**
-     * Hold the value if plugin active or not
+     * Integration title
+     *
+     * For example: Contact Form 7, Gravity Forms etc
      *
      * @since 1.0.0
      *
-     * @var bool
+     * @var string
      */
-    public $is_active = false;
+    public $title = 'Contact Form 7';
+
+    /**
+     * Integration slug
+     *
+     * For example: contact_form_7, gravity_forms etc
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
+    public $slug = 'contact_form_7';
 
     /**
      * Execute right after making class instance
@@ -30,21 +43,6 @@ class ContactForm7 {
         if ( class_exists( 'WPCF7_ContactForm' ) ) {
             $this->is_active = true;
         }
-    }
-
-    /**
-     * Inactivity message
-     *
-     * @since 1.0.0
-     *
-     * @return \WP_Error
-     */
-    public function inactivity_message() {
-        return new WP_Error(
-            'integration_is_not_active',
-            __('Contact Form 7 plugin is not active', 'wemail'),
-            ['status' => 422]
-        );
     }
 
     /**
@@ -93,53 +91,6 @@ class ContactForm7 {
         }
 
         return $forms;
-    }
-
-    /**
-     * Save settings
-     *
-     * @since 1.0.0
-     *
-     * @param  array $data
-     *
-     * @return array|\WP_Error
-     */
-    public function save( $data ) {
-        $data = ! empty( $data ) ? $data : [];
-
-        $settings = [];
-        $form_ids = [];
-
-        foreach ( $data as $form ) {
-            if ( ! isset( $form['id'] ) || empty( $form['map'] ) ) {
-                continue;
-            }
-
-            if ( empty( $form['list_id'] ) || ! isset( $form['overwrite'] ) ) {
-                continue;
-            }
-
-            $form_id = absint( $form['id'] );
-
-            $settings[] = [
-                'id'        => $form_id,
-                'list_id'   => $form['list_id'],
-                'overwrite' => $form['overwrite'],
-                'map'       => $form['map']
-            ];
-
-            $form_ids[] = $form_id;
-        }
-
-        $response = wemail()->api->forms()->integrations( 'contact-form-7' )->post( $settings );
-
-        if ( is_wp_error( $response ) ) {
-            return $response;
-        }
-
-        update_option( 'wemail_form_integration_contact_form_7', $form_ids );
-
-        return $response;
     }
 
     /**
