@@ -53,7 +53,7 @@ class GravityForms extends AbstractIntegration {
         $gf_forms = \GFFormsModel::get_forms( true );
 
         foreach ( $gf_forms as $gf_form ) {
-            $form_id = absint( $gf_form->id );
+            $form_id = $this->cast_form_id( $gf_form->id );
             $form = [
                 'id'     => $form_id,
                 'title'  => $gf_form->title,
@@ -127,7 +127,7 @@ class GravityForms extends AbstractIntegration {
             }
         }
 
-        if ( ! empty( $data ) ) {
+        if ( ! empty( $data['data'] ) ) {
             wemail_set_owner_api_key();
             wemail()->api->forms()->integrations( 'gravity-forms' )->submit()->post( $data );
         }

@@ -63,6 +63,19 @@ abstract class AbstractIntegration {
     abstract public function forms();
 
     /**
+     * Cast the form id
+     *
+     * @since 1.0.0
+     *
+     * @param  mixed $form_id
+     *
+     * @return int
+     */
+    public function cast_form_id( $form_id ) {
+        return absint( $form_id );
+    }
+
+    /**
      * Save settings
      *
      * @since 1.0.0
@@ -86,7 +99,7 @@ abstract class AbstractIntegration {
                 continue;
             }
 
-            $form_id = absint( $form['id'] );
+            $form_id = $this->cast_form_id( $form['id'] );
 
             $settings[] = [
                 'id'        => $form_id,

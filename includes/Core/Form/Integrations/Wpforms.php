@@ -89,7 +89,7 @@ class Wpforms extends AbstractIntegration {
      * @return void
      */
     public function submit( $fields, $entry, $form_data, $entry_id ) {
-        $form_id = absint( $form_data['id'] );
+        $form_id = $this->cast_form_id( $form_data['id'] );
 
         $settings = get_option( 'wemail_form_integration_wpforms', [] );
 
@@ -105,7 +105,7 @@ class Wpforms extends AbstractIntegration {
             $data['data'][ $field['id'] ] = $field['value'];
         }
 
-        if ( ! empty( $data ) ) {
+        if ( ! empty( $data['data'] ) ) {
             wemail_set_owner_api_key();
             wemail()->api->forms()->integrations( 'wpforms' )->submit()->post( $data );
         }

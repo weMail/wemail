@@ -128,7 +128,7 @@ class ContactForm7 extends AbstractIntegration {
             }
         }
 
-        if ( ! empty( $data ) ) {
+        if ( ! empty( $data['data'] ) ) {
             wemail_set_owner_api_key();
             wemail()->api->forms()->integrations( 'contact-form-7' )->submit()->post( $data );
         }
