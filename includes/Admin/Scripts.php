@@ -67,6 +67,7 @@ class Scripts {
         $wemail = [
             'version'              => wemail()->version,
             'siteURL'              => site_url( '/' ),
+            'homeURL'              => home_url( '/' ),
             'restURL'              => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
             'wpRestURL'            => untrailingslashit( get_rest_url( null, '/wp/v2' ) ),
             'nonce'                => wp_create_nonce( 'wp_rest' ),
