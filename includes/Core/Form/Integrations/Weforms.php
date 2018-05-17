@@ -83,6 +83,11 @@ class Weforms extends AbstractIntegration {
      *
      * @since 1.0.0
      *
+     * @param array $entry_id
+     * @param int   $form_id
+     * @param int   $page_id
+     * @param array $form_settings
+     *
      * @return void
      */
     public function submit( $entry_id, $form_id, $page_id, $form_settings ) {

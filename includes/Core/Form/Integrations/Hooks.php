@@ -5,6 +5,8 @@ namespace WeDevs\WeMail\Core\Form\Integrations;
 use WeDevs\WeMail\Core\Form\Integrations\CalderaForms;
 use WeDevs\WeMail\Core\Form\Integrations\ContactForm7;
 use WeDevs\WeMail\Core\Form\Integrations\GravityForms;
+use WeDevs\WeMail\Core\Form\Integrations\NinjaForms;
+use WeDevs\WeMail\Core\Form\Integrations\Weforms;
 use WeDevs\WeMail\Core\Form\Integrations\Wpforms;
 
 class Hooks {
@@ -22,5 +24,6 @@ class Hooks {
         add_action( 'wpforms_process_complete', [Wpforms::instance(), 'submit'], 999, 4 );
         add_action( 'caldera_forms_submit_complete', [CalderaForms::instance(), 'submit'], 999, 4 );
         add_action( 'weforms_entry_submission', [Weforms::instance(), 'submit'], 999, 4 );
+        add_action( 'nf_save_sub', [NinjaForms::instance(), 'submit'], 999, 1 );
     }
 }
