@@ -21,5 +21,6 @@ class Hooks {
         add_action( 'gform_after_submission', [GravityForms::instance(), 'submit'], 999, 2 );
         add_action( 'wpforms_process_complete', [Wpforms::instance(), 'submit'], 999, 4 );
         add_action( 'caldera_forms_submit_complete', [CalderaForms::instance(), 'submit'], 999, 4 );
+        add_action( 'weforms_entry_submission', [Weforms::instance(), 'submit'], 999, 4 );
     }
 }

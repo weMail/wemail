@@ -95,7 +95,8 @@ class Form {
             'contact_form_7' => __( 'Contact Form 7', 'wemail' ),
             'gravity_forms'  => __( 'Gravity Forms', 'wemail' ),
             'wpforms'        => __( 'WPForms', 'wemail' ),
-            'caldera_forms'  => __( 'Caldera Forms', 'wemail' )
+            'caldera_forms'  => __( 'Caldera Forms', 'wemail' ),
+            'weforms'        => __('weForms', 'wemail'),
         ];
     }
 }
