@@ -1,0 +1,67 @@
+<?php
+
+namespace WeDevs\WeMail\FrontEnd;
+
+use WP_Widget;
+
+class Widget extends WP_Widget {
+
+    public function __construct() {
+        $args = [
+            'classname' => 'wemail-form-widget',
+            'description' => __( 'weMail Form Widget', 'wemail' ),
+        ];
+
+        parent::__construct( 'wemail-form-widget', __( 'weMail Form', 'wemail' ), $args );
+    }
+
+    public function form( $instance ) {
+        wemail_set_owner_api_key();
+
+        $forms = wemail()->form->items();
+
+        $defaults = [
+            'title' => __( 'Subscribe to our newsletter', 'wemail' ),
+            'form' => '',
+        ];
+
+        $instance = wp_parse_args( $instance, $defaults );
+
+        $title = sanitize_text_field( $instance['title'] );
+        $selected = $instance['form'];
+
+        include WEMAIL_VIEWS . '/admin-widget-form.php';
+    }
+
+    public function widget( $args, $instance ) {
+        $title = ! empty( $instance['title'] ) ? $instance['title'] : '';
+
+        echo $args['before_widget'];
+
+        if ( $title ) {
+            echo $args['before_title'] . $title . $args['after_title'];
+        }
+
+        if ( empty( $instance['form'] ) ) {
+            return __( 'Form Id is missing', 'wemail' );
+        }
+
+        $id = $instance['form'];
+
+        $form = wemail()->form->get( $id );
+
+        if ( ! $form ) {
+            return null;
+        }
+
+        unset( $form['entries'] );
+        unset( $form['created_at'] );
+        unset( $form['deleted_at'] );
+        unset( $form['settings']['actions'] );
+
+        include WEMAIL_VIEWS . '/form.php';
+
+        echo $args['after_widget'];
+    }
+
+}
