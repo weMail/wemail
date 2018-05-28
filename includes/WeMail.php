@@ -6,6 +6,7 @@ use Stringy\StaticStringy;
 use WeDevs\WeMail\Admin\Admin;
 use WeDevs\WeMail\FrontEnd\FrontEnd;
 use WeDevs\WeMail\Hooks;
+use WeDevs\WeMail\Privacy\Privacy;
 use WeDevs\WeMail\Rest\Rest;
 
 final class WeMail {
@@ -321,6 +322,7 @@ final class WeMail {
         }
 
         new FrontEnd();
+        new Privacy();
 
         // Init action.
         do_action( 'wemail_init' );
