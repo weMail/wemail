@@ -5,6 +5,7 @@
   "homepage": "https://getwemail.io",
   "type": "wordpress-plugin",
   "license": "GPL-3.0",
+  "minimum-stability": "dev",
   "authors": [
     {
       "name": "weDevs",
