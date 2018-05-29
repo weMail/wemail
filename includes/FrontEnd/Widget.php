@@ -50,7 +50,7 @@ class Widget extends WP_Widget {
 
         $form = wemail()->form->get( $id );
 
-        if ( ! $form ) {
+        if ( ! $form || is_wp_error( $form ) ) {
             return null;
         }
 

@@ -33,7 +33,9 @@ class Form {
     public function get( $id ) {
         $form =  wemail()->api->forms($id)->get();
 
-        if ( ! empty( $form['data'] ) ) {
+        if ( is_wp_error( $form ) ) {
+            return $form;
+        } else if ( ! empty( $form['data'] ) ) {
             return $form['data'];
         }
 
