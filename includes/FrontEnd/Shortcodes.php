@@ -4,10 +4,26 @@ namespace WeDevs\WeMail\FrontEnd;
 
 class Shortcodes {
 
+    /**
+     * Class constructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function __construct() {
         add_shortcode( 'wemail_form', [ $this, 'form' ] );
     }
 
+    /**
+     * Shortcode callback
+     *
+     * @since 1.0.0
+     *
+     * @param array $attrs
+     *
+     * @return null|string
+     */
     public function form( $attrs ) {
         if ( empty( $attrs['id'] ) ) {
             return __( 'Form Id is missing', 'wemail' );
@@ -15,20 +31,7 @@ class Shortcodes {
 
         $id = $attrs['id'];
 
-        $form = wemail()->form->get( $id );
-
-        if ( ! $form ) {
-            return null;
-        }
-
-        unset( $form['entries'] );
-        unset( $form['created_at'] );
-        unset( $form['deleted_at'] );
-        unset( $form['settings']['actions'] );
-
-        ob_start();
-        include WEMAIL_VIEWS . '/form.php';
-        return ob_get_clean();
+        return wemail_form( $id );
     }
 
 }

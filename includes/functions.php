@@ -222,3 +222,31 @@ function wemail_get_image_url( $image_id, $size = 'full' ) {
 
     return $url;
 }
+
+/**
+ * Render a weMail form
+ *
+ * @since 1.0.0
+ *
+ * @param string $id
+ *
+ * @return null|string
+ */
+function wemail_form( $id ) {
+    $form = wemail()->form->get( $id );
+
+    if ( ! $form || is_wp_error( $form ) ) {
+        return null;
+    } else {
+        unset( $form['entries'] );
+        unset( $form['created_at'] );
+        unset( $form['deleted_at'] );
+        unset( $form['settings']['actions'] );
+
+        wp_enqueue_script( 'wemail-frontend' );
+
+        ob_start();
+        include WEMAIL_VIEWS . '/form.php';
+        return ob_get_clean();
+    }
+}

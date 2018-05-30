@@ -26,8 +26,8 @@ class Scripts {
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/js/frontend-vendor.js', ['jquery'], $this->version, true );
-        wp_enqueue_script( 'wemail-frontend', wemail()->wemail_cdn . '/js/frontend.js', ['wemail-frontend-vendor'], $this->version, true );
+        wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/js/frontend-vendor.js', ['jquery'], $this->version, true );
+        wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/js/frontend.js', ['wemail-frontend-vendor'], $this->version, true );
 
         $wemail = [
             'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
