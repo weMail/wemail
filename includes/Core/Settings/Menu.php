@@ -15,7 +15,7 @@ class Menu {
      *
      * @var integer
      */
-    public $menu_priority = 100;
+    public $menu_priority = 110;
 
     /**
      * Class constructor
