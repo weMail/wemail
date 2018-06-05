@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: weMail
- * Description: weMail plugin description...
+ * Description: Send Beautiful Email Newsletters with WordPress
  * Plugin URI: https://wedevs.com/wemail/
  * Author: weDevs
  * Author URI: https://wedevs.com/

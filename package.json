@@ -1,13 +1,22 @@
 {
   "name": "wemail",
-  "version": "1.0.0",
-  "description": "weMail plugin description...",
-  "scripts": {},
+  "version": "0.0.1",
+  "description": "Send Beautiful Email Newsletters with WordPress",
   "repository": {
-    "type": "git",
-    "url": "git+ssh://git@bitbucket.org/wedevs/wemail.git"
+    "type" : "git",
+    "url" : "https://github.com/tareq1988/wemail-wp"
   },
-  "author": "",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/wedevs/wemail#readme"
+  "author": {
+    "name": "weDevs",
+    "email": "info@wedevs.com",
+    "homepage": "https://wedevs.com"
+  },
+  "contributors": [
+    {
+      "name": "Edi Amin",
+      "email": "to.ediamin@gmail.com",
+      "homepage": "http://ediamin.com"
+    }
+  ],
+  "license": "GPL-3.0"
 }

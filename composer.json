@@ -1,6 +1,6 @@
 {
   "name": "tareq1988/wemail-wp",
-  "description": "",
+  "description": "Send Beautiful Email Newsletters with WordPress",
   "keywords": ["wordpress", "plugin"],
   "homepage": "https://getwemail.io",
   "type": "wordpress-plugin",
@@ -15,7 +15,7 @@
     {
       "name": "Edi Amin",
       "email": "to.ediamin@gmail.com",
-      "homepage": "https://github.com/ediamin"
+      "homepage": "http://ediamin.com"
     }
   ],
   "require": {
