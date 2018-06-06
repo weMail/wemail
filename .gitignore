@@ -10,3 +10,4 @@ debug.log
 npm-debug.log
 .netbeans.xml
 .vscode
+build/wemail.*
