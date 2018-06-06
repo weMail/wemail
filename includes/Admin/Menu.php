@@ -35,7 +35,16 @@ class Menu {
 
             $icon = wemail()->wemail_cdn . '/images/logo/wemail.svg';
 
-            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], $icon, 1 );
+            /**
+             * Filter weMail menu position
+             *
+             * @since 1.0.0
+             *
+             * @var int
+             */
+            $menu_position = apply_filters( 'wemail_main_menu_position', 56 );
+
+            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], $icon, $menu_position );
 
             $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
 
