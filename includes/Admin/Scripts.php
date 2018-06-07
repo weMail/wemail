@@ -64,6 +64,12 @@ class Scripts {
 
         $user = wemail()->user;
 
+        $dateFormat = get_option( 'date_format', 'Y-m-d' );
+        $timeFormat = get_option( 'time_format', 'g:i a' );
+
+        $dateFormat = trim( $dateFormat );
+        $timeFormat = trim( $timeFormat );
+
         $wemail = [
             'version'              => wemail()->version,
             'siteURL'              => site_url( '/' ),
@@ -80,8 +86,8 @@ class Scripts {
                     'timezone'     => wemail_get_wp_timezone(),
                     'date'         => current_time( 'Y-m-d' ),
                     'time'         => current_time( 'H:i:s' ),
-                    'dateFormat'   => get_option( 'date_format', 'Y-m-d' ),
-                    'timeFormat'   => get_option( 'time_format', 'g:i a' ),
+                    'dateFormat'   => $dateFormat ? $dateFormat : 'Y-m-d',
+                    'timeFormat'   => $timeFormat ? $timeFormat : 'g:i a',
                     'startOfWeek'  => get_option( 'start_of_week', 0 ),
                 ],
                 'toMoment'         => '',
