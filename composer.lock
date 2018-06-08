@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "adccb2b727244761b5a1a68e0a55c925",
+    "content-hash": "d22068f401edf2f0dd2f2e59c1376656",
     "packages": [
         {
             "name": "composer/installers",
@@ -128,7 +128,7 @@
         },
         {
             "name": "danielstjules/stringy",
-            "version": "3.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/danielstjules/Stringy.git",
@@ -302,7 +302,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "danielstjules/stringy": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
