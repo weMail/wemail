@@ -10,6 +10,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
  * Domain Path: /i18n/languages
+ * GitHub Plugin URI: tareq1988/wemail-wp
  *
  * Copyright (c) 2017 weDevs LLC (email: info@wedevs.com). All rights reserved.
  *
