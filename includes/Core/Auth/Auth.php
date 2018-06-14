@@ -87,6 +87,15 @@ class Auth {
                 }
             }
 
+            /**
+             * Action hook fires after a site is authenticated
+             *
+             * @since 1.0.0
+             *
+             * @param array $response weMail API response after site authentication
+             */
+            do_action( 'wemail_site_authenticated', $response );
+
             return true;
         }
 
