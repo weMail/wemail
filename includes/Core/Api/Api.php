@@ -233,7 +233,7 @@ class Api {
      *
      * @return mixed
      */
-    public function post( $data, $args = [] ) {
+    public function post( $data = [], $args = [] ) {
         $args = $this->args( $args );
 
         $args['body'] = ! empty( $data ) ? $data : null;
@@ -271,7 +271,7 @@ class Api {
      *
      * @return mixed
      */
-    public function delete( $data, $args = [] ) {
+    public function delete( $data = [], $args = [] ) {
         $args = $this->args( $args );
 
         $args['method'] = 'delete';

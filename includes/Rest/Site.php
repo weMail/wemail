@@ -42,7 +42,7 @@ class Site extends WP_REST_Controller {
      * @return \WP_REST_Response|mixed
      */
     public function save_settings( $request ) {
-        $name = $request->get_param( 'name' );
+        $name     = $request->get_param( 'name' );
         $settings = $request->get_param( 'settings' );
 
         $response = wemail()->api->settings()->$name()->post($settings);
@@ -52,6 +52,8 @@ class Site extends WP_REST_Controller {
         }
 
         update_option( "wemail_{$name}", $settings );
+
+        do_action( "wemail_saved_settings_{$name}", $settings );
 
         return rest_ensure_response( $response );
     }

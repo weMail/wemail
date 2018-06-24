@@ -26,17 +26,6 @@ class Rest extends RestController {
     private $integrations = [];
 
     /**
-     * Class constructor
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->register_routes();
-    }
-
-    /**
      * Magic method to create integration instances on demand
      *
      * @since 1.0.0

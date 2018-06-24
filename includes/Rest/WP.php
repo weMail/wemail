@@ -3,83 +3,19 @@
 namespace WeDevs\WeMail\Rest;
 
 use WP_Query;
-use WP_REST_Controller;
-use WP_REST_Server;
-use WP_User_Query;
+use WeDevs\WeMail\RestController;
 
-class WP extends WP_REST_Controller {
+class WP extends RestController {
 
-    public $namespace = 'wemail/v1';
+    protected $rest_base = '/wp';
 
-    public $rest_base = '/wp';
-
-    public function __construct() {
-        $this->register_routes();
-    }
+    private $user_query_after_id = 0;
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/post-types', [
-            'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'can_update_campaign' ],
-            'callback'            => [ $this, 'post_types' ],
-        ] );
-
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/posts', [
-            'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'can_update_campaign' ],
-            'callback'            => [ $this, 'posts' ],
-        ] );
-
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/user-roles', [
-            'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'can_manage_settings' ],
-            'callback'            => [ $this, 'user_roles' ],
-        ] );
-
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/users', [
-            'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'can_create_subscriber' ],
-            'callback'            => [ $this, 'users' ],
-        ] );
-    }
-
-    public function set_current_user( $request ) {
-        $api_key = $request->get_header( 'X-WeMail-Key' );
-
-        if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query( [
-                'fields'        => 'ID',
-                'meta_key'      => 'wemail_api_key',
-                'meta_value'    => $api_key
-            ] );
-
-            if ( $query->get_total() ) {
-                $results = $query->get_results();
-                $user_id = array_pop( $results );
-
-                wp_set_current_user( $user_id );
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function can_update_campaign( $request ) {
-        return wemail()->user->can( 'update_campaign' );
-    }
-
-    public function can_manage_settings( $request ) {
-        return wemail()->user->can( 'manage_settings' );
-    }
-
-    public function can_create_subscriber( $request ) {
-        if ( $this->set_current_user( $request ) ) {
-            return wemail()->user->can( 'create_subscriber' );
-        }
-
-        return false;
+        $this->get('/post-types', 'post_types', 'can_update_campaign');
+        $this->get('/posts', 'posts', 'can_update_campaign');
+        $this->get('/user-roles', 'user_roles', 'can_manage_settings');
+        $this->get('/users', 'users', 'can_create_subscriber');
     }
 
     public function post_types( $request ) {
@@ -160,39 +96,39 @@ class WP extends WP_REST_Controller {
     }
 
     public function users( $request ) {
-        global $wpdb;
-
-        $roles        = $request->get_param( 'roles' );
-        $include      = $request->get_param( 'include' );
-        $current_page = $request->get_param( 'page' );
-
-        /**
-         * Filter to increase or decrease per page user count if necessary
-         *
-         * @since 1.0.0
-         *
-         * @var int
-         */
-        $users_per_page = apply_filters( 'wemail_import_wp_users_per_page', 100 );
-
-        $current_page = absint( $current_page );
+        $roles   = $request->get_param( 'roles' );
+        $include = $request->get_param( 'include' );
 
         $args = [
             'role__in'    => ! empty( $roles ) ? $roles : [],
-            'number'      => $users_per_page,
             'orderby'     => 'ID',
             'order'       => 'ASC',
             'fields'      => 'all_with_meta',
-            'count_total' => true,
-            'paged'       => ( $current_page <= 0 ) ? 1 : $current_page,
         ];
+
+        if ( empty( $include ) ) {
+            /**
+             * Filter to increase or decrease per page user count if necessary
+             *
+             * @since 1.0.0
+             *
+             * @var int
+             */
+            $args['number'] = apply_filters( 'wemail_import_wp_users_per_page', 100 );
+        }
 
         if ( ! empty( $include ) ) {
             $args['include'] = $include;
         }
 
+        $this->user_query_after_id = $request->get_param( 'after_id' );
+
+        add_action( 'pre_user_query', [ $this, 'pre_user_query' ] );
+
         $user_query = new \WP_User_Query( $args );
         $wp_users = $user_query->get_results();
+
+        remove_action( 'pre_user_query', [ $this, 'pre_user_query' ] );
 
         $users = [];
 
@@ -206,21 +142,15 @@ class WP extends WP_REST_Controller {
             ];
         }
 
-        $total_users    = $user_query->get_total();
-        $last_page      = max( (int) ceil( $total_users / $users_per_page ), 1 );
+        return rest_ensure_response( $users );
+    }
 
-        if ( $current_page > $last_page ) {
-            $current_page = $last_page;
+    public function pre_user_query( $query ) {
+        $query_after_id = absint( $this->user_query_after_id );
+
+        if ( $query_after_id ) {
+            $query->query_where .= ' AND ID > ' . $query_after_id;
         }
-
-        $next_page = ( ( $current_page + 1 ) <= $last_page ) ? ( $current_page + 1 ) : 0;
-
-        $data = [
-            'users'     => $users,
-            'next_page' => $next_page
-        ];
-
-        return rest_ensure_response( $data );
     }
 
 }

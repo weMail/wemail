@@ -104,6 +104,17 @@ abstract class RestController extends WP_REST_Controller {
     protected $current_user = null;
 
     /**
+     * Class constructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->register_routes();
+    }
+
+    /**
      * Magic call method
      *
      * @since 1.0.0
