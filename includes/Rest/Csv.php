@@ -125,17 +125,19 @@ class Csv {
         $limit      = $request->get_param( 'limit' );
         $offset     = $request->get_param( 'offset' );
 
-        $limit = $limit ? $limit : 100;
+        $limit = $limit ? $limit : 500;
         $offset = $offset ? $offset : 0;
 
         $reader = $this->reader( $file_id );
 
         $meta_fields = $reader->fetchOne();
+        $meta_fields = array_filter( $meta_fields );
+        $meta_fields = array_unique( $meta_fields );
 
         $subscribers = $reader
             ->setOffset( $offset + 1 ) // +1 to ignore the header
             ->setLimit( $limit )
-            ->fetchAssoc($meta_fields);
+            ->fetchAssoc( $meta_fields );
 
         $data = [
             'subscribers' => $subscribers
