@@ -250,3 +250,18 @@ function wemail_form( $id ) {
         return ob_get_clean();
     }
 }
+
+/**
+ * Checks if ERP CRM is enabled
+ *
+ * @since 1.0.0
+ *
+ * @return bool
+ */
+function is_erp_crm_active() {
+    if ( did_action( 'erp_crm_loaded' ) ) {
+        return true;
+    }
+
+    return false;
+}

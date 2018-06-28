@@ -6,6 +6,7 @@ use WeDevs\WeMail\Core\Form\Integrations\Rest as FormIntegrations;
 use WeDevs\WeMail\Rest\Countries;
 use WeDevs\WeMail\Rest\Csv;
 use WeDevs\WeMail\Rest\Customizer;
+use WeDevs\WeMail\Rest\ERP;
 use WeDevs\WeMail\Rest\Forms;
 use WeDevs\WeMail\Rest\MailPoet;
 use WeDevs\WeMail\Rest\States;
@@ -32,6 +33,7 @@ class Rest {
         new WP();
         new Site();
         new FormIntegrations();
+        new ERP();
     }
 
 }

@@ -7,10 +7,31 @@ use WeDevs\WeMail\RestController;
 
 class WP extends RestController {
 
+    /**
+     * Route base url
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     protected $rest_base = '/wp';
 
+    /**
+     * Query for users after this ID
+     *
+     * @since 1.0.0
+     *
+     * @var int
+     */
     private $user_query_after_id = 0;
 
+    /**
+     * Register routes
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function register_routes() {
         $this->get('/post-types', 'post_types', 'can_update_campaign');
         $this->get('/posts', 'posts', 'can_update_campaign');
@@ -18,6 +39,15 @@ class WP extends RestController {
         $this->get('/users', 'users', 'can_create_subscriber');
     }
 
+    /**
+     * Get all public post types
+     *
+     * @since 1.0.0
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response|mixed
+     */
     public function post_types( $request ) {
         $post_types = [];
         $registered_types = get_post_types( [ 'public' => true ], 'objects' );
@@ -36,6 +66,15 @@ class WP extends RestController {
         return rest_ensure_response( $post_types );
     }
 
+    /**
+     * Get public posts
+     *
+     * @since 1.0.0
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response|mixed
+     */
     public function posts( $request ) {
         $post_type = $request->get_param( 'post_type' );
         $search = $request->get_param( 's' );
@@ -78,6 +117,15 @@ class WP extends RestController {
         return rest_ensure_response( $posts );
     }
 
+    /**
+     * Get all user roles
+     *
+     * @since 1.0.0
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response|mixed
+     */
     public function user_roles( $request ) {
         global $wp_roles;
 
@@ -95,6 +143,15 @@ class WP extends RestController {
         return rest_ensure_response( [ 'data' => $user_roles ] );
     }
 
+    /**
+     * Get WordPress Users
+     *
+     * @since 1.0.0
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response|mixed
+     */
     public function users( $request ) {
         $roles   = $request->get_param( 'roles' );
         $include = $request->get_param( 'include' );
@@ -145,6 +202,15 @@ class WP extends RestController {
         return rest_ensure_response( $users );
     }
 
+    /**
+     * Hooked method for pre_user_query action
+     *
+     * @since 1.0.0
+     *
+     * @param object $query
+     *
+     * @return void
+     */
     public function pre_user_query( $query ) {
         $query_after_id = absint( $this->user_query_after_id );
 

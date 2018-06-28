@@ -7,7 +7,8 @@ use Stringy\StaticStringy;
 class Subscriber {
 
     private $container = [
-        'wp' => null
+        'wp' => null,
+        'erp' => null,
     ];
 
     public function __get( $prop ) {

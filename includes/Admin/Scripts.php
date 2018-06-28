@@ -7,8 +7,22 @@ class Scripts {
 
     use Hooker;
 
+    /**
+     * Holds the $version param value for enqueue scripts/styles
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $version;
 
+    /**
+     * Class constructor
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function __construct() {
         $this->version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : WEMAIL_VERSION;
 
@@ -16,6 +30,13 @@ class Scripts {
         $this->add_action( 'wemail_admin_enqueue_scripts', 'enqueue_scripts' );
     }
 
+    /**
+     * Enqueue admin styles
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function enqueue_styles() {
         wp_register_style( 'wemail-jquery-ui', wemail()->wemail_cdn . '/vendor/jquery-ui/jquery-ui.min.css', [], $this->version );
         wp_register_style( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.css', [], $this->version );
@@ -30,6 +51,13 @@ class Scripts {
         wp_enqueue_style( 'wemail', wemail()->wemail_cdn . '/css/wemail.css', $dependencies, $this->version );
     }
 
+    /**
+     * Enqueue admin js
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function enqueue_scripts() {
         wp_enqueue_media();
 
@@ -106,7 +134,8 @@ class Scripts {
             'locale_data'           => $this->get_locale_data(),
             'hideAdminNoticesIn'    => [
                 'campaignEditDesign'
-            ]
+            ],
+            'activeIntegrations'    => $this->active_integrations()
         ];
 
         wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
@@ -147,6 +176,20 @@ class Scripts {
         }
 
         return $locale;
+    }
+
+    /**
+     * Acvtive integration reference
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
+    private function active_integrations() {
+        return [
+            'erp_crm'  => is_erp_crm_active(),
+            'mailpoet' => class_exists('MailPoet\Listing\Handler') || class_exists('WYSIJA'),
+        ];
     }
 
 }

@@ -4,8 +4,22 @@ namespace WeDevs\WeMail\Core\Sync\Subscriber\Wp;
 
 class Wp {
 
+    /**
+     * Sync settings
+     *
+     * @var array
+     *
+     * @since 1.0.0
+     */
     private $settings;
 
+    /**
+     * Sync settings
+     *
+     * @since 1.0.0
+     *
+     * @return array
+     */
     public function settings() {
         if ( ! isset( $this->settings['auto_sync'] ) ) {
             $defaults = [
@@ -21,6 +35,13 @@ class Wp {
         return $this->settings;
     }
 
+    /**
+     * Checks if syncing enabled
+     *
+     * @since 1.0.0
+     *
+     * @return bool
+     */
     public function is_active() {
         $settings = $this->settings();
 
@@ -31,6 +52,13 @@ class Wp {
         return false;
     }
 
+    /**
+     * Create subscribers
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function create( $user_ids = [] ) {
         if ( ! $this->is_active() ) {
             return;
@@ -59,6 +87,13 @@ class Wp {
         wemail()->api->sync()->subscribers()->wp()->post();
     }
 
+    /**
+     * Update subscribers
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function update( $user_ids ) {
         if ( ! $this->is_active() ) {
             return;
@@ -74,17 +109,31 @@ class Wp {
 
         $user_ids = implode( ',', $user_ids );
 
-        wemail()->api->sync()->subscribers()->wp()->put( ['ids' => $user_ids] );
+        wemail()->api->sync()->subscribers()->wp()->put( [ 'ids' => $user_ids ] );
     }
 
+    /**
+     * Delete subscribers
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function delete( $user_ids ) {
         wemail_set_owner_api_key( false );
 
         $user_ids = implode( ',', $user_ids );
 
-        wemail()->api->sync()->subscribers()->wp()->delete( ['ids' => $user_ids] );
+        wemail()->api->sync()->subscribers()->wp()->delete( [ 'ids' => $user_ids ] );
     }
 
+    /**
+     * Create subscribers
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     private function filter_syncable_users( $user_ids ) {
         $syncables = [];
 

@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail;
 
+use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -177,6 +178,27 @@ abstract class RestController extends WP_REST_Controller {
      */
     public function respond( $data = null, $status = self::HTTP_OK, $headers = [] ) {
         return new WP_REST_Response( $data, $status, $headers );
+    }
+
+    /**
+     * Send error response
+     *
+     * @since 1.0.0
+     *
+     * @param string $message
+     * @param string $code
+     * @param int    $status
+     * @param array  $args
+     *
+     * @return \WP_Error
+     */
+    public function respond_error( $message = '', $code = '', $status = self::HTTP_UNPROCESSABLE_ENTITY, $args = [] ) {
+        $code = ! empty( $code ) ? $code : 'unprocessable_error';
+        $data = [ 'status' => $status ];
+
+        $data['data'] = ! empty( $args['data'] ) ? $args['data'] : [];
+
+        return new WP_Error( $code, $message, $data );
     }
 
     /**
