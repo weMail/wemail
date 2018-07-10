@@ -2,57 +2,59 @@
 
 namespace WeDevs\WeMail\Rest;
 
-use WP_REST_Controller;
-use WP_REST_Server;
+use WeDevs\WeMail\RestController;
 
-class Auth extends WP_REST_Controller {
+class Auth extends RestController {
 
-    public $namespace = 'wemail/v1';
-
+    /**
+     * REST Base
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $rest_base = '/auth';
 
-    public function __construct() {
-        $this->register_routes();
-    }
-
+    /**
+     * Register routes
+     *
+     * @since 1.0.0
+     *
+     * @return void
+     */
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/site', [
-            [
-                'methods'             => WP_REST_Server::CREATABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'site' ],
-            ]
-        ] );
-
-        register_rest_route( $this->namespace, '/' . $this->rest_base . '/validate-me', [
-            [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission_for_validate_me' ],
-                'callback'            => [ $this, 'validate_me' ],
-            ]
-        ] );
+        $this->post( '/site', 'site', 'manage_options' );
+        $this->get( '/validate-me', 'validate_me', 'permission_for_validate_me' );
     }
 
-    public function permission( $request ) {
-        return current_user_can( 'manage_options' );
-    }
-
+    /**
+     * Authenticate WP Site
+     *
+     * @since 1.0.0
+     *
+     * @return \WP_REST_Response
+     */
     public function site() {
         $authenticate = wemail()->auth->site();
 
         if ( is_wp_error( $authenticate ) ) {
-            return new \WP_Rest_Response( $authenticate, 422 );
+            return $authenticate;
         }
 
-        $response = rest_ensure_response( [
-            'data' => []
-        ] );
-
-        return $response;
+        return $this->respond( null, self::HTTP_CREATED );
     }
 
+    /**
+     * Permission callback for /auth/validate-me endpoint
+     *
+     * @since 1.0.0
+     *
+     * @param \WP_REST_Request $requests
+     *
+     * @return \WP_REST_Response
+     */
     public function permission_for_validate_me( $request ) {
-        $key = $request->get_header('X-WeMail-Key');
+        $key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $key ) ) {
             $transient_key = get_transient( 'wemail_validate_me_key' );
@@ -65,8 +67,15 @@ class Auth extends WP_REST_Controller {
         return false;
     }
 
+    /**
+     * Validate/ping site callback
+     *
+     * @since 1.0.0
+     *
+     * @return \WP_REST_Response
+     */
     public function validate_me( $request ) {
-        return rest_ensure_response(true);
+        return $this->respond();
     }
 
 }
