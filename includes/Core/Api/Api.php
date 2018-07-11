@@ -266,7 +266,7 @@ class Api {
      *
      * @since 1.0.0
      *
-     * @param [type] $data Additional query data
+     * @param array $data Additional query data
      * @param array $args wp_remote_request argument overrides
      *
      * @return mixed
