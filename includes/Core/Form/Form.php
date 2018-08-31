@@ -55,7 +55,7 @@ class Form {
         $forms = wemail()->api->forms()->items()->get();
 
         if ( is_wp_error( $forms ) ) {
-            return $forms;
+            return [];
         } else if ( ! empty( $forms['data'] ) ) {
             return $forms['data'];
         }
