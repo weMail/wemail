@@ -2,17 +2,16 @@
 /**
  * Plugin Name: weMail
  * Description: Send Beautiful Email Newsletters with WordPress
- * Plugin URI: https://wedevs.com/wemail/
+ * Plugin URI: https://getwemail.io/
  * Author: weDevs
  * Author URI: https://wedevs.com/
- * Version: 0.0.1
+ * Version: 0.1.0
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
  * Domain Path: /i18n/languages
- * GitHub Plugin URI: tareq1988/wemail-wp
  *
- * Copyright (c) 2017 weDevs LLC (email: info@wedevs.com). All rights reserved.
+ * Copyright (c) 2019 weMail (email: info@getwemail.io). All rights reserved.
  *
  * Released under the GPL license
  * http://www.opensource.org/licenses/gpl-license.php
