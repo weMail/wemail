@@ -33,8 +33,6 @@ class Menu {
         if ( current_user_can( 'manage_options' ) || wemail()->user->can( 'view_wemail' ) ) {
             $capability = 'read';
 
-            $icon = wemail()->wemail_cdn . '/images/logo/wemail.svg';
-
             /**
              * Filter weMail menu position
              *
@@ -44,7 +42,7 @@ class Menu {
              */
             $menu_position = apply_filters( 'wemail_main_menu_position', 56 );
 
-            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], $icon, $menu_position );
+            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], WEMAIL_ASSETS . '/images/logo.svg', $menu_position );
 
             $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
 
