@@ -1,7 +1,7 @@
 === weMail ===
-Contributors: wemail
+Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
-Tags: email, campaign, smtp
+Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 4.8
 Stable tag: trunk

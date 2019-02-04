@@ -47,7 +47,6 @@ use WeDevs\WeMail\WeMail;
 
 define( 'WEMAIL_FILE', __FILE__ );
 define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
-define( 'WEMAIL_ASSETS', plugins_url( '/assets', __FILE__ ) );
 
 /**
  * Init the wemail plugin
