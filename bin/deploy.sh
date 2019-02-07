@@ -78,6 +78,4 @@ svn stat | grep '^\!' | awk '{print $2}' | xargs svn rm  > /dev/null 2>&1
 
 svn stat
 
-exit 0
-
 svn ci -m "$MSG"
