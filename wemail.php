@@ -5,7 +5,7 @@
  * Plugin URI: https://getwemail.io/
  * Author: weDevs
  * Author URI: https://wedevs.com/
- * Version: 0.1.0
+ * Version: 0.2.0
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
