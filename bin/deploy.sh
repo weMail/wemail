@@ -29,10 +29,10 @@ echo ".........................................."
 echo
 
 
-# if [ "$READMEVERSION" != "$PLUGINVERSION" ]; then
-#     echo "Versions don't match. Exiting....";
-#     exit 1
-# fi
+if [ "$READMEVERSION" != "$PLUGINVERSION" ]; then
+    echo "Versions don't match. Exiting....";
+    exit 1
+fi
 
 # make sure the destination dir exists
 svn mkdir $TRUNK 2> /dev/null
