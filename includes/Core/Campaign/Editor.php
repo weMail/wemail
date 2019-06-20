@@ -158,6 +158,7 @@ class Editor {
             'footer',
             'wpPosts',
             'wpLatestContents',
+            'countdown'
         ];
 
         return wemail()->customizer->get( 'campaign', $content_types );
