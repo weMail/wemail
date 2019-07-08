@@ -34,6 +34,7 @@ class ContentTypes {
             'divider'       => self::divider(),
             'video'         => self::video(),
             'footer'        => self::footer(),
+            'countdown'     => self::countdown(),
         ];
 
         /**
@@ -385,6 +386,47 @@ class ContentTypes {
                 'columnSplit' => '1-1',
                 'valign'     => 'top',
             ]
+        ];
+    }
+
+    public static function countdown()
+    {
+        $api_url = parse_url(wemail()->wemail_api);
+
+        return [
+            'type'       => 'countdown',
+            'title'      => __( 'Countdown', 'wemail' ),
+            'image'      => self::$image_dir . '/countdown.png',
+            'default'    => [
+                'containerStyle' => [
+                    'textAlign'       => 'center',
+                    'backgroundColor' => '#ffffff',
+                    'padding'         => '18px',
+                    'marginBottom'    => '0px'
+                ],
+                'label'      => [
+                    'days'      => 'Days',
+                    'hours'     => 'Hours',
+                    'minutes'   => 'Minutes',
+                    'seconds'   => 'Seconds'
+                ],
+                'query' => [
+                    'date'      => '',
+                    'time'      => '',
+                    'weight'    => 'regular',
+                    'timezone'  => ''
+                ],
+                'isLabelShow'   => false,
+                'fontWeights'   => [
+                    'light'    => __('Light', 'wemail'),
+                    'regular'  => __('Regular', 'wemail'),
+                    'semibold' => __('Semibold', 'wemail'),
+                    'bold'     => __('Bold', 'wemail'),
+                ],
+                'imageBasePath' => $api_url['scheme'] . '://'. $api_url['host'],
+                'timezones' => timezone_identifiers_list()
+            ],
+            'noStyleTab'       => true
         ];
     }
 }
