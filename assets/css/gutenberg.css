@@ -1,0 +1,9 @@
+.wemail-block .title{
+    text-align: center;
+    display: inline-block;
+    margin: 0 0 0 10px;
+}
+.wemail-block .icon{
+    display: inline-block;
+    width: 30px;
+}
