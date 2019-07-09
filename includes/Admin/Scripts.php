@@ -28,6 +28,9 @@ class Scripts {
 
         $this->add_action( 'wemail_admin_enqueue_styles', 'enqueue_styles' );
         $this->add_action( 'wemail_admin_enqueue_scripts', 'enqueue_scripts' );
+
+        $this->add_action('enqueue_block_editor_assets', 'enqueue_gutenberg_block_scripts');
+        $this->add_action('enqueue_block_editor_assets', 'enqueue_gutenberg_block_style');
     }
 
     /**
@@ -190,6 +193,23 @@ class Scripts {
             'erp_crm'  => is_erp_crm_active(),
             'mailpoet' => class_exists('MailPoet\Listing\Handler') || class_exists('WYSIJA'),
         ];
+    }
+
+    /**
+     * Add gutenberg weMail block scripts
+     */
+    public function enqueue_gutenberg_block_scripts() {
+        $forms = wemail()->form->items();
+
+        wp_enqueue_script('wemail-gutenberg-block', WEMAIL_ASSETS. '/js/main.js');
+
+        wp_localize_script('wemail-gutenberg-block', 'weMailData', array(
+            'forms' => $forms ? $forms : []
+        ));
+    }
+
+    public function enqueue_gutenberg_block_style() {
+        wp_enqueue_style('wemail-gutenberg-block', WEMAIL_ASSETS . '/css/gutenberg.css');
     }
 
 }

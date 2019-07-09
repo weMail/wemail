@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Send Beautiful Email Newsletters with WordPress",
   "scripts": {
-    "build": "node build"
+    "build": "node build",
+    "start": "wp-scripts start src/index.js --output-path=assets/js",
+    "wp:build": "wp-scripts build src/index.js --output-path=assets/js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +28,10 @@
     "archiver": "^2.1.1",
     "filesize": "^3.6.1",
     "fs-extra": "^6.0.1"
+  },
+  "dependencies": {
+    "@wordpress/components": "^8.0.0",
+    "@wordpress/element": "^2.5.0",
+    "@wordpress/scripts": "^3.3.0"
   }
 }
