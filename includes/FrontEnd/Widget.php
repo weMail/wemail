@@ -59,6 +59,8 @@ class Widget extends WP_Widget {
         unset( $form['deleted_at'] );
         unset( $form['settings']['actions'] );
 
+        wp_enqueue_script( 'wemail-frontend' );
+
         include WEMAIL_VIEWS . '/form.php';
 
         echo $args['after_widget'];
