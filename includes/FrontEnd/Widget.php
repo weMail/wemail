@@ -38,9 +38,9 @@ class Widget extends WP_Widget {
 
         echo $args['before_widget'];
 
-        if ( $title ) {
-            echo $args['before_title'] . $title . $args['after_title'];
-        }
+//        if ( $title ) {
+//            echo $args['before_title'] . $title . $args['after_title'];
+//        }
 
         if ( empty( $instance['form'] ) ) {
             return __( 'Form Id is missing', 'wemail' );
