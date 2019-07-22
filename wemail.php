@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: weMail - Beautiful Email Newsletter
+ * Plugin Name: weMail - Beautiful Email Newsletters
  * Description: Send Beautiful Email Newsletters with WordPress
  * Plugin URI: https://wordpress.org/plugins/wemail/
  * Author: weDevs
