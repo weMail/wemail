@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,6 +24,7 @@ We bring the best of both worlds by combining faster and robust platform for ema
 * SendGrid
 * PostMark
 * Mailgun
+* Elastic Email
 * Custom SMTP
 
 = Features =
@@ -32,6 +33,7 @@ We bring the best of both worlds by combining faster and robust platform for ema
 * Subscriber Management
 * Campaign Reports
 * List Segmentation
+* Tagging Support
 * Autoresponders
 * Bounce handling
 
@@ -58,6 +60,13 @@ Your campaign, email subscriber and all data are hosted in weMail's server. We m
 Nothing here right now
 
 == Changelog ==
+
+= v0.3.0 - (24th July, 2019) =
+
+    * **New:** Added support for guttenberg block
+    * **New:** Added support for countdown timer in template builder
+    * **New:** Added support for Segmentation & tagging
+    * **Fixed:** Fixed some issue in form builder
 
 = v0.2.0 - (19th June, 2019) =
 
