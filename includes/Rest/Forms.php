@@ -31,6 +31,20 @@ class Forms {
                 'callback' => [ $this, 'submit' ],
             ]
         ] );
+
+        register_rest_route( $this->namespace, $this->rest_base . '/(?P<id>[\w-]+)/visitors', array(
+            'args' => array(
+                'id' => [
+                    'description' => __('Form ID', 'wemail'),
+                    'type'        => 'string'
+                ]
+            ),
+            array(
+                'methods'               => WP_REST_Server::EDITABLE,
+                'permission_callback'   => array( $this, 'permission' ),
+                'callback'              => array( $this, 'increment_visitor' )
+            )
+        ));
     }
 
     public function permission( $request ) {
@@ -67,6 +81,20 @@ class Forms {
         $response = wemail()->form->submit( $id, $submitted_data );
 
         if ( is_wp_error( $response ) ) {
+            return $response;
+        }
+
+        return new WP_REST_Response( $response );
+    }
+
+    public function increment_visitor( $request ) {
+        $form_id = $request->get_param( 'id' );
+
+        wemail_set_owner_api_key();
+
+        $response = wemail()->form->increment_visitor_count( $form_id );
+
+        if ( is_wp_error($response) ) {
             return $response;
         }
 

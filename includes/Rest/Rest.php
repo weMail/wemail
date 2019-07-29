@@ -34,6 +34,7 @@ class Rest {
         new Site();
         new FormIntegrations();
         new ERP();
+        new Pages();
     }
 
 }
