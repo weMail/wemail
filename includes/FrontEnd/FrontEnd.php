@@ -12,6 +12,7 @@ class FrontEnd {
     public function __construct() {
         register_widget( '\WeDevs\WeMail\FrontEnd\Widget' );
         $this->add_action( 'template_redirect', 'init' );
+        new FormOptIn();
     }
 
     public function init() {
