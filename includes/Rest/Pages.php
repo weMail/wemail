@@ -21,7 +21,7 @@ class Pages extends WP_REST_Controller {
             [
                 'methods'             => WP_REST_Server::READABLE,
                 'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'pages' ],
+                'callback'            => [ $this, 'index' ],
             ]
         ] );
     }
@@ -30,7 +30,7 @@ class Pages extends WP_REST_Controller {
         return true;
     }
 
-    public function get_pages() {
+    public function index() {
 
         $args = array(
             'sort_order' => 'asc',
