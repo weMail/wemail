@@ -237,6 +237,8 @@ function wemail_form( $id ) {
 
     if ( ! $form || is_wp_error( $form ) ) {
         return null;
+    } elseif ($form['status'] != 1) {
+        return null;
     } else {
         unset( $form['entries'] );
         unset( $form['created_at'] );
