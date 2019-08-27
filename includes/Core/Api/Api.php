@@ -316,7 +316,6 @@ class Api {
     public function allow_anonymously() {
         if ( ! $this->api_key ) {
             global $wpdb;
-            error_log('sdsfs');
             $rows = $wpdb->get_results("SELECT meta_value from {$wpdb->usermeta} where meta_key = 'wemail_api_key' limit 1");
 
             $this->api_key = $rows[0]->meta_value;
