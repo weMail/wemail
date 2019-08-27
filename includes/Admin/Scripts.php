@@ -199,7 +199,9 @@ class Scripts {
      * Add gutenberg weMail block scripts
      */
     public function enqueue_gutenberg_block_scripts() {
-        $forms = wemail()->form->items();
+        $forms = wemail()->form->all(array(
+            'type' => 'modal,inline'
+        ))['data'];
 
         wp_enqueue_script('wemail-gutenberg-block', WEMAIL_ASSETS. '/js/main.js');
 

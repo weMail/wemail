@@ -37,6 +37,7 @@ class WP extends RestController {
         $this->get('/posts', 'posts', 'can_update_campaign');
         $this->get('/user-roles', 'user_roles', 'can_manage_settings');
         $this->get('/users', 'users', 'can_create_subscriber');
+        $this->get('/products', 'products', 'can_update_campaign');
     }
 
     /**
@@ -53,7 +54,7 @@ class WP extends RestController {
         $registered_types = get_post_types( [ 'public' => true ], 'objects' );
 
         foreach ( $registered_types as $name => $object ) {
-            if ( $object->name === 'attachment' ) {
+            if ( $object->name === 'attachment' || $object->name === 'product' ) {
                 continue;
             }
 
@@ -217,6 +218,57 @@ class WP extends RestController {
         if ( $query_after_id ) {
             $query->query_where .= ' AND ID > ' . $query_after_id;
         }
+    }
+
+    /** Get woo commerce products
+     * @param \WP_REST_Request $request
+     * @return mixed|\WP_REST_Response
+     */
+    public function products( $request ) {
+
+        if ( ! class_exists( 'WooCommerce' ) ) {
+            return rest_ensure_response([
+                'data' => (object) [],
+                'message' => __('Please install or active woocomerce plugin.')
+            ]);
+        }
+
+        $args = [
+            'limit' => 20,
+            's'     => $request->get_param('s')
+        ];
+
+        $products = [];
+
+        $query = wc_get_products( $args );
+
+        /** @var \WC_Product_Simple $product */
+        foreach ($query as $product) {
+
+            $id = $product->get_id();
+
+            $post_thumb_id = get_post_thumbnail_id( $id );
+            $image = wemail_get_image_url( $post_thumb_id );
+
+
+            array_push($products, [
+                'id'                => $product->get_id(),
+                'name'              => $product->get_name(),
+                'type'              => $product->get_type(),
+                'rating'            => $product->get_average_rating(),
+                'status'            => $product->get_status(),
+                'image'             => $image,
+                'description'       => $product->get_description(),
+                'short_description' => $product->get_short_description(),
+                'price'             => wc_price( $product->get_price() ),
+                'read_more'         => get_permalink( $id )
+            ]);
+        }
+
+        return rest_ensure_response( [
+            'data' => $products,
+            'message' => __('You don\'t have any products on your store.')
+        ]);
     }
 
 }

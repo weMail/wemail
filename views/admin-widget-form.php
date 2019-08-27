@@ -16,5 +16,6 @@
                 ><?php echo $form['name']; ?></option>
             <?php endforeach; ?>
         </select>
+        <p class="description"><i><?php _e('Only Modal and Inline types of shown here.', 'wemail');?></i></p>
     </label>
 </p>

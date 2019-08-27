@@ -16,11 +16,12 @@ class Pages extends WP_REST_Controller {
     }
 
     public function register_routes() {
+
         register_rest_route( $this->namespace, '/' . $this->rest_base, [
             [
                 'methods'             => WP_REST_Server::READABLE,
                 'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'pages' ],
+                'callback'            => [ $this, 'index' ],
             ]
         ] );
     }
@@ -29,7 +30,8 @@ class Pages extends WP_REST_Controller {
         return true;
     }
 
-    public function pages() {
+    public function index() {
+
         $args = array(
             'sort_order' => 'asc',
             'sort_column' => 'post_title',
@@ -37,25 +39,14 @@ class Pages extends WP_REST_Controller {
             'post_status' => 'publish'
         );
 
-        $pages = get_pages($args);
-        $results = [
-            [
-                'title' => 'Home Page',
-                'permalink' => get_home_url()
-            ]
-        ];
-        foreach ($pages as $page) {
-            array_push($results, [
-                'title' => $page->post_title,
-                'permalink' => $page->guid
-            ]);
-        }
-
-        $response = rest_ensure_response( [
-            'data' => $results
-        ] );
-
-        return $response;
+        return rest_ensure_response([
+            'data' => array_map(function ($page){
+                return [
+                    'id'        => $page->ID,
+                    'title'     => $page->post_title,
+                    'permalink' => get_permalink( $page->ID )
+                ];
+            }, get_pages($args))
+        ]);
     }
-
 }
