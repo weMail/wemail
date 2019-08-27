@@ -108,4 +108,8 @@ class Form {
 
         return $form;
     }
+
+    public function get_forms( $query ) {
+        return wemail()->api->forms()->query( $query )->allow_anonymously()->get();
+    }
 }

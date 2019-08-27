@@ -1,7 +1,7 @@
 const { registerBlockType } = wp.blocks;
 const { __ }  = wp.i18n;
-import { TextControl, SelectControl, Disabled } from '@wordpress/components'
-import { RawHTML } from '@wordpress/element';
+const { SelectControl } = wp.components;
+const { RawHTML } = wp.element;
 import { icon } from './icon'
 
 

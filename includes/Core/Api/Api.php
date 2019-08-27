@@ -88,7 +88,7 @@ class Api {
      *
      * @param string $api_key
      *
-     * @return void
+     * @return Api
      */
     public function set_api_key( $api_key ) {
         $this->api_key = $api_key;
@@ -104,7 +104,7 @@ class Api {
      * @param string $name
      * @param array $args
      *
-     * @return WeDevs\WeMail\Core\Api\Api|void
+     * @return Api|void
      */
     public function __call( $name, $args ) {
         if ( ! method_exists( $this, $name ) ) {
@@ -158,7 +158,7 @@ class Api {
      *
      * @param array $query Associative array
      *
-     * @return WeDevs\WeMail\Core\Api
+     * @return Api
      */
     public function query( $query ) {
         $this->query = array_merge( $query, $this->query );
@@ -227,7 +227,6 @@ class Api {
      *
      * @since 1.0.0
      *
-     * @param string $url  API resource
      * @param array  $data POST data
      * @param array  $args wp_remote_post argument overrides
      *
@@ -313,5 +312,18 @@ class Api {
             return new WP_Error( 'error', $message, [ 'status' => $response_code ] );
         }
     }
+
+    public function allow_anonymously() {
+        if ( ! $this->api_key ) {
+            global $wpdb;
+            error_log('sdsfs');
+            $rows = $wpdb->get_results("SELECT meta_value from {$wpdb->usermeta} where meta_key = 'wemail_api_key' limit 1");
+
+            $this->api_key = $rows[0]->meta_value;
+        }
+
+        return $this;
+    }
+
 
 }
