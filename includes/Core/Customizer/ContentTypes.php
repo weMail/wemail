@@ -471,6 +471,9 @@ class ContentTypes {
                 'list' => [
                     'imageWidth' => '40%'
                 ],
+                'grid' => [
+                    'products' => 2
+                ],
                 'content' => [
                     'valign' => 'top'
                 ],
@@ -482,38 +485,38 @@ class ContentTypes {
                         'borderStyle'       => 'solid',
                         'borderRadius'      => '0px',
                         'backgroundColor'   => '#fff',
-                        'marginBottom'      => '0px',
+                        'marginBottom'      => '12px',
                         'maxWidth'          => '100%'
                     ],
-                    'borderSpacingTopBottom' => '5',
-                    'borderSpacingLeftRight' => '5',
+                    'borderSpacingTopBottom' => '20',
+                    'borderSpacingLeftRight' => '20',
                     'star' => [
                         'isShow'       => 'on',
-                        'color'        => '#0073aa',
+                        'color'        => '#fbd233',
                         'size'         => '18px',
-                        'marginBottom' => '0x'
+                        'marginBottom' => '3px'
                     ],
                     'description' => [
                         'show' => 'on',
                         'mode'  => 'description',
                         'style' => [
-                            'color'         => '#23282d',
+                            'color'         => '#4F5055',
                             'fontSize'      => '14px',
-                            'marginBottom'  => '0px',
+                            'marginBottom'  => '8px',
                             'textTransform' => 'initial'
                         ]
                     ],
                     'title' => [
                         'style' => [
-                            'fontSize'       => '18px',
-                            'color'          => '#23282d',
+                            'fontSize'       => '20px',
+                            'color'          => '#4F5055',
                             'textTransform' => 'initial',
-                            'marginBottom'   => '0px'
+                            'marginBottom'   => '5px'
                         ]
                     ],
                     'price' => [
                         'style' => [
-                            'color'         => '#23282d',
+                            'color'         => '#4F5055',
                             'fontSize'      => '14px',
                             'marginBottom'  => '0px'
                         ]
@@ -521,20 +524,20 @@ class ContentTypes {
                     'button' => [
                         'text'  => __('Read More', 'wemail'),
                         'style' => [
-                            'color'             => '#0073aa',
-                            'backgroundColor'   => '#fff',
+                            'color'             => '#fff',
+                            'backgroundColor'   => '#1E73BE',
                             'fontSize'          => '14px',
                             'borderStyle'       => 'solid',
                             'borderWidth'       => '0px',
                             'borderColor'       => '#0073aa',
-                            'borderRadius'      => '0px',
-                            'paddingTop'        => '0px',
-                            'paddingBottom'     => '0px',
-                            'paddingLeft'       => '0px',
-                            'paddingRight'      => '0px',
+                            'borderRadius'      => '3px',
+                            'paddingTop'        => '6px',
+                            'paddingBottom'     => '6px',
+                            'paddingLeft'       => '13px',
+                            'paddingRight'      => '6px',
                             'display'           => 'inline-block',
                             'textTransform'     => 'initial',
-                            'marginBottom'      => '0px'
+                            'marginBottom'      => '5px'
                         ]
                     ]
                 ]

@@ -22,29 +22,34 @@ class FormOptIn
 
         $this->settings = wemail()->settings->get('general');
 
-        if ( $this->settings['enabled'] ) {
-            $this->registration_comment_form_opt_in();
-        }
+        $this->registration_hooks();
     }
 
     /**
      *  Register Hooks
      */
-    protected function registration_comment_form_opt_in() {
-        $this->add_action( 'register_form', 'subscribe_checkbox_field');
-        $this->add_action( 'user_register', 'save_subscriber_from_registration' );
-        $this->add_action( 'comment_form_logged_in_after', 'subscribe_checkbox_field');
-        $this->add_action( 'comment_form_after_fields', 'subscribe_checkbox_field');
-        $this->add_action( 'comment_post', 'save_subscriber_from_comment' );
+    protected function registration_hooks() {
 
-        if ( is_multisite() ) {
-            $this->add_action( 'signup_extra_fields', 'subscribe_checkbox_field_multisite' );
-            $this->add_action( 'after_signup_user', 'save_subscriber_from_registration' );
+        if ( $this->settings['registration_enabled'] ) {
+
+            if ( is_multisite() ) {
+                $this->add_action( 'signup_extra_fields', 'subscribe_checkbox_field_multisite' );
+                $this->add_action( 'after_signup_user', 'save_subscriber_from_registration' );
+            } else {
+                $this->add_action( 'register_form', 'subscribe_checkbox_field');
+                $this->add_action( 'user_register', 'save_subscriber_from_registration' );
+            }
         }
 
-        if ( class_exists( 'WooCommerce' ) ) {
+        if ( $this->settings['woocommerce_enabled'] && class_exists( 'WooCommerce' ) ) {
             $this->add_filter( 'woocommerce_billing_fields', 'add_subscribe_field_woocommerce_billing_form' );
             $this->add_filter('woocommerce_new_order', 'save_subscriber_from_woocommerce_billing' );
+        }
+
+        if ( $this->settings['comment_enabled'] ) {
+            $this->add_action( 'comment_form_logged_in_after', 'subscribe_checkbox_field');
+            $this->add_action( 'comment_form_after_fields', 'subscribe_checkbox_field');
+            $this->add_action( 'comment_post', 'save_subscriber_from_comment' );
         }
     }
 
