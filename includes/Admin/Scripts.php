@@ -202,14 +202,20 @@ class Scripts {
         $forms = wemail()->form->get_forms(array(
             'type'          => 'modal,inline',
             'is_active'     => 1
-        ))['data'];
+        ));
+
+        if ( ! $forms instanceof \WP_Error ) {
+            $forms = $forms['data'];
+        } else {
+            $forms = [];
+        }
 
         wp_enqueue_script('wemail-gutenberg-block', WEMAIL_ASSETS. '/js/main.js', array(
             'wp-element', 'wp-blocks', 'wp-components', 'wp-i18n'
         ));
 
         wp_localize_script('wemail-gutenberg-block', 'weMailData', array(
-            'forms' => $forms ? $forms : []
+            'forms' => $forms
         ));
     }
 

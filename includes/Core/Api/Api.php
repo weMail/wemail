@@ -318,7 +318,9 @@ class Api {
             global $wpdb;
             $rows = $wpdb->get_results("SELECT meta_value from {$wpdb->usermeta} where meta_key = 'wemail_api_key' limit 1");
 
-            $this->api_key = $rows[0]->meta_value;
+            if ( !empty( $rows ) ) {
+                $this->api_key = $rows[0]->meta_value;
+            }
         }
 
         return $this;
