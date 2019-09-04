@@ -155,8 +155,8 @@ class MailPoet {
      * @return array
      */
     private function lists_v3() {
-        $lists = new \MailPoet\Listing\Handler( '\MailPoet\Models\Segment' );
-        $lists = $lists->get();
+        $lists = new \MailPoet\Listing\Handler();
+        $lists = $lists->get('\MailPoet\Models\Segment', []);
 
         $data = [];
 
@@ -272,7 +272,10 @@ class MailPoet {
         /**
          * NOTE: Ignoring custom fields.
          */
-        $listings = new \MailPoet\Segments\SubscribersListings();
+        $listings = new \MailPoet\Segments\SubscribersListings(
+            new \MailPoet\Listing\Handler,
+            new \MailPoet\WP\Functions
+        );
         $listing_data = $listings->getListingsInSegment( $args );
 
         foreach($listing_data['items'] as $subscriber) {
