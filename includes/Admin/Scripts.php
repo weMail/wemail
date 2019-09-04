@@ -200,18 +200,21 @@ class Scripts {
      */
     public function enqueue_gutenberg_block_scripts() {
         $forms = wemail()->form->all(array(
-            'type' => 'modal,inline'
-        ))['data'];
+            'type'      => 'modal,inline',
+            'is_active'    => 1
+        ));
 
-        wp_enqueue_script('wemail-gutenberg-block', WEMAIL_ASSETS. '/js/main.js');
+        wp_enqueue_script('wemail-gutenberg-block', WEMAIL_ASSETS. '/js/main.js', array(
+            'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element', 'wp-editor'
+        ));
 
         wp_localize_script('wemail-gutenberg-block', 'weMailData', array(
-            'forms' => $forms ? $forms : []
+            'forms'  => $forms instanceof \WP_Error ? [] : $forms['data'],
         ));
     }
 
     public function enqueue_gutenberg_block_style() {
-        wp_enqueue_style('wemail-gutenberg-block', WEMAIL_ASSETS . '/css/gutenberg.css');
+        wp_enqueue_style('wemail-gutenberg-block', WEMAIL_ASSETS . '/css/gutenberg.css', [], WEMAIL_VERSION);
     }
 
 }
