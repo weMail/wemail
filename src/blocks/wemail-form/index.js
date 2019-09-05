@@ -1,7 +1,8 @@
 const { registerBlockType } = wp.blocks;
 const { __ }  = wp.i18n;
-import { TextControl, SelectControl, Disabled } from '@wordpress/components'
-import { RawHTML } from '@wordpress/element';
+const { SelectControl, PanelBody } = wp.components;
+const { RawHTML, Fragment } = wp.element;
+const { InspectorControls } = wp.editor;
 import { icon } from './icon'
 
 
@@ -19,9 +20,9 @@ registerBlockType('wemail/forms', {
             type: 'string'
         }
     },
-    edit(props) {
+    edit: function (props) {
 
-        function generateShortcode(formId){
+        function generateShortcode(formId) {
             return `[wemail_form id="${formId}"]`;
         }
 
@@ -32,12 +33,44 @@ registerBlockType('wemail/forms', {
             });
         }
 
+        function setHeight(event) {
+            let iframe = event.target;
+            iframe.removeAttribute('height');
+
+            iframe.height = iframe.contentWindow.document.body.offsetHeight;
+        }
+
+        function previewForm(props) {
+            return (
+                <div height="500px" class="wemail-block-form-preview">
+                    <div class="wemail-block-overlay"/>
+                    <iframe onLoad={setHeight} width="100%" src={`${window.origin}/wp-admin/admin-ajax.php?action=wemail_preview&form_id=${props.attributes.formId}`} frameBorder="0" scrolling="no"/>
+                </div>
+            );
+        }
+
+        function defaultPreview(props, options) {
+            return (
+                <Fragment>
+                    <div className="icon">
+                        {icon({color: true})}
+                    </div>
+                    <h4 className="title">{__('weMail Form')}</h4>
+                    <SelectControl value={props.attributes.formId}
+                                   onChange={updateFormId}
+                                   label={__('Forms')}
+                                   options={options}/>
+                </Fragment>
+            );
+        }
+
         const options = [{
             label: __('Select your form'),
-            value: ''
+            value: '',
+            disabled: true
         }];
 
-        weMailData.forms.forEach( form => {
+        weMailData.forms.forEach(form => {
             options.push({
                 label: form.name,
                 value: form.id
@@ -45,14 +78,19 @@ registerBlockType('wemail/forms', {
         });
         return (
             <div className="wemail-block">
-                <div className="icon">
-                    {icon({ color: true})}
-                </div>
-                <h4 className="title">{ __('weMail Form') }</h4>
-                <SelectControl value={props.attributes.formId}
-                onChange={updateFormId}
-                label={__('Forms')}
-                options={options}/>
+                {
+                    <InspectorControls>
+                        <PanelBody title={__('Forms')}>
+                            <SelectControl label={__('Select your form')} value={props.attributes.formId}
+                                           onChange={updateFormId}
+                                           options={options}/>
+                        </PanelBody>
+                    </InspectorControls>
+                }
+
+                {
+                    props.attributes.formId ? previewForm(props) : defaultPreview(props, options)
+                }
             </div>
         );
     },

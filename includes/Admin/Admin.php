@@ -19,6 +19,7 @@ class Admin {
     private function includes() {
         new Scripts();
         new Menu();
+        new FormPreview();
 
         if ( current_user_can( 'edit_posts' ) && wemail_validate_boolean( get_user_option('rich_editing') ) ) {
             new Shortcode();
