@@ -33,12 +33,18 @@ registerBlockType('wemail/forms', {
             });
         }
 
+        function setHeight(event) {
+            let iframe = event.target;
+            iframe.removeAttribute('height');
+
+            iframe.height = iframe.contentWindow.document.body.offsetHeight;
+        }
+
         function previewForm(props) {
             return (
                 <div height="500px" class="wemail-block-form-preview">
-                    <div class="wemail-block-overlay"></div>
-                    <iframe height="500px" width="100%" src={`${window.origin}?wemail_form=${props.attributes.formId}`}
-                            frameBorder="0" scrolling="no"></iframe>
+                    <div class="wemail-block-overlay"/>
+                    <iframe onLoad={setHeight} width="100%" src={`${window.origin}/wp-admin/admin-ajax.php?action=wemail_preview&form_id=${props.attributes.formId}`} frameBorder="0" scrolling="no"/>
                 </div>
             );
         }
