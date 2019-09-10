@@ -35,6 +35,7 @@ class ContentTypes {
             'video'         => self::video(),
             'footer'        => self::footer(),
             'countdown'     => self::countdown(),
+            'wooProducts'   => self::woo_commerce_product()
         ];
 
         /**
@@ -389,6 +390,11 @@ class ContentTypes {
         ];
     }
 
+    /**
+     * Content Type: Countdown
+     *
+     * @return array
+     */
     public static function countdown()
     {
         $api_url = parse_url(wemail()->wemail_api);
@@ -427,6 +433,115 @@ class ContentTypes {
                 'timezones' => timezone_identifiers_list()
             ],
             'noStyleTab'       => true
+        ];
+    }
+
+    /**
+     * Content Type: Woo Commerce Product
+     *
+     * @return array
+     */
+    public static function woo_commerce_product() {
+        return [
+            'type'      => 'wooProducts',
+            'title'     => __('Woo Products', 'wemail'),
+            'image'     => self::$image_dir . '/woo-commerce-product.png',
+            'default'   => [
+                'products'         => [],
+                'rowStyle'         => [
+                    'options'      => [
+                        [
+                            'title' => __('Grid', 'wemail'),
+                            'value' => 'grid'
+                        ],
+                        [
+                            'title' => __('List', 'wemail'),
+                            'value' => 'list'
+                        ]
+                    ],
+                    'value'        => 'list',
+                ],
+                'containerStyle'   => [
+                    'textAlign'       => 'left',
+                    'backgroundColor' => '#ffffff',
+                    'padding'         => '18px',
+                    'marginBottom'    => '0px',
+                    'color'           => '#2c3e50'
+                ],
+                'list' => [
+                    'imageWidth' => '40%'
+                ],
+                'grid' => [
+                    'products' => 2
+                ],
+                'content' => [
+                    'valign' => 'top'
+                ],
+                'product' => [
+                    'image' => [
+                        'padding'           => '0px',
+                        'borderColor'       => '#0073aa',
+                        'borderWidth'       => '0px',
+                        'borderStyle'       => 'solid',
+                        'borderRadius'      => '0px',
+                        'backgroundColor'   => '#fff',
+                        'marginBottom'      => '12px',
+                        'maxWidth'          => '100%'
+                    ],
+                    'borderSpacingTopBottom' => '20',
+                    'borderSpacingLeftRight' => '20',
+                    'star' => [
+                        'isShow'       => 'on',
+                        'color'        => '#fbd233',
+                        'size'         => '18px',
+                        'marginBottom' => '3px'
+                    ],
+                    'description' => [
+                        'show' => 'on',
+                        'mode'  => 'description',
+                        'style' => [
+                            'color'         => '#4F5055',
+                            'fontSize'      => '14px',
+                            'marginBottom'  => '8px',
+                            'textTransform' => 'initial'
+                        ]
+                    ],
+                    'title' => [
+                        'style' => [
+                            'fontSize'       => '20px',
+                            'color'          => '#4F5055',
+                            'textTransform' => 'initial',
+                            'marginBottom'   => '5px'
+                        ]
+                    ],
+                    'price' => [
+                        'style' => [
+                            'color'         => '#4F5055',
+                            'fontSize'      => '14px',
+                            'marginBottom'  => '0px'
+                        ]
+                    ],
+                    'button' => [
+                        'text'  => __('Read More', 'wemail'),
+                        'style' => [
+                            'color'             => '#fff',
+                            'backgroundColor'   => '#1E73BE',
+                            'fontSize'          => '14px',
+                            'borderStyle'       => 'solid',
+                            'borderWidth'       => '0px',
+                            'borderColor'       => '#0073aa',
+                            'borderRadius'      => '3px',
+                            'paddingTop'        => '6px',
+                            'paddingBottom'     => '6px',
+                            'paddingLeft'       => '13px',
+                            'paddingRight'      => '6px',
+                            'display'           => 'inline-block',
+                            'textTransform'     => 'initial',
+                            'marginBottom'      => '5px'
+                        ]
+                    ]
+                ]
+            ]
         ];
     }
 }

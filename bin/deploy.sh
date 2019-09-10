@@ -36,7 +36,6 @@ if [ "$READMEVERSION" != "$PLUGINVERSION" ]; then
     exit 1
 fi
 
-exit 1
 
 # make sure the destination dir exists
 svn mkdir $TRUNK 2> /dev/null

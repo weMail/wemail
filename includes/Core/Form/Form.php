@@ -102,4 +102,10 @@ class Form {
             'ninja_forms'    => __( 'Ninja Forms', 'wemail' ),
         ];
     }
+
+    public function increment_visitor_count( $form_id ) {
+        $form = wemail()->api->forms( $form_id )->visitors()->put(array());
+
+        return $form;
+    }
 }

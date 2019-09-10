@@ -157,8 +157,8 @@ class Editor {
             'video',
             'footer',
             'wpPosts',
-            'wpLatestContents',
-            'countdown'
+            'countdown',
+            'wooProducts'
         ];
 
         return wemail()->customizer->get( 'campaign', $content_types );
@@ -176,7 +176,6 @@ class Editor {
     public function content_type_settings( $settings ) {
         $additional_types = [
             'wpPosts'          => self::wp_posts(),
-            'wpLatestContents' => self::wp_latest_contents()
         ];
 
         $settings = array_merge( $settings, $additional_types );
@@ -312,43 +311,9 @@ class Editor {
                 'categories' => [
                     'position' => 'above',
                     'precededBy' => 'Categories:'
-                ],
-            ]
+                ]
+            ],
+            'noSettingsTab' => true
         ];
     }
-
-    /**
-     * WP Latest Contents type content
-     *
-     * @since 1.0.0
-     *
-     * @return array
-     */
-    public static function wp_latest_contents() {
-        return [
-            'type'       => 'wpLatestContents',
-            'title'      => __( 'Latest Contents', 'wemail' ),
-            'image'      => self::$image_dir . '/wp-latest.png',
-            'default'    => [
-                'style'      => [
-                    'backgroundColor' => '#ffffff',
-                    'paddingTop'      => '15px',
-                    'paddingBottom'   => '15px',
-                    'paddingLeft'     => '15px',
-                    'paddingRight'    => '15px',
-                    'borderWidth'     => '0px',
-                    'borderStyle'     => 'solid',
-                    'borderColor'     => '#e5e5e5'
-                ],
-                'twoColumns' => false,
-                'texts'      => [
-                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) ),
-                    sprintf( '<p>%s</p>', __( 'dkls', 'wemail' ) )
-                ],
-
-                'valign'     => 'top',
-            ]
-        ];
-    }
-
 }
