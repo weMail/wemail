@@ -84,16 +84,25 @@ class Api {
     /**
      * Set the api key
      *
-     * @since 1.0.0
-     *
      * @param string $api_key
      *
-     * @return void
+     * @return Api
+     * @since 1.0.0
+     *
      */
     public function set_api_key( $api_key ) {
         $this->api_key = $api_key;
 
         return $this;
+    }
+
+    /**
+     * Is api key set on this instance
+     * @since
+     * @return bool
+     */
+    public function has_api_key() {
+        return (bool) $this->api_key;
     }
 
     /**
@@ -154,11 +163,11 @@ class Api {
     /**
      * Set the query for URL to build
      *
-     * @since 1.0.0
-     *
      * @param array $query Associative array
      *
-     * @return WeDevs\WeMail\Core\Api
+     * @return Api
+     * @since 1.0.0
+     *
      */
     public function query( $query ) {
         $this->query = array_merge( $query, $this->query );
@@ -225,13 +234,12 @@ class Api {
     /**
      * API - POST request caller
      *
-     * @since 1.0.0
-     *
-     * @param string $url  API resource
-     * @param array  $data POST data
-     * @param array  $args wp_remote_post argument overrides
+     * @param array $data POST data
+     * @param array $args wp_remote_post argument overrides
      *
      * @return mixed
+     * @since 1.0.0
+     *
      */
     public function post( $data = [], $args = [] ) {
         $args = $this->args( $args );

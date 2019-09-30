@@ -199,6 +199,9 @@ class Scripts {
      * Add gutenberg weMail block scripts
      */
     public function enqueue_gutenberg_block_scripts() {
+
+        wemail_set_owner_api_key(false);
+
         $forms = wemail()->form->all(array(
             'type'      => 'modal,inline',
             'is_active'    => 1
