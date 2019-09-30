@@ -115,9 +115,10 @@ class Wp {
     /**
      * Delete subscribers
      *
+     * @param $user_ids
+     * @return void
      * @since 1.0.0
      *
-     * @return void
      */
     public function delete( $user_ids ) {
         wemail_set_owner_api_key( false );
@@ -130,9 +131,10 @@ class Wp {
     /**
      * Create subscribers
      *
+     * @param $user_ids
+     * @return array
      * @since 1.0.0
      *
-     * @return void
      */
     private function filter_syncable_users( $user_ids ) {
         $syncables = [];

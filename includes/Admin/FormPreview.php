@@ -16,6 +16,8 @@ class FormPreview {
      * @since 0.6.0
      */
     public function __construct() {
+        wemail_set_owner_api_key(false);
+
         $this->add_action('wp_ajax_wemail_preview', 'render_form_component');
 
         if ( isset( $_GET['action'], $_GET['form_id'] ) ) {

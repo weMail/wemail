@@ -15,7 +15,7 @@ class FrontEnd {
     }
 
     public function init() {
-        wemail_set_owner_api_key();
+        wemail_set_owner_api_key(false);
 
         new Scripts();
         new Shortcodes();
@@ -24,11 +24,15 @@ class FrontEnd {
     }
 
     public function render_form( $content ) {
+        wemail_set_owner_api_key(false);
+
         $forms = wemail()->form->all([
             'type' => 'floating-bar,floating-box,modal',
             'fields' => 'id,settings',
             'status' => 1
-        ])['data'];
+        ]);
+
+        $forms = $forms instanceof \WP_Error ? [] : $forms['data'];
 
         $current_page_id = get_queried_object_id();
 
