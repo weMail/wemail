@@ -16,7 +16,7 @@ class Widget extends WP_Widget {
     }
 
     public function form( $instance ) {
-        wemail_set_owner_api_key();
+        wemail_set_owner_api_key(false);
 
         $forms = wemail()->form->items();
 
