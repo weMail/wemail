@@ -76,13 +76,7 @@ class Form {
     public function submit( $id, $data ) {
         $form = wemail()->api->forms( $id )->submit()->post( $data );
 
-        if ( is_wp_error( $form ) ) {
-            return $form;
-        } else if ( ! empty( $form['data'] ) ) {
-            return $form['data'];
-        }
-
-        return null;
+        return $form;
     }
 
     /**
