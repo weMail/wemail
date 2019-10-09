@@ -196,43 +196,29 @@ class Editor {
             'title'      => __( 'WP Posts', 'wemail' ),
             'image'      => self::$image_dir . '/wp.png',
             'default'    => [
-                'style' => [
-                    'padding' => '15px',
+                'containerStyle' => [
+                    'padding' => '25px',
+                    'marginBottom' => '0px',
+                    'backgroundColor' => '#ffffff'
                 ],
-                'posts' => [
-                    [
-                        'id' => 0,
-                        'image' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
-                        'title' => 'Example post title',
-                        'postType' => '',
-                        'postStatus' => '',
-                        'url' => site_url( '/' ),
-                        'content' => 'This is an example of post content',
-                        'excerpt' => 'This is an example of post excerpt',
-                    ]
-                ],
-                'layout' => 'i1-tc1',
-                'column' => 1,
+                'posts' => [],
+                'layout' => 'list',
+                'post_per_row' => 2,
                 'title' => [
-                    'container' => [
-                        'tag' => 'h2',
-                        'style' => [
-                            'lineHeight' => '30px',
-                            'marginBottom' => '15px'
-                        ]
-                    ],
                     'style' => [
-                        'fontSize' => '22px',
+                        'fontSize' => '30px',
                         'color' => '#333333',
                         'textAlign' => 'left',
-                        'fontWeight' => 'normal',
+                        'fontWeight' => 'bold',
                         'textTransform' => 'none',
+                        'lineHeight' => '50px',
+                        'marginBottom' => '15px'
                     ],
                 ],
                 'image' => [
-                    'active' => true,
+                    'display' => 'show',
                     'style' => [
-                        'width' => '100%',
+                        'max-width' => '100%',
                         'float' => 'none',
                         'borderWidth' => '0px',
                         'borderStyle' => 'solid',
@@ -241,79 +227,83 @@ class Editor {
                         'backgroundColor' => '#ffffff',
                         'marginTop' => '0px',
                         'marginRight' => '0px',
-                        'marginBottom' => '0px',
+                        'marginBottom' => '10px',
                         'marginLeft' => '0px',
+                    ],
+                    'containerStyle' => [
+                        'textAlign' => 'left'
                     ]
                 ],
-                'postContent' => [
-                    'length' => 'excerpt',
-                    'containerStyle' => [
-                        'marginBottom' => '15px',
-                    ],
+                'content' => [
+                    'display' => 'show',
+                    'content_format' => 'excerpt',
+                    'excerpt_length' => 55,
+                
                     'style' => [
                         'fontSize' => '14px',
-                        'color' => '#333333',
+                        'color' => '#556271',
                         'textAlign' => 'left',
                         'lineHeight' => '20px',
+                        'marginBottom' => '15px',
                     ],
                 ],
                 'readMore' => [
-                    'show' => 'display',
+                    'display' => 'show',
                     'style' => [
                         'display' => 'inline-block',
-                        'paddingTop' => '0px',
-                        'paddingRight' => '0px',
-                        'paddingBottom' => '0px',
-                        'paddingLeft' => '0px',
+                        'paddingTop' => '10px',
+                        'paddingRight' => '15px',
+                        'paddingBottom' => '10px',
+                        'paddingLeft' => '15px',
                         'fontSize' => '14px',
                         'fontWeight' => 'normal',
                         'lineHeight' => '1',
-                        'color' => '#0073aa',
-                        'textAlign' => 'center',
-                        'textDecoration' => 'underline',
+                        'color' => '#fff',
+                        'textDecoration' => 'none',
                         'textTransform' => 'none',
-                        'backgroundColor' => '',
-                        'borderRadius' => '0px',
+                        'backgroundColor' => '#0073aa',
+                        'borderRadius' => '4px',
                         'borderWidth' => '0px',
                         'borderStyle' => 'solid',
-                        'borderColor' => '#e5e5e5'
+                        'borderColor' => '#e5e5e5',
+                        'marginBottom' => '30px'
                     ],
                     'text' => __( 'Read More', 'wemail' ),
                     'containerStyle' => [
                         'textAlign' => 'left',
                     ]
                 ],
-                'divider' => [
+                'meta' => [
                     'display' => 'show',
-                    'containerStyle' => [
-                        'marginTop' => '15px',
-                        'marginBottom' => '15px'
+                    'separator' => ' | ',
+                    'fields' => [
+                        'author' => [
+                            'text' => __('Author: '),
+                            'display' => 'show',
+                        ],
+                        'categories' => [
+                            'text' => __('Categories: '),
+                            'display' => 'show',
+                        ],
+                        'tags' => [
+                            'text' => __('Tags: '),
+                            'display' => 'show',
+                        ],
+                        'postDate' => [
+                            'text' => __('Post Date: '),
+                            'display' => 'show'
+                        ]
                     ],
                     'style' => [
-                        'width' => '570px',
-                        'borderTopWidth' => '1px',
-                        'borderTopStyle' => 'dashed',
-                        'borderTopColor' => '#e5e5e5',
-                    ],
-                    'useImage' => true,
-                    'image' => [
-                        'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
-                        'style' => [
-                            'height' => '7px',
-                            'width' => '600px',
-                        ]
+                        'fontSize' => '12px',
+                        'color' => '#556271',
+                        'textAlign' => 'left',
+                        'lineHeight' => '20px',
+                        'marginBottom' => '15px',
+                        'fontStyle' => 'normal'
                     ]
-                ],
-                'author' => [
-                    'position' => 'above',
-                    'precededBy' => 'Author:',
-                ],
-                'categories' => [
-                    'position' => 'above',
-                    'precededBy' => 'Categories:'
                 ]
-            ],
-            'noSettingsTab' => true
+            ]
         ];
     }
 }
