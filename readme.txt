@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -60,6 +60,10 @@ Your campaign, email subscriber and all data are hosted in weMail's server. We m
 Nothing here right now
 
 == Changelog ==
+
+= v0.8.0 - (10th October, 2019) =
+
+    * **Fixed:** Fixed WP Post Block issue in campaign builder
 
 = v0.7.0 - (1st October, 2019) =
 
