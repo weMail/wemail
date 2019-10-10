@@ -102,13 +102,19 @@ class WP extends RestController {
 
                 $posts [] = [
                     'id' => $id,
-                    'image' => $image,
+                    'image' => get_the_post_thumbnail_url( $id ),
                     'title' => strip_tags( $query->post->post_title ),
                     'postType' => $query->post->post_type,
                     'postStatus' => $query->post->post_status,
                     'url' => get_permalink( $id ),
-                    'content' => strip_tags( $query->post->post_content ),
-                    'excerpt' => strip_tags( $query->post->post_excerpt )
+                    'content' =>  $query->post->post_content ,
+                    'excerpt' => strip_tags( $query->post->post_excerpt ),
+                    'meta' => [
+                        'tags' => $this->get_tags( get_the_tags( $id ) ),
+                        'postDate' => get_the_date( 'Y-m-d', $id ),
+                        'author' => get_the_author( $id ),
+                        'categories' => $this->get_categories( get_the_category( $id ) )
+                    ]
                 ];
             }
 
@@ -271,4 +277,15 @@ class WP extends RestController {
         ]);
     }
 
+    protected function get_tags( $tags ) {
+        return implode( ', ', array_map( function ($tag) {
+            return $tag->name;
+        }, $tags ) );
+    }
+
+    protected function get_categories( $categories ) {
+        return implode( ', ', array_map( function ($category) {
+            return $category->cat_name;
+        }, $categories ) );
+    }
 }
