@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -188,42 +188,10 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
+= v0.9.0 - (15th October, 2019) =
+    * **Fixed:** Updated plugin description.
+
 = v0.8.0 - (10th October, 2019) =
-<<<<<<< HEAD
-
- * **Fixed:** Fixed WP Post Block issue in campaign builder
-
-= v0.7.0 - (1st October, 2019) =
-
- * **Fixed:** Fixed issue on my-account page
- * **Fixed:** Fixed "site is experiencing technical difficulties" issue
-
-= v0.6.0 - (10th September, 2019) =
-
- * **New:** Added support for preview on Gutenberg wemail block
- * **Fixed:** Fixed issue on import using mailpoet
-
-= v0.5.0 - (27th August, 2019) =
-
- * **New:** Added support for Woocommerce product block in campaign builder
- * **New:** Added  support for woocommerce, commment and registration form opt-in
- * **New:** Added  support for type and conversion metrics on forms listing
-
-= v0.4.0 - (22th August, 2019) =
-
- * **New:** Added support for specific page redirection in double opt-in settings
-
-= v0.3.0 - (24th July, 2019) =
-
- * **New:** Added support for guttenberg block
- * **New:** Added support for countdown timer in template builder
- * **New:** Added support for Segmentation & tagging
- * **Fixed:** Fixed some issue in form builder
-
-= v0.2.0 - (19th June, 2019) =
-
- * **New:** Added support for multiple buttons in campaign builder
-=======
     * **Fixed:** Fixed WP Post Block issue in campaign builder
 
 = v0.7.0 - (1st October, 2019) =
@@ -250,10 +218,35 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 = v0.2.0 - (19th June, 2019) =
     * **New:** Added support for multiple buttons in campaign builder
->>>>>>> hotfix/update-plugin-description
+    * **Fixed:** Fixed WP Post Block issue in campaign builder
+
+= v0.7.0 - (1st October, 2019) =
+    * **Fixed:** Fixed issue on my-account page
+    * **Fixed:** Fixed "site is experiencing technical difficulties" issue
+
+= v0.6.0 - (10th September, 2019) =
+    * **New:** Added support for preview on Gutenberg wemail block
+    * **Fixed:** Fixed issue on import using mailpoet
+
+= v0.5.0 - (27th August, 2019) =
+    * **New:** Added support for Woocommerce product block in campaign builder
+    * **New:** Added  support for woocommerce, commment and registration form opt-in
+    * **New:** Added  support for type and conversion metrics on forms listing
+
+= v0.4.0 - (22th August, 2019) =
+    * **New:** Added support for specific page redirection in double opt-in settings
+
+= v0.3.0 - (24th July, 2019) =
+    * **New:** Added support for guttenberg block
+    * **New:** Added support for countdown timer in template builder
+    * **New:** Added support for Segmentation & tagging
+    * **Fixed:** Fixed some issue in form builder
+
+= v0.2.0 - (19th June, 2019) =
+    * **New:** Added support for multiple buttons in campaign builder
 
 = v0.1.0 =
- * Initial realease
+    * Initial realease
 
 == Upgrade Notice ==
 
