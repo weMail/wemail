@@ -13,7 +13,7 @@ weMail helps you to send newsletter, collect leads, automated emails, auto add s
 
 == Description ==
 
-weMail helps you to send newsletter, collect leads, automated emails, auto add subscriber to a list and manage subscriber all inside WordPress dashboard. Tightly integrated with WordPress, weMail with your preferred sending API, a perfect solution for small to large business with large email databases.
+weMail helps you to send newsletter, collect leads, automated emails, auto add subscribers to a list and manage subscribers all inside WordPress dashboard. Tightly integrated with WordPress, weMail with your preferred sending API, a perfect solution for small to large business with large email databases.
 
 Having large email subscriber list should not be expensive. That is why we built weMail. weMail is tightly integrated into WordPress to make email marketing inside WordPress dashboard simple and easy.
 
@@ -46,9 +46,9 @@ WordPress integration that will help you get email subscribers effortlessly and 
 - **Embed Form Options:** Customizable embed form options make it easy for anyone to create an HTML form with custom fields.
 
 ## Opt-in Forms
-- **Inline Form:** With the inline form you can place forms inside content and get the subscriber to any list you assign.
+- **Inline Form:** With the inline form you can place forms inside content and get the subscribers to any list you assign.
 
-- **Floating Bar:** Floating bar will float in your website header when collecting email addresses is your top priority floating bar will help you greatly.
+- **Floating Bar:** Floating bar will float in your website header, when collecting email addresses is your top priority floating bar will help you greatly.
 
 - **Slide Up:** Prefer slide up subscription box instead of other methods. You can use weMail’s slide up form function to slide up a subscription box to collect new emails. You can even control when to show the slide up form depending upon page scroll percentage.
 
@@ -65,7 +65,7 @@ Double opt-in helps you prevent dead email contacts and verify them to clean the
 ## Analytics
 Analytics help you with campaign performance, to make a better-informed decision about your email marketing campaigns. weMail analytics will help
 
-- **24 Email Statistics:** Too busy to check email campaign activity? 24-hour email statistics will send you campaign statistics for the last 24 hours.
+- **24 Hours Email Statistics:** Too busy to check email campaign activity? 24-hour email statistics will send you campaign statistics for the last 24 hours.
 
 - **Google Analytics:** weMail will give you the option to use Google Analytics tag so that email link clicks can be tracked and viewed in Google analytics for better references.
 
@@ -109,7 +109,7 @@ Analytics help you with campaign performance, to make a better-informed decision
 
 - **Automate email:** Welcome new subscribers with automated emails without manually doing it every time.
 
-- **Auto Clean List** weMail will automatically clean list based on bounce email so that you don’t have to keep track manually.
+- **Auto Clean List:** weMail will automatically clean list based on bounce email so that you don’t have to keep track manually.
 
 - **Bounce Handling :** Bounce handling feature will help you maintain email lists effortlessly without configure it for hard bounce and soft bounce.
 
