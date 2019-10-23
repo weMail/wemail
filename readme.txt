@@ -172,19 +172,13 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Screenshots ==
 
-1. weMail overview dashboard with lifetime total, sending stats & lists growth
-2. Campaign email template section
-3. Drag & drop email builder
-4. Email delivery option - Send now, Schedule or Timewarp
-5. Email lists - Contact Form, Blog Subscribers, WordPress Users
-6. Detail overview of Contact Form list emails
-7. Segment option for Email list
-8. Form Options - inline form widget subscription screenshot
-9. Opt-in form options - Inline, Floating Bar, Slide Up and Modal
-10. Opt-in inline form setting page with custom field and styles
-11. Contact Form plugin integration
-12. Import options from other email marketing tools
-13. Email sending gateway setting page
+1. Send automatic campaigns
+2. Embed form
+3. Lists, tags & segmentation
+4. Slide up form
+5. WP integration & 24 hours stats
+6. WP user sync & double-opt-in
+7. Drag drop template builder
 
 == Changelog ==
 
