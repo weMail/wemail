@@ -63,21 +63,24 @@ class Auth {
 
         if ( !empty( $response['access_token'] ) ) {
             update_option( 'wemail_site_slug', $response['data']['slug'] );
+            $availableRoles = ['administrator', 'editor'];
+            update_option( 'wemail_accessible_roles', $availableRoles );
 
             update_user_meta( $user->ID, 'wemail_api_key', $response['access_token'] );
 
             wemail()->api->set_api_key( $response['access_token'] );
 
             $wp_admins = get_users( [
-                'role' => 'administrator',
+                'role__in' => $availableRoles,
                 'exclude' => [ $user->ID ]
             ] );
 
             foreach ( $wp_admins as $wp_admin ) {
+                $roles = array_values($wp_admin->roles);
                 $data = [
                     'name' => $wp_admin->data->display_name,
                     'email' => $wp_admin->data->user_email,
-                    'role' => 'admin'
+                    'role' => in_array('administrator', $roles) ? 'admin' : 'team'
                 ];
 
                 $wp_admin_response = wemail()->api->auth()->users()->post( $data );
