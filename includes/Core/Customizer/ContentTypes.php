@@ -534,7 +534,7 @@ class ContentTypes {
                             'paddingTop'        => '6px',
                             'paddingBottom'     => '6px',
                             'paddingLeft'       => '13px',
-                            'paddingRight'      => '6px',
+                            'paddingRight'      => '13px',
                             'display'           => 'inline-block',
                             'textTransform'     => 'initial',
                             'marginBottom'      => '5px'
