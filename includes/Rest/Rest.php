@@ -12,6 +12,7 @@ use WeDevs\WeMail\Rest\Forms;
 use WeDevs\WeMail\Rest\MailPoet;
 use WeDevs\WeMail\Rest\States;
 use WeDevs\WeMail\Rest\Video;
+use WeDevs\WeMail\Rest\Users;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Rest {
@@ -37,6 +38,7 @@ class Rest {
         new FormIntegrations();
         new ERP();
         new Pages();
+        new Users();
     }
 
 }

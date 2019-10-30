@@ -63,6 +63,9 @@ class User {
     public function boot() {
         $user_id = get_current_user_id();
 
+        $disabled  = get_user_meta( $user_id, 'wemail_disable_user_access' );
+        if ($disabled) return;
+
         $api_key  = get_user_meta( $user_id, 'wemail_api_key', true );
         $api_key  = apply_filters( 'wemail_api_key', $api_key, $user_id );
 
