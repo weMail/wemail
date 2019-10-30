@@ -15,20 +15,20 @@ class FrontEnd {
     }
 
     public function init() {
-        wemail_set_owner_api_key(false);
+        wemail_set_owner_api_key( false );
 
         new Scripts();
         new Shortcodes();
 
-        $this->add_filter('the_content', 'render_form');
+        $this->add_action('wp_footer', 'render_form' );
     }
 
-    public function render_form( $content ) {
-        wemail_set_owner_api_key(false);
+    public function render_form() {
+        wemail_set_owner_api_key( false );
 
         $forms = wemail()->form->all([
             'type' => 'floating-bar,floating-box,modal',
-            'fields' => 'id,settings',
+            'fields' => 'id,type,settings',
             'status' => 1
         ]);
 
@@ -41,30 +41,53 @@ class FrontEnd {
             $forms = $this->get_filtered_forms( $forms, $current_page_id );
 
             foreach ( $forms as $form ) {
-                $content .= do_shortcode('[wemail_form id="' . $form['id'] . '"]');
+                echo wemail_form( $form['id'] );
             }
         }
-
-        return $content;
     }
 
     protected function get_filtered_forms( $forms, $object_id ) {
 
-        return array_filter( $forms, function ($form) use ( $object_id ){
+        return array_filter( $forms, function ( $form ) use ( $object_id ){
             $settings = $form['settings'];
 
             if ( ! isset( $settings['showPage'], $settings['when'], $settings['who'] ) ) {
                 return false;
             }
 
-            if ( $this->checking_show_page( $settings, $object_id )
-                && $this->checking_schedule( $settings )
-                && $this->checking_who_see( $settings ) ) {
-                return true;
-            }
-
-            return false;
+            return $this->is_passed_all_checks( $form, $object_id );
         });
+    }
+
+    protected function is_passed_all_checks($form, $object_id ) {
+
+        if ( ! $this->checking_is_modal( $form ) ) {
+            return false;
+        }
+
+        if ( ! $this->checking_show_page( $form['settings'], $object_id ) ) {
+            return false;
+        }
+
+        if ( ! $this->checking_schedule( $form['settings'] ) ) {
+            return false;
+        }
+
+        if ( ! $this->checking_who_see( $form['settings'] ) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function checking_is_modal( $form ) {
+        $settings = $form['settings'];
+
+        if ($form['type'] !== 'modal') {
+            return true;
+        }
+
+        return $settings['modalTrigger'] === 'auto';
     }
 
     protected function checking_show_page( $settings, $object_id ) {
