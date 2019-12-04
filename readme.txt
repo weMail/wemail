@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 0.10.0
+Stable tag: 0.11.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,91 +27,94 @@ With weMail, you can focus more on growing subscriber list and email marketing w
 weMail features that will help your business -
 
 ## WordPress Integration:
-WordPress integration that will help you get email subscribers effortlessly and put them into a list to send an email later. Collecting email addresses from WooCommerce user product order email collection, new WordPress user registration, and commentators' emails to grow your email list.
 
-- **WooCommerce:** With each WooCommerce store order, you can collect subscribers and put them into an email list.
+WordPress integration
+ that will help you get email subscribers effortlessly and put them into a list to send an email later. Collecting email addresses from WooCommerce user product order email collection, new WordPress user registration, and commentators' emails to grow your email list.
 
-- **User Registration:** Collect subscribers each time anyone register to your website. You can also automate welcome email as well as doubt opt-in to spam check.
+- **[WooCommerce](https://getwemail.io/docs/wemail/settings/) :** With each WooCommerce store order, you can collect subscribers and put them into an email list.
 
-- **Comment Opt-in:** Without redirecting visitors for sign up, you can also collect emails from blog comments.
+- **[User Registration](https://getwemail.io/docs/wemail/settings/) :** Collect subscribers each time anyone register to your website. You can also automate welcome email as well as doubt opt-in to spam check.
 
-- **WordPress User Sync:** Auto import WordPress users to weMail subscribers. Every WordPress user roles will auto-import without manually doing anything.
+- **[Comment Opt-in](https://getwemail.io/docs/wemail/settings/) :** Without redirecting visitors for sign up, you can also collect emails from blog comments.
+
+- **[WordPress User Sync](https://getwemail.io/docs/wemail/settings/wordpress-users-sync/):** Auto import WordPress users to weMail subscribers. Every WordPress user roles will auto-import without manually doing anything.
+
+- **[WordPress Transactional Email ](https://getwemail.io/docs/wemail/settings/general/):** You can send all the WordPress transactional email via weMail.
 
 
+- **[Team](https://getwemail.io/docs/wemail/teams/):** Manage your email campaigns with your marketing team. You can disable or enable access based on permission.
 
 
 ## Forms
-- **Embed Forms:** With HTML embed forms, you can place it anywhere. Widgets, posts or pages weMails embed form will work anywhere.
+- **[Embed Forms](https://getwemail.io/docs/wemail/forms/embeded-forms/):** With HTML embed forms, you can place it anywhere. Widgets, posts or pages weMails embed form will work anywhere.
 
-- **Embed Form Options:** Customizable embed form options make it easy for anyone to create an HTML form with custom fields.
+- **[Embed Form Options](https://getwemail.io/docs/wemail/forms/embeded-forms/):** Customizable embed form options make it easy for anyone to create an HTML form with custom fields.
 
 ## Opt-in Forms
-- **Inline Form:** With the inline form you can place forms inside content and get the subscribers to any list you assign.
+- **[Inline Form](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-inline-form-work):** With the inline form you can place forms inside content and get the subscribers to any list you assign.
 
-- **Floating Bar:** Floating bar will float in your website header, when collecting email addresses is your top priority floating bar will help you greatly.
+- **[Floating Bar](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-the-floating-bar-form-work):** Floating bar will float in your website header, when collecting email addresses is your top priority floating bar will help you greatly.
 
-- **Slide Up:** Prefer slide up subscription box instead of other methods. You can use weMail’s slide up form function to slide up a subscription box to collect new emails. You can even control when to show the slide up form depending upon page scroll percentage.
+- **[Slide Up](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-slide-up-form-work):** Prefer slide up subscription box instead of other methods. You can use weMail slide up form function to slide up a subscription box to collect new emails. You can even control when to show the slide up form depending upon page scroll percentage.
 
-- **Modal:** If an email subscriber modal is your preferred way of collecting emails. You can use the Modal box to show the form when you like.
+- **[Modal](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-modal-form-work):** If an email subscriber modal is your preferred way of collecting emails. You can use the Modal box to show the form when you like.
 
 ## Double Opt-in
 Double opt-in helps you prevent dead email contacts and verify them to clean the list. weMail double opt-in feature can provide:
 
-- **Double Opt-in:** Cut down your subscribers' bounce rate by using double opt-in.
+- **[Double Opt-in](https://getwemail.io/docs/wemail/subscriber-lists/double-opt-in/):** Cut down your subscribers' bounce rate by using double opt-in.
 
-- **Double Opt-in Redirection:** Redirect double opt-in emails to any other page your campaign requires. You can redirect to any pages, URL or absolutely no redirection at all.
+- **[Double Opt-in Redirection](https://getwemail.io/docs/wemail/settings/double-opt-in/):** Redirect double opt-in emails to any other page your campaign requires. You can redirect to any pages, URL or absolutely no redirection at all.
 
 
 ## Analytics
 Analytics help you with campaign performance, to make a better-informed decision about your email marketing campaigns. weMail analytics will help
 
-- **24 Hours Email Statistics:** Too busy to check email campaign activity? 24-hour email statistics will send you campaign statistics for the last 24 hours.
+- **[24 Hours Email Statistics](https://getwemail.io/docs/wemail/settings/general/):** Too busy to check email campaign activity? 24-hour email statistics will send you campaign statistics for the last 24 hours.
 
-- **Google Analytics:** weMail will give you the option to use Google Analytics tag so that email link clicks can be tracked and viewed in Google analytics for better references.
+- **[Google Analytics](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/):** weMail will give you the option to use Google Analytics tag so that email link clicks can be tracked and viewed in Google analytics for better references.
 
-- **Campaign Overview**: You can get all the email campaigns' overview from the overview tab, and get a broad picture of how many emails are sent and how many will be sent with what forms and what's the sending statistics.
+- **[Campaign Overview](https://getwemail.io/docs/wemail/campaigns/)**: You can get all the email campaigns' overview from the overview tab, and get a broad picture of how many emails are sent and how many will be sent with what forms and what's the sending statistics.
 
-- **Email Link Click:** Links inside email content will automatically have statistics of how many times they were clicked without setting up third-party trackers. Tracking link clicks is easier than ever.
-
-
+- **[Email Link Click](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks):** Links inside email content will automatically have statistics of how many times they were clicked without setting up third-party trackers. Tracking link clicks is easier than ever.
 
 
 ## Email List Features ##
-- **List:** Sorting and sending emails to the list of contacts is easier than before. Listings, segments, and tags all can be configured for from the get-go.
+- **[List](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/):** Sorting and sending emails to the list of contacts is easier than before. Listings, segments, and tags all can be configured for from the get-go.
 
-- **Multiple List:** You can send email to multiple lists, this way you don’t have to create a separate campaign for sending the same email to another list.
+- **[Multiple List](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/):** You can send email to multiple lists, this way you do not have to create a separate campaign for sending the same email to another list.
 
-- **Segments:** Segment will help you segment your email contact more precisely, create an unlimited segment to cluster your email contacts appropriately.
+- **[Segments](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/#segment):** Segment will help you segment your email contact more precisely, create an unlimited segment to cluster your email contacts appropriately.
 
-- **Tags:** Tag contacts for better reference, email contacts make sense when you tag them by their actions.
+- **[Tags](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/#tags):** Tag contacts for better reference, email contacts make sense when you tag them by their actions.
 
 
 ## Import & Export ##
-- **Import Contacts:** Import your custom templates, email list from other email marketing tools to weMail using our built-in import settings. Migration is easy, simple and solid.
+- **[Import Contacts](https://getwemail.io/docs/wemail/imports/):** Import your custom templates, email list from other email marketing tools to weMail using our built-in import settings. Migration is easy, simple and solid.
 
-- **Export Email to CSV:** Exporting your email contacts to CSV is just a single click away.
+- **[Export Email to CSV](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-csv/):** Exporting your email contacts to CSV is just a single click away.
 
 
 ## Campaigns ##
 
-- **Email Campaign:** Campaigns can be configured straight from the WordPress dashboard without leaving your website.
+- **[Email Campaign](https://getwemail.io/docs/wemail/campaigns/):** Campaigns can be configured straight from the WordPress dashboard without leaving your website.
 
-- **Standard Campaign:** Send emails with standard campaign whenever you feel like to connect with your subscribers.
+- **[Standard Campaign](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-standard-campaign-work):** Send emails with standard campaign whenever you feel like to connect with your subscribers.
 
-- **Automated Campaign:** Send emails automatically with automatic campaign, automate the process without going manual ever again.
+- **[Automated Campaign](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-automatic-campaign-work):** Send emails automatically with automatic campaign, automate the process without going manual ever again.
 
-- **Templates:** There’s a template for that! You can use our built-in beautiful templates for sending emails.
+- **[Templates](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/):** There is a template for that! You can use our built-in beautiful templates for sending emails.
 
 
 ## Email List Management ##
 
-- **Collect Leads:** Place weMail's HTML embed form or Opt-in form anywhere on the website and collect leads and add them to email list without sweat
+- **[Collect Leads](https://getwemail.io/docs/wemail/forms/embeded-forms/):** Place weMail's HTML embed form or Opt-in form anywhere on the website and collect leads and add them to email list without sweat
 
-- **Automate email:** Welcome new subscribers with automated emails without manually doing it every time.
+- **[Automate email](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-automatic-campaign-work):** Welcome new subscribers with automated emails without manually doing it every time.
 
-- **Auto Clean List:** weMail will automatically clean list based on bounce email so that you don’t have to keep track manually.
+- **[Auto Clean List](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks):** weMail will automatically clean list based on bounce email so that you do not have to keep track manually.
 
-- **Bounce Handling :** Bounce handling feature will help you maintain email lists effortlessly without configure it for hard bounce and soft bounce.
+- **[Bounce Handling](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks):** Bounce handling feature will help you maintain email lists effortlessly without configure it for hard bounce and soft bounce.
 
 ## weMail is best for:
 
@@ -181,6 +184,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v0.11.0 - (4th December, 2019) =
+ * **New:** Added support for sending site transactional emails using weMail.
 
 = v0.10.0 - (30th October, 2019) =
  * **New:** Added teams section to manage weMail users.
