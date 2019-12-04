@@ -10,6 +10,7 @@ class Site extends RestController {
 
     public function register_routes() {
         $this->post( '/settings', 'save_settings', 'can_manage_settings' );
+        $this->post( '/settings/transactionalemails', 'save_transactional_emails_settings', 'manage_options' );
     }
 
     /**
@@ -39,6 +40,19 @@ class Site extends RestController {
         do_action( "wemail_saved_settings_{$name}", $settings );
 
         return rest_ensure_response( $response );
+    }
+
+    public function save_transactional_emails_settings( $request )
+    {
+        $status = $request->get_param('status');
+
+        if ($status == 'true') {
+            update_option( 'wemail_transactional_emails', true );
+        } else {
+            delete_option( 'wemail_transactional_emails' );
+        }
+
+        return rest_ensure_response( [ 'success' => true ] );
     }
 
 }
