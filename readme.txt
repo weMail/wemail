@@ -132,6 +132,17 @@ All weMail features are free in both free and premium version of the plugin -
 
 weMail development repository on [GitHub](https://github.com/weDevsOfficial/wemail/ "weMail GitHub")
 
+## Privacy Policy
+weMail uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
+
+Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+
+Learn more how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
+
+Additionally, read weDevs [privacy policy](https://wedevs.com/privacy-policy/) for more.
+
 
 == Installation ==
 
