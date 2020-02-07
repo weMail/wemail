@@ -71,7 +71,9 @@ class Users extends RestController
                 }
             }
 
-            return $this->respond(null, self::HTTP_CREATED);
+            return $this->respond([
+                'success' => true
+            ], self::HTTP_CREATED);
         }
 
         return $this->respond(['message' => 'Access token not found'], 422);
@@ -96,7 +98,9 @@ class Users extends RestController
                 }
             }
 
-            return $this->respond(null, self::HTTP_CREATED);
+            return $this->respond([
+                'success' => true
+            ], self::HTTP_CREATED);
         }
 
         return $this->respond(['message' => 'Access token not found'], 422);
