@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 0.11.0
+Stable tag: 0.12.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -132,6 +132,17 @@ All weMail features are free in both free and premium version of the plugin -
 
 weMail development repository on [GitHub](https://github.com/weDevsOfficial/wemail/ "weMail GitHub")
 
+## Privacy Policy
+weMail uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
+
+Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+
+Learn more how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
+
+Additionally, read weDevs [privacy policy](https://wedevs.com/privacy-policy/) for more.
+
 
 == Installation ==
 
@@ -184,6 +195,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v0.12.0 - (7th February, 2020) =
+ * **Fixed:** Updated null responsed to solve loading issue.
 
 = v0.11.0 - (4th December, 2019) =
  * **New:** Added support for sending site transactional emails using weMail.
