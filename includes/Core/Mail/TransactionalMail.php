@@ -45,13 +45,11 @@ class TransactionalMail {
      *  Format Email Addresses
      *
      * @param $address
-     * @return string
+     * @return array
      */
     protected function formatEmailAddress( $address ) {
-        $emailAddress = array_map(function ( $address ) {
+        return array_map(function ( $address ) {
             return $address[0];
         }, $address);
-
-        return implode( ',', $emailAddress );
     }
 }
