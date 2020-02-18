@@ -10,7 +10,7 @@ class TransactionalMail {
      * TransactionalMail constructor.
      */
     public function __construct() {
-        add_action('phpmailer_init', function ( &$phpmailer ) {
+        add_action( 'phpmailer_init', function ( &$phpmailer ) {
             if ( ! get_option( 'wemail_transactional_emails', false ) ) {
                 return;
             }
@@ -26,16 +26,16 @@ class TransactionalMail {
      * @throws \phpmailerException
      */
     public function send() {
-        $response = wemail()->api->emails()->transactional()->post(array(
+        $response = wemail()->api->emails()->transactional()->post( array(
             'to' => $this->formatEmailAddress($this->phpmailer->getToAddresses()),
             'subject' => $this->phpmailer->Subject,
             'message' => $this->phpmailer->Body,
             'type' => $this->phpmailer->ContentType,
             'attachments' => $this->phpmailer->getAttachments()
-        ));
+        ) );
 
-        if (isset($response['success']) && ($response['success'] != 'true' || $response['success'] != 1)) {
-            throw new \phpmailerException('Could not send transactional email');
+        if ( isset( $response['success']) && ($response['success'] != 'true' || $response['success'] != 1 ) ) {
+            throw new \phpmailerException( 'Could not send transactional email' );
         }
 
         return true;
@@ -47,12 +47,11 @@ class TransactionalMail {
      * @param $address
      * @return string
      */
-    protected function formatEmailAddress($address)
-    {
-        $emailAddress = array_map(function ($address) {
+    protected function formatEmailAddress( $address ) {
+        $emailAddress = array_map(function ( $address ) {
             return $address[0];
         }, $address);
 
-        return implode(',', $emailAddress);
+        return implode( ',', $emailAddress );
     }
 }
