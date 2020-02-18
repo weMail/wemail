@@ -277,20 +277,71 @@ function is_erp_crm_active() {
  * Send transactional mails using weMail
  */
 function mail_handler( $to, $subject, $message, $headers, $attachments ) {
-    $content_type = apply_filters( 'wp_mail_content_type', 'text/plain' );
-
-    $type = 'text/plain';
-
-    if ( 'text/html' === $content_type ) {
-        $type = 'text/html';
-    }
-
     $subject  = maybe_decode_subject( $subject );
     $atts     = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'attachments' ) );
 
-    $atts['type'] = $type;
+    $atts['type'] = wemail_parse_content_type_header($headers);
 
     return manually_send_email( $atts );
+}
+
+
+/**
+ *  Parse mail content-type
+ * @param  string $headers
+ * @return string
+ */
+function wemail_parse_content_type_header( $headers = '' ) {
+
+    if ( ! is_array( $headers ) ) {
+        // Explode the headers out, so this function can take both
+        // string headers and an array of headers.
+        $tempheaders = explode( "\n", str_replace( "\r\n", "\n", $headers ) );
+    } else {
+        $tempheaders = $headers;
+    }
+    $headers = array();
+
+    // If it's actually got contents
+    if ( ! empty( $tempheaders ) ) {
+        // Iterate through the raw headers
+        foreach ( (array) $tempheaders as $header ) {
+            if ( strpos( $header, ':' ) === false ) {
+                if ( false !== stripos( $header, 'boundary=' ) ) {
+                    $parts    = preg_split( '/boundary=/i', trim( $header ) );
+                    $boundary = trim( str_replace( array( "'", '"' ), '', $parts[1] ) );
+                }
+                continue;
+            }
+            // Explode them out
+            list( $name, $content ) = explode( ':', trim( $header ), 2 );
+
+            // Cleanup crew
+            $name    = trim( $name );
+            $content = trim( $content );
+
+            if ( strtolower( $name ) === 'content-type' ) {
+                if ( strpos( $content, ';' ) !== false ) {
+                    list( $type, $charset_content ) = explode( ';', $content );
+                    $content_type                   = trim( $type );
+                    if ( false !== stripos( $charset_content, 'charset=' ) ) {
+                        $charset = trim( str_replace( array( 'charset=', '"' ), '', $charset_content ) );
+                    } elseif ( false !== stripos( $charset_content, 'boundary=' ) ) {
+                        $boundary = trim( str_replace( array( 'BOUNDARY=', 'boundary=', '"' ), '', $charset_content ) );
+                        $charset  = '';
+                    }
+
+                    // Avoid setting an empty $content_type.
+                } elseif ( '' !== trim( $content ) ) {
+                    $content_type = trim( $content );
+                }
+
+                return $content_type;
+            }
+        }
+    }
+
+    return 'text/plain';
 }
 
 function maybe_decode_subject( $subject ) {
