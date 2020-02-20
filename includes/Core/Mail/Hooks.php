@@ -26,7 +26,7 @@ class Hooks {
         }
 
         $mailer = new WeMailMailer();
-        $mailer->setPHPMailer(clone $phpmailer);
+        $mailer->setPHPMailer( clone $phpmailer );
 
         $phpmailer = $mailer;
     }

@@ -37,9 +37,9 @@ class WeMailMailer extends PHPMailer {
      * @return array
      */
     protected function formatEmailAddress( $address ) {
-        return array_map(function ( $address ) {
+        return array_map( function ( $address ) {
             return $address[0];
-        }, $address);
+        }, $address );
     }
 
     /**
@@ -47,7 +47,7 @@ class WeMailMailer extends PHPMailer {
      *
      * @param $mailer
      */
-    public function setPHPMailer($mailer ) {
+    public function setPHPMailer( $mailer ) {
         $this->phpmailer = $mailer;
     }
 }
