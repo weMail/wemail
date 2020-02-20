@@ -23,7 +23,7 @@ class WeMailMailer extends PHPMailer {
             'attachments' => $this->phpmailer->getAttachments()
         ) );
 
-        if ( isset( $response['success']) && ($response['success'] != 'true' || $response['success'] != 1 ) ) {
+        if ( isset( $response['success'] ) && ( $response['success'] != 'true' || $response['success'] != 1 ) ) {
             throw new \phpmailerException( 'Could not send transactional email' );
         }
 

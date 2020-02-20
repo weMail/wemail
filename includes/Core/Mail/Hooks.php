@@ -10,9 +10,8 @@ class Hooks {
     /**
      * Hooks constructor.
      */
-    public function __construct()
-    {
-        $this->add_action( 'phpmailer_init', 'handle_transactional_emails');
+    public function __construct() {
+        $this->add_action( 'phpmailer_init', 'handle_transactional_emails' );
     }
 
     /**
