@@ -1,24 +1,13 @@
 <?php
 namespace WeDevs\WeMail\Core\Mail;
 
-class TransactionalMail {
+use PHPMailer;
 
-    /* @var $phpmailer \PHPMailer*/
-    protected $phpmailer;
-
+class WeMailMailer extends PHPMailer {
     /**
-     * TransactionalMail constructor.
+     * @var $phpmailer PHPMailer
      */
-    public function __construct() {
-        add_action( 'phpmailer_init', function ( &$phpmailer ) {
-            if ( ! get_option( 'wemail_transactional_emails', false ) ) {
-                return;
-            }
-
-            $this->phpmailer = clone $phpmailer;
-            $phpmailer = $this;
-        });
-    }
+    protected $phpmailer;
 
     /**
      * Overwrite phpmailer send method
@@ -51,5 +40,14 @@ class TransactionalMail {
         return array_map(function ( $address ) {
             return $address[0];
         }, $address);
+    }
+
+    /**
+     * Set Mailer
+     *
+     * @param $mailer
+     */
+    public function setPHPMailer($mailer ) {
+        $this->phpmailer = $mailer;
     }
 }
