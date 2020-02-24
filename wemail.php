@@ -5,7 +5,7 @@
  * Plugin URI: https://wordpress.org/plugins/wemail/
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
- * Version: 0.12.0
+ * Version: 0.13.0
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
@@ -61,3 +61,18 @@ function wemail() {
 
 // kick it off
 wemail();
+
+/**
+ * Add custom links in activation tab of wemail
+ */
+function wemail_plugin_action_links( $links ) {
+    $links = array_merge( array(
+        '<a href="https://getwemail.io/docs/wemail/get-started/?utm_source=orgplugin&utm_medium=dashboarddoc&utm_campaign=settinglink" target="_blank">' . __( 'Docs', 'wemail' ) . '</a>',
+        '<a href="https://getwemail.io/contact?utm_source=orgplugin&utm_medium=dashboardcontact&utm_campaign=settinglink" target="_blank">' . __( 'Support', 'wemail' ) . '</a>',
+        '<a href="https://getwemail.io/?utm_source=site-plugin-settings&utm_medium=website-url" target="_blank">' . __( 'Visit Site', 'wemail' ) . '</a>',
+    ), $links );
+
+    return $links;
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wemail_plugin_action_links' );

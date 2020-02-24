@@ -121,10 +121,11 @@ class Privacy {
 
         if ( $subscriber ) {
             $data_to_export[] = [
-                'group_id'      => 'wemail_subscriber',
-                'group_label'   => __( 'weMail Subscriber Data', 'wemail' ),
-                'item_id'       => 'wemail-subscriber',
-                'data'          => $this->get_subscriber_data( $subscriber ),
+                'group_id'          => 'wemail_subscriber',
+                'group_label'       => __( 'weMail Subscriber Data', 'wemail' ),
+                'group_description' => __( 'The weMail subscriber data.', 'wemail' ),
+                'item_id'           => 'wemail-subscriber',
+                'data'              => $this->get_subscriber_data( $subscriber ),
             ];
         }
 
