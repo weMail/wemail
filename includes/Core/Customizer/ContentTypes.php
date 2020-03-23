@@ -311,7 +311,7 @@ class ContentTypes {
                     'marginBottom'    => '0px'
                 ],
                 'style' => [
-                    'width'           => '570px',
+                    'width'           => '100%',
                     'borderTopWidth'  => '2px',
                     'borderTopStyle'  => 'dashed',
                     'borderTopColor'  => '#e5e5e5',
@@ -321,7 +321,7 @@ class ContentTypes {
                     'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
                     'style' => [
                         'height' => '7px',
-                        'width'  => '600px',
+                        'width'  => '100%',
                     ]
                 ]
             ],
