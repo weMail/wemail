@@ -90,6 +90,9 @@ class WpUser {
                 $wp_admin_response = wemail()->api->auth()->users()->destroy()->post([
                     'email'  => $user->data->user_email
                 ]);
+                if ( is_wp_error( $wp_admin_response ) ) {
+                    return;
+                }
                 if ($wp_admin_response['success']) {
                     delete_user_meta( $user->ID, 'wemail_api_key' );
                     delete_user_meta( $user->ID, 'wemail_user_data' );
