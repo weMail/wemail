@@ -87,9 +87,18 @@ class WpUser {
             wemail()->api->set_api_key( $access_token[0] );
             $user = get_userdata( $user_id );
             if ($user) {
+                if ( ! get_user_meta( $user->ID, 'wemail_api_key', true ) ) {
+                    return;
+                }
+
                 $wp_admin_response = wemail()->api->auth()->users()->destroy()->post([
                     'email'  => $user->data->user_email
                 ]);
+
+                if ( is_wp_error( $wp_admin_response ) ) {
+                    return;
+                }
+
                 if ($wp_admin_response['success']) {
                     delete_user_meta( $user->ID, 'wemail_api_key' );
                     delete_user_meta( $user->ID, 'wemail_user_data' );

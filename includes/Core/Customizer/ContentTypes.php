@@ -311,7 +311,7 @@ class ContentTypes {
                     'marginBottom'    => '0px'
                 ],
                 'style' => [
-                    'width'           => '570px',
+                    'width'           => '100%',
                     'borderTopWidth'  => '2px',
                     'borderTopStyle'  => 'dashed',
                     'borderTopColor'  => '#e5e5e5',
@@ -321,7 +321,7 @@ class ContentTypes {
                     'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
                     'style' => [
                         'height' => '7px',
-                        'width'  => '600px',
+                        'width'  => '100%',
                     ]
                 ]
             ],
@@ -381,7 +381,7 @@ class ContentTypes {
                 ],
                 'twoColumns' => false,
                 'texts'      => [
-                    '<p style="text-align: center;"><span style="font-size: 12px;">This email was sent to [user:email] because you have opted in to receive specific updates on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;">If you would prefer not to receive any email from us in the future, please [links:unsubscribe text="click here to unsubscribe"] or go to your [links:edit_subscription text="account preferences"] on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;"><strong>Our mailing address</strong></span><br /><span style="font-size: 12px;"> [company:name]</span><br /><span style="font-size: 12px;"> [company:address]</span></p><p style="text-align: center;"><span style="font-size: 12px;">Copyright © [date:year] [company:name], All rights reserved.</span></p>',
+                    '<p style="text-align: center;"><span style="font-size: 12px;">This email was sent to [subscriber:email] because you have opted in to receive specific updates on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;">If you would prefer not to receive any email from us in the future, please [links:unsubscribe text="click here to unsubscribe"].</span></p><p style="text-align: center;"><span style="font-size: 12px;"><strong>Our mailing address</strong></span><br /><span style="font-size: 12px;"> [company:name]</span><br /><span style="font-size: 12px;"> [company:address]</span></p><p style="text-align: center;"><span style="font-size: 12px;">Copyright © [date:year] [company:name], All rights reserved.</span></p>',
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) )
                 ],
                 'columnSplit' => '1-1',

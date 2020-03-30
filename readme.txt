@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 0.13.0
+Stable tag: 0.14.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -195,6 +195,11 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v0.14.0 - (30th March, 2020) =
+ * **Fixed:** Fixed WP User deletion Error.
+ * **Update:** Divider Content Type width property.
+ * **Update:** Shortcode from [user:email] to [subscriber:email] on template footer.
 
 = v0.13.0 - (24th February, 2020) =
  * **New:** Added additional links for wemail plugin in plugins page.
