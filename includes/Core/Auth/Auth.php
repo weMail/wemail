@@ -16,7 +16,7 @@ class Auth {
      *
      * @return void
      */
-    public function site() {
+    public function site($api = '') {
         $start_of_week = get_option( 'start_of_week', 1 );
         $week_days = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
 
@@ -39,6 +39,7 @@ class Auth {
         set_transient( 'wemail_validate_me_key', $key, 5 * MINUTE_IN_SECONDS );
 
         $data = [
+            'api_key'           => $api,
             'site_name'         => get_bloginfo( 'name' ),
             'site_email'        => get_bloginfo( 'admin_email' ),
             'site_url'          => untrailingslashit( site_url( '/' ) ),
