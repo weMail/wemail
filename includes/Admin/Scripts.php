@@ -213,6 +213,7 @@ class Scripts {
 
         wp_localize_script('wemail-gutenberg-block', 'weMailData', array(
             'forms'  => $forms instanceof \WP_Error ? [] : $forms['data'],
+            'siteUrl' => get_site_url()
         ));
     }
 
