@@ -3,7 +3,7 @@ Contributors: tareq1988, nizamuddinbabu, jayontasarkar, mehedimi, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
-Tested up to: 5.2
+Tested up to: 5.4
 Stable tag: 0.15.0
 Requires PHP: 5.4
 License: GPLv2 or later
