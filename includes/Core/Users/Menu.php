@@ -1,10 +1,11 @@
 <?php
 
-namespace WeDevs\WeMail\Core\Subscriber;
+namespace WeDevs\WeMail\Core\Users;
 
 use WeDevs\WeMail\Traits\Hooker;
 
-class Menu {
+class Menu
+{
 
     use Hooker;
 
@@ -15,7 +16,7 @@ class Menu {
      *
      * @var integer
      */
-    public $menu_priority = 70;
+    public $menu_priority = 105;
 
     /**
      * Class constructor
@@ -24,8 +25,9 @@ class Menu {
      *
      * @return void
      */
-    public function __construct() {
-        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
+    public function __construct()
+    {
+        $this->add_filter('wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2);
     }
 
     /**
@@ -38,12 +40,12 @@ class Menu {
      *
      * @return array
      */
-    public function register_submenu( $menu_items, $capability ) {
-        if ( wemail()->user->can( 'view_subscriber' ) ) {
-            $menu_items[] = [ __( 'Subscribers', 'wemail' ), $capability, 'admin.php?page=wemail#/subscribers' ];
+    public function register_submenu($menu_items, $capability)
+    {
+        if (wemail()->user->can('manage_settings')) {
+            $menu_items[] = [__('Teams', 'wemail'), $capability, 'admin.php?page=wemail#/teams'];
         }
 
         return $menu_items;
     }
-
 }

@@ -76,13 +76,7 @@ class Form {
     public function submit( $id, $data ) {
         $form = wemail()->api->forms( $id )->submit()->post( $data );
 
-        if ( is_wp_error( $form ) ) {
-            return $form;
-        } else if ( ! empty( $form['data'] ) ) {
-            return $form['data'];
-        }
-
-        return null;
+        return $form;
     }
 
     /**
@@ -101,5 +95,11 @@ class Form {
             'weforms'        => __( 'weForms', 'wemail' ),
             'ninja_forms'    => __( 'Ninja Forms', 'wemail' ),
         ];
+    }
+
+    public function increment_visitor_count( $form_id ) {
+        $form = wemail()->api->forms( $form_id )->visitors()->put(array());
+
+        return $form;
     }
 }

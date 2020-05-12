@@ -16,7 +16,7 @@ class Auth {
      *
      * @return void
      */
-    public function site() {
+    public function site($api = '') {
         $start_of_week = get_option( 'start_of_week', 1 );
         $week_days = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
 
@@ -39,6 +39,7 @@ class Auth {
         set_transient( 'wemail_validate_me_key', $key, 5 * MINUTE_IN_SECONDS );
 
         $data = [
+            'api_key'           => $api,
             'site_name'         => get_bloginfo( 'name' ),
             'site_email'        => get_bloginfo( 'admin_email' ),
             'site_url'          => untrailingslashit( site_url( '/' ) ),
@@ -63,21 +64,24 @@ class Auth {
 
         if ( !empty( $response['access_token'] ) ) {
             update_option( 'wemail_site_slug', $response['data']['slug'] );
+            $availableRoles = ['administrator', 'editor'];
+            update_option( 'wemail_accessible_roles', $availableRoles );
 
             update_user_meta( $user->ID, 'wemail_api_key', $response['access_token'] );
 
             wemail()->api->set_api_key( $response['access_token'] );
 
             $wp_admins = get_users( [
-                'role' => 'administrator',
+                'role__in' => $availableRoles,
                 'exclude' => [ $user->ID ]
             ] );
 
             foreach ( $wp_admins as $wp_admin ) {
+                $roles = array_values($wp_admin->roles);
                 $data = [
                     'name' => $wp_admin->data->display_name,
                     'email' => $wp_admin->data->user_email,
-                    'role' => 'admin'
+                    'role' => in_array('administrator', $roles) ? 'admin' : 'team'
                 ];
 
                 $wp_admin_response = wemail()->api->auth()->users()->post( $data );

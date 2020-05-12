@@ -17,8 +17,11 @@ if [ ! -d "$SRC_DIR/.git" ]; then
 fi
 
 # check version in readme.txt is the same as plugin file
-READMEVERSION=`grep "Stable tag" $SRC_DIR/readme.txt | awk '{ print $NF}'`
-PLUGINVERSION=`grep "Version" $SRC_DIR/$MAINFILE | awk '{ print $NF}'`
+READMEVERSION=`grep "Stable tag: " $SRC_DIR/readme.txt | awk '{ print $3F}'`
+PLUGINVERSION=`grep "Version: " $SRC_DIR/$MAINFILE | awk '{ print $NF}'`
+
+echo "-$READMEVERSION-"
+echo "-$PLUGINVERSION-"
 
 echo ".........................................."
 echo
@@ -28,11 +31,11 @@ echo
 echo ".........................................."
 echo
 
-
 if [ "$READMEVERSION" != "$PLUGINVERSION" ]; then
     echo "Versions don't match. Exiting....";
     exit 1
 fi
+
 
 # make sure the destination dir exists
 svn mkdir $TRUNK 2> /dev/null
@@ -74,7 +77,7 @@ done
 svn stat | grep '^\?' | awk '{print $2}' | xargs svn add > /dev/null 2>&1
 svn stat | grep '^\!' | awk '{print $2}' | xargs svn rm  > /dev/null 2>&1
 
-# svn copy trunk/ tags/$READMEVERSION/
+svn copy trunk/ tags/$PLUGINVERSION/
 
 svn stat
 

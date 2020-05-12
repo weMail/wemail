@@ -16,7 +16,7 @@ class Widget extends WP_Widget {
     }
 
     public function form( $instance ) {
-        wemail_set_owner_api_key();
+        wemail_set_owner_api_key(false);
 
         $forms = wemail()->form->items();
 
@@ -58,6 +58,8 @@ class Widget extends WP_Widget {
         unset( $form['created_at'] );
         unset( $form['deleted_at'] );
         unset( $form['settings']['actions'] );
+
+        wp_enqueue_script( 'wemail-frontend' );
 
         include WEMAIL_VIEWS . '/form.php';
 

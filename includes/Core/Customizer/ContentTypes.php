@@ -34,6 +34,8 @@ class ContentTypes {
             'divider'       => self::divider(),
             'video'         => self::video(),
             'footer'        => self::footer(),
+            'countdown'     => self::countdown(),
+            'wooProducts'   => self::woo_commerce_product()
         ];
 
         /**
@@ -309,7 +311,7 @@ class ContentTypes {
                     'marginBottom'    => '0px'
                 ],
                 'style' => [
-                    'width'           => '570px',
+                    'width'           => '100%',
                     'borderTopWidth'  => '2px',
                     'borderTopStyle'  => 'dashed',
                     'borderTopColor'  => '#e5e5e5',
@@ -319,7 +321,7 @@ class ContentTypes {
                     'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
                     'style' => [
                         'height' => '7px',
-                        'width'  => '600px',
+                        'width'  => '100%',
                     ]
                 ]
             ],
@@ -379,11 +381,166 @@ class ContentTypes {
                 ],
                 'twoColumns' => false,
                 'texts'      => [
-                    '<p style="text-align: center;"><span style="font-size: 12px;">This email was sent to [user:email] because you have opted in to receive specific updates on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;">If you would prefer not to receive any email from us in the future, please [links:unsubscribe text="click here to unsubscribe"] or go to your [links:edit_subscription text="account preferences"] on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;"><strong>Our mailing address</strong></span><br /><span style="font-size: 12px;"> [company:name]</span><br /><span style="font-size: 12px;"> [company:address]</span></p><p style="text-align: center;"><span style="font-size: 12px;">Copyright © [date:year] [company:name], All rights reserved.</span></p>',
+                    '<p style="text-align: center;"><span style="font-size: 12px;">This email was sent to [subscriber:email] because you have opted in to receive specific updates on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;">If you would prefer not to receive any email from us in the future, please [links:unsubscribe text="click here to unsubscribe"].</span></p><p style="text-align: center;"><span style="font-size: 12px;"><strong>Our mailing address</strong></span><br /><span style="font-size: 12px;"> [company:name]</span><br /><span style="font-size: 12px;"> [company:address]</span></p><p style="text-align: center;"><span style="font-size: 12px;">Copyright © [date:year] [company:name], All rights reserved.</span></p>',
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) )
                 ],
                 'columnSplit' => '1-1',
                 'valign'     => 'top',
+            ]
+        ];
+    }
+
+    /**
+     * Content Type: Countdown
+     *
+     * @return array
+     */
+    public static function countdown()
+    {
+        $api_url = parse_url(wemail()->wemail_api);
+
+        return [
+            'type'       => 'countdown',
+            'title'      => __( 'Countdown', 'wemail' ),
+            'image'      => self::$image_dir . '/countdown.png',
+            'default'    => [
+                'containerStyle' => [
+                    'textAlign'       => 'center',
+                    'backgroundColor' => '#ffffff',
+                    'padding'         => '18px',
+                    'marginBottom'    => '0px'
+                ],
+                'label'      => [
+                    'days'      => 'Days',
+                    'hours'     => 'Hours',
+                    'minutes'   => 'Minutes',
+                    'seconds'   => 'Seconds'
+                ],
+                'query' => [
+                    'date'      => '',
+                    'time'      => '',
+                    'weight'    => 'regular',
+                    'timezone'  => ''
+                ],
+                'isLabelShow'   => false,
+                'fontWeights'   => [
+                    'light'    => __('Light', 'wemail'),
+                    'regular'  => __('Regular', 'wemail'),
+                    'semibold' => __('Semibold', 'wemail'),
+                    'bold'     => __('Bold', 'wemail'),
+                ],
+                'imageBasePath' => $api_url['scheme'] . '://'. $api_url['host'],
+                'timezones' => timezone_identifiers_list()
+            ],
+            'noStyleTab'       => true
+        ];
+    }
+
+    /**
+     * Content Type: Woo Commerce Product
+     *
+     * @return array
+     */
+    public static function woo_commerce_product() {
+        return [
+            'type'      => 'wooProducts',
+            'title'     => __('Woo Products', 'wemail'),
+            'image'     => self::$image_dir . '/woo-commerce-product.png',
+            'default'   => [
+                'products'         => [],
+                'rowStyle'         => [
+                    'options'      => [
+                        [
+                            'title' => __('Grid', 'wemail'),
+                            'value' => 'grid'
+                        ],
+                        [
+                            'title' => __('List', 'wemail'),
+                            'value' => 'list'
+                        ]
+                    ],
+                    'value'        => 'list',
+                ],
+                'containerStyle'   => [
+                    'textAlign'       => 'left',
+                    'backgroundColor' => '#ffffff',
+                    'padding'         => '18px',
+                    'marginBottom'    => '0px',
+                    'color'           => '#2c3e50'
+                ],
+                'list' => [
+                    'imageWidth' => '40%'
+                ],
+                'grid' => [
+                    'products' => 2
+                ],
+                'content' => [
+                    'valign' => 'top'
+                ],
+                'product' => [
+                    'image' => [
+                        'padding'           => '0px',
+                        'borderColor'       => '#0073aa',
+                        'borderWidth'       => '0px',
+                        'borderStyle'       => 'solid',
+                        'borderRadius'      => '0px',
+                        'backgroundColor'   => '#fff',
+                        'marginBottom'      => '12px',
+                        'maxWidth'          => '100%'
+                    ],
+                    'borderSpacingTopBottom' => '20',
+                    'borderSpacingLeftRight' => '20',
+                    'star' => [
+                        'isShow'       => 'on',
+                        'color'        => '#fbd233',
+                        'size'         => '18px',
+                        'marginBottom' => '3px'
+                    ],
+                    'description' => [
+                        'show' => 'on',
+                        'mode'  => 'description',
+                        'style' => [
+                            'color'         => '#4F5055',
+                            'fontSize'      => '14px',
+                            'marginBottom'  => '8px',
+                            'textTransform' => 'initial'
+                        ]
+                    ],
+                    'title' => [
+                        'style' => [
+                            'fontSize'       => '20px',
+                            'color'          => '#4F5055',
+                            'textTransform' => 'initial',
+                            'marginBottom'   => '5px'
+                        ]
+                    ],
+                    'price' => [
+                        'style' => [
+                            'color'         => '#4F5055',
+                            'fontSize'      => '14px',
+                            'marginBottom'  => '0px'
+                        ]
+                    ],
+                    'button' => [
+                        'text'  => __('Read More', 'wemail'),
+                        'style' => [
+                            'color'             => '#fff',
+                            'backgroundColor'   => '#1E73BE',
+                            'fontSize'          => '14px',
+                            'borderStyle'       => 'solid',
+                            'borderWidth'       => '0px',
+                            'borderColor'       => '#0073aa',
+                            'borderRadius'      => '3px',
+                            'paddingTop'        => '6px',
+                            'paddingBottom'     => '6px',
+                            'paddingLeft'       => '13px',
+                            'paddingRight'      => '13px',
+                            'display'           => 'inline-block',
+                            'textTransform'     => 'initial',
+                            'marginBottom'      => '5px'
+                        ]
+                    ]
+                ]
             ]
         ];
     }

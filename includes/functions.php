@@ -157,11 +157,16 @@ function wemail_get_wp_timezone() {
 /**
  * Set owner's key as api key
  *
+ * @param bool $check_user_is_logged_in
+ * @return void
  * @since 1.0.0
  *
- * @return void
  */
 function wemail_set_owner_api_key( $check_user_is_logged_in = true ) {
+    if( wemail()->api->has_api_key() ) {
+        return;
+    }
+
     if ( $check_user_is_logged_in && get_current_user_id() ) {
         return;
     }
@@ -236,6 +241,8 @@ function wemail_form( $id ) {
     $form = wemail()->form->get( $id );
 
     if ( ! $form || is_wp_error( $form ) ) {
+        return null;
+    } elseif ($form['status'] != 1) {
         return null;
     } else {
         unset( $form['entries'] );

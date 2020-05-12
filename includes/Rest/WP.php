@@ -37,6 +37,7 @@ class WP extends RestController {
         $this->get('/posts', 'posts', 'can_update_campaign');
         $this->get('/user-roles', 'user_roles', 'can_manage_settings');
         $this->get('/users', 'users', 'can_create_subscriber');
+        $this->get('/products', 'products', 'can_update_campaign');
     }
 
     /**
@@ -53,7 +54,7 @@ class WP extends RestController {
         $registered_types = get_post_types( [ 'public' => true ], 'objects' );
 
         foreach ( $registered_types as $name => $object ) {
-            if ( $object->name === 'attachment' ) {
+            if ( $object->name === 'attachment' || $object->name === 'product' ) {
                 continue;
             }
 
@@ -101,13 +102,19 @@ class WP extends RestController {
 
                 $posts [] = [
                     'id' => $id,
-                    'image' => $image,
+                    'image' => get_the_post_thumbnail_url( $id ),
                     'title' => strip_tags( $query->post->post_title ),
                     'postType' => $query->post->post_type,
                     'postStatus' => $query->post->post_status,
                     'url' => get_permalink( $id ),
-                    'content' => strip_tags( $query->post->post_content ),
-                    'excerpt' => strip_tags( $query->post->post_excerpt )
+                    'content' =>  $query->post->post_content ,
+                    'excerpt' => strip_tags( $query->post->post_excerpt ),
+                    'meta' => [
+                        'tags' => $this->get_tags( get_the_tags( $id ) ),
+                        'postDate' => get_the_date( 'Y-m-d', $id ),
+                        'author' => get_the_author( $id ),
+                        'categories' => $this->get_categories( get_the_category( $id ) )
+                    ]
                 ];
             }
 
@@ -219,4 +226,66 @@ class WP extends RestController {
         }
     }
 
+    /** Get woo commerce products
+     * @param \WP_REST_Request $request
+     * @return mixed|\WP_REST_Response
+     */
+    public function products( $request ) {
+
+        if ( ! class_exists( 'WooCommerce' ) ) {
+            return rest_ensure_response([
+                'data' => (object) [],
+                'message' => __('Please install or active woocomerce plugin.')
+            ]);
+        }
+
+        $args = [
+            'limit' => 20,
+            's'     => $request->get_param('s')
+        ];
+
+        $products = [];
+
+        $query = wc_get_products( $args );
+
+        /** @var \WC_Product_Simple $product */
+        foreach ($query as $product) {
+
+            $id = $product->get_id();
+
+            $post_thumb_id = get_post_thumbnail_id( $id );
+            $image = wemail_get_image_url( $post_thumb_id );
+
+
+            array_push($products, [
+                'id'                => $product->get_id(),
+                'name'              => $product->get_name(),
+                'type'              => $product->get_type(),
+                'rating'            => $product->get_average_rating(),
+                'status'            => $product->get_status(),
+                'image'             => $image,
+                'description'       => $product->get_description(),
+                'short_description' => $product->get_short_description(),
+                'price'             => wc_price( $product->get_price() ),
+                'read_more'         => get_permalink( $id )
+            ]);
+        }
+
+        return rest_ensure_response( [
+            'data' => $products,
+            'message' => __('You don\'t have any products on your store.')
+        ]);
+    }
+
+    protected function get_tags( $tags ) {
+        return implode( ', ', array_map( function ($tag) {
+            return $tag->name;
+        }, $tags ) );
+    }
+
+    protected function get_categories( $categories ) {
+        return implode( ', ', array_map( function ($category) {
+            return $category->cat_name;
+        }, $categories ) );
+    }
 }
