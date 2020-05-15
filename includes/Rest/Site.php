@@ -11,6 +11,7 @@ class Site extends RestController {
     public function register_routes() {
         $this->post( '/settings', 'save_settings', 'can_manage_settings' );
         $this->post( '/settings/transactionalemails', 'save_transactional_emails_settings', 'manage_options' );
+        $this->post( '/settings/save-options', 'save_options', 'manage_options' );
     }
 
     /**
@@ -26,7 +27,7 @@ class Site extends RestController {
      * @return \WP_REST_Response|mixed
      */
     public function save_settings( $request ) {
-        $name     = $request->get_param( 'name' );
+        $name = $request->get_param( 'name' );
         $settings = $request->get_param( 'settings' );
 
         $response = wemail()->api->settings()->$name()->post( $settings );
@@ -42,17 +43,36 @@ class Site extends RestController {
         return rest_ensure_response( $response );
     }
 
-    public function save_transactional_emails_settings( $request )
-    {
-        $status = $request->get_param('status');
+    public function save_transactional_emails_settings( $request ) {
+        $status = $request->get_param( 'status' );
 
-        if ($status == 'true') {
+        if ( $status == 'true' ) {
             update_option( 'wemail_transactional_emails', true );
         } else {
             delete_option( 'wemail_transactional_emails' );
         }
 
-        return rest_ensure_response( [ 'success' => true ] );
+        return rest_ensure_response( ['success' => true] );
+    }
+
+    /**
+     * @param $request \WP_REST_Request
+     *
+     * @return mixed|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
+     */
+    public function save_options( $request ) {
+        $settings = $request->get_param( 'settings' );
+
+        foreach ( $settings as $key => $setting ) {
+            if ( rest_is_boolean( $setting ) ) {
+                update_option( "wemail_{$key}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+                continue;
+            }
+
+            update_option( "wemail_{$key}", $setting );
+        }
+
+        return rest_ensure_response( ['success' => true] );
     }
 
 }
