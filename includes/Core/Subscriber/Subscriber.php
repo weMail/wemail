@@ -58,6 +58,19 @@ class Subscriber {
     }
 
     /**
+     * Create update a subscriber
+     *
+     * @param $data
+     *
+     * @return array|null
+     */
+    public function createOrUpdate( $data ) {
+        $response = wemail()->api->subscribers()->put( $data );
+
+        return $this->data( $response );
+    }
+
+    /**
      * Update a subscriber
      *
      * @since 1.0.0

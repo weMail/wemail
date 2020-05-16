@@ -200,11 +200,9 @@ class Scripts {
      */
     public function enqueue_gutenberg_block_scripts() {
 
-        wemail_set_owner_api_key(false);
-
-        $forms = wemail()->form->all(array(
-            'type'      => 'modal,inline',
-            'is_active'    => 1
+        $forms = wemail()->form->get_forms(array(
+            'type'      => [ 'modal', 'inline' ],
+            'select'    => [ 'id', 'name' ]
         ));
 
         wp_enqueue_script('wemail-gutenberg-block', WEMAIL_ASSETS. '/js/main.js', array(
@@ -212,7 +210,7 @@ class Scripts {
         ));
 
         wp_localize_script('wemail-gutenberg-block', 'weMailData', array(
-            'forms'  => $forms instanceof \WP_Error ? [] : $forms['data'],
+            'forms'  => $forms ? $forms : [],
             'siteUrl' => get_site_url()
         ));
     }
