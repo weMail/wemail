@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 0.16.0
+Stable tag: 1.0.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -179,7 +179,7 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v0.16.0 - (04th June, 2020) =
+= v1.0.0 - (04th June, 2020) =
  * **Fixed:** Gutenberg form block issue fixed.
  * **Fixed:** Load forms and opt-in form settings from wp database
  * **Fixed:** Remove transactional rest endpoint
