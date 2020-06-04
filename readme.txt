@@ -4,18 +4,18 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 0.15.0
+Stable tag: 0.16.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-weMail helps you to send newsletter, collect leads, automated emails, auto add subscriber to a list and manage subscriber all inside WordPress dashboard. Tightly integrated with WordPress, Cloud powered email newsletter platform that lets you send emails via Amazon SES, SparkPost, Mailgun or your favorite SMTP provider. A perfect solution for small to large businesses with large email databases.
+weMail helps you to send the newsletter, collect leads, automated emails, auto adds subscribers to a list, and manage subscribers all inside the WordPress dashboard. Tightly integrated with WordPress, Cloud-powered email newsletter platform that lets you send emails via Amazon SES, SparkPost, Mailgun, or your favorite SMTP provider. A perfect solution for small to large businesses with large email databases.
 
 == Description ==
 
-weMail helps you to send newsletter, collect leads, automated emails, auto add subscribers to a list and manage subscribers all inside WordPress dashboard. Tightly integrated with WordPress, weMail with your preferred sending API, a perfect solution for small to large business with large email databases.
+weMail helps you to send the newsletter, collect leads, automated emails, auto adds subscribers to a list, and manage subscribers all inside the WordPress dashboard. Tightly integrated with WordPress, weMail with your preferred sending API, a perfect solution for small to large businesses with large email databases.
 
-Having large email subscriber list should not be expensive. That is why we built weMail. weMail is tightly integrated into WordPress to make email marketing inside WordPress dashboard simple and easy.
+Having a large email subscriber list should not be expensive. weMail is tightly integrated into WordPress to make email marketing inside WordPress dashboard simple and easy.
 
 [weMail](https://getwemail.io "weMail")  will keep your email subscription process easy and simple.
 
@@ -27,13 +27,12 @@ With weMail, you can focus more on growing subscriber list and email marketing w
 weMail features that will help your business -
 
 ## WordPress Integration:
-
 WordPress integration
- that will help you get email subscribers effortlessly and put them into a list to send an email later. Collecting email addresses from WooCommerce user product order email collection, new WordPress user registration, and commentators' emails to grow your email list.
+that will help you get email subscribers effortlessly and put them into a list to send an email later. Collecting email addresses from WooCommerce user-product order email collection, new WordPress user registration, and commentators' emails to grow your email list.
 
 - **[WooCommerce](https://getwemail.io/docs/wemail/settings/) :** With each WooCommerce store order, you can collect subscribers and put them into an email list.
 
-- **[User Registration](https://getwemail.io/docs/wemail/settings/) :** Collect subscribers each time anyone register to your website. You can also automate welcome email as well as doubt opt-in to spam check.
+- **[User Registration](https://getwemail.io/docs/wemail/settings/) :** Collect subscribers each time anyone registers to your website. You can also automate welcome email as well as doubt opt-in to spam check.
 
 - **[Comment Opt-in](https://getwemail.io/docs/wemail/settings/) :** Without redirecting visitors for sign up, you can also collect emails from blog comments.
 
@@ -41,9 +40,7 @@ WordPress integration
 
 - **[WordPress Transactional Email ](https://getwemail.io/docs/wemail/settings/general/):** You can send all the WordPress transactional email via weMail.
 
-
 - **[Team](https://getwemail.io/docs/wemail/teams/):** Manage your email campaigns with your marketing team. You can disable or enable access based on permission.
-
 
 ## Forms
 - **[Embed Forms](https://getwemail.io/docs/wemail/forms/embeded-forms/):** With HTML embed forms, you can place it anywhere. Widgets, posts or pages weMails embed form will work anywhere.
@@ -55,7 +52,7 @@ WordPress integration
 
 - **[Floating Bar](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-the-floating-bar-form-work):** Floating bar will float in your website header, when collecting email addresses is your top priority floating bar will help you greatly.
 
-- **[Slide Up](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-slide-up-form-work):** Prefer slide up subscription box instead of other methods. You can use weMail slide up form function to slide up a subscription box to collect new emails. You can even control when to show the slide up form depending upon page scroll percentage.
+- **[Slide Up](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-slide-up-form-work):** Prefer slide up subscription box instead of other methods. You can use a weMail slide up form function to slide up a subscription box to collect new emails. You can even control when to show the slide up form depending upon page scroll percentage.
 
 - **[Modal](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-modal-form-work):** If an email subscriber modal is your preferred way of collecting emails. You can use the Modal box to show the form when you like.
 
@@ -65,7 +62,6 @@ Double opt-in helps you prevent dead email contacts and verify them to clean the
 - **[Double Opt-in](https://getwemail.io/docs/wemail/subscriber-lists/double-opt-in/):** Cut down your subscribers' bounce rate by using double opt-in.
 
 - **[Double Opt-in Redirection](https://getwemail.io/docs/wemail/settings/double-opt-in/):** Redirect double opt-in emails to any other page your campaign requires. You can redirect to any pages, URL or absolutely no redirection at all.
-
 
 ## Analytics
 Analytics help you with campaign performance, to make a better-informed decision about your email marketing campaigns. weMail analytics will help
@@ -78,7 +74,6 @@ Analytics help you with campaign performance, to make a better-informed decision
 
 - **[Email Link Click](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks):** Links inside email content will automatically have statistics of how many times they were clicked without setting up third-party trackers. Tracking link clicks is easier than ever.
 
-
 ## Email List Features ##
 - **[List](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/):** Sorting and sending emails to the list of contacts is easier than before. Listings, segments, and tags all can be configured for from the get-go.
 
@@ -88,15 +83,12 @@ Analytics help you with campaign performance, to make a better-informed decision
 
 - **[Tags](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/#tags):** Tag contacts for better reference, email contacts make sense when you tag them by their actions.
 
-
 ## Import & Export ##
 - **[Import Contacts](https://getwemail.io/docs/wemail/imports/):** Import your custom templates, email list from other email marketing tools to weMail using our built-in import settings. Migration is easy, simple and solid.
 
 - **[Export Email to CSV](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-csv/):** Exporting your email contacts to CSV is just a single click away.
 
-
 ## Campaigns ##
-
 - **[Email Campaign](https://getwemail.io/docs/wemail/campaigns/):** Campaigns can be configured straight from the WordPress dashboard without leaving your website.
 
 - **[Standard Campaign](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-standard-campaign-work):** Send emails with standard campaign whenever you feel like to connect with your subscribers.
@@ -105,9 +97,7 @@ Analytics help you with campaign performance, to make a better-informed decision
 
 - **[Templates](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/):** There is a template for that! You can use our built-in beautiful templates for sending emails.
 
-
 ## Email List Management ##
-
 - **[Collect Leads](https://getwemail.io/docs/wemail/forms/embeded-forms/):** Place weMail's HTML embed form or Opt-in form anywhere on the website and collect leads and add them to email list without sweat
 
 - **[Automate email](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-automatic-campaign-work):** Welcome new subscribers with automated emails without manually doing it every time.
@@ -117,10 +107,9 @@ Analytics help you with campaign performance, to make a better-informed decision
 - **[Bounce Handling](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks):** Bounce handling feature will help you maintain email lists effortlessly without configure it for hard bounce and soft bounce.
 
 ## weMail is best for:
-
 1. Tightly integrated WordPress email marketing plugin
 1. Built-in native forms like (Slide Up, Inline, Modal, Floating Bar) to capture emails.
-1.  Handy subscriber management system with a generous subscriber limit.
+1.  Handy subscriber management system.
 1.  Manage everything inside WP Dashboard
 1.  Contact Form plugin integration
 
@@ -129,18 +118,12 @@ Analytics help you with campaign performance, to make a better-informed decision
 * Multisite compatible
 
 All weMail features are free in both free and premium version of the plugin -
-
 weMail development repository on [GitHub](https://github.com/weDevsOfficial/wemail/ "weMail GitHub")
 
 ## Privacy Policy
-weMail uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+weMail collects some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
 
-Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure great user experience for all our users.
-
-Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
-
-Learn more how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
-
+Learn more how [weMail collects and uses this data](https://getwemail.io/privacy-policy/).
 Additionally, read weDevs [privacy policy](https://wedevs.com/privacy-policy/) for more.
 
 
@@ -195,6 +178,11 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v0.15.0 - (04th May, 2020) =
+ * **Fixed:** Gutenberg form block issue fixed.
+ * **Fixed:** Load forms and opt-in form settings from wp database
+ * **Fixed:** Remove transactional rest endpoint
 
 = v0.15.0 - (04th May, 2020) =
  * **New:** Onboard new users.
