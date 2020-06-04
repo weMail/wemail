@@ -18,7 +18,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '0.0.1';
+    public $version = '1.0.0';
 
     /**
      * DB version
@@ -294,7 +294,9 @@ final class WeMail {
      */
     private function init_hooks() {
         register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
+        register_deactivation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Uninstall', 'uninstall' ] );
         add_action( 'init', [ $this, 'init' ], 0 );
+        add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
     }
 
     /**
@@ -350,6 +352,24 @@ final class WeMail {
             if ( class_exists( $menu_class ) ) {
                 new $menu_class();
             }
+        }
+    }
+
+    /**
+     * Do plugin upgrades
+     *
+     *
+     * @return void
+     */
+    public function plugin_upgrades() {
+        if ( ! is_admin() && ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+
+        $upgrade = new Upgrade();
+
+        if ( $upgrade->needs_update() ) {
+            $upgrade->perform_updates();
         }
     }
 

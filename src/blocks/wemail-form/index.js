@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { __ }  = wp.i18n;
-const { SelectControl, PanelBody } = wp.components;
+const { SelectControl, PanelBody, Spinner } = wp.components;
 const { RawHTML, Fragment } = wp.element;
 const { InspectorControls } = wp.editor;
 import { icon } from './icon'
@@ -18,9 +18,13 @@ registerBlockType('wemail/forms', {
         },
         shortcode: {
             type: 'string'
+        },
+        isLoading: {
+            type: 'boolean',
+            default: false
         }
     },
-    edit: function (props) {
+    edit(props) {
 
         function generateShortcode(formId) {
             return `[wemail_form id="${formId}"]`;
@@ -29,11 +33,16 @@ registerBlockType('wemail/forms', {
         function updateFormId(value) {
             props.setAttributes({
                 shortcode: generateShortcode(value),
-                formId: value
+                formId: value,
+                isLoading: true
             });
         }
 
-        function setHeight(event) {
+        function loadForm(event) {
+            props.setAttributes({
+                isLoading: false
+            });
+
             let iframe = event.target;
             iframe.removeAttribute('height');
 
@@ -42,9 +51,16 @@ registerBlockType('wemail/forms', {
 
         function previewForm(props) {
             return (
-                <div height="500px" class="wemail-block-form-preview">
-                    <div class="wemail-block-overlay"/>
-                    <iframe onLoad={setHeight} width="100%" src={`${window.origin}/wp-admin/admin-ajax.php?action=wemail_preview&form_id=${props.attributes.formId}`} frameBorder="0" scrolling="no"/>
+                <div height="500px" className="wemail-block-form-preview">
+                    <div className="wemail-block-overlay"/>
+                    <iframe className={props.attributes.isLoading ? 'hide' : ''} onLoad={loadForm} width="100%"
+                            src={`${window.weMailData.siteUrl}/wp-admin/admin-ajax.php?action=wemail_preview&form_id=${props.attributes.formId}`}
+                            frameBorder="0" scrolling="no"/>
+                    {
+                        props.attributes.isLoading ?
+                            <Spinner/>
+                            : null
+                    }
                 </div>
             );
         }
@@ -55,7 +71,7 @@ registerBlockType('wemail/forms', {
                     <div className="icon">
                         {icon({color: true})}
                     </div>
-                    <h4 className="title">{__('weMail Form')}</h4>
+                    <h2 className="title">{__('weMail Form')}</h2>
                     <SelectControl value={props.attributes.formId}
                                    onChange={updateFormId}
                                    label={__('Forms')}
@@ -67,7 +83,7 @@ registerBlockType('wemail/forms', {
         const options = [{
             label: __('Select your form'),
             value: '',
-            disabled: true
+            disabled: false
         }];
 
         weMailData.forms.forEach(form => {

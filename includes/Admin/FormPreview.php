@@ -35,7 +35,7 @@ class FormPreview {
     public function render_form_component() {
         global $wp_scripts;
         ?>
-        <html>
+        <html <?php language_attributes(); ?>>
             <head>
                 <title><?php _e('weMail Form Preview');?></title>
                 <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri() . '/style.css'?>">
@@ -52,7 +52,7 @@ class FormPreview {
                 <div>
                     <?php echo sprintf('<div id="preview-wemail-form"><wemail-form-preview id="%s"/></div>', $this->form_id);?>
                 </div>
-                <script src="<?php echo get_site_url() . '/'.$wp_scripts->registered['jquery-core']->src;?>"></script>
+                <script src="<?php echo get_site_url() . $wp_scripts->registered['jquery-core']->src;?>"></script>
                 <script src="<?php echo wemail()->wemail_cdn . '/js/frontend-vendor.js';?>"></script>
                 <script src="<?php echo wemail()->wemail_cdn . '/js/preview.js';?>"></script>
             </body>

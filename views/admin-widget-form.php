@@ -9,6 +9,7 @@
     <label>
         <?php _e( 'Select a Form', 'wemail' ); ?>:
         <select class="widefat" name="<?php echo $this->get_field_name( 'form' ); ?>">
+            <option value=""><?php _e('Select a form');?></option>
             <?php foreach ( $forms as $form ): ?>
                 <option
                     value="<?php echo $form['id']; ?>"
@@ -16,6 +17,6 @@
                 ><?php echo $form['name']; ?></option>
             <?php endforeach; ?>
         </select>
-        <p class="description"><i><?php _e('Only Modal and Inline types of shown here.', 'wemail');?></i></p>
+        <p class="description"><i><?php _e('Only modal and inline types are shown here.', 'wemail');?></i></p>
     </label>
 </p>

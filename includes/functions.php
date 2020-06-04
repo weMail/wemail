@@ -8,11 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Verifies that a value is boolean true or false
  *
- * @since 1.0.0
- *
- * @param mixed $value
+ * @param $var
  *
  * @return boolean
+ * @since 1.0.0
+ *
  */
 function wemail_validate_boolean( $var ) {
     return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
@@ -238,15 +238,14 @@ function wemail_get_image_url( $image_id, $size = 'full' ) {
  * @return null|string
  */
 function wemail_form( $id ) {
-    $form = wemail()->form->get( $id );
+    $form = ( is_array( $id ) ? $id : wemail()->form->get( $id ) );
 
     if ( ! $form || is_wp_error( $form ) ) {
         return null;
-    } elseif ($form['status'] != 1) {
-        return null;
     } else {
+        $id = $form['id'];
+
         unset( $form['entries'] );
-        unset( $form['created_at'] );
         unset( $form['deleted_at'] );
         unset( $form['settings']['actions'] );
 

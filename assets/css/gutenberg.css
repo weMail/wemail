@@ -1,17 +1,29 @@
 .wemail-block .title{
     text-align: center;
     display: inline-block;
-    margin: 0 0 0 10px;
+    margin: 0 0 13px 10px;
 }
 .wemail-block .icon{
     display: inline-block;
     width: 30px;
+}
+.wemail-block select {
+    display: block;
+}
+.wemail-block .hide {
+    opacity: 0;
 }
 
 .wemail-block .wemail-block-form-preview {
     position: relative;
 }
 
+.wemail-block .components-spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
 .wemail-block .wemail-block-overlay {
     position: absolute;
     width: 100%;
