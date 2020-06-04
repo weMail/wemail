@@ -179,7 +179,7 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v0.16.0 - (04th June, 2020) =
+= v1.0.0 - (04th June, 2020) =
  * **Fixed:** Gutenberg form block issue fixed.
  * **Fixed:** Load forms and opt-in form settings from wp database
  * **Fixed:** Remove transactional rest endpoint
