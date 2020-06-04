@@ -294,6 +294,7 @@ final class WeMail {
      */
     private function init_hooks() {
         register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
+        register_deactivation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Uninstall', 'uninstall' ] );
         add_action( 'init', [ $this, 'init' ], 0 );
         add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
     }
