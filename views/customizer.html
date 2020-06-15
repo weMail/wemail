@@ -98,8 +98,7 @@
                                         :global-css="template.globalCss"
                                         :customizer="customizerObj"
                                     ></component>
-
-                                    <div v-if="!isPreview" class="control-buttons">
+                                    <div v-if="!isPreview && section.name !== 'brand'" class="control-buttons">
                                         <p>
                                             <i class="fa fa-arrows move"></i>
                                             <i
