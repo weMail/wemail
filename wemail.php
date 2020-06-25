@@ -63,6 +63,21 @@ function wemail() {
 wemail();
 
 /**
+ * Initialize the plugin tracker
+ *
+ * @return void
+ */
+function appsero_init_tracker_wemail() {
+    if ( ! class_exists( 'Appsero\Client' ) ) {
+      require_once __DIR__ . '/appsero/src/Client.php';
+    }
+    $client = new Appsero\Client( '2452f1cc-57eb-4e54-b027-1b5a2957d066', 'weMail', __FILE__ );
+    // Active insights
+    $client->insights()->hide_notice()->init();
+}
+appsero_init_tracker_wemail();
+
+/**
  * Add custom links in activation tab of wemail
  */
 function wemail_plugin_action_links( $links ) {
