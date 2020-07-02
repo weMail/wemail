@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "682becac1a18e78933f0617748b90887",
+    "content-hash": "65694d1937009027a680021f8a34dc31",
     "packages": [
+        {
+            "name": "appsero/client",
+            "version": "v1.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Appsero/client.git",
+                "reference": "b313bf878a010a0892496ab3844ec3dddc5a07ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Appsero/client/zipball/b313bf878a010a0892496ab3844ec3dddc5a07ac",
+                "reference": "b313bf878a010a0892496ab3844ec3dddc5a07ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Appsero\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tareq Hasan",
+                    "email": "tareq@appsero.com"
+                }
+            ],
+            "description": "Appsero Client",
+            "keywords": [
+                "analytics",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2020-05-29T08:26:48+00:00"
+        },
         {
             "name": "danielstjules/stringy",
             "version": "dev-master",
@@ -190,5 +232,6 @@
     "platform": {
         "php": ">=5.4.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

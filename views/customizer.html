@@ -69,7 +69,7 @@
     </style>
 </head>
 <body style="margin: 0 !important; padding: 0 !important;">
-    <div class="hidden" id="wemail-customizer" v-cloak>
+    <div class="hidden" id="wemail-customizer" v-cloak :style="{ paddingTop: template.globalCss.paddingTop, paddingBottom: template.globalCss.paddingBottom, backgroundColor: template.globalCss.backgroundColor}">
         <table border="0" cellpadding="0" cellspacing="0" width="100%" :style="template.globalCss">
             <tr v-for="(section, sectionIndex) in template.sections" :key="section.name" :class="['section section-' + section.name]">
                 <td align="center" :style="section.style">
@@ -98,8 +98,7 @@
                                         :global-css="template.globalCss"
                                         :customizer="customizerObj"
                                     ></component>
-
-                                    <div v-if="!isPreview" class="control-buttons">
+                                    <div v-if="!isPreview && section.name !== 'brand'" class="control-buttons">
                                         <p>
                                             <i class="fa fa-arrows move"></i>
                                             <i

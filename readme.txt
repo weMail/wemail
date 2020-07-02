@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -178,6 +178,12 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v1.0.1 - (02nd July, 2020) =
+ * **New:** Onboard sites that have not already onboarded.
+ * **New:** Added billing menu & pricing plan
+ * **New:** Global padding support in customizer
+ * **New:** Added more email templates
 
 = v1.0.0 - (04th June, 2020) =
  * **Fixed:** Gutenberg form block issue fixed.
