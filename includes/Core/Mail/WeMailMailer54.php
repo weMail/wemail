@@ -3,7 +3,7 @@ namespace WeDevs\WeMail\Core\Mail;
 
 use PHPMailer;
 
-class WeMailMailer extends PHPMailer {
+class WeMailMailer54 extends PHPMailer {
     /**
      * @var $phpmailer PHPMailer
      */
