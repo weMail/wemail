@@ -60,7 +60,11 @@ class Shortcode {
      * @return void
      */
     public function print_tinymce_data() {
-        $forms = wemail()->form->items();
+        $forms = wemail()->form->get_forms( [
+            'type' => ['modal', 'inline'],
+            'select' => ['id', 'name']
+        ] );
+
         $icon = wemail()->wemail_cdn . '/images/logo/wemail-alt.svg';
         ?>
             <script type="text/javascript">
