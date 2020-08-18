@@ -100,6 +100,8 @@ class Scripts {
 
         $dateFormat = trim( $dateFormat );
         $timeFormat = trim( $timeFormat );
+        $current = wp_get_current_user();
+        $currentUser = $current && $current->data ? $current->data : null;
 
         $wemail = [
             'version'              => wemail()->version,
@@ -131,6 +133,10 @@ class Scripts {
                 'role'             => $user->role,
                 'permissions'      => $user->permissions,
             ],
+            'currentUser' =>  $currentUser ? [
+                'name' => $currentUser->display_name,
+                'email' => $currentUser->user_email
+            ] : null,
 
             // Vue related data
             'customizerIframe'      => WEMAIL_URL . '/views/customizer.html',
