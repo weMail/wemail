@@ -6,7 +6,7 @@
  * Plugin URI: https://wordpress.org/plugins/wemail/
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
- * Version: 1.0.5
+ * Version: 1.0.6
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
@@ -38,16 +38,16 @@
  */
 
 // don't call the file directly
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class_exists('WeDevs\WeMail\WeMail') || require_once __DIR__ . '/vendor/autoload.php';
+class_exists( 'WeDevs\WeMail\WeMail' ) || require_once __DIR__ . '/vendor/autoload.php';
 
 use WeDevs\WeMail\WeMail;
 
-define('WEMAIL_FILE', __FILE__);
-define('WEMAIL_PATH', dirname(WEMAIL_FILE));
+define( 'WEMAIL_FILE', __FILE__ );
+define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
 
 /**
  * Init the wemail plugin
@@ -56,8 +56,7 @@ define('WEMAIL_PATH', dirname(WEMAIL_FILE));
  *
  * @return WeDevs_WeMail
  */
-function wemail()
-{
+function wemail() {
     return WeMail::instance();
 }
 
@@ -69,22 +68,23 @@ wemail();
  *
  * @return void
  */
-function appsero_init_tracker_wemail()
-{
-    if (!class_exists('Appsero\Client')) {
+function appsero_init_tracker_wemail() {
+    if ( ! class_exists('Appsero\Client' ) ) {
         require_once __DIR__ . '/appsero/src/Client.php';
     }
-    $client = new Appsero\Client('2452f1cc-57eb-4e54-b027-1b5a2957d066', 'weMail', __FILE__);
+
+    $client = new Appsero\Client( '2452f1cc-57eb-4e54-b027-1b5a2957d066', 'weMail', __FILE__ );
+
     // Active insights
     $client->insights()->hide_notice()->init();
 }
+
 appsero_init_tracker_wemail();
 
 /**
  * Add custom links in activation tab of wemail
  */
-function wemail_plugin_action_links($links)
-{
+function wemail_plugin_action_links( $links ) {
     $links = array_merge(array(
         '<a href="https://getwemail.io/docs/wemail/get-started/?utm_source=orgplugin&utm_medium=dashboarddoc&utm_campaign=settinglink" target="_blank">' . __('Docs', 'wemail') . '</a>',
         '<a href="https://getwemail.io/contact?utm_source=orgplugin&utm_medium=dashboardcontact&utm_campaign=settinglink" target="_blank">' . __('Support', 'wemail') . '</a>',
