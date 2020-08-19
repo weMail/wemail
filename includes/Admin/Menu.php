@@ -17,7 +17,8 @@ class Menu {
      */
     public function __construct() {
         $disabled = get_user_meta( get_current_user_id(), 'wemail_disable_user_access' );
-        if (!$disabled) {
+
+        if ( ! $disabled ) {
             $this->add_action( 'admin_menu', 'register_admin_menu' );
             $this->add_action( 'admin_print_styles', 'add_menu_icon_style' );
         }
