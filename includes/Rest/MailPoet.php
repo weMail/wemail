@@ -60,6 +60,7 @@ class MailPoet {
 
         register_rest_route( $this->namespace, $this->rest_base . '/meta-fields', [
             'methods' => WP_REST_Server::READABLE,
+            'permission_callback' => [ $this, 'permission' ],
             'callback' => [ $this, 'meta_fields' ],
         ] );
     }
