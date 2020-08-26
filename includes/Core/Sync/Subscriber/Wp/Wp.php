@@ -70,12 +70,21 @@ class Wp {
          * and we have $user_ids. In that case, we'll check syncable users first.
          */
         if ( ! empty( $user_ids ) ) {
-            $user_ids = $this->filter_syncable_users( $user_ids );
+            $users = $this->filter_syncable_users( $user_ids );
 
-            if ( empty( $user_ids ) ) {
+            if ( empty( $users ) ) {
                 return;
             }
         }
+
+        $users = array_map( function($user) {
+            return array(
+                'full_name' => $user->data->display_name,
+                'email' => $user->data->user_email
+            );
+        }, $users );
+
+
 
         /**
          * Non-admin users can register or update their own profile.
@@ -84,7 +93,9 @@ class Wp {
          */
         wemail_set_owner_api_key( false );
 
-        wemail()->api->sync()->subscribers()->wp()->post();
+        wemail()->api->sync()->subscribers()->wp()->subscribe()->post([
+            'users' => $users
+        ]);
     }
 
     /**
@@ -99,17 +110,22 @@ class Wp {
             return;
         }
 
-        $user_ids = $this->filter_syncable_users( $user_ids );
+        $users = $this->filter_syncable_users( $user_ids );
 
-        if ( empty( $user_ids ) ) {
+        if ( empty( $users ) ) {
             return;
         }
 
         wemail_set_owner_api_key( false );
 
-        $user_ids = implode( ',', $user_ids );
+        $users = array_map(function($user) {
+            return [
+                'email' => $user->data->user_email,
+                'full_name' => $user->data->display_name
+            ];
+        }, $users);
 
-        wemail()->api->sync()->subscribers()->wp()->put( [ 'ids' => $user_ids ] );
+        wemail()->api->sync()->subscribers()->wp()->update()->post( [ 'users' => $users ] );
     }
 
     /**
@@ -120,12 +136,15 @@ class Wp {
      * @since 1.0.0
      *
      */
-    public function delete( $user_ids ) {
+    public function delete( $users ) {
         wemail_set_owner_api_key( false );
+        $emails = [];
 
-        $user_ids = implode( ',', $user_ids );
+        foreach ($users as $user) {
+            $emails[] = $user->data->user_email;
+        }
 
-        wemail()->api->sync()->subscribers()->wp()->delete( [ 'ids' => $user_ids ] );
+        wemail()->api->sync()->subscribers()->wp()->unsubscribe()->post( [ 'emails' => $emails ] );
     }
 
     /**
@@ -157,7 +176,7 @@ class Wp {
                 }
 
                 if ( $should_sync ) {
-                    $syncables[] = $user_id;
+                    $syncables[] = $user;
                 }
             }
         }

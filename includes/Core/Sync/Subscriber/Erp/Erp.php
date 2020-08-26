@@ -74,11 +74,12 @@ class Erp {
      *
      * @return void
      */
-    public function create() {
+    public function create($contacts = []) {
         if ( ! $this->is_active() ) {
             return;
         }
 
+        $contacts = $this->format_contacts($contacts);
         /**
          * Non-admin users can register or update their own profile.
          * In that case, we have to use the owner's key to import
@@ -86,7 +87,10 @@ class Erp {
          */
         wemail_set_owner_api_key( false );
 
-        wemail()->api->sync()->subscribers()->erp()->post();
+        wemail()->api->sync()->subscribers()->erp()->subscribed()->post([
+            'list_id' => $this->settings['default_list'],
+            'contacts' => $contacts
+        ]);
     }
 
     /**
@@ -96,18 +100,19 @@ class Erp {
      *
      * @return void
      */
-    public function update( $contact_ids ) {
+    public function update( $contacts ) {
         if ( ! $this->is_active() ) {
             return;
         }
 
+        $contacts = $this->format_contacts($contacts);
+
         wemail_set_owner_api_key( false );
 
-        $contact_ids = array_unique( $contact_ids );
-
-        $contact_ids = implode( ',', $contact_ids );
-
-        wemail()->api->sync()->subscribers()->erp()->put( [ 'ids' => $contact_ids ] );
+        wemail()->api->sync()->subscribers()->erp()->subscribed()->post([
+            'list_id' => $this->settings['default_list'],
+            'contacts' => $contacts
+        ]);
     }
 
     /**
@@ -118,50 +123,59 @@ class Erp {
      * @return void
      */
     public function delete( $contacts ) {
-        wemail_set_owner_api_key( false );
-
-        $hard = [];
-        $soft = [];
-
-        foreach ( $contacts as $contact ) {
-            if ( ! wemail_validate_boolean( $contact['hard'] ) ) {
-                $soft[] = $contact['email'];
-            } else {
-                $hard[] = $contact['email'];
-            }
-        }
-
-        $hard = implode( ',', $hard );
-        $soft = implode( ',', $soft );
-
-        if ( ! empty( $hard ) ) {
-            wemail()->api->sync()->subscribers()->erp()->delete( [ 'ids' => $hard, 'permanent' => true ] );
-        }
-
-        if ( ! empty( $soft ) ) {
-            wemail()->api->sync()->subscribers()->erp()->delete( [ 'ids' => $soft ] );
-        }
-    }
-
-    /**
-     * Restore subscribers
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function restore( $contacts ) {
         if ( ! $this->is_active() ) {
             return;
         }
 
         wemail_set_owner_api_key( false );
 
-        $contacts = array_unique( $contacts );
+        if ( empty( $contacts ) ) {
+            return;
+        }
 
-        $contacts = implode( ',', $contacts );
+        $emails = [];
 
-        wemail()->api->sync()->subscribers()->erp()->restore()->put( [ 'ids' => $contacts ] );
+        foreach ($contacts as $contact) {
+            $emails[] = $contact->email;
+        }
+
+        wemail()->api->sync()->subscribers()->erp()->unsubscribed()->post([
+            'list_id' => $this->settings['default_list'],
+            'emails' => $emails
+        ]);
     }
 
+    public function sync_group($contact_ids = [])
+    {
+        if ( ! $this->is_active() ) {
+            return;
+        }
+
+        if ( ! $this->settings['import_crm_groups'] ) {
+            return;
+        }
+
+        wemail_set_owner_api_key( false );
+
+        wemail()->api->sync()->subscribers()->erp()->sync_group()->post([
+            'list_id' => $this->settings['default_list'],
+            'contact_ids' => $contact_ids
+        ]);
+    }
+
+    /**
+     * Format contact
+     *
+     * @param  array  $contacts [description]
+     * @return [type]           [description]
+     */
+    protected function format_contacts( array $contacts )
+    {
+        return array_map(function($contact) {
+            return array_merge(wemail_array_only($contact, [
+                'first_name', 'last_name', 'email', 'phone', 'mobile',
+                'city', 'state', 'country', 'date_of_birth'
+            ]), ['source' => 'erp']);
+        }, $contacts);
+    }
 }

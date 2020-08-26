@@ -271,3 +271,21 @@ function is_erp_crm_active() {
 
     return false;
 }
+
+/**
+ * Array only helper
+ *
+ * @param  [type] $arr  [description]
+ * @param  array  $keys [description]
+ * @return [type]       [description]
+ */
+function wemail_array_only($arr, $keys = []) {
+    $new_arr = [];
+    foreach ( $keys as $key ) {
+        if ( array_key_exists( $key, $arr ) ) {
+            $new_arr[$key] = $arr[$key];
+        }
+    }
+
+    return $new_arr;
+}

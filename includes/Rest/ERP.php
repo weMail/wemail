@@ -26,6 +26,7 @@ class ERP extends RestController {
     public function register_routes() {
         $this->get('/crm/contact-groups', 'contact_groups', 'can_view_list');
         $this->get('/crm/contacts', 'contacts', 'can_view_subscriber');
+        $this->get('/crm/contacts/(?P<id>[\d]+)', 'contact', 'can_view_subscriber');
     }
 
     /**
@@ -140,6 +141,44 @@ class ERP extends RestController {
         return rest_ensure_response( [
             'data' => $contacts
         ] );
+    }
+
+
+    /**
+     * Get a single contact
+     *
+     * @param  \WP_REST_Request $request
+     *
+     * @return WP_Error|\WP_REST_Response
+     */
+    public function contact($request) {
+        $is_erp_crm_active = $this->is_erp_crm_active();
+
+        if ( $is_erp_crm_active instanceof WP_Error ) {
+            return $is_erp_crm_active;
+        }
+
+        $contact_id = $request->get_param( 'id' );
+
+        /** @var \WeDevs\ERP\Framework\Models\People $contact */
+        $contact = \WeDevs\ERP\Framework\Models\People::find( $contact_id );
+
+        if ( is_null( $contact ) ) {
+            return new \WP_REST_Response('Contact not found', self::HTTP_NOT_FOUND);
+        }
+        /** @var \WeDevs\ORM\Eloquent\Database $db */
+        $db = \WeDevs\ORM\Eloquent\Facades\DB::instance();
+        $prefix = $db->db->prefix;
+
+        $groups = $db->table('erp_crm_contact_subscriber')
+            ->selectRaw("contact_group.name, contact_group.description, {$prefix}erp_crm_contact_subscriber.*")
+            ->join("{$prefix}erp_crm_contact_group as contact_group", "{$prefix}erp_crm_contact_subscriber.group_id", '=', "contact_group.id")
+            ->where($prefix.'erp_crm_contact_subscriber.user_id', $contact->id)
+            ->get()->toArray();
+
+        $contact->groups = $groups;
+
+        return rest_ensure_response( $contact );
     }
 
     /**
