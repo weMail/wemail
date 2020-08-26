@@ -151,7 +151,7 @@ class ERP extends RestController {
      *
      * @return WP_Error|\WP_REST_Response
      */
-    public function contact($request) {
+    public function contact( $request ) {
         $is_erp_crm_active = $this->is_erp_crm_active();
 
         if ( $is_erp_crm_active instanceof WP_Error ) {

@@ -70,11 +70,13 @@ class Erp {
     /**
      * Create subscribers
      *
-     * @since 1.0.0
+     * @param array $contacts
      *
      * @return void
+     * @since 1.0.0
+     *
      */
-    public function create($contacts = []) {
+    public function create( $contacts = [] ) {
         if ( ! $this->is_active() ) {
             return;
         }
@@ -96,9 +98,11 @@ class Erp {
     /**
      * Update subscribers
      *
-     * @since 1.0.0
+     * @param $contacts
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function update( $contacts ) {
         if ( ! $this->is_active() ) {
@@ -118,9 +122,11 @@ class Erp {
     /**
      * Delete subscribers
      *
-     * @since 1.0.0
+     * @param $contacts
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function delete( $contacts ) {
         if ( ! $this->is_active() ) {
@@ -166,8 +172,9 @@ class Erp {
     /**
      * Format contact
      *
-     * @param  array  $contacts [description]
-     * @return [type]           [description]
+     * @param array $contacts [description]
+     *
+     * @return array|array[] [type]           [description]
      */
     protected function format_contacts( array $contacts )
     {

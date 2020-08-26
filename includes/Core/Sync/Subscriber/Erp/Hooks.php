@@ -70,11 +70,13 @@ class Hooks {
     /**
      * Add create method in shutdown hook
      *
-     * @since 1.0.0
-     *
-     * @param int $user_id
+     * @param $people_id
+     * @param $args
+     * @param $type
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function create_subscriber_on_shutdown( $people_id, $args, $type ) {
 
@@ -87,11 +89,13 @@ class Hooks {
     /**
      * Add update method in shutdown hook
      *
-     * @since 1.0.0
-     *
-     * @param int $user_id
+     * @param $people_id
+     * @param $args
+     * @param $type
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function update_subscriber_on_shutdown( $people_id, $args, $type ) {
         if ( $type === 'contact' ) {
@@ -103,11 +107,11 @@ class Hooks {
     /**
      * Add update method in shutdown hook when update the contact group
      *
-     * @since 1.0.0
-     *
-     * @param int $user_id
+     * @param $subscriber
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function update_subscriber_group_on_shutdown( $subscriber ) {
 
@@ -121,12 +125,12 @@ class Hooks {
     /**
      * erp_before_delete_people hook
      *
-     * @since 1.0.0
-     *
-     * @param int   $user_id
+     * @param $people_id
      * @param array $data
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function before_delete_subscriber( $people_id, $data ) {
         if ( ! empty( $data['type'] ) && $data['type'] === 'contact' ) {
@@ -145,12 +149,12 @@ class Hooks {
     /**
      * Add delete method in shutdown hook
      *
-     * @since 1.0.0
-     *
-     * @param int   $user_id
+     * @param $people_id
      * @param array $data
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     public function delete_subscriber_on_shutdown( $people_id, $data ) {
         if ( ( ! empty($data['type']) && $data['type'] != 'contact' ) || $data['hard'] != 1 ) {
@@ -207,9 +211,11 @@ class Hooks {
     /**
      * Add shutdown hook
      *
-     * @since 1.0.0
+     * @param $name
      *
      * @return void
+     * @since 1.0.0
+     *
      */
     private function add_shutdown_action( $name ) {
         if ( ! has_action( 'shutdown', [ $this, $name ] ) ) {
