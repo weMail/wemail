@@ -5,7 +5,7 @@ namespace WeDevs\WeMail\Core\Mail;
 trait MailerHelper
 {
     /**
-     * @var $phpmailer \PHPMailer|PHPMailer\PHPMailer\PHPMailer
+     * @var $phpmailer \PHPMailer|\PHPMailer\PHPMailer\PHPMailer
      */
     protected $phpmailer;
 
@@ -40,6 +40,10 @@ trait MailerHelper
     public function formatAttachments( $attachments ) {
         global $wpdb;
 
+        if ( empty( $attachments ) ) {
+            return [];
+        }
+
         $attachments = array_map( function ( $attachment ) {
             if ( is_array( $attachment ) ) {
                 $split = explode('/uploads/', $attachment[0]);
@@ -52,7 +56,7 @@ trait MailerHelper
 
         $attachments = array_filter( $attachments );
 
-        $files = $wpdb->get_results("SELECT * FROM {$wpdb->postmeta} WHERE `meta_key` = '_wp_attached_file' AND `meta_value` IN('".implode("', '", $attachments)."')");
+        $files = $wpdb->get_results("SELECT `post_id` FROM {$wpdb->postmeta} WHERE `meta_key` = '_wp_attached_file' AND `meta_value` IN('".implode("', '", $attachments)."')");
 
         return array_map( function ( $file ) {
             return wp_get_attachment_url( $file->post_id );
