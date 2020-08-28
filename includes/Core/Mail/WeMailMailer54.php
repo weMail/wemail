@@ -4,10 +4,8 @@ namespace WeDevs\WeMail\Core\Mail;
 use PHPMailer;
 
 class WeMailMailer54 extends PHPMailer {
-    /**
-     * @var $phpmailer PHPMailer
-     */
-    protected $phpmailer;
+
+    use MailerHelper;
 
     /**
      * Overwrite phpmailer send method
@@ -20,7 +18,7 @@ class WeMailMailer54 extends PHPMailer {
             'subject' => $this->phpmailer->Subject,
             'message' => $this->phpmailer->Body,
             'type' => $this->phpmailer->ContentType,
-            'attachments' => $this->phpmailer->getAttachments()
+            'attachments' => $this->formatAttachments( $this->phpmailer->getAttachments() )
         ) );
 
         if ( is_wp_error( $response ) ) {
@@ -32,26 +30,5 @@ class WeMailMailer54 extends PHPMailer {
         }
 
         return true;
-    }
-
-    /**
-     *  Format Email Addresses
-     *
-     * @param $address
-     * @return array
-     */
-    protected function formatEmailAddress( $address ) {
-        return array_map( function ( $address ) {
-            return $address[0];
-        }, $address );
-    }
-
-    /**
-     * Set Mailer
-     *
-     * @param $mailer
-     */
-    public function setPHPMailer( $mailer ) {
-        $this->phpmailer = $mailer;
     }
 }
