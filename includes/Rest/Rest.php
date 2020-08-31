@@ -3,16 +3,9 @@
 namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\Core\Form\Integrations\Rest as FormIntegrations;
-use WeDevs\WeMail\Rest\Countries;
-use WeDevs\WeMail\Rest\Pages;
-use WeDevs\WeMail\Rest\Csv;
-use WeDevs\WeMail\Rest\Customizer;
-use WeDevs\WeMail\Rest\ERP;
-use WeDevs\WeMail\Rest\Forms;
-use WeDevs\WeMail\Rest\MailPoet;
-use WeDevs\WeMail\Rest\States;
-use WeDevs\WeMail\Rest\Video;
-use WeDevs\WeMail\Rest\Users;
+use WeDevs\WeMail\Rest\Ecommerce\Products;
+use WeDevs\WeMail\Rest\Ecommerce\Orders;
+use WeDevs\WeMail\Rest\Ecommerce\Integrations;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Rest {
@@ -39,6 +32,10 @@ class Rest {
         new ERP();
         new Pages();
         new Users();
+        new Products();
+        new Orders();
+        new Orders();
+        new Integrations();
     }
 
 }
