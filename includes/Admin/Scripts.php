@@ -1,6 +1,7 @@
 <?php
 namespace WeDevs\WeMail\Admin;
 
+use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCIntegration;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Scripts {
@@ -103,6 +104,8 @@ class Scripts {
         $current = wp_get_current_user();
         $currentUser = $current && $current->data ? $current->data : null;
 
+        $wooCommerceIntegration = new WCIntegration();
+
         $wemail = [
             'version'              => wemail()->version,
             'siteURL'              => site_url( '/' ),
@@ -144,7 +147,10 @@ class Scripts {
             'hideAdminNoticesIn'    => [
                 'campaignEditDesign'
             ],
-            'activeIntegrations'    => $this->active_integrations()
+            'activeIntegrations'    => $this->active_integrations(),
+            'integrations'          => [
+                'woocommerce' => $wooCommerceIntegration->status()
+            ]
         ];
 
         wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
@@ -188,7 +194,7 @@ class Scripts {
     }
 
     /**
-     * Acvtive integration reference
+     * Active integration reference
      *
      * @since 1.0.0
      *

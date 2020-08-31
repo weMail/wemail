@@ -44,12 +44,14 @@ class Integrations extends RestController {
 
         if ($source == 'woocommerce') {
             return rest_ensure_response([
-                'integration' => $woocommerceIntegration->status()
+                'woocommerce' => $woocommerceIntegration->status()
             ]);
         }
 
         return rest_ensure_response([
-            'integrations' => $woocommerceIntegration->status()
+            'integrations' => [
+                'woocommerce' => $woocommerceIntegration->status()
+            ]
         ]);
     }
 
@@ -70,7 +72,7 @@ class Integrations extends RestController {
 
         if ($source == 'woocommerce') {
             return rest_ensure_response([
-                'integration' => $woocommerceIntegration->updateStatus($status)
+                'woocommerce' => $woocommerceIntegration->updateStatus($status)
             ]);
         }
 

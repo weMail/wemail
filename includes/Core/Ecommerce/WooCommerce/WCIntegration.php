@@ -16,16 +16,14 @@ class WCIntegration {
 
     public function status() {
         return [
-            'woocommerce' => [
-                'is_active' => $this->is_woocommerce_activated(),
-                'is_wemail_integrated' => $this->is_woocommerce_connected_to_wemail()
-            ]
+            'is_active' => $this->is_woocommerce_activated(),
+            'is_wemail_integrated' => $this->is_woocommerce_connected_to_wemail()
         ];
     }
 
     /**
      * @param $status
-     * @return \bool[][]
+     * @return bool[]
      */
     public function updateStatus($status) {
         $status = $status != 'false';
