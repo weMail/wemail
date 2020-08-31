@@ -16,14 +16,16 @@ class WCIntegration {
 
     public function status() {
         return [
-            'is_active' => $this->is_woocommerce_activated(),
-            'is_wemail_integrated' => $this->is_woocommerce_connected_to_wemail(),
+            'woocommerce' => [
+                'is_active' => $this->is_woocommerce_activated(),
+                'is_wemail_integrated' => $this->is_woocommerce_connected_to_wemail()
+            ]
         ];
     }
 
     /**
      * @param $status
-     * @return bool[]
+     * @return \bool[][]
      */
     public function updateStatus($status) {
         $status = $status != 'false';
@@ -41,7 +43,9 @@ class WCIntegration {
      * @return bool
      */
     protected function is_woocommerce_connected_to_wemail() {
-        return get_option( 'wemail_ecommerce_integrated' );
+        $integrated = get_option( 'wemail_ecommerce_integrated' );
+
+        return $integrated ? true : false;
     }
 
     /**

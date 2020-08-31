@@ -43,13 +43,13 @@ class Integrations extends RestController {
         $woocommerceIntegration = new WCIntegration();
 
         if ($source == 'woocommerce') {
-            return rest_ensure_response(
-                $woocommerceIntegration->status()
-            );
+            return rest_ensure_response([
+                'integration' => $woocommerceIntegration->status()
+            ]);
         }
 
         return rest_ensure_response([
-            'woocommerce' => $woocommerceIntegration->status()
+            'integrations' => $woocommerceIntegration->status()
         ]);
     }
 
@@ -69,9 +69,9 @@ class Integrations extends RestController {
         $woocommerceIntegration = new WCIntegration();
 
         if ($source == 'woocommerce') {
-            return rest_ensure_response(
-                $woocommerceIntegration->updateStatus($status)
-            );
+            return rest_ensure_response([
+                'integration' => $woocommerceIntegration->updateStatus($status)
+            ]);
         }
 
         return $this->respond_error( 'Unknown source', 'integration_status_update_error' );
