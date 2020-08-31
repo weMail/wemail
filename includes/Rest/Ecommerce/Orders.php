@@ -31,8 +31,7 @@ class Orders extends WP_REST_Controller {
     }
 
     public function permission() {
-//        return wemail()->user->can( 'view_wemail' );
-        return true;
+        return wemail()->user->can( 'view_wemail' );
     }
 
     public function orders() {
