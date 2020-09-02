@@ -35,7 +35,8 @@ class ContentTypes {
             'video'         => self::video(),
             'footer'        => self::footer(),
             'countdown'     => self::countdown(),
-            'wooProducts'   => self::woo_commerce_product()
+            'wooProducts'   => self::woo_commerce_product(),
+            'giphy'         => self::giphy()
         ];
 
         /**
@@ -542,6 +543,40 @@ class ContentTypes {
                     ]
                 ]
             ]
+        ];
+    }
+
+    /**
+     * Content Type: Giphy
+     *
+     * @return array
+     */
+    public static function giphy() {
+        return [
+            'type'      => 'giphy',
+            'title'     => __('Giphy', 'wemail'),
+            'image'     => self::$image_dir . '/giphy.png',
+            'default'   => [
+                'image' => (object) [],
+                'size'  => 'fixed_height_small',
+                'style' => [
+                    'borderStyle' => 'solid',
+                    'borderWidth' => '0px',
+                    'borderColor' => '#eee',
+                    'paddingTop' => '5px',
+                    'paddingBottom' => '5px',
+                    'paddingLeft' => '5px',
+                    'paddingRight' => '5px',
+                    'backgroundColor' => '#fff',
+                    'maxWidth' => '100%'
+                ],
+                'containerStyle' => [
+                    'textAlign'       => 'center',
+                    'backgroundColor' => '#ffffff',
+                    'marginBottom'    => '0px',
+                ]
+            ],
+            'noSettingsTab' => true
         ];
     }
 }
