@@ -158,7 +158,8 @@ class Editor {
             'footer',
             'wpPosts',
             'countdown',
-            'wooProducts'
+            'wooProducts',
+            'giphy'
         ];
 
         return wemail()->customizer->get( 'campaign', $content_types );
@@ -238,7 +239,7 @@ class Editor {
                     'display' => 'show',
                     'content_format' => 'excerpt',
                     'excerpt_length' => 55,
-                
+
                     'style' => [
                         'fontSize' => '14px',
                         'color' => '#556271',
