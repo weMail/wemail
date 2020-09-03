@@ -15,7 +15,15 @@ class Integrations extends RestController {
             [
                 'methods'             => WP_REST_Server::READABLE,
                 'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'status' ],
+                'callback'            => [ $this, 'index' ],
+            ]
+        ] );
+
+        register_rest_route( $this->namespace, $this->rest_base . '/(?P<integration>[\w]+)', [
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'permission_callback' => [ $this, 'permission' ],
+                'callback'            => [ $this, 'show' ],
             ]
         ] );
     }
@@ -25,25 +33,40 @@ class Integrations extends RestController {
     }
 
     /**
+     * Get all ecommerce integrations status
+     * @return \WP_Error|\WP_HTTP_Response|\WP_REST_Response
+     */
+    public function index() {
+        $woocommerceIntegration = new WCIntegration();
+
+        return rest_ensure_response([
+            'data' => [
+                $woocommerceIntegration->status()
+            ]
+        ]);
+    }
+
+    /**
      * @param $request
      * Get specific ecommerce integration data with params
      * @return \WP_Error|\WP_HTTP_Response|\WP_REST_Response
      */
-    public function status( $request ) {
-        $source = $request->get_param( 'source' );
+    public function show( $request ) {
+        $integration = $request->get_param( 'integration' );
 
         $woocommerceIntegration = new WCIntegration();
 
-        if ($source == 'woocommerce') {
+        // Add other integrations below this
+        if ($integration == 'woocommerce') {
             return rest_ensure_response([
-                'woocommerce' => $woocommerceIntegration->status()
+                'data' => $woocommerceIntegration->status()
+            ]);
+        } else {
+            return rest_ensure_response([
+                'data' => [],
+                'message' => __('Unknown source.'),
             ]);
         }
-
-        return rest_ensure_response([
-            'integrations' => [
-                'woocommerce' => $woocommerceIntegration->status()
-            ]
-        ]);
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Rest\Ecommerce;
 
+use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrders;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCProducts;
@@ -10,14 +11,10 @@ class Products extends WP_REST_Controller {
 
     public $namespace = 'wemail/v1';
 
-    public $rest_base = '/ecommerce/products';
-
-    private $model;
+    public $rest_base = '/ecommerce/(?P<source>[\w]+)/products';
 
     public function __construct() {
         $this->register_routes();
-
-        $this->model = new WCProducts();
     }
 
     public function register_routes() {
@@ -34,10 +31,45 @@ class Products extends WP_REST_Controller {
         return wemail()->user->can( 'view_wemail' );
     }
 
-    public function products() {
-        return rest_ensure_response(
-            $this->model->all()
+    /*
+       * Params                   | default
+       * -----------------------------------------
+       * page                     | 1
+       * limit                    | 50
+       * status                   | publish
+       * order                    | DESC
+       * orderby                  | date
+   */
+
+    public function products( $request ) {
+        $source = $request->get_param( 'source' );
+
+        // Pass specific integrations orders by mentioning source
+        if ($source === 'woocommerce') {
+            return rest_ensure_response(
+                $this->wcProducts( $request )
+            );
+        } else {
+            return rest_ensure_response([
+                'data' => [],
+                'message' => __('Unknown source.')
+            ]);
+        }
+    }
+
+    public function wcProducts( $request )
+    {
+        $wcProducts = new WCProducts();
+
+        $args = array(
+            'orderby'  => $request->get_param('orderby'),
+            'order'    => $request->get_param('order'),
+            'status'   => $request->get_param('status'),
+            'limit'    => $request->get_param('limit'),
+            'page'     => $request->get_param('page')
         );
+
+        return $wcProducts->all( $args );
     }
 
 }

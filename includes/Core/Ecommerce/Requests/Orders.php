@@ -13,7 +13,7 @@ class Orders {
      * @param $source
      */
     public function received( $payload, $source ) {
-        wemail()->api->ecommerce()->order()->received()->post([
+        wemail()->api->ecommerce()->orders()->post([
             'source'       => $source,
             'order_id'     => $payload['order']['id'],
             'status'       => $payload['order']['status'],
@@ -31,9 +31,10 @@ class Orders {
      * @param $source
      */
     public function statusUpdated( $payload, $source ) {
-        wemail()->api->ecommerce()->order_status()->updated()->post([
+        wemail()->api->ecommerce()->order_status()->put([
             'source'   => $source,
-            'order_id' => $payload['order_id']
+            'order_id' => $payload['order_id'],
+            'status'   => $payload['status']
         ]);
     }
 }
