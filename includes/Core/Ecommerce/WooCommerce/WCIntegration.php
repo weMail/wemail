@@ -22,22 +22,6 @@ class WCIntegration {
     }
 
     /**
-     * @param $status
-     * @return bool[]
-     */
-    public function updateStatus($status) {
-        $status = $status != 'false';
-
-        if (!get_option( 'wemail_ecommerce_source') || get_option( 'wemail_ecommerce_source') != $this->source){
-            update_option( 'wemail_ecommerce_source' , $this->source);
-        }
-
-        update_option( 'wemail_ecommerce_integrated' , $status);
-
-        return $this->status();
-    }
-
-    /**
      * @return bool
      */
     protected function is_woocommerce_connected_to_wemail() {
