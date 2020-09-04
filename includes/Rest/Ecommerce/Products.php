@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest\Ecommerce;
 
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrders;
+use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCProducts;
@@ -27,8 +28,14 @@ class Products extends WP_REST_Controller {
         ] );
     }
 
-    public function permission() {
-        return wemail()->user->can( 'view_wemail' );
+    /**
+     * @param $request
+     * @return bool
+     */
+    public function permission( $request ) {
+        $weMailMiddleware = new WeMailMiddleware('manage_settings');
+
+        return $weMailMiddleware->handle( $request );
     }
 
     /*

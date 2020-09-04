@@ -2,9 +2,11 @@
 
 namespace WeDevs\WeMail\Rest\Ecommerce;
 
+use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WeDevs\WeMail\RestController;
 use WP_REST_Server;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCIntegration;
+use WP_User_Query;
 
 class Integrations extends RestController {
 
@@ -28,8 +30,14 @@ class Integrations extends RestController {
         ] );
     }
 
-    public function permission() {
-        return wemail()->user->can( 'view_wemail' );
+    /**
+     * @param $request
+     * @return bool
+     */
+    public function permission( $request ) {
+       $weMailMiddleware = new WeMailMiddleware('manage_settings');
+
+       return $weMailMiddleware->handle($request);
     }
 
     /**
