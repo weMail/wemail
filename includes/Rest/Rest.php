@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\Core\Form\Integrations\Rest as FormIntegrations;
+use WeDevs\WeMail\Rest\Ecommerce\Customers;
 use WeDevs\WeMail\Rest\Ecommerce\Products;
 use WeDevs\WeMail\Rest\Ecommerce\Orders;
 use WeDevs\WeMail\Rest\Ecommerce\Integrations;
@@ -36,6 +37,7 @@ class Rest {
         new Orders();
         new Orders();
         new Integrations();
+        new Customers();
     }
 
 }

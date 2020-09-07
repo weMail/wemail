@@ -11,28 +11,28 @@ class WCOrders {
     /**
      * Get a collection of orders
      *
-     * @param $args
+     * @param $params
      * @return array|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
      * Details: https://www.businessbloomer.com/woocommerce-easily-get-product-info-title-sku-desc-product-object/
      * @since 1.0.0
      */
-    public function all( $args ) {
+    public function all( $params ) {
         $statuses = ['completed'];
 
-        $args = [
-            'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
-            'order'    => $args['order'] ? $args['order'] : 'DESC',
-            'status'   => $args['status'] ? $args['status'] : $statuses,
-            'limit'    => $args['limit'] ? $args['limit'] : 50,
+        $params = [
+            'orderby'  => $params['orderby'] ? $params['orderby'] : 'date',
+            'order'    => $params['order'] ? $params['order'] : 'DESC',
+            'status'   => $params['status'] ? $params['status'] : $statuses,
+            'limit'    => $params['limit'] ? $params['limit'] : 50,
             'paginate' => true,
-            'paged'    => $args['paged'] ? $args['paged'] : 1
+            'paged'    => $params['page'] ? $params['page'] : 1
         ];
 
-        $collection = wc_get_orders( $args );
+        $collection = wc_get_orders( $params );
 
         $wcProducts = new WCOrderProducts();
 
-        $orders['current_page'] = intval($args['paged']);
+        $orders['current_page'] = intval($params['paged']);
         $orders['total'] = $collection->total;
         $orders['total_page'] = $collection->max_num_pages;
 

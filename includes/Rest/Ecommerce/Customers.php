@@ -2,16 +2,17 @@
 
 namespace WeDevs\WeMail\Rest\Ecommerce;
 
+use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCCustomers;
 use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrders;
 
-class Orders extends WP_REST_Controller {
+class Customers extends WP_REST_Controller {
 
     public $namespace = 'wemail/v1';
 
-    public $rest_base = '/ecommerce/(?P<source>[\w]+)/orders';
+    public $rest_base = '/ecommerce/(?P<source>[\w]+)/customers';
 
     public function __construct() {
         $this->register_routes();
@@ -22,7 +23,7 @@ class Orders extends WP_REST_Controller {
             [
                 'methods'             => WP_REST_Server::READABLE,
                 'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'orders' ],
+                'callback'            => [ $this, 'customers' ],
             ]
         ] );
     }
@@ -40,20 +41,19 @@ class Orders extends WP_REST_Controller {
     /*
      * Params                   | default
      * -----------------------------------------
-     * page                     | 1
+     * last_synced_id           | null
      * limit                    | 50
-     * status (array or string) | ['completed']
-     * order                    | DESC
-     * orderby                  | date
+     * orderby                  | id
+     * page                     | 1
      */
 
-    public function orders( $request ) {
+    public function customers( $request ) {
         $source = $request->get_param( 'source' );
 
         // Pass specific integrations orders by mentioning source
         if ($source === 'woocommerce') {
             return rest_ensure_response(
-                $this->wcOrders( $request )
+                $this->wcCustomers( $request )
             );
         } else {
             return rest_ensure_response([
@@ -63,19 +63,18 @@ class Orders extends WP_REST_Controller {
         }
     }
 
-    public function wcOrders( $request )
+    public function wcCustomers( $request )
     {
-        $wcOrders = new WCOrders();
+        $wcCustomers = new WCCustomers();
 
         $args = array(
+            'last_synced_id' => $request->get_param('last_synced_id'),
             'orderby'        => $request->get_param('orderby'),
-            'order'          => $request->get_param('order'),
-            'status'         => $request->get_param('status'),
             'limit'          => $request->get_param('limit'),
             'page'           => $request->get_param('page')
         );
 
-        return $wcOrders->all( $args );
+        return $wcCustomers->all( $args );
     }
 
 }
