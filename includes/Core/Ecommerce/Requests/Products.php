@@ -26,16 +26,4 @@ class Products {
             'categories'  => $payload['categories']
         ]);
     }
-
-    /**
-     * @param $payload
-     * @param $source
-     */
-    public function destroy( $payload, $source ) {
-        wemail()->api->ecommerce()->products()->destroy([
-            'source'       => $source,
-            'product_id'   => $payload['product_id'],
-            'product_slug' => $payload['product_slug']
-        ]);
-    }
 }

@@ -22,7 +22,6 @@ class Hooks {
      */
     public function __construct() {
         $this->add_action( 'save_post', 'wemail_wc_product_updated', 10,3 );
-        $this->add_action( 'before_delete_post', 'wemail_wc_product_deleting', 10,2 );
 
         $this->productRequest = new Products();
     }
@@ -60,23 +59,6 @@ class Hooks {
             'rating'      => $product->get_average_rating(),
             'permalink'   => get_permalink($product->get_id()),
             'categories'  => $wcProducts->get_product_categories($product->get_id())
-        ], $this->source);
-    }
-
-
-    /**
-     * @param $post_id
-     */
-    public function wemail_wc_product_deleting( $post_id ) {
-        $product = wc_get_product( $post_id );
-
-        if ( !$product ) {
-            return;
-        }
-
-        $this->productRequest->destroy([
-            'product_id' => $product->get_id(),
-            'product_slug' => $product->get_slug()
         ], $this->source);
     }
 }
