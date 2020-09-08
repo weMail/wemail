@@ -59,11 +59,8 @@ class WCCustomers {
             $args['exclude'] = range( 1, $params['last_synced_id']);
         }
 
-// Create the WP_User_Query object
         $wp_user_query = new WP_User_Query($args);
-//        dd($wp_user_query);
 
-// Get the results
         $customers = $wp_user_query->get_results();
 
         $response['current_page'] = intval($args['page']);
@@ -77,8 +74,7 @@ class WCCustomers {
             $customer = new \WC_Customer($item->ID);
 
             $response['data'][] = [
-                'id'                 => $item->ID,
-                'customer_id'        => $customer->get_id(),
+                'wp_user_id'         => $customer->get_id(),
                 'email'              => $customer->get_email(),
                 'first_name'         => $customer->get_first_name(),
                 'last_name'          => $customer->get_last_name(),

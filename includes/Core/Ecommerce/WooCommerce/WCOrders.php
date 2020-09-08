@@ -42,9 +42,10 @@ class WCOrders {
 
             $orders['data'][] = [
                 'id'                   => $order->get_id(),
-                'user'                 => [
-                    'name' => $user ? $user->display_name : '',
-                    'email' => $user ? $user->user_email : '',
+                'customer'                 => [
+                    'first_name' => $user ? $user->first_name : '',
+                    'last_name'  => $user ? $user->last_name : '',
+                    'email'      => $user ? $user->user_email : '',
                 ],
                 'status'               => $order->get_status(),
                 'currency'             => $order->get_currency(),
