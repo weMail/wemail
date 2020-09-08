@@ -42,13 +42,14 @@ class WCOrders {
 
             $orders['data'][] = [
                 'id'                   => $order->get_id(),
-                'customer'                 => [
+                'customer'             => [
                     'first_name' => $user ? $user->first_name : '',
                     'last_name'  => $user ? $user->last_name : '',
                     'email'      => $user ? $user->user_email : '',
                 ],
                 'status'               => $order->get_status(),
                 'currency'             => $order->get_currency(),
+                'total'                => $order->get_total(),
                 'payment_method_title' => $order->get_payment_method_title(),
                 'date_created'         => $order->get_date_created(),
                 'permalink'            => get_permalink($order->get_id()),
