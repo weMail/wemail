@@ -51,10 +51,6 @@ class Hooks {
 
         $is_new = $post->post_date === $post->post_modified;
 
-        error_log('post date' . $post->post_date);
-        error_log('post modified' . $post->post_modified);
-
-
         if ( $is_new ) {
             $this->productRequest->store([
                 'name'        => $product->get_name(),
