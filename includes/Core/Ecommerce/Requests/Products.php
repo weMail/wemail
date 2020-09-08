@@ -16,7 +16,7 @@ class Products {
         wemail()->api->ecommerce()->products()->post([
             'source'      => $source,
             'name'        => $payload['name'],
-            'slug'        => $payload['get_slug'],
+            'slug'        => $payload['slug'],
             'images'      => $payload['images'],
             'status'      => $payload['status'],
             'price'       => $payload['price'],
