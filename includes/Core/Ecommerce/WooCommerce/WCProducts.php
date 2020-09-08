@@ -35,6 +35,8 @@ class WCProducts {
         $products['total_page'] = $collection->max_num_pages;
 
         foreach ($collection->products as $product) {
+            $categories = $this->get_product_categories( $product->get_id() );
+
             $products['data'][] = [
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
@@ -43,7 +45,8 @@ class WCProducts {
                 'price'       => $product->get_price(),
                 'total_sales' => $product->get_total_sales(),
                 'rating'      => $product->get_average_rating(),
-                'permalink'   => get_permalink($product->get_id())
+                'permalink'   => get_permalink($product->get_id()),
+                'categories'  => $categories
             ];
         }
 
@@ -93,6 +96,26 @@ class WCProducts {
         }
 
         return $images;
+    }
+
+    /**
+     * ORDER PRODUCT CATEGORIES
+     * @param $productId
+     * @return array
+     */
+    public function get_product_categories( $productId ) {
+        $product_cats_ids = wc_get_product_term_ids( $productId, 'product_cat' );
+        $categories = [];
+        foreach( $product_cats_ids as $cat_id ) {
+            $term = get_term_by( 'id', $cat_id, 'product_cat' );
+
+            $categories[] = [
+                'id' => $cat_id,
+                'name' => $term->name,
+            ];;
+        }
+
+        return $categories;
     }
 
 }

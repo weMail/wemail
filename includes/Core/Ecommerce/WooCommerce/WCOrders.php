@@ -37,9 +37,15 @@ class WCOrders {
         $orders['total_page'] = $collection->max_num_pages;
 
         foreach ($collection->orders as $order) {
+            $order = new \WC_Order( $order->get_id() );
+            $user = $order->get_user();
+
             $orders['data'][] = [
                 'id'                   => $order->get_id(),
-                'user_id'              => $order->get_user_id(),
+                'user'                 => [
+                    'name' => $user ? $user->display_name : '',
+                    'email' => $user ? $user->user_email : '',
+                ],
                 'status'               => $order->get_status(),
                 'currency'             => $order->get_currency(),
                 'payment_method_title' => $order->get_payment_method_title(),

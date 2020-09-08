@@ -4,7 +4,6 @@ namespace WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Orders;
 
 use WeDevs\WeMail\Core\Ecommerce\Requests\Orders;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrderProducts;
-use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCProducts;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Hooks {
