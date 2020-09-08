@@ -43,22 +43,42 @@ class Hooks {
 
         $product = wc_get_product($post);
 
+        $wcProducts = new WCProducts();
+
         if (!$product) {
             return;
         }
 
-        $wcProducts = new WCProducts();
+        $is_new = $post->post_date === $post->post_modified;
 
-        $this->productRequest->store([
-            'name'        => $product->get_name(),
-            'slug'        => $product->get_slug(),
-            'images'      => $wcProducts->get_product_images($product),
-            'status'      => $product->get_status(),
-            'price'       => $product->get_price(),
-            'total_sales' => $product->get_total_sales(),
-            'rating'      => $product->get_average_rating(),
-            'permalink'   => get_permalink($product->get_id()),
-            'categories'  => $wcProducts->get_product_categories($product->get_id())
-        ], $this->source);
+        error_log('post date' . $post->post_date);
+        error_log('post modified' . $post->post_modified);
+
+
+        if ( $is_new ) {
+            $this->productRequest->store([
+                'name'        => $product->get_name(),
+                'slug'        => $product->get_slug(),
+                'images'      => $wcProducts->get_product_images($product),
+                'status'      => $product->get_status(),
+                'price'       => $product->get_price(),
+                'total_sales' => $product->get_total_sales(),
+                'rating'      => $product->get_average_rating(),
+                'permalink'   => get_permalink($product->get_id()),
+                'categories'  => $wcProducts->get_product_categories($product->get_id())
+            ], $this->source);
+        } else {
+            $this->productRequest->update([
+                'name'        => $product->get_name(),
+                'slug'        => $product->get_slug(),
+                'images'      => $wcProducts->get_product_images($product),
+                'status'      => $product->get_status(),
+                'price'       => $product->get_price(),
+                'total_sales' => $product->get_total_sales(),
+                'rating'      => $product->get_average_rating(),
+                'permalink'   => get_permalink($product->get_id()),
+                'categories'  => $wcProducts->get_product_categories($product->get_id())
+            ], $this->source);
+        }
     }
 }
