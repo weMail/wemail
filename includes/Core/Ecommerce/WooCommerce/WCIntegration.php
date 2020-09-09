@@ -16,8 +16,8 @@ class WCIntegration {
 
     public function status() {
         return [
-            'type' => $this->source,
-            'is_active' => $this->is_woocommerce_activated(),
+            'type'                 => $this->source,
+            'is_active'            => $this->is_woocommerce_activated(),
             'is_wemail_integrated' => $this->is_woocommerce_connected_to_wemail()
         ];
     }

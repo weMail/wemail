@@ -71,7 +71,7 @@ class Integrations extends RestController {
             ]);
         } else {
             return rest_ensure_response([
-                'data' => [],
+                'data'    => [],
                 'message' => __('Unknown source.'),
             ]);
         }

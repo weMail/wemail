@@ -41,6 +41,7 @@ class WCOrders {
             $user = $order->get_user();
 
             $orders['data'][] = [
+                'source'               => 'woocommerce',
                 'id'                   => $order->get_id(),
                 'customer'             => [
                     'first_name' => $user ? $user->first_name : '',
@@ -51,7 +52,7 @@ class WCOrders {
                 'currency'             => $order->get_currency(),
                 'total'                => $order->get_total(),
                 'payment_method_title' => $order->get_payment_method_title(),
-                'date_created'         => $order->get_date_created(),
+                'date_created'         => $order->get_date_created()->format ('Y-m-d H:m:s'),
                 'permalink'            => get_permalink($order->get_id()),
                 'products'             => $wcProducts->get_ordered_products($order)
             ];

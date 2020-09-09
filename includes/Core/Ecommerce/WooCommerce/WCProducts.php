@@ -38,6 +38,8 @@ class WCProducts {
             $categories = $this->get_product_categories( $product->get_id() );
 
             $products['data'][] = [
+
+                'source'      => 'woocommerce',
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
                 'images'      => $this->get_product_images($product),
