@@ -10,22 +10,23 @@ class WCOrders {
     /**
      * Get a collection of orders
      *
-     * @param $params
+     * @param $args
      * @return array|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
      * Details: https://www.businessbloomer.com/woocommerce-easily-get-product-info-title-sku-desc-product-object/
      * @since 1.0.0
      */
-    public function all( $params ) {
-        $statuses = ['completed'];
-
+    public function all( $args ) {
         $params = [
-            'orderby'  => $params['orderby'] ? $params['orderby'] : 'date',
-            'order'    => $params['order'] ? $params['order'] : 'DESC',
-            'status'   => $params['status'] ? $params['status'] : $statuses,
-            'limit'    => $params['limit'] ? $params['limit'] : 50,
+            'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
+            'order'    => $args['order'] ? $args['order'] : 'DESC',
+            'limit'    => $args['limit'] ? $args['limit'] : 50,
             'paginate' => true,
-            'paged'    => $params['page'] ? $params['page'] : 1
+            'paged'    => $args['page'] ? $args['page'] : 1
         ];
+
+        if ($args['status']) {
+            $params['status'] = $args['status'];
+        }
 
         $collection = wc_get_orders( $params );
 
@@ -38,15 +39,6 @@ class WCOrders {
         foreach ($collection->orders as $order) {
             $order = new \WC_Order( $order->get_id() );
             $date_completed = $order->get_date_completed();
-
-            if ($order->get_parent_id()) {
-                $parentOrder = new \WC_Order( $order->get_parent_id() );
-                if ($parentOrder->get_status() == 'refunded') {
-                    continue;
-                }
-
-                $date_completed = $parentOrder->get_date_completed();
-            }
 
             $orders['data'][] = [
                 'source'               => 'woocommerce',
@@ -80,33 +72,36 @@ class WCOrders {
 
     private function getCustomerInfo( $order ) {
         $user = $order->get_user();
+
         if ($user) {
-            return [
+            $customer = [
+                'wp_user_id' => $user ? $user->id : '',
                 'first_name' => $user ? $user->first_name : '',
                 'last_name'  => $user ? $user->last_name : '',
-                'email'      => $user ? $user->user_email : '',
-            ];
-        } else if ($order->get_billing_email()){
-            return [
-                'first_name' => $order->get_billing_first_name(),
-                'last_name'  => $order->get_billing_last_name(),
-                'email'      => $order->get_billing_email(),
+                'email'      => $user ? ($user->user_email ? $user->user_email : $order->get_billing_email()) : ''
             ];
         } else if (intval($order->get_parent_id()) != 0) {
             $order = new \WC_Order( $order->get_parent_id() );
 
-            return [
+            return $this->getCustomerInfo($order);
+        } else {
+            $customer = [
+                'wp_user_id' => '',
                 'first_name' => $order->get_billing_first_name(),
                 'last_name'  => $order->get_billing_last_name(),
-                'email'      => $order->get_billing_email(),
+                'email'      => $order->get_billing_email()
             ];
         }
 
-        return [
-            'first_name' => '',
-            'last_name' => '',
-            'email' => '',
-        ];
+        $customer['phone']  = $order->get_billing_phone();
+        $customer['address_1']  = $order->get_billing_address_1();
+        $customer['address_2']  = $order->get_billing_address_2();
+        $customer['city']  = $order->get_billing_city();
+        $customer['state']  = $order->get_billing_state();
+        $customer['postcode']  = $order->get_billing_postcode();
+        $customer['country']  = $order->get_billing_country();
+
+        return $customer;
     }
 
 }
