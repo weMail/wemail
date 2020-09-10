@@ -7,7 +7,6 @@ use WeDevs\WeMail\Traits\Singleton;
 class WCOrders {
 
     use Singleton;
-
     /**
      * Get a collection of orders
      *
@@ -38,21 +37,28 @@ class WCOrders {
 
         foreach ($collection->orders as $order) {
             $order = new \WC_Order( $order->get_id() );
-            $user = $order->get_user();
+            $date_completed = $order->get_date_completed();
+
+            if ($order->get_parent_id()) {
+                $parentOrder = new \WC_Order( $order->get_parent_id() );
+                if ($parentOrder->get_status() == 'refunded') {
+                    continue;
+                }
+
+                $date_completed = $parentOrder->get_date_completed();
+            }
 
             $orders['data'][] = [
                 'source'               => 'woocommerce',
                 'id'                   => $order->get_id(),
-                'customer'             => [
-                    'first_name' => $user ? $user->first_name : '',
-                    'last_name'  => $user ? $user->last_name : '',
-                    'email'      => $user ? $user->user_email : '',
-                ],
+                'parent_id'            => $order->get_parent_id(),
+                'customer'             => $this->getCustomerInfo($order),
                 'status'               => $order->get_status(),
                 'currency'             => $order->get_currency(),
                 'total'                => $order->get_total(),
                 'payment_method_title' => $order->get_payment_method_title(),
                 'date_created'         => $order->get_date_created()->format ('Y-m-d H:m:s'),
+                'date_completed'       => $date_completed ? $date_completed->format ('Y-m-d H:m:s') : '',
                 'permalink'            => get_permalink($order->get_id()),
                 'products'             => $wcProducts->get_ordered_products($order)
             ];
@@ -70,6 +76,37 @@ class WCOrders {
      */
     public function get( $id ) {
         return wc_get_product ($id);
+    }
+
+    private function getCustomerInfo( $order ) {
+        $user = $order->get_user();
+        if ($user) {
+            return [
+                'first_name' => $user ? $user->first_name : '',
+                'last_name'  => $user ? $user->last_name : '',
+                'email'      => $user ? $user->user_email : '',
+            ];
+        } else if ($order->get_billing_email()){
+            return [
+                'first_name' => $order->get_billing_first_name(),
+                'last_name'  => $order->get_billing_last_name(),
+                'email'      => $order->get_billing_email(),
+            ];
+        } else if (intval($order->get_parent_id()) != 0) {
+            $order = new \WC_Order( $order->get_parent_id() );
+
+            return [
+                'first_name' => $order->get_billing_first_name(),
+                'last_name'  => $order->get_billing_last_name(),
+                'email'      => $order->get_billing_email(),
+            ];
+        }
+
+        return [
+            'first_name' => '',
+            'last_name' => '',
+            'email' => '',
+        ];
     }
 
 }
