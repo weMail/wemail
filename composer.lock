@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65694d1937009027a680021f8a34dc31",
+    "content-hash": "12304480946a636b7b6543344ff82b9f",
     "packages": [
         {
             "name": "appsero/client",
@@ -219,6 +219,48 @@
                 "shim"
             ],
             "time": "2018-09-21T13:07:52+00:00"
+        },
+        {
+            "name": "wemail/wpinfo",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emtiazzahid/wpinfo.git",
+                "reference": "84e388cc7d37324610db89cc16b8e8254e816574"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emtiazzahid/wpinfo/zipball/84e388cc7d37324610db89cc16b8e8254e816574",
+                "reference": "84e388cc7d37324610db89cc16b8e8254e816574",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WeMail\\WPInfo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Md. Emtiaz Zahid",
+                    "email": "emtiazzahid@gmail.com"
+                }
+            ],
+            "description": "Wordpress System Info",
+            "keywords": [
+                "analytics",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2020-09-09T14:50:25+00:00"
         }
     ],
     "packages-dev": [],
