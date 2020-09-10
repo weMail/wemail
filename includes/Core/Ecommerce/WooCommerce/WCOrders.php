@@ -38,16 +38,12 @@ class WCOrders {
 
         foreach ($collection->orders as $order) {
             $order = new \WC_Order( $order->get_id() );
-            $user = $order->get_user();
 
             $orders['data'][] = [
                 'source'               => 'woocommerce',
                 'id'                   => $order->get_id(),
-                'customer'             => [
-                    'first_name' => $user ? $user->first_name : '',
-                    'last_name'  => $user ? $user->last_name : '',
-                    'email'      => $user ? $user->user_email : '',
-                ],
+                'parent_id'            => $order->get_parent_id(),
+                'customer'             => $this->getCustomerInfo($order),
                 'status'               => $order->get_status(),
                 'currency'             => $order->get_currency(),
                 'total'                => $order->get_total(),
@@ -70,6 +66,36 @@ class WCOrders {
      */
     public function get( $id ) {
         return wc_get_product ($id);
+    }
+
+    private function getCustomerInfo( $order ) {
+        $user = $order->get_user();
+        if ($user) {
+            return [
+                'first_name' => $user ? $user->first_name : '',
+                'last_name'  => $user ? $user->last_name : '',
+                'email'      => $user ? $user->user_email : '',
+            ];
+        } else if ($order->get_billing_email()){
+            return [
+                'first_name' => $order->get_billing_first_name(),
+                'last_name'  => $order->get_billing_last_name(),
+                'email'      => $order->get_billing_email(),
+            ];
+        } else if (intval($order->get_parent_id()) != 0) {
+            $order = new \WC_Order( $order->get_parent_id() );
+            return [
+                'first_name' => $order->get_billing_first_name(),
+                'last_name'  => $order->get_billing_last_name(),
+                'email'      => $order->get_billing_email(),
+            ];
+        }
+
+        return [
+            'first_name' => '',
+            'last_name' => '',
+            'email' => '',
+        ];
     }
 
 }
