@@ -7,7 +7,6 @@ use WeDevs\WeMail\Traits\Singleton;
 class WCOrders {
 
     use Singleton;
-
     /**
      * Get a collection of orders
      *
@@ -38,12 +37,15 @@ class WCOrders {
 
         foreach ($collection->orders as $order) {
             $order = new \WC_Order( $order->get_id() );
+            $date_completed = $order->get_date_completed();
 
             if ($order->get_parent_id()) {
                 $parentOrder = new \WC_Order( $order->get_parent_id() );
                 if ($parentOrder->get_status() == 'refunded') {
                     continue;
                 }
+
+                $date_completed = $parentOrder->get_date_completed();
             }
 
             $orders['data'][] = [
@@ -56,6 +58,7 @@ class WCOrders {
                 'total'                => $order->get_total(),
                 'payment_method_title' => $order->get_payment_method_title(),
                 'date_created'         => $order->get_date_created()->format ('Y-m-d H:m:s'),
+                'date_completed'       => $date_completed ? $date_completed->format ('Y-m-d H:m:s') : '',
                 'permalink'            => get_permalink($order->get_id()),
                 'products'             => $wcProducts->get_ordered_products($order)
             ];
