@@ -7,6 +7,7 @@ use WeDevs\WeMail\Rest\Ecommerce\Customers;
 use WeDevs\WeMail\Rest\Ecommerce\Products;
 use WeDevs\WeMail\Rest\Ecommerce\Orders;
 use WeDevs\WeMail\Rest\Ecommerce\Integrations;
+use WeDevs\WeMail\Rest\Help\Help;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Rest {
@@ -38,6 +39,7 @@ class Rest {
         new Orders();
         new Integrations();
         new Customers();
+        new Help();
     }
 
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbbb8da5abdd66b9000a95b9a3f048ec",
+    "content-hash": "930bf376692dea55f19fcf3fdcf36eff",
     "packages": [
         {
             "name": "appsero/client",
@@ -237,6 +237,48 @@
                 }
             ],
             "time": "2020-07-14T12:35:20+00:00"
+        },
+        {
+            "name": "wemail/wpinfo",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emtiazzahid/wpinfo.git",
+                "reference": "84e388cc7d37324610db89cc16b8e8254e816574"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emtiazzahid/wpinfo/zipball/84e388cc7d37324610db89cc16b8e8254e816574",
+                "reference": "84e388cc7d37324610db89cc16b8e8254e816574",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WeMail\\WPInfo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Md. Emtiaz Zahid",
+                    "email": "emtiazzahid@gmail.com"
+                }
+            ],
+            "description": "Wordpress System Info",
+            "keywords": [
+                "analytics",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "time": "2020-09-09T14:50:25+00:00"
         }
     ],
     "packages-dev": [
@@ -745,16 +787,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.1",
+            "version": "5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44"
+                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d870572532cd70bc3fab58f2e23ad423c8404c44",
-                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/069a785b2141f5bcf49f3e353548dc1cce6df556",
+                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556",
                 "shasum": ""
             },
             "require": {
@@ -793,20 +835,20 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-08-15T11:14:08+00:00"
+            "time": "2020-09-03T19:13:55+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "e878a14a65245fbe78f8080eba03b47c3b705651"
+                "reference": "6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/e878a14a65245fbe78f8080eba03b47c3b705651",
-                "reference": "e878a14a65245fbe78f8080eba03b47c3b705651",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0",
+                "reference": "6a467b8989322d92aa1c8bf2bebcc6e5c2ba55c0",
                 "shasum": ""
             },
             "require": {
@@ -838,7 +880,7 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-06-27T10:12:23+00:00"
+            "time": "2020-09-17T18:55:26+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1939,12 +1981,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tareq1988/wp-php-cs-fixer.git",
-                "reference": "bb389b8a95422885abe1121b92813b4a9f129e9f"
+                "reference": "300a64230dcef2f211431628aa413bdbc6434ba4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tareq1988/wp-php-cs-fixer/zipball/bb389b8a95422885abe1121b92813b4a9f129e9f",
-                "reference": "bb389b8a95422885abe1121b92813b4a9f129e9f",
+                "url": "https://api.github.com/repos/tareq1988/wp-php-cs-fixer/zipball/300a64230dcef2f211431628aa413bdbc6434ba4",
+                "reference": "300a64230dcef2f211431628aa413bdbc6434ba4",
                 "shasum": ""
             },
             "type": "library",
@@ -1964,7 +2006,7 @@
                 }
             ],
             "description": "WordPress rules for php-cs-fixer",
-            "time": "2020-05-21T07:06:37+00:00"
+            "time": "2020-09-15T07:49:28+00:00"
         },
         {
             "name": "theseer/tokenizer",
