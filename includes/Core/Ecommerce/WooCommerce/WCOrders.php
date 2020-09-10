@@ -39,6 +39,13 @@ class WCOrders {
         foreach ($collection->orders as $order) {
             $order = new \WC_Order( $order->get_id() );
 
+            if ($order->get_parent_id()) {
+                $parentOrder = new \WC_Order( $order->get_parent_id() );
+                if ($parentOrder->get_status() == 'refunded') {
+                    continue;
+                }
+            }
+
             $orders['data'][] = [
                 'source'               => 'woocommerce',
                 'id'                   => $order->get_id(),
@@ -84,6 +91,7 @@ class WCOrders {
             ];
         } else if (intval($order->get_parent_id()) != 0) {
             $order = new \WC_Order( $order->get_parent_id() );
+
             return [
                 'first_name' => $order->get_billing_first_name(),
                 'last_name'  => $order->get_billing_last_name(),
