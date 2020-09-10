@@ -26,7 +26,7 @@ class WCIntegration {
      * @return bool
      */
     protected function is_woocommerce_connected_to_wemail() {
-        $integrated = get_option( 'wemail_ecommerce_integrated' );
+        $integrated = get_option( 'wemail_woocommerce_integrated' );
 
         return $integrated ? true : false;
     }

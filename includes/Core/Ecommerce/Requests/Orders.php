@@ -22,6 +22,7 @@ class Orders {
             'total'        => $payload['order']['total'],
             'customer_id'  => $payload['order']['customer_id'],
             'billing'      => $payload['order']['billing'],
+            'permalink'    => $payload['order']['permalink'],
             'products'     => $payload['products']
         ]);
     }

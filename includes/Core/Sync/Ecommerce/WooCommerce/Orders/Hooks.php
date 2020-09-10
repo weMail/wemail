@@ -39,9 +39,8 @@ class Hooks {
      */
     public function wemail_wc_order_received( $order_id ) {
         $order = wc_get_order( $order_id );
-
         $order_data = $order->get_data();
-
+        $order_data['permalink'] = get_permalink($order->get_id());
 
         $products = $this->wcProducts->get_ordered_products( $order );
 
