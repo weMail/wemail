@@ -7,6 +7,12 @@ use WeDevs\WeMail\Traits\Singleton;
 class WCOrders {
 
     use Singleton;
+
+    protected $wcProducts;
+
+    public function __construct() {
+        $this->wcProducts = new WCOrderProducts();
+    }
     /**
      * Get a collection of orders
      *
@@ -30,30 +36,12 @@ class WCOrders {
 
         $collection = wc_get_orders( $params );
 
-        $wcProducts = new WCOrderProducts();
-
         $orders['current_page'] = intval($params['paged']);
         $orders['total'] = $collection->total;
         $orders['total_page'] = $collection->max_num_pages;
 
         foreach ($collection->orders as $order) {
-            $order = new \WC_Order( $order->get_id() );
-            $date_completed = $order->get_date_completed();
-
-            $orders['data'][] = [
-                'source'               => 'woocommerce',
-                'id'                   => $order->get_id(),
-                'parent_id'            => $order->get_parent_id(),
-                'customer'             => $this->getCustomerInfo($order),
-                'status'               => $order->get_status(),
-                'currency'             => $order->get_currency(),
-                'total'                => $order->get_total(),
-                'payment_method_title' => $order->get_payment_method_title(),
-                'date_created'         => $order->get_date_created()->format ('Y-m-d H:m:s'),
-                'date_completed'       => $date_completed ? $date_completed->format ('Y-m-d H:m:s') : '',
-                'permalink'            => get_permalink($order->get_id()),
-                'products'             => $wcProducts->get_ordered_products($order)
-            ];
+            $orders['data'][] = $this->get($order->get_id());
         }
 
         return $orders;
@@ -67,7 +55,23 @@ class WCOrders {
      * @since 1.0.0
      */
     public function get( $id ) {
-        return wc_get_product ($id);
+        $order = new \WC_Order( $id );
+        $date_completed = $order->get_date_completed();
+
+        return [
+            'source'               => 'woocommerce',
+            'id'                   => $order->get_id(),
+            'parent_id'            => $order->get_parent_id(),
+            'customer'             => $this->getCustomerInfo($order),
+            'status'               => $order->get_status(),
+            'currency'             => $order->get_currency(),
+            'total'                => $order->get_total(),
+            'payment_method_title' => $order->get_payment_method_title(),
+            'date_created'         => $order->get_date_created()->format ('Y-m-d H:m:s'),
+            'date_completed'       => $date_completed ? $date_completed->format ('Y-m-d H:m:s') : '',
+            'permalink'            => get_permalink($order->get_id()),
+            'products'             => $this->wcProducts->get_ordered_products($order)
+        ];
     }
 
     private function getCustomerInfo( $order ) {
