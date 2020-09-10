@@ -14,16 +14,18 @@ class Orders {
      */
     public function received( $payload, $source ) {
         wemail()->api->ecommerce()->orders()->post([
-            'source'       => $source,
-            'order_id'     => $payload['order']['id'],
-            'status'       => $payload['order']['status'],
-            'currency'     => $payload['order']['currency'],
-            'date_created' => $payload['order']['date_created'],
-            'total'        => $payload['order']['total'],
-            'customer_id'  => $payload['order']['customer_id'],
-            'billing'      => $payload['order']['billing'],
-            'permalink'    => $payload['order']['permalink'],
-            'products'     => $payload['products']
+            'source'               => $source,
+            'id'                   => $payload['id'],
+            'parent_id'            => $payload['parent_id'],
+            'customer'             => $payload['customer'],
+            'status'               => $payload['status'],
+            'currency'             => $payload['currency'],
+            'total'                => $payload['total'],
+            'payment_method_title' => $payload['payment_method_title'],
+            'date_created'         => $payload['date_created'],
+            'date_completed'       => $payload['date_completed'],
+            'permalink'            => $payload['permalink'],
+            'products'             => $payload['products']
         ]);
     }
 

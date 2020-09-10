@@ -4,6 +4,7 @@ namespace WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Orders;
 
 use WeDevs\WeMail\Core\Ecommerce\Requests\Orders;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrderProducts;
+use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrders;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Hooks {
@@ -11,7 +12,7 @@ class Hooks {
     use Hooker;
 
     protected $orderRequest;
-    protected $wcProducts;
+    protected $wcOrder;
 
     protected $source = 'woocommerce';
     /**
@@ -26,7 +27,7 @@ class Hooks {
         $this->add_action( 'woocommerce_order_status_changed', 'wemail_wc_order_status_updated', 10, 3 );
 
         $this->orderRequest = new Orders();
-        $this->wcProducts = new WCOrderProducts();
+        $this->wcOrder = new WCOrders();
     }
 
     /**
@@ -38,16 +39,10 @@ class Hooks {
      *
      */
     public function wemail_wc_order_received( $order_id ) {
-        $order = wc_get_order( $order_id );
-        $order_data = $order->get_data();
-        $order_data['permalink'] = get_permalink($order->get_id());
-
-        $products = $this->wcProducts->get_ordered_products( $order );
-
-        $this->orderRequest->received([
-            'order'    => $order_data,
-            'products' => $products,
-        ], $this->source);
+        $this->orderRequest->received(
+            $this->wcOrder->get($order_id),
+            $this->source
+        );
     }
 
 
