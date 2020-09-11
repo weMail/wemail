@@ -125,7 +125,7 @@ class WCProducts {
             $categories[] = [
                 'id' => $cat_id,
                 'name' => $term->name,
-            ];;
+            ];
         }
 
         return $categories;
