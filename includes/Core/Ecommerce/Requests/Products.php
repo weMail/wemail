@@ -13,7 +13,7 @@ class Products {
      * @param $source
      */
     public function store( $payload, $source ) {
-        wemail()->api->ecommerce()->products()->post([
+        $data = [
             'id'          => $payload['id'],
             'source'      => $source,
             'name'        => $payload['name'],
@@ -24,8 +24,9 @@ class Products {
             'total_sales' => $payload['total_sales'],
             'rating'      => $payload['rating'],
             'permalink'   => $payload['permalink'],
-            'categories'  => $payload['categories']
-        ]);
+            'categories'  => $payload['categories'],
+        ];
+        wemail()->api->ecommerce()->products()->post( $data );
     }
 
     /**
@@ -33,7 +34,7 @@ class Products {
      * @param $source
      */
     public function update( $payload, $source ) {
-        wemail()->api->ecommerce()->products($payload['slug'])->put([
+        $data = [
             'id'          => $payload['id'],
             'source'      => $source,
             'name'        => $payload['name'],
@@ -44,8 +45,9 @@ class Products {
             'total_sales' => $payload['total_sales'],
             'rating'      => $payload['rating'],
             'permalink'   => $payload['permalink'],
-            'categories'  => $payload['categories']
-        ]);
+            'categories'  => $payload['categories'],
+        ];
+        wemail()->api->ecommerce()->products( $payload['slug'] )->put( $data );
     }
 
 

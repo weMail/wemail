@@ -20,7 +20,7 @@ class WCOrderProducts {
         $products = [];
         foreach ( $items as $item ) {
             $id = $item->get_product_id();
-            $product = new \WC_Product($id);
+            $product = new \WC_Product( $id );
 
             $products[] = [
                 'id'           => $id,
