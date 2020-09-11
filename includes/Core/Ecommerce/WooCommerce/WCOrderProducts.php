@@ -8,6 +8,8 @@ class WCOrderProducts {
 
     use Singleton;
 
+    protected $source = 'woocommerce';
+
     /**
      * GET ORDER PRODUCTS
      * @param $order_obj
@@ -17,9 +19,12 @@ class WCOrderProducts {
         $items = $order_obj->get_items();
         $products = [];
         foreach ( $items as $item ) {
-            $product = new \WC_Product($item->get_product_id());
+            $id = $item->get_product_id();
+            $product = new \WC_Product($id);
 
             $products[] = [
+                'id'           => $id,
+                'source'       => $this->source,
                 'name'         => $product->get_name(),
                 'slug'         => $product->get_slug(),
                 'total'        => $item->get_total(),

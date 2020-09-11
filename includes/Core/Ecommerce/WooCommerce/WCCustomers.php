@@ -38,11 +38,10 @@ class WCCustomers {
             $count_args['exclude'] = range( 1, $params['last_synced_id']);
         }
 
-        $user_count_query = new WP_User_Query($count_args);
-        $user_count = $user_count_query->get_results();
-
-// count the number of users found in the query
-        $totalCustomer = $user_count ? count($user_count) : 1;
+        $user_count_data = count_users();
+        $totalCustomer = isset($user_count_data['avail_roles']['customer']) ?
+            $user_count_data['avail_roles']['customer'] :
+            1;
 
         $offset = $params['limit'] * ($params['page'] - 1);
         $total_pages = ceil($totalCustomer / $params['limit']);

@@ -35,10 +35,11 @@ class WCProducts {
         $products['total_page'] = $collection->max_num_pages;
 
         foreach ($collection->products as $product) {
-            $categories = $this->get_product_categories( $product->get_id() );
+            $id = $product->get_id();
+            $categories = $this->get_product_categories( $id );
 
             $products['data'][] = [
-
+                'id'          => $id,
                 'source'      => 'woocommerce',
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),

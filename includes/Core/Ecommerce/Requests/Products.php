@@ -14,6 +14,7 @@ class Products {
      */
     public function store( $payload, $source ) {
         wemail()->api->ecommerce()->products()->post([
+            'id'          => $payload['id'],
             'source'      => $source,
             'name'        => $payload['name'],
             'slug'        => $payload['slug'],
@@ -33,6 +34,7 @@ class Products {
      */
     public function update( $payload, $source ) {
         wemail()->api->ecommerce()->products($payload['slug'])->put([
+            'id'          => $payload['id'],
             'source'      => $source,
             'name'        => $payload['name'],
             'slug'        => $payload['slug'],
