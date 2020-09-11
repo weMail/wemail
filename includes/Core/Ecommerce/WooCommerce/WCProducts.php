@@ -23,7 +23,7 @@ class WCProducts {
             'status'   => $args['status'] ? $args['status'] : 'publish',
             'limit'    => $args['limit'] ? $args['limit'] : 50,
             'paginate' => true,
-            'page'     => $args['page'] ? $args['page'] : 1
+            'page'     => $args['page'] ? $args['page'] : 1,
         ];
 
         $collection = wc_get_products( $args );
@@ -34,7 +34,7 @@ class WCProducts {
         $products['total'] = $collection->total;
         $products['total_page'] = $collection->max_num_pages;
 
-        foreach ($collection->products as $product) {
+        foreach ( $collection->products as $product ) {
             $id = $product->get_id();
             $categories = $this->get_product_categories( $id );
 
@@ -43,13 +43,13 @@ class WCProducts {
                 'source'      => 'woocommerce',
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
-                'images'      => $this->get_product_images($product),
+                'images'      => $this->get_product_images( $product ),
                 'status'      => $product->get_status(),
                 'price'       => $product->get_price(),
                 'total_sales' => $product->get_total_sales(),
                 'rating'      => $product->get_average_rating(),
-                'permalink'   => get_permalink($product->get_id()),
-                'categories'  => $categories
+                'permalink'   => get_permalink( $product->get_id() ),
+                'categories'  => $categories,
             ];
         }
 
@@ -64,7 +64,7 @@ class WCProducts {
      * @since 1.0.0
      */
     public function get( $id ) {
-        return wc_get_product ($id);
+        return wc_get_product ( $id );
     }
 
     /**
@@ -79,23 +79,33 @@ class WCProducts {
             $attachment_ids[] = $product_image;
         }
         // add gallery images.
-        $attachment_ids = array_merge($attachment_ids, $product->get_gallery_image_ids());
+        $attachment_ids = array_merge( $attachment_ids, $product->get_gallery_image_ids() );
 
         $images = [];
-        foreach ($attachment_ids as $attachment_id) {
-            $attachment_post = get_post($attachment_id);
+        foreach ( $attachment_ids as $attachment_id ) {
+            $attachment_post = get_post( $attachment_id );
             if (is_null($attachment_post)) {
                 continue;
             }
-            $attachment = wp_get_attachment_image_src($attachment_id, 'full');
+            $attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
             if (!is_array($attachment)) {
                 continue;
             }
-            $images[] = array('id' => (int) $attachment_id,'src' => current($attachment), 'title' => get_the_title($attachment_id), 'alt' => get_post_meta($attachment_id, '_wp_attachment_image_alt', true));
+            $images[] = [
+                'id' => (int) $attachment_id,
+                'src' => current( $attachment ),
+                'title' => get_the_title( $attachment_id ),
+                'alt' => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+            ];
         }
         // Set a placeholder image if the product has no images set.
         if (empty($images)) {
-            $images[] = array('id' => 0, 'src' => wc_placeholder_img_src(), 'title' => __('Placeholder', 'woocommerce'), 'alt' => __('Placeholder', 'woocommerce'));
+            $images[] = [
+                'id' => 0,
+                'src' => wc_placeholder_img_src(),
+                'title' => __( 'Placeholder', 'woocommerce' ),
+                'alt' => __( 'Placeholder', 'woocommerce' ),
+            ];
         }
 
         return $images;

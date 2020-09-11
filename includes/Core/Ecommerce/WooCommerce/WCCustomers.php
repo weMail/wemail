@@ -29,7 +29,7 @@ class WCCustomers {
             'fields'         => 'all_with_meta',
         ];
 
-        $count_args  = array(
+        $count_args = array(
             'role'      => $params['role'],
             'fields'    => $params['fields'],
         );
@@ -46,7 +46,7 @@ class WCCustomers {
         $offset = $params['limit'] * ($params['page'] - 1);
         $total_pages = ceil($totalCustomer / $params['limit']);
 
-        $args  = array(
+        $args = array(
             'role'      => $params['role'],
             'orderby'   => $params['orderby'],
             'fields'    => $params['fields'],
