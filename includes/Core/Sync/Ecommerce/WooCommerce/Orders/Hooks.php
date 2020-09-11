@@ -39,6 +39,12 @@ class Hooks {
      *
      */
     public function wemail_wc_order_received( $order_id ) {
+        $integrated = get_option( 'wemail_woocommerce_integrated' );
+        $synced     = get_option( 'wemail_is_woocommerce_synced' );
+        if (!$integrated || !$synced) {
+            return;
+        }
+
         $this->orderRequest->received(
             $this->wcOrder->get($order_id),
             $this->source
@@ -52,6 +58,12 @@ class Hooks {
      * @param $new_status
      */
     public function wemail_wc_order_status_updated( $order_id, $old_status, $new_status ) {
+        $integrated = get_option( 'wemail_woocommerce_integrated' );
+        $synced     = get_option( 'wemail_is_woocommerce_synced' );
+        if (!$integrated || !$synced) {
+            return;
+        }
+
         $this->orderRequest->statusUpdated([
             'order_id' => $order_id,
             'status'   => $new_status,

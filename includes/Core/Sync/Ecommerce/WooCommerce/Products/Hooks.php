@@ -37,6 +37,12 @@ class Hooks {
      */
     public function wemail_wc_product_updated($post_id, $post, $update)
     {
+        $integrated = get_option( 'wemail_woocommerce_integrated' );
+        $synced     = get_option( 'wemail_is_woocommerce_synced' );
+        if (!$integrated || !$synced) {
+            return;
+        }
+
         if ($post->post_status != 'publish' || $post->post_type != 'product') {
             return;
         }
@@ -53,6 +59,7 @@ class Hooks {
 
         if ( $is_new ) {
             $this->productRequest->store([
+                'id'          => $product->get_id(),
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
                 'images'      => $wcProducts->get_product_images($product),
@@ -65,6 +72,7 @@ class Hooks {
             ], $this->source);
         } else {
             $this->productRequest->update([
+                'id'          => $product->get_id(),
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
                 'images'      => $wcProducts->get_product_images($product),
