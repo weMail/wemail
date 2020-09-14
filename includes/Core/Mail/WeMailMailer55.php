@@ -14,16 +14,7 @@ class WeMailMailer55 extends PHPMailer {
      * @throws PHPMailerException
      */
     public function send() {
-        $response = wemail()->api->emails()->transactional()->post(
-            array(
-                'to' => $this->formatEmailAddress( $this->phpmailer->getToAddresses() ),
-                'subject' => $this->phpmailer->Subject,
-                'message' => $this->phpmailer->Body,
-                'type' => $this->phpmailer->ContentType,
-                'reply_to' => $this->phpmailer->getReplyToAddresses(),
-                'attachments' => $this->formatAttachments( $this->phpmailer->getAttachments() ),
-            )
-        );
+        $response = $this->attemptToSend();
 
         if ( is_wp_error( $response ) ) {
             throw new PHPMailerException( $response->get_error_message() );
