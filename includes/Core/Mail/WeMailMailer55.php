@@ -11,7 +11,7 @@ class WeMailMailer55 extends PHPMailer {
     /**
      * Overwrite phpmailer send method
      *
-     * @throws \phpmailerException
+     * @throws PHPMailerException
      */
     public function send() {
         $response = wemail()->api->emails()->transactional()->post( array(
@@ -19,6 +19,7 @@ class WeMailMailer55 extends PHPMailer {
             'subject' => $this->phpmailer->Subject,
             'message' => $this->phpmailer->Body,
             'type' => $this->phpmailer->ContentType,
+            'reply_to' => $this->phpmailer->getReplyToAddresses(),
             'attachments' => $this->formatAttachments( $this->phpmailer->getAttachments() )
         ) );
 
