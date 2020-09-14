@@ -9,7 +9,7 @@
     <label>
         <?php _e( 'Select a Form', 'wemail' ); ?>:
         <select class="widefat" name="<?php echo $this->get_field_name( 'form' ); ?>">
-            <option value=""><?php _e('Select a form');?></option>
+            <option value=""><?php _e('Select a form'); ?></option>
             <?php foreach ( $forms as $form ): ?>
                 <option
                     value="<?php echo $form['id']; ?>"

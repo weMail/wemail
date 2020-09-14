@@ -30,11 +30,8 @@ class FrontEnd {
         $forms = wemail()->form->get_forms();
 
         $current_page_id = get_queried_object_id();
-
         if ( ! empty( $forms ) ) {
-
             $forms = $this->get_filtered_forms( $forms, $current_page_id );
-
             foreach ( $forms as $form ) {
                 echo wemail_form( $form );
             }
@@ -42,20 +39,20 @@ class FrontEnd {
     }
 
     protected function get_filtered_forms( $forms, $object_id ) {
+        return array_filter(
+            $forms,
+            function ( $form ) use ( $object_id ) {
+                $settings = $form['settings'];
+                if ( ! isset( $settings['showPage'], $settings['when'], $settings['who'] ) ) {
+                    return false;
+                }
 
-        return array_filter( $forms, function ( $form ) use ( $object_id ) {
-            $settings = $form['settings'];
-
-            if ( ! isset( $settings['showPage'], $settings['when'], $settings['who'] ) ) {
-                return false;
+                return $this->is_passed_all_checks( $form, $object_id );
             }
-
-            return $this->is_passed_all_checks( $form, $object_id );
-        } );
+        );
     }
 
     protected function is_passed_all_checks( $form, $object_id ) {
-
         if ( ! $this->checking_is_modal( $form ) ) {
             return false;
         }
@@ -87,17 +84,19 @@ class FrontEnd {
 
     protected function checking_show_page( $settings, $object_id ) {
         switch ( $settings['showPage'] ) {
-        case 'all':
-            return true;
-            break;
-        case 'home':
-            return is_front_page() || is_home();
-            break;
-        default:
-            if ( empty( $settings['pages'] ) ) {
-                return false;
-            }
-            return in_array( $object_id, array_column( $settings['pages'], 'id' ) );
+            case 'all':
+                return true;
+                break;
+
+            case 'home':
+                return is_front_page() || is_home();
+                break;
+
+            default:
+                if ( empty( $settings['pages'] ) ) {
+                    return false;
+                }
+                return in_array( $object_id, array_column( $settings['pages'], 'id' ), true );
         }
     }
 
@@ -107,41 +106,41 @@ class FrontEnd {
      */
     protected function checking_schedule( $settings ) {
         switch ( $settings['when'] ) {
-        case 'always':
-            return true;
-            break;
-        case 'schedule':
-            if ( ! isset( $settings['scheduleFrom'], $settings['scheduleTo'] ) ) {
-                return false;
-            }
-            $now = date( 'Y-m-d' );
-
-            if (  ( $now >= $settings['scheduleFrom'] ) && ( $now <= $settings['scheduleTo'] ) ) {
+            case 'always':
                 return true;
-            }
+                break;
+            case 'schedule':
+                if ( ! isset( $settings['scheduleFrom'], $settings['scheduleTo'] ) ) {
+                    return false;
+                }
+                $now = gmdate( 'Y-m-d' );
+                if ( ( $now >= $settings['scheduleFrom'] ) && ( $now <= $settings['scheduleTo'] ) ) {
+                    return true;
+                }
+                break;
 
-            break;
+            default:
+                return false;
         }
-
-        return false;
     }
 
     protected function checking_who_see( $settings ) {
         switch ( $settings['who'] ) {
-        case 'all_users':
-            return true;
-            break;
+            case 'all_users':
+                return true;
+                break;
 
-        case 'logged_users':
-            return is_user_logged_in();
-            break;
+            case 'logged_users':
+                return is_user_logged_in();
+                break;
 
-        case 'not_logged_users':
-            return ! is_user_logged_in();
-            break;
+            case 'not_logged_users':
+                return ! is_user_logged_in();
+                break;
+
+            default:
+                return false;
         }
-
-        return false;
     }
 
 }

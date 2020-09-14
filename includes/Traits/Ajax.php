@@ -39,7 +39,7 @@ trait Ajax {
      * @return void
      */
     public function verify_nonce( $action = 'wemail-nonce' ) {
-        if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], $action ) ) {
+        if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( wp_unslash( $_REQUEST['_wpnonce'] ), $action ) ) {
             $this->send_error( __( 'Error: Nonce verification failed', 'wemail' ) );
         }
     }

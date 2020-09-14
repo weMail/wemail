@@ -63,8 +63,10 @@ class User {
     public function boot() {
         $user_id = get_current_user_id();
 
-        $disabled  = get_user_meta( $user_id, 'wemail_disable_user_access' );
-        if ($disabled) return;
+        $disabled = get_user_meta( $user_id, 'wemail_disable_user_access' );
+        if ( $disabled ) {
+            return;
+        }
 
         $api_key  = get_user_meta( $user_id, 'wemail_api_key', true );
         $api_key  = apply_filters( 'wemail_api_key', $api_key, $user_id );
@@ -73,7 +75,7 @@ class User {
             $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
 
             if ( ! $user_data ) {
-                $user_data = wemail()->api->auth()->users()->me()->query( ['include' => 'role,permissions'] )->get();
+                $user_data = wemail()->api->auth()->users()->me()->query( [ 'include' => 'role,permissions' ] )->get();
 
                 if ( ! empty( $user_data['data'] ) ) {
                     $user_data = $user_data['data'];
@@ -81,7 +83,6 @@ class User {
                     update_user_meta( $user_id, 'wemail_user_data', $user_data );
                 }
             }
-
 
             $this->hash = $user_data['hash'];
             $this->role = $user_data['role'];

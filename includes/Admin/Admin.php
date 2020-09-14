@@ -11,7 +11,6 @@ class Admin {
     use Hooker;
 
     public function __construct() {
-        // $this->add_action( 'admin_init', 'remove_admin_notice' );
         $this->add_action( 'admin_init', 'redirect_after_activation', 9999 );
 
         $this->includes();
@@ -22,7 +21,7 @@ class Admin {
         new Menu();
         new FormPreview();
 
-        if ( current_user_can( 'edit_posts' ) && wemail_validate_boolean( get_user_option('rich_editing') ) ) {
+        if ( current_user_can( 'edit_posts' ) && wemail_validate_boolean( get_user_option( 'rich_editing' ) ) ) {
             new Shortcode();
         }
     }

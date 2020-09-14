@@ -48,7 +48,7 @@ final class WeMail {
     public $min_wp = '4.4.0';
 
     /**
-     * weMail text domain
+     * WeMail text domain
      *
      * @since 1.0.0
      *
@@ -66,7 +66,7 @@ final class WeMail {
     public $core = [];
 
     /**
-     * weMail site URL
+     * WeMail site URL
      *
      * @since 1.0.0
      *
@@ -75,7 +75,7 @@ final class WeMail {
     public $wemail_site = '';
 
     /**
-     * weMail API URL
+     * WeMail API URL
      * @since 1.0.0
      *
      * @var string
@@ -83,7 +83,7 @@ final class WeMail {
     public $wemail_api = '';
 
     /**
-     * weMail CDN URL
+     * WeMail CDN URL
      * @since 1.0.0
      *
      * @var string
@@ -91,7 +91,7 @@ final class WeMail {
     public $wemail_cdn = '';
 
     /**
-     * weMail wemail_app URL
+     * WeMail wemail_app URL
      * @since 1.0.0
      *
      * @var string
@@ -127,8 +127,8 @@ final class WeMail {
      * @return WeMail
      */
     public static function instance() {
-        if (! isset( self::$instance ) && ! ( self::$instance instanceof WeMail ) ) {
-            self::$instance = new WeMail;
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof WeMail ) ) {
+            self::$instance = new WeMail();
             self::$instance->boot();
         }
 
@@ -187,19 +187,19 @@ final class WeMail {
      */
     public function is_request( $type ) {
         switch ( $type ) {
-            case 'admin' :
+            case 'admin':
                 $request = is_admin();
                 break;
 
-            case 'ajax' :
+            case 'ajax':
                 $request = defined( 'DOING_AJAX' );
                 break;
 
-            case 'cron' :
+            case 'cron':
                 $request = defined( 'DOING_CRON' );
                 break;
 
-            case 'frontend' :
+            case 'frontend':
                 $request = ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' );
                 break;
 
@@ -220,7 +220,8 @@ final class WeMail {
     private function met_requirements() {
         if ( version_compare( PHP_VERSION, $this->min_php, '<' ) ) {
             $this->admin_notices['unmet_php_version'] = sprintf(
-                __( '%s requires PHP version %s but you are using version %s', 'wemail' ),
+                /* translators: %s: search term */
+                __( '%1$s requires PHP version %2$s but you are using version %3$s', 'wemail' ),
                 '<strong>weMail</strong>',
                 '<strong>' . $this->min_php . '</strong>',
                 '<strong>' . PHP_VERSION . '</strong>'
@@ -229,11 +230,12 @@ final class WeMail {
             return false;
         }
 
-        $current_wp_version = get_bloginfo('version');
+        $current_wp_version = get_bloginfo( 'version' );
 
         if ( version_compare( $current_wp_version, $this->min_wp, '<' ) ) {
             $this->admin_notices['unmet_wordpress_version'] = sprintf(
-                __( '%s requires WordPress version %s but you are using version %s', 'wemail' ),
+                /* translators: %s: search term */
+                __( '%1$s requires WordPress version %2$s but you are using version %3$s', 'wemail' ),
                 '<strong>weMail</strong>',
                 '<strong>' . $this->min_wp . '</strong>',
                 '<strong>' . $current_wp_version . '</strong>'
@@ -383,7 +385,7 @@ final class WeMail {
      */
     private function set_wemail_site() {
         /**
-         * weMail site URL
+         * WeMail site URL
          *
          * @since 1.0.0
          *
@@ -402,7 +404,7 @@ final class WeMail {
      */
     private function set_wemail_api() {
         /**
-         * weMail API URL
+         * WeMail API URL
          *
          * @since 1.0.0
          *
@@ -421,7 +423,7 @@ final class WeMail {
      */
     private function set_wemail_cdn() {
         /**
-         * weMail CDN url
+         * WeMail CDN url
          *
          * @since 1.0.0
          *
@@ -440,7 +442,7 @@ final class WeMail {
      */
     private function set_wemail_app() {
         /**
-         * weMail APP url
+         * WeMail APP url
          *
          * @since 1.0.0
          *

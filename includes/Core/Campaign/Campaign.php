@@ -67,20 +67,16 @@ class Campaign {
         $campaign = wemail()->api->campaigns( $id );
 
         if ( ! empty( $include ) ) {
-            $campaign = $campaign->query( [
-                'include' => implode( ',', $include )
-            ] );
+            $campaign = $campaign->query( [ 'include' => implode( ',', $include ) ] );
         }
 
         $campaign = $campaign->get();
 
         if ( isset( $campaign['data'] ) ) {
             $campaign = $campaign['data'];
-
             if ( empty( $campaign['email']['template'] ) ) {
                 $campaign['email']['template'] = function () {};
             }
-
         } else {
             $campaign = null;
         }

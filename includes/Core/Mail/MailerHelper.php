@@ -2,8 +2,7 @@
 
 namespace WeDevs\WeMail\Core\Mail;
 
-trait MailerHelper
-{
+trait MailerHelper {
     /**
      * @var $phpmailer \PHPMailer|\PHPMailer\PHPMailer\PHPMailer
      */
@@ -16,9 +15,12 @@ trait MailerHelper
      * @return array
      */
     protected function formatEmailAddress( $address ) {
-        return array_map( function ( $address ) {
-            return $address[0];
-        }, $address );
+        return array_map(
+            function ( $address ) {
+                return $address[0];
+            },
+            $address
+        );
     }
 
     /**
@@ -44,22 +46,40 @@ trait MailerHelper
             return [];
         }
 
-        $attachments = array_map( function ( $attachment ) {
-            if ( is_array( $attachment ) ) {
-                $split = explode('/uploads/', $attachment[0]);
+        $attachments = array_map(
+            function ( $attachment ) {
+                if ( is_array( $attachment ) ) {
+                    $split = explode( '/uploads/', $attachment[0] );
 
-                return esc_sql( end( $split ) );
-            }
+                    return esc_sql( end( $split ) );
+                }
 
-            return null;
-        }, $attachments );
+                return null;
+            },
+            $attachments
+        );
 
         $attachments = array_filter( $attachments );
 
-        $files = $wpdb->get_results("SELECT `post_id` FROM {$wpdb->postmeta} WHERE `meta_key` = '_wp_attached_file' AND `meta_value` IN('".implode("', '", $attachments)."')");
+        $files = $wpdb->get_results(
+            $this->generateQuery( $wpdb, $attachments )
+        );
 
-        return array_map( function ( $file ) {
-            return wp_get_attachment_url( $file->post_id );
-        }, $files );
+        return array_map(
+            function ( $file ) {
+                return wp_get_attachment_url( $file->post_id );
+            },
+            $files
+        );
+    }
+
+    private function generateQuery( $wpdb, $attachments ) {
+        $implode = implode( "', '", $attachments );
+        $query = 'SELECT `post_id` FROM ' . $wpdb->postmeta . ' WHERE ';
+
+        $query .= '`meta_key` = "_wp_attached_file" AND `meta_value` ';
+        $query .= 'IN(' . $implode . ')';
+
+        return $query;
     }
 }

@@ -60,7 +60,6 @@ class ContactForm7 extends AbstractIntegration {
 
         if ( ! $cf7_query->have_posts() ) {
             return $forms;
-
         } else {
             while ( $cf7_query->have_posts() ) {
                 $cf7_query->the_post();
@@ -72,13 +71,13 @@ class ContactForm7 extends AbstractIntegration {
                 $form = [
                     'id'     => $post->ID,
                     'title'  => $post->post_title,
-                    'fields' => []
+                    'fields' => [],
                 ];
 
                 foreach ( $cf7->collect_mail_tags() as $tag ) {
                     $form['fields'][] = [
                         'id'    => $tag,
-                        'label' => "[{$tag}]"
+                        'label' => "[{$tag}]",
                     ];
                 }
 
@@ -108,7 +107,7 @@ class ContactForm7 extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_contact_form_7', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
@@ -117,7 +116,7 @@ class ContactForm7 extends AbstractIntegration {
         $posted_data = $submission->get_posted_data();
 
         $data = [
-            'id' => $form_id
+            'id' => $form_id,
         ];
 
         foreach ( $form_tags as $form_tag ) {

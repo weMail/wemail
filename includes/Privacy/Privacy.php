@@ -71,7 +71,7 @@ class Privacy {
             $content = ob_get_clean();
 
             /**
-             * weMail Privacy Policy content filter
+             * WeMail Privacy Policy content filter
              *
              * @since 1.0.0
              *
@@ -131,7 +131,7 @@ class Privacy {
 
         return [
             'data' => $data_to_export,
-            'done' => true
+            'done' => true,
         ];
     }
 
@@ -178,6 +178,7 @@ class Privacy {
             $subscriber_data = $this->get_subscriber_data( $subscriber );
 
             foreach ( $subscriber_data as $data ) {
+                /* translators: %s: search term */
                 $response['messages'][] = sprintf( __( 'Removed subscriber %s', 'wemail' ), $data['name'] );
             }
 
@@ -196,18 +197,18 @@ class Privacy {
      *
      * @return array
      */
-    protected function get_subscriber_data( $subscriber )  {
+    protected function get_subscriber_data( $subscriber ) {
         $subscriber_data = [];
 
         $meta_fields = wemail()->api->subscribers()->meta()->get();
         $meta_fields = $meta_fields['data'];
 
-        $ignore_fields = ['email'];
+        $ignore_fields = [ 'email' ];
 
         foreach ( $meta_fields as $meta_field ) {
             $meta_name = $meta_field['name'];
 
-            if ( isset ( $subscriber[ $meta_name ] ) && ! in_array( $meta_name, $ignore_fields ) ) {
+            if ( isset( $subscriber[ $meta_name ] ) && ! in_array( $meta_name, $ignore_fields, true ) ) {
                 $subscriber_data[] = [
                     'name'  => $meta_field['title'],
                     'value' => $subscriber[ $meta_name ],

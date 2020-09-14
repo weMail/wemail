@@ -124,7 +124,7 @@ class Subscriber {
      */
     public function subscribe_to_lists( $id, $list_ids ) {
         $data = [
-            'lists' => $list_ids
+            'lists' => $list_ids,
         ];
 
         $subscriber = wemail()->api->subscribers( $id )->subscribe_to_lists()->put( $data );

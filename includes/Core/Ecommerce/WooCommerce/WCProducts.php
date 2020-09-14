@@ -30,7 +30,7 @@ class WCProducts {
 
         $products = [];
 
-        $products['current_page'] = intval($args['page']);
+        $products['current_page'] = intval( $args['page'] );
         $products['total'] = $collection->total;
         $products['total_page'] = $collection->max_num_pages;
 
@@ -64,18 +64,19 @@ class WCProducts {
      * @since 1.0.0
      */
     public function get( $id ) {
-        return wc_get_product ( $id );
+        return wc_get_product( $id );
     }
 
     /**
      * @param $product
      * @return array
      */
-    public function get_product_images($product) {
-        $images = $attachment_ids = array();
+    public function get_product_images( $product ) {
+        $attachment_ids = array();
+        $images = $attachment_ids;
         $product_image = $product->get_image_id();
         // Add featured image.
-        if (!empty($product_image)) {
+        if ( ! empty( $product_image ) ) {
             $attachment_ids[] = $product_image;
         }
         // add gallery images.
@@ -84,11 +85,11 @@ class WCProducts {
         $images = [];
         foreach ( $attachment_ids as $attachment_id ) {
             $attachment_post = get_post( $attachment_id );
-            if (is_null($attachment_post)) {
+            if ( is_null( $attachment_post ) ) {
                 continue;
             }
             $attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
-            if (!is_array($attachment)) {
+            if ( ! is_array( $attachment ) ) {
                 continue;
             }
             $images[] = [
@@ -99,12 +100,12 @@ class WCProducts {
             ];
         }
         // Set a placeholder image if the product has no images set.
-        if (empty($images)) {
+        if ( empty( $images ) ) {
             $images[] = [
                 'id' => 0,
                 'src' => wc_placeholder_img_src(),
-                'title' => __( 'Placeholder', 'woocommerce' ),
-                'alt' => __( 'Placeholder', 'woocommerce' ),
+                'title' => __( 'Placeholder', 'wemail' ),
+                'alt' => __( 'Placeholder', 'wemail' ),
             ];
         }
 
@@ -113,13 +114,13 @@ class WCProducts {
 
     /**
      * ORDER PRODUCT CATEGORIES
-     * @param $productId
+     * @param $product_id
      * @return array
      */
-    public function get_product_categories( $productId ) {
-        $product_cats_ids = wc_get_product_term_ids( $productId, 'product_cat' );
+    public function get_product_categories( $product_id ) {
+        $product_cats_ids = wc_get_product_term_ids( $product_id, 'product_cat' );
         $categories = [];
-        foreach( $product_cats_ids as $cat_id ) {
+        foreach ( $product_cats_ids as $cat_id ) {
             $term = get_term_by( 'id', $cat_id, 'product_cat' );
 
             $categories[] = [

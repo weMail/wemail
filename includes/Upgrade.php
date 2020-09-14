@@ -24,7 +24,7 @@ class Upgrade {
     public function needs_update() {
 
         //check if current version is greater then installed version and any update key is available
-        if ( version_compare( $this->get_version(), WEMAIL_VERSION, '<' ) && in_array( WEMAIL_VERSION, array_keys( $this->upgrades ) ) ) {
+        if ( version_compare( $this->get_version(), WEMAIL_VERSION, '<' ) && in_array( WEMAIL_VERSION, array_keys( $this->upgrades ), true ) ) {
             return true;
         }
 

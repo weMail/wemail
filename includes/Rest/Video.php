@@ -17,11 +17,15 @@ class Video extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
-            'methods'             => WP_REST_Server::READABLE,
-            'permission_callback' => [ $this, 'permission' ],
-            'callback'            => [ $this, 'thumb' ],
-        ] );
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
+            [
+                'methods'             => WP_REST_Server::READABLE,
+                'permission_callback' => [ $this, 'permission' ],
+                'callback'            => [ $this, 'thumb' ],
+            ]
+        );
     }
 
     public function permission( $request ) {
@@ -49,25 +53,22 @@ class Video extends WP_REST_Controller {
             if ( $code !== 200 ) {
                 $response = wp_remote_head( "http://img.youtube.com/vi/$video_id/0.jpg" );
                 $code     = wp_remote_retrieve_response_code( $response );
-
                 if ( $code === 200 ) {
                     $image_link = "http://img.youtube.com/vi/$video_id/0.jpg";
                 }
-
             } else {
                 $image_link = "http://img.youtube.com/vi/$video_id/maxresdefault.jpg";
             }
-
-        } else if ( $source === 'vimeo' ) {
+        } elseif ( $source === 'vimeo' ) {
             $response = wp_remote_get( "https://vimeo.com/api/v2/video/$video_id.xml" );
             $code     = wp_remote_retrieve_response_code( $response );
             if ( $code === 200 ) {
                 $body = wp_remote_retrieve_body( $response );
                 $xml  = simplexml_load_string( $body );
-                $json = json_encode( $xml );
-                $obj  = json_decode( $json );
+                $json = wp_json_encode( $xml );
+                $obj  = wp_json_encode( $json );
 
-                if ( !empty( $obj->video->thumbnail_large ) ) {
+                if ( ! empty( $obj->video->thumbnail_large ) ) {
                     $image_link = $obj->video->thumbnail_large;
                 } else {
                     $image_link = $obj->video->thumbnail_medium;

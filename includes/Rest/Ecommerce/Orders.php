@@ -18,13 +18,17 @@ class Orders extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'orders' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'orders' ],
+                ],
             ]
-        ] );
+        );
     }
 
     /**
@@ -32,9 +36,9 @@ class Orders extends WP_REST_Controller {
      * @return bool
      */
     public function permission( $request ) {
-        $weMailMiddleware = new WeMailMiddleware('manage_settings');
+        $middleware = new WeMailMiddleware( 'manage_settings' );
 
-        return $weMailMiddleware->handle($request);
+        return $middleware->handle( $request );
     }
 
     /*
@@ -51,31 +55,32 @@ class Orders extends WP_REST_Controller {
         $source = $request->get_param( 'source' );
 
         // Pass specific integrations orders by mentioning source
-        if ($source === 'woocommerce') {
+        if ( $source === 'woocommerce' ) {
             return rest_ensure_response(
                 $this->wcOrders( $request )
             );
         } else {
-            return rest_ensure_response([
-                'data' => [],
-                'message' => __('Unknown source.')
-            ]);
+            return rest_ensure_response(
+                [
+                    'data' => [],
+                    'message' => __( 'Unknown source.', 'wemail' ),
+                ]
+            );
         }
     }
 
-    public function wcOrders( $request )
-    {
-        $wcOrders = new WCOrders();
+    public function wcOrders( $request ) {
+        $wc_orders = new WCOrders();
 
         $args = array(
-            'orderby'        => $request->get_param('orderby'),
-            'order'          => $request->get_param('order'),
-            'status'         => $request->get_param('status'),
-            'limit'          => $request->get_param('limit'),
-            'page'           => $request->get_param('page')
+            'orderby'        => $request->get_param( 'orderby' ),
+            'order'          => $request->get_param( 'order' ),
+            'status'         => $request->get_param( 'status' ),
+            'limit'          => $request->get_param( 'limit' ),
+            'page'           => $request->get_param( 'page' ),
         );
 
-        return $wcOrders->all( $args );
+        return $wc_orders->all( $args );
     }
 
 }

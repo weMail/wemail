@@ -13,21 +13,29 @@ class Integrations extends RestController {
     public $rest_base = '/ecommerce/integrations';
 
     public function register_routes() {
-        register_rest_route( $this->namespace, $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'index' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'index' ],
+                ],
             ]
-        ] );
+        );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/(?P<integration>[\w]+)', [
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/(?P<integration>[\w]+)',
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'show' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'show' ],
+                ],
             ]
-        ] );
+        );
     }
 
     /**
@@ -35,9 +43,9 @@ class Integrations extends RestController {
      * @return bool
      */
     public function permission( $request ) {
-       $weMailMiddleware = new WeMailMiddleware('manage_settings');
+        $middleware = new WeMailMiddleware( 'manage_settings' );
 
-       return $weMailMiddleware->handle($request);
+        return $middleware->handle( $request );
     }
 
     /**
@@ -45,13 +53,13 @@ class Integrations extends RestController {
      * @return \WP_Error|\WP_HTTP_Response|\WP_REST_Response
      */
     public function index() {
-        $woocommerceIntegration = new WCIntegration();
+        $wc_integration = new WCIntegration();
 
-        return rest_ensure_response([
-            'data' => [
-                $woocommerceIntegration->status()
+        return rest_ensure_response(
+            [
+                'data' => [ $wc_integration->status() ],
             ]
-        ]);
+        );
     }
 
     /**
@@ -62,18 +70,18 @@ class Integrations extends RestController {
     public function show( $request ) {
         $integration = $request->get_param( 'integration' );
 
-        $woocommerceIntegration = new WCIntegration();
+        $wc_integration = new WCIntegration();
 
         // Add other integrations below this
-        if ($integration == 'woocommerce') {
-            return rest_ensure_response([
-                'data' => $woocommerceIntegration->status()
-            ]);
+        if ( $integration === 'woocommerce' ) {
+            return rest_ensure_response( [ 'data' => $wc_integration->status() ] );
         } else {
-            return rest_ensure_response([
-                'data'    => [],
-                'message' => __('Unknown source.'),
-            ]);
+            return rest_ensure_response(
+                [
+                    'data'    => [],
+                    'message' => __( 'Unknown source.', 'wemail' ),
+                ]
+            );
         }
     }
 

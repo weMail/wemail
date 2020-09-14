@@ -16,13 +16,17 @@ class Countries extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'countries' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'countries' ],
+                ],
             ]
-        ] );
+        );
     }
 
     public function permission( $request ) {
@@ -30,9 +34,11 @@ class Countries extends WP_REST_Controller {
     }
 
     public function countries() {
-        $response = rest_ensure_response( [
-            'data' => wemail_get_countries()
-        ] );
+        $response = rest_ensure_response(
+            [
+                'data' => wemail_get_countries(),
+            ]
+        );
 
         return $response;
     }

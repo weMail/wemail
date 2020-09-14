@@ -16,20 +16,24 @@ class Customizer extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
-            'args' => [
-                'context' => [
-                    'description' => __( 'Customizer context like campaign, wp, woocommerce etc' ),
-                    'type'        => 'string',
-                    'required'    => true
-                ]
-            ],
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'data' ],
+                'args' => [
+                    'context' => [
+                        'description' => __( 'Customizer context like campaign, wp, woocommerce etc', 'wemail' ),
+                        'type'        => 'string',
+                        'required'    => true,
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'data' ],
+                ],
             ]
-        ] );
+        );
     }
 
     public function permission( $request ) {

@@ -8,8 +8,7 @@ use WP_Error;
 use WeDevs\WeMail\Traits\Hooker;
 use WeDevs\WeMail\Traits\Singleton;
 
-class Api
-{
+class Api {
 
     use Singleton;
 
@@ -58,11 +57,10 @@ class Api
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         $this->root = wemail()->wemail_api;
-        $api_key = get_user_meta(get_current_user_id(), 'wemail_api_key', true);
-        $this->set_api_key($api_key);
+        $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
+        $this->set_api_key( $api_key );
     }
 
     /**
@@ -72,8 +70,7 @@ class Api
      *
      * @return string
      */
-    public function get_api_key()
-    {
+    public function get_api_key() {
         /**
          * Filter the current user api key
          *
@@ -81,7 +78,7 @@ class Api
          *
          * @param string $api_key
          */
-        return apply_filters('wemail_api_key', $this->api_key);
+        return apply_filters( 'wemail_api_key', $this->api_key );
     }
 
     /**
@@ -91,10 +88,8 @@ class Api
      *
      * @return Api
      * @since 1.0.0
-     *
      */
-    public function set_api_key($api_key)
-    {
+    public function set_api_key( $api_key ) {
         $this->api_key = $api_key;
 
         return $this;
@@ -105,8 +100,7 @@ class Api
      * @since
      * @return bool
      */
-    public function has_api_key()
-    {
+    public function has_api_key() {
         return (bool) $this->api_key;
     }
 
@@ -120,13 +114,12 @@ class Api
      *
      * @return WeDevs\WeMail\Core\Api\Api|void
      */
-    public function __call($name, $args)
-    {
-        if (!method_exists($this, $name)) {
-            $this->url .= '/' . StaticStringy::dasherize($name);
+    public function __call( $name, $args ) {
+        if ( ! method_exists( $this, $name ) ) {
+            $this->url .= '/' . StaticStringy::dasherize( $name );
 
-            if ($args) {
-                $this->url .= '/' . array_pop($args);
+            if ( $args ) {
+                $this->url .= '/' . array_pop( $args );
             }
 
             return $this;
@@ -140,11 +133,10 @@ class Api
      *
      * @return array
      */
-    public function get_props()
-    {
+    public function get_props() {
         return [
             'root'     => $this->root,
-            'api_key'  => $this->get_api_key()
+            'api_key'  => $this->get_api_key(),
         ];
     }
 
@@ -157,15 +149,14 @@ class Api
      *
      * @return array
      */
-    private function args($args)
-    {
+    private function args( $args ) {
         $defaults = [
             'headers' => [
-                'x-api-key' => $this->get_api_key()
-            ]
+                'x-api-key' => $this->get_api_key(),
+            ],
         ];
 
-        return wp_parse_args($args, $defaults);
+        return wp_parse_args( $args, $defaults );
     }
 
     /**
@@ -175,11 +166,9 @@ class Api
      *
      * @return Api
      * @since 1.0.0
-     *
      */
-    public function query($query)
-    {
-        $this->query = array_merge($query, $this->query);
+    public function query( $query ) {
+        $this->query = array_merge( $query, $this->query );
 
         return $this;
     }
@@ -197,20 +186,19 @@ class Api
      *
      * @return string
      */
-    private function build_url($url = '', $query = [])
-    {
-        if ($url) {
+    private function build_url( $url = '', $query = [] ) {
+        if ( $url ) {
             $url = $this->root . $url;
-        } else if ($this->url) {
+        } elseif ( $this->url ) {
             $url = $this->root . $this->url;
         }
 
-        if (!empty($query)) {
-            $this->query = array_merge($query, $this->query);
+        if ( ! empty( $query ) ) {
+            $this->query = array_merge( $query, $this->query );
         }
 
-        if (!empty($this->query)) {
-            $url .= '?' . http_build_query($this->query);
+        if ( ! empty( $this->query ) ) {
+            $url .= '?' . http_build_query( $this->query );
         }
 
         $this->url   = '';
@@ -230,15 +218,14 @@ class Api
      *
      * @return mixed
      */
-    public function get($url = '', $query = [], $args = [])
-    {
-        $args = $this->args($args);
+    public function get( $url = '', $query = [], $args = [] ) {
+        $args = $this->args( $args );
 
-        $url = $this->build_url($url, $query);
+        $url = $this->build_url( $url, $query );
 
-        $response = wp_remote_get($url, $args);
+        $response = wp_remote_get( $url, $args );
 
-        return $this->response($response);
+        return $this->response( $response );
     }
 
     /**
@@ -249,19 +236,17 @@ class Api
      *
      * @return mixed
      * @since 1.0.0
-     *
      */
-    public function post($data = [], $args = [])
-    {
-        $args = $this->args($args);
+    public function post( $data = [], $args = [] ) {
+        $args = $this->args( $args );
 
-        $args['body'] = !empty($data) ? $data : null;
+        $args['body'] = ! empty( $data ) ? $data : null;
 
         $url = $this->build_url();
 
-        $response = wp_remote_post($url, $args);
+        $response = wp_remote_post( $url, $args );
 
-        return $this->response($response);
+        return $this->response( $response );
     }
 
     /**
@@ -274,11 +259,10 @@ class Api
      *
      * @return mixed
      */
-    public function put($data, $args = [])
-    {
+    public function put( $data, $args = [] ) {
         $data['_method'] = 'put';
 
-        return $this->post($data, $args);
+        return $this->post( $data, $args );
     }
 
     /**
@@ -291,19 +275,18 @@ class Api
      *
      * @return mixed
      */
-    public function delete($data = [], $args = [])
-    {
-        $args = $this->args($args);
+    public function delete( $data = [], $args = [] ) {
+        $args = $this->args( $args );
 
         $args['method'] = 'delete';
 
-        $args['body'] = !empty($data) ? $data : null;
+        $args['body'] = ! empty( $data ) ? $data : null;
 
         $url = $this->build_url();
 
-        $response = wp_remote_request($url, $args);
+        $response = wp_remote_request( $url, $args );
 
-        return $this->response($response);
+        return $this->response( $response );
     }
 
     /**
@@ -315,35 +298,34 @@ class Api
      *
      * @return array|WP_Error
      */
-    private function response($response)
-    {
-        if (is_wp_error($response)) {
+    private function response( $response ) {
+        if ( is_wp_error( $response ) ) {
             return $response;
         }
 
-        $response_code = wp_remote_retrieve_response_code($response);
-        $body = json_decode($response['body'], true);
+        $response_code = wp_remote_retrieve_response_code( $response );
+        $body = json_decode( $response['body'], true );
 
-        if ($response_code >= 200 && $response_code <= 299) {
+        if ( $response_code >= 200 && $response_code <= 299 ) {
             return $body;
         } else {
-            $message = is_array($body) && array_key_exists('message', $body)
+            $message = is_array( $body ) && array_key_exists( 'message', $body )
                 ? $body['message']
-                : __('Something went wrong', 'wemail');
+                : __( 'Something went wrong', 'wemail' );
 
-            $errorData = [
-                'status' => $response_code
+            $error_data = [
+                'status' => $response_code,
             ];
 
             if (
-                isset($body['errors']) &&
-                !empty($body['errors']) &&
-                is_array($body['errors'])
+                isset( $body['errors'] ) &&
+                ! empty( $body['errors'] ) &&
+                is_array( $body['errors'] )
             ) {
-                $errorData['errors'] = $body['errors'];
+                $error_data['errors'] = $body['errors'];
             }
 
-            return new WP_Error('error', $message, $errorData);
+            return new WP_Error( 'error', $message, $error_data );
         }
     }
 }

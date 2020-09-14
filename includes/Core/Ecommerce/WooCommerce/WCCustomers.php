@@ -69,8 +69,6 @@ class WCCustomers {
         $response['data'] = [];
 
         foreach ( $customers as $item ) {
-
-
             $customer = new \WC_Customer( $item->ID );
 
             $response['data'][] = [
@@ -81,8 +79,8 @@ class WCCustomers {
                 'last_name'          => $customer->get_last_name(),
                 'display_name'       => $customer->get_display_name(),
                 'is_paying_customer' => $customer->get_is_paying_customer(),
-                'date_created'       => $customer->get_date_created()->format ( 'Y-m-d H:m:s' ),
-                'last_order'         => $customer->get_last_order()
+                'date_created'       => $customer->get_date_created()->format( 'Y-m-d H:m:s' ),
+                'last_order'         => $customer->get_last_order(),
             ];
         }
 

@@ -6,10 +6,10 @@ class Uninstall {
 
     public static function uninstall() {
         $data = [
-            'deactivated' => true
+            'deactivated' => true,
         ];
 
-        wemail()->api->site()->update_activation_status()->post($data);
+        wemail()->api->site()->update_activation_status()->post( $data );
     }
 
 }

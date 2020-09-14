@@ -16,20 +16,24 @@ class States extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
-            'args' => [
-                'country' => [
-                    'description' => __( 'ISO 3166-1 alpha-2 country code' ),
-                    'type'        => 'string',
-                    'required'    => true
-                ]
-            ],
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'states' ],
+                'args' => [
+                    'country' => [
+                        'description' => __( 'ISO 3166-1 alpha-2 country code', 'wemail' ),
+                        'type'        => 'string',
+                        'required'    => true,
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'states' ],
+                ],
             ]
-        ] );
+        );
     }
 
     public function permission( $request ) {
@@ -37,9 +41,11 @@ class States extends WP_REST_Controller {
     }
 
     public function states( $request ) {
-        $response = rest_ensure_response( [
-            'data' => wemail_get_country_states( $request['country'] )
-        ] );
+        $response = rest_ensure_response(
+            [
+                'data' => wemail_get_country_states( $request['country'] ),
+            ]
+        );
 
         return $response;
     }

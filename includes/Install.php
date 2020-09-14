@@ -24,14 +24,17 @@ class Install {
         $api        = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
         $wemail_api = untrailingslashit( $api );
 
-        wp_remote_post( $wemail_api . '/site/update-activation-status', [
-            'headers' => [
-                'x-api-key' => $api_key,
-            ],
-            'body' => [
-                'deactivated' => false,
-            ],
-        ] );
+        wp_remote_post(
+            $wemail_api . '/site/update-activation-status',
+            [
+                'headers' => [
+                    'x-api-key' => $api_key,
+                ],
+                'body' => [
+                    'deactivated' => false,
+                ],
+            ]
+        );
 
         // set the redirection to setup wizard
         set_transient( 'wemail_activation_redirect', true, 30 );
