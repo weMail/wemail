@@ -33,13 +33,14 @@ class Form {
     public function get( $id ) {
         global $wpdb;
 
-        $query = $wpdb->prepare( 'SELECT * FROM %s WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1', $this->get_table(), $id );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = {$id} AND deleted_at IS NULL AND `status` = 1" );
 
         $form = $wpdb->get_row( $query, ARRAY_A );
 
         if ( $form ) {
-            $form['settings'] = wp_json_encode( $form['settings'], true );
-            $form['template'] = wp_json_encode( $form['template'], true );
+            $form['settings'] = json_decode( $form['settings'], true );
+            $form['template'] = json_decode( $form['template'], true );
 
             return $form;
         }
