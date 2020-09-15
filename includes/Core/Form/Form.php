@@ -38,8 +38,8 @@ class Form {
         $form = $wpdb->get_row( $query, ARRAY_A );
 
         if ( $form ) {
-            $form['settings'] = wp_json_encode( $form['settings'], true );
-            $form['template'] = wp_json_encode( $form['template'], true );
+            $form['settings'] = json_decode( $form['settings'], true );
+            $form['template'] = json_decode( $form['template'], true );
 
             return $form;
         }
@@ -190,7 +190,8 @@ class Form {
 
         $ids_string = $this->in_sql( $ids );
 
-        return $wpdb->query( 'DELETE FROM %s WHERE `id` IN %s', $this->get_table(), $ids_string );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        return $wpdb->query( "DELETE FROM {$this->get_table()} WHERE `id` IN ({$ids_string})" );
     }
 
     /**
@@ -220,11 +221,11 @@ class Form {
 
         foreach ( $forms as $index => $form ) {
             if ( isset( $form['settings'] ) ) {
-                $forms[ $index ]['settings'] = wp_json_encode( $form['settings'], true );
+                $forms[ $index ]['settings'] = json_decode( $form['settings'], true );
             }
 
             if ( isset( $form['template'] ) ) {
-                $forms[ $index ]['template'] = wp_json_encode( $form['template'], true );
+                $forms[ $index ]['template'] = json_decode( $form['template'], true );
             }
         }
 
@@ -242,7 +243,8 @@ class Form {
             ]
         );
 
-        $local_forms = $wpdb->get_results( 'SELECT * FROM %s', $this->get_table() );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $local_forms = $wpdb->get_results( "SELECT * FROM {$this->get_table()}" );
 
         if ( is_wp_error( $forms ) || is_null( $local_forms ) ) {
             return null;
