@@ -38,8 +38,8 @@ class Form {
         $form = $wpdb->get_row( $query, ARRAY_A );
 
         if ( $form ) {
-            $form['settings'] = json_decode( $form['settings'], true );
-            $form['template'] = json_decode( $form['template'], true );
+            $form['settings'] = wp_json_encode( $form['settings'], true );
+            $form['template'] = wp_json_encode( $form['template'], true );
 
             return $form;
         }
