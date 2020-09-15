@@ -97,7 +97,7 @@ class Scripts {
         $user = wemail()->user;
 
         $date_format = get_option( 'date_format', 'Y-m-d' );
-        $date_format = get_option( 'time_format', 'g:i a' );
+        $time_format = get_option( 'time_format', 'g:i a' );
 
         $date_format = trim( $date_format );
         $time_format = trim( $time_format );
@@ -221,7 +221,8 @@ class Scripts {
         wp_enqueue_script(
             'wemail-gutenberg-block',
             WEMAIL_ASSETS . '/js/main.js',
-            [ 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element', 'wp-editor' ]
+            [ 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element', 'wp-editor' ],
+            $this->version
         );
 
         wp_localize_script(

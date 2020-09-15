@@ -33,7 +33,7 @@ class Form {
     public function get( $id ) {
         global $wpdb;
 
-        $query = $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1", $id );
+        $query = $wpdb->prepare( 'SELECT * FROM %s WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1', $this->get_table(), $id );
 
         $form = $wpdb->get_row( $query, ARRAY_A );
 
@@ -166,7 +166,7 @@ class Form {
         );
 
         $ids_sql = $this->in_sql( $ids );
-
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $statement = $wpdb->prepare( "UPDATE {$this->get_table()} SET {$attrs} WHERE `id` IN({$ids_sql})", $data );
 
         return $wpdb->query( $statement );
@@ -190,7 +190,7 @@ class Form {
 
         $ids_string = $this->in_sql( $ids );
 
-        return $wpdb->query( "DELETE FROM {$this->get_table()} WHERE `id` IN ({$ids_string})" );
+        return $wpdb->query( 'DELETE FROM %s WHERE `id` IN %s', $this->get_table(), $ids_string );
     }
 
     /**
@@ -211,6 +211,7 @@ class Form {
             $args
         );
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $forms = $wpdb->get_results( "SELECT {$this->in_sql( $args['select'], false )} FROM {$this->get_table()} WHERE `type` IN ({$this->in_sql( $args['type'] )}) AND `status` = 1 AND `deleted_at` IS NULL", ARRAY_A );
 
         if ( is_null( $forms ) ) {
@@ -241,7 +242,7 @@ class Form {
             ]
         );
 
-        $local_forms = $wpdb->get_results( "SELECT * FROM {$this->get_table()}" );
+        $local_forms = $wpdb->get_results( 'SELECT * FROM %s', $this->get_table() );
 
         if ( is_wp_error( $forms ) || is_null( $local_forms ) ) {
             return null;
@@ -341,11 +342,11 @@ class Form {
      *
      * @return string
      */
-    protected function in_sql( $items , $quote = true ) {
+    protected function in_sql( $items, $quote = true ) {
         return implode(
             ', ',
             array_map(
-                function ( $item ) use( $quote ) {
+                function ( $item ) use ( $quote ) {
                     if ( $quote ) {
                         return "'" . esc_sql( $item ) . "'";
                     }

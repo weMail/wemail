@@ -84,8 +84,9 @@ class FormOptIn {
     public function subscribe_checkbox_field( $label_index ) {
         ?>
             <p class="wemail-form-opt-in-field">
-                <input id="wemail_form_opt_in" <?php echo isset( $_POST['wemail_form_opt_in'] ) ? 'checked' : ''; ?> type="checkbox" name="wemail_form_opt_in">
-                <label for="wemail_form_opt_in"><?php _e( $this->settings[ $label_index ], 'wemail' ); ?></label>
+
+                <input id="wemail_form_opt_in" <?php /** phpcs:ignore WordPress.Security.NonceVerification.Missing **/ echo isset( $_POST['wemail_form_opt_in'] ) ? 'checked' : ''; ?> type="checkbox" name="wemail_form_opt_in">
+                <label for="wemail_form_opt_in"><?php /** phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText */ esc_html_e( $this->settings[ $label_index ], 'wemail' ); ?></label>
             </p>
         <?php
     }
@@ -94,11 +95,12 @@ class FormOptIn {
      *  Show Field on Multisite.
      */
     public function subscribe_checkbox_field_multisite() {
+        $registration_label = $this->settings['registration_label'];
         ?>
             <p class="wemail-form-opt-in-field">
                 <label>
-                    <input id="wemail_form_opt_in" <?php echo isset( $_POST['wemail_form_opt_in'] ) ? 'checked' : ''; ?> type="checkbox" name="wemail_form_opt_in">
-                    <?php _e( $this->settings['registration_label'], 'wemail' ); ?>
+                    <input id="wemail_form_opt_in" <?php /** phpcs:ignore WordPress.Security.NonceVerification.Missing **/ echo isset( $_POST['wemail_form_opt_in'] ) ? 'checked' : ''; ?> type="checkbox" name="wemail_form_opt_in">
+                    <?php /** phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText */ esc_html_e( $registration_label, 'wemail' ); ?>
                 </label>
             </p>
         <?php
@@ -125,6 +127,7 @@ class FormOptIn {
      * @param $user_id
      */
     public function save_subscriber_from_registration( $user_id ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( isset( $_POST['wemail_form_opt_in'] ) ) {
             wemail()->subscriber->createOrUpdate(
                 [
@@ -141,6 +144,7 @@ class FormOptIn {
      * @param $comment_id
      */
     public function save_subscriber_from_comment( $comment_id ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( isset( $_POST['wemail_form_opt_in'] ) ) {
             $data = [
                 'list_id' => $this->settings['comment_list_id'],
@@ -165,6 +169,7 @@ class FormOptIn {
      *  @param $order_id
      */
     public function save_subscriber_from_woocommerce_billing( $order_id ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( isset( $_POST['wemail_form_opt_in'] ) ) {
             $order = wc_get_order( $order_id );
 

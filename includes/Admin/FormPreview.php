@@ -21,7 +21,7 @@ class FormPreview {
         $this->add_action( 'wp_ajax_wemail_preview', 'render_form_component' );
 
         if ( isset( $_GET['action'], $_GET['form_id'] ) ) {
-            $this->form_id = wp_unslash( $_GET['form_id'] );
+            $this->form_id = sanitize_text_field( wp_unslash( $_GET['form_id'] ) );
         }
     }
 
@@ -37,8 +37,8 @@ class FormPreview {
         ?>
         <html <?php language_attributes(); ?>>
             <head>
-                <title><?php _e( 'weMail Form Preview', 'wemail' ); ?></title>
-                <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri() . '/style.css'; ?>">
+                <title><?php esc_html_e( 'weMail Form Preview', 'wemail' ); ?></title>
+                <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo get_stylesheet_directory_uri() . '/style.css'; ?>">
                 <script>
                     var weMail = {
                         'restURL': '<?php echo untrailingslashit( get_rest_url( null, '/wemail/v1' ) ); ?>',
@@ -52,9 +52,10 @@ class FormPreview {
                 <div>
                     <?php echo sprintf( '<div id="preview-wemail-form"><wemail-form-preview id="%s"/></div>', $this->form_id ); ?>
                 </div>
-                <script src="<?php echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>
-                <script src="<?php echo wemail()->wemail_cdn . '/js/frontend-vendor.js'; ?>"></script>
-                <script src="<?php echo wemail()->wemail_cdn . '/js/preview.js'; ?>"></script>
+
+                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>
+                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/js/frontend-vendor.js'; ?>"></script>
+                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/js/preview.js'; ?>"></script>
             </body>
         </html>
 
