@@ -76,10 +76,8 @@ class Hooks {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function create_subscriber_on_shutdown( $people_id, $args, $type ) {
-
         if ( $type === 'contact' ) {
             $this->created_contacts[] = $args;
             $this->add_shutdown_action( 'create' );
@@ -95,7 +93,6 @@ class Hooks {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function update_subscriber_on_shutdown( $people_id, $args, $type ) {
         if ( $type === 'contact' ) {
@@ -111,30 +108,27 @@ class Hooks {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function update_subscriber_group_on_shutdown( $subscriber ) {
-
         if ( ! has_action( 'shutdown', [ $this, 'create' ] ) && ! has_action( 'shutdown', [ $this, 'update' ] ) ) {
-             $this->updated_contacts[] = $subscriber->user_id;
+            $this->updated_contacts[] = $subscriber->user_id;
 
-             $this->add_shutdown_action( 'sync_group' );
+            $this->add_shutdown_action( 'sync_group' );
         }
     }
 
     /**
-     * erp_before_delete_people hook
+     * Erp_before_delete_people hook
      *
      * @param $people_id
      * @param array $data
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function before_delete_subscriber( $people_id, $data ) {
         if ( ! empty( $data['type'] ) && $data['type'] === 'contact' ) {
-            if ( $data['hard'] != 1 ) {
+            if ( $data['hard'] !== 1 ) {
                 return;
             }
 
@@ -154,14 +148,13 @@ class Hooks {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function delete_subscriber_on_shutdown( $people_id, $data ) {
-        if ( ( ! empty($data['type']) && $data['type'] != 'contact' ) || $data['hard'] != 1 ) {
+        if ( ( ! empty( $data['type'] ) && $data['type'] !== 'contact' ) || $data['hard'] !== 1 ) {
             return;
         }
-        foreach ($this->deleting_contacts as $people_id => $contact) {
-            if(isset($this->deleting_contacts[$people_id])) {
+        foreach ( $this->deleting_contacts as $people_id => $contact ) {
+            if ( isset( $this->deleting_contacts[ $people_id ] ) ) {
                 $this->deleted_contacts[] = $contact;
             }
         }
@@ -176,7 +169,7 @@ class Hooks {
      * @return void
      */
     public function create() {
-        wemail()->sync->subscriber->erp->create($this->created_contacts);
+        wemail()->sync->subscriber->erp->create( $this->created_contacts );
     }
 
     /**
@@ -215,7 +208,6 @@ class Hooks {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     private function add_shutdown_action( $name ) {
         if ( ! has_action( 'shutdown', [ $this, $name ] ) ) {

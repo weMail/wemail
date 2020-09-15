@@ -4,7 +4,7 @@
         <woocommerce-notice></woocommerce-notice>
         <router-view></router-view>
         <div id="wemail-route-loading" v-if="showLoadingAnime">
-            <span><?php _e( 'Loading', 'wemail' ); ?></span>
+            <span><?php __( 'Loading', 'wemail' ); ?></span>
         </div>
     </div>
 </div>

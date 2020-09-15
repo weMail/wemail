@@ -35,6 +35,11 @@
     "phpcompatibility/phpcompatibility-wp": "dev-master",
     "phpunit/phpunit": "7.5.9"
   },
+  "scripts": {
+    "phpcs": [
+      "phpcs -p -s"
+    ]
+  },
   "autoload": {
     "psr-4": {
       "WeDevs\\WeMail\\": "includes"

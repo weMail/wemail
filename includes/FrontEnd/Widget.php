@@ -9,20 +9,18 @@ class Widget extends WP_Widget {
     public function __construct() {
         $args = [
             'classname'   => 'wemail-form-widget',
-            'description' => __( 'weMail Form Widget', 'wemail' )
+            'description' => __( 'weMail Form Widget', 'wemail' ),
         ];
 
         parent::__construct( 'wemail-form-widget', __( 'weMail Form', 'wemail' ), $args );
     }
 
     public function form( $instance ) {
-        $forms = wemail()->form->get_forms( [
-            'type' => ['inline', 'modal'],
-        ] );
+        $forms = wemail()->form->get_forms( [ 'type' => [ 'inline', 'modal' ] ] );
 
         $defaults = [
             'title' => __( 'Subscribe to our newsletter', 'wemail' ),
-            'form'  => ''
+            'form'  => '',
         ];
 
         $instance = wp_parse_args( $instance, $defaults );
@@ -51,7 +49,7 @@ class Widget extends WP_Widget {
         $form = wemail()->form->get( $id );
 
         if ( ! $form || is_wp_error( $form ) ) {
-            return _e( 'Form not found!' );
+            return __( 'Form not found!', 'wemail' );
         }
 
         unset( $form['entries'] );

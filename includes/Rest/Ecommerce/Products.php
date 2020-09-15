@@ -19,13 +19,17 @@ class Products extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'products' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'products' ],
+                ],
             ]
-        ] );
+        );
     }
 
     /**
@@ -33,50 +37,51 @@ class Products extends WP_REST_Controller {
      * @return bool
      */
     public function permission( $request ) {
-        $weMailMiddleware = new WeMailMiddleware('manage_settings');
+        $middleware = new WeMailMiddleware( 'manage_settings' );
 
-        return $weMailMiddleware->handle( $request );
+        return $middleware->handle( $request );
     }
 
     /*
-       * Params                   | default
-       * -----------------------------------------
-       * page                     | 1
-       * limit                    | 50
-       * status                   | publish
-       * order                    | DESC
-       * orderby                  | date
-   */
+     * Params                   | default
+     * -----------------------------------------
+     * Page                     | 1
+     * Limit                    | 50
+     * Status                   | publish
+     * Order                    | DESC
+     * Orderby                  | date
+     */
 
     public function products( $request ) {
         $source = $request->get_param( 'source' );
 
         // Pass specific integrations orders by mentioning source
-        if ($source === 'woocommerce') {
+        if ( $source === 'woocommerce' ) {
             return rest_ensure_response(
                 $this->wcProducts( $request )
             );
         } else {
-            return rest_ensure_response([
-                'data' => [],
-                'message' => __('Unknown source.')
-            ]);
+            return rest_ensure_response(
+                [
+                    'data' => [],
+                    'message' => __( 'Unknown source.', 'wemail' ),
+                ]
+            );
         }
     }
 
-    public function wcProducts( $request )
-    {
-        $wcProducts = new WCProducts();
+    public function wcProducts( $request ) {
+        $wc_products = new WCProducts();
 
         $args = array(
-            'orderby'  => $request->get_param('orderby'),
-            'order'    => $request->get_param('order'),
-            'status'   => $request->get_param('status'),
-            'limit'    => $request->get_param('limit'),
-            'page'     => $request->get_param('page')
+            'orderby'  => $request->get_param( 'orderby' ),
+            'order'    => $request->get_param( 'order' ),
+            'status'   => $request->get_param( 'status' ),
+            'limit'    => $request->get_param( 'limit' ),
+            'page'     => $request->get_param( 'page' ),
         );
 
-        return $wcProducts->all( $args );
+        return $wc_products->all( $args );
     }
 
 }
