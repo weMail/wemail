@@ -34,7 +34,7 @@ class Form {
         global $wpdb;
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $query = $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = {$id} AND deleted_at IS NULL AND `status` = 1" );
+        $query = $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1", $id );
 
         $form = $wpdb->get_row( $query, ARRAY_A );
 
