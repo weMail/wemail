@@ -69,7 +69,7 @@ wemail();
  * @return void
  */
 function appsero_init_tracker_wemail() {
-    if ( ! class_exists('Appsero\Client' ) ) {
+    if ( ! class_exists( 'Appsero\Client' ) ) {
         require_once __DIR__ . '/appsero/src/Client.php';
     }
 
@@ -85,13 +85,16 @@ appsero_init_tracker_wemail();
  * Add custom links in activation tab of wemail
  */
 function wemail_plugin_action_links( $links ) {
-    $links = array_merge(array(
-        '<a href="https://getwemail.io/docs/wemail/get-started/?utm_source=orgplugin&utm_medium=dashboarddoc&utm_campaign=settinglink" target="_blank">' . __('Docs', 'wemail') . '</a>',
-        '<a href="https://getwemail.io/contact?utm_source=orgplugin&utm_medium=dashboardcontact&utm_campaign=settinglink" target="_blank">' . __('Support', 'wemail') . '</a>',
-        '<a href="https://getwemail.io/?utm_source=site-plugin-settings&utm_medium=website-url" target="_blank">' . __('Visit Site', 'wemail') . '</a>',
-    ), $links);
+    $links = array_merge(
+        [
+            '<a href="https://getwemail.io/docs/wemail/get-started/?utm_source=orgplugin&utm_medium=dashboarddoc&utm_campaign=settinglink" target="_blank">' . __( 'Docs', 'wemail' ) . '</a>',
+            '<a href="https://getwemail.io/contact?utm_source=orgplugin&utm_medium=dashboardcontact&utm_campaign=settinglink" target="_blank">' . __( 'Support', 'wemail' ) . '</a>',
+            '<a href="https://getwemail.io/?utm_source=site-plugin-settings&utm_medium=website-url" target="_blank">' . __( 'Visit Site', 'wemail' ) . '</a>',
+        ],
+        $links
+    );
 
     return $links;
 }
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'wemail_plugin_action_links');
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wemail_plugin_action_links' );

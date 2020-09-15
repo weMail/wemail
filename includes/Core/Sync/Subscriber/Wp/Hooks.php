@@ -43,7 +43,6 @@ class Hooks {
      * @return void
      */
     public function __construct() {
-        // $this->add_action( 'wemail_saved_settings_sync_subscriber_wp', 'create' );
         $this->add_action( 'user_register', 'create_subscriber_on_shutdown' );
         $this->add_action( 'profile_update', 'update_subscriber_on_shutdown' );
         $this->add_action( 'delete_user', 'delete_subscriber_on_shutdown' );
@@ -87,7 +86,7 @@ class Hooks {
      * @return void
      */
     public function delete_subscriber_on_shutdown( $user_id ) {
-        $this->deleted_users[] = get_userdata( $user_id );;
+        $this->deleted_users[] = get_userdata( $user_id );
         $this->add_shutdown_action( 'delete' );
     }
 

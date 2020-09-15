@@ -27,7 +27,7 @@ class Hooks {
 
         global $wp_version;
 
-        if ( version_compare( $wp_version,'5.5' ) >= 0 ) {
+        if ( version_compare( $wp_version, '5.5' ) >= 0 ) {
             $mailer = new WeMailMailer55();
         } else {
             $mailer = new WeMailMailer54();

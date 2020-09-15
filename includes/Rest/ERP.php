@@ -24,9 +24,9 @@ class ERP extends RestController {
      * @return void
      */
     public function register_routes() {
-        $this->get('/crm/contact-groups', 'contact_groups', 'can_view_list');
-        $this->get('/crm/contacts', 'contacts', 'can_view_subscriber');
-        $this->get('/crm/contacts/(?P<id>[\d]+)', 'contact', 'can_view_subscriber');
+        $this->get( '/crm/contact-groups', 'contact_groups', 'can_view_list' );
+        $this->get( '/crm/contacts', 'contacts', 'can_view_subscriber' );
+        $this->get( '/crm/contacts/(?P<id>[\d]+)', 'contact', 'can_view_subscriber' );
     }
 
     /**
@@ -58,7 +58,7 @@ class ERP extends RestController {
         foreach ( $items as $item ) {
             $groups[] = [
                 'id'   => $item->id,
-                'name' => $item->name
+                'name' => $item->name,
             ];
         }
 
@@ -89,7 +89,7 @@ class ERP extends RestController {
 
         $contact_type = $db->table( 'erp_people_types' )->where( 'name', 'contact' )->first();
 
-        if ( empty( $contact_type->id )  ) {
+        if ( empty( $contact_type->id ) ) {
             return $this->respond_error( 'Contact type not found', 'contact_type_not_found' );
         }
 
@@ -97,9 +97,7 @@ class ERP extends RestController {
 
         $query = $db->table( 'erp_peoples as people' )
             ->select( 'people.*' )
-            ->leftJoin( "{$prefix}erp_people_type_relations as rel", function ( $join ) {
-                $join->on( 'people.id', '=', 'rel.people_id' );
-            } )
+            ->leftJoin( "{$prefix}erp_people_type_relations as rel", function ( $join ) { $join->on( 'people.id', '=', 'rel.people_id' ); } )
             ->where( 'rel.people_types_id', $type_id )
             ->whereNull( 'rel.deleted_at' );
 
@@ -127,20 +125,24 @@ class ERP extends RestController {
                 ->get()
                 ->groupBy( 'contact_id' );
 
-            $contacts->map( function ( $contact ) use ( $subscriptions ) {
-                if ( isset( $subscriptions[$contact->id] ) ) {
-                    $contact->groups = $subscriptions[$contact->id];
-                } else {
-                    $contact->groups = [];
-                }
+            $contacts->map(
+                function ( $contact ) use ( $subscriptions ) {
+                    if ( isset( $subscriptions[ $contact->id ] ) ) {
+                        $contact->groups = $subscriptions[ $contact->id ];
+                    } else {
+                        $contact->groups = [];
+                    }
 
-                return $contact;
-            } );
+                    return $contact;
+                }
+            );
         }
 
-        return rest_ensure_response( [
-            'data' => $contacts
-        ] );
+        return rest_ensure_response(
+            [
+                'data' => $contacts,
+            ]
+        );
     }
 
 
@@ -164,16 +166,16 @@ class ERP extends RestController {
         $contact = \WeDevs\ERP\Framework\Models\People::find( $contact_id );
 
         if ( is_null( $contact ) ) {
-            return new \WP_REST_Response('Contact not found', self::HTTP_NOT_FOUND);
+            return new \WP_REST_Response( 'Contact not found', self::HTTP_NOT_FOUND );
         }
         /** @var \WeDevs\ORM\Eloquent\Database $db */
         $db = \WeDevs\ORM\Eloquent\Facades\DB::instance();
         $prefix = $db->db->prefix;
 
-        $groups = $db->table('erp_crm_contact_subscriber')
-            ->selectRaw("contact_group.name, contact_group.description, {$prefix}erp_crm_contact_subscriber.*")
-            ->join("{$prefix}erp_crm_contact_group as contact_group", "{$prefix}erp_crm_contact_subscriber.group_id", '=', "contact_group.id")
-            ->where($prefix.'erp_crm_contact_subscriber.user_id', $contact->id)
+        $groups = $db->table( 'erp_crm_contact_subscriber' )
+            ->selectRaw( "contact_group.name, contact_group.description, {$prefix}erp_crm_contact_subscriber.*" )
+            ->join( $prefix . 'erp_crm_contact_group as contact_group', $prefix . 'erp_crm_contact_subscriber.group_id', '=', 'contact_group.id' )
+            ->where( $prefix . 'erp_crm_contact_subscriber.user_id', $contact->id )
             ->get()->toArray();
 
         $contact->groups = $groups;

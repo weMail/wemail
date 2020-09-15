@@ -25,7 +25,7 @@ class Erp {
             $defaults = [
                 'sync' => false,
                 'import_crm_groups' => false,
-                'default_list' => null
+                'default_list' => null,
             ];
 
             $settings = get_option( 'wemail_sync_subscriber_erp_contacts', [] );
@@ -74,14 +74,13 @@ class Erp {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function create( $contacts = [] ) {
         if ( ! $this->is_active() ) {
             return;
         }
 
-        $contacts = $this->format_contacts($contacts);
+        $contacts = $this->format_contacts( $contacts );
         /**
          * Non-admin users can register or update their own profile.
          * In that case, we have to use the owner's key to import
@@ -89,10 +88,12 @@ class Erp {
          */
         wemail_set_owner_api_key( false );
 
-        wemail()->api->sync()->subscribers()->erp()->subscribed()->post([
-            'list_id' => $this->settings['default_list'],
-            'contacts' => $contacts
-        ]);
+        wemail()->api->sync()->subscribers()->erp()->subscribed()->post(
+            [
+                'list_id' => $this->settings['default_list'],
+                'contacts' => $contacts,
+            ]
+        );
     }
 
     /**
@@ -102,21 +103,22 @@ class Erp {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function update( $contacts ) {
         if ( ! $this->is_active() ) {
             return;
         }
 
-        $contacts = $this->format_contacts($contacts);
+        $contacts = $this->format_contacts( $contacts );
 
         wemail_set_owner_api_key( false );
 
-        wemail()->api->sync()->subscribers()->erp()->subscribed()->post([
-            'list_id' => $this->settings['default_list'],
-            'contacts' => $contacts
-        ]);
+        wemail()->api->sync()->subscribers()->erp()->subscribed()->post(
+            [
+                'list_id' => $this->settings['default_list'],
+                'contacts' => $contacts,
+            ]
+        );
     }
 
     /**
@@ -126,7 +128,6 @@ class Erp {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function delete( $contacts ) {
         if ( ! $this->is_active() ) {
@@ -141,18 +142,19 @@ class Erp {
 
         $emails = [];
 
-        foreach ($contacts as $contact) {
+        foreach ( $contacts as $contact ) {
             $emails[] = $contact->email;
         }
 
-        wemail()->api->sync()->subscribers()->erp()->unsubscribed()->post([
-            'list_id' => $this->settings['default_list'],
-            'emails' => $emails
-        ]);
+        wemail()->api->sync()->subscribers()->erp()->unsubscribed()->post(
+            [
+                'list_id' => $this->settings['default_list'],
+                'emails' => $emails,
+            ]
+        );
     }
 
-    public function sync_group($contact_ids = [])
-    {
+    public function sync_group( $contact_ids = [] ) {
         if ( ! $this->is_active() ) {
             return;
         }
@@ -163,10 +165,12 @@ class Erp {
 
         wemail_set_owner_api_key( false );
 
-        wemail()->api->sync()->subscribers()->erp()->sync_group()->post([
-            'list_id' => $this->settings['default_list'],
-            'contact_ids' => $contact_ids
-        ]);
+        wemail()->api->sync()->subscribers()->erp()->sync_group()->post(
+            [
+                'list_id' => $this->settings['default_list'],
+                'contact_ids' => $contact_ids,
+            ]
+        );
     }
 
     /**
@@ -176,13 +180,28 @@ class Erp {
      *
      * @return array|array[] [type]           [description]
      */
-    protected function format_contacts( array $contacts )
-    {
-        return array_map(function($contact) {
-            return array_merge(wemail_array_only($contact, [
-                'first_name', 'last_name', 'email', 'phone', 'mobile',
-                'city', 'state', 'country', 'date_of_birth'
-            ]), ['source' => 'erp']);
-        }, $contacts);
+    protected function format_contacts( array $contacts ) {
+        return array_map(
+            function ( $contact ) {
+                return array_merge(
+                    wemail_array_only(
+                        $contact,
+                        [
+                            'first_name',
+                            'last_name',
+                            'email',
+                            'phone',
+                            'mobile',
+                            'city',
+                            'state',
+                            'country',
+                            'date_of_birth',
+                        ]
+                    ),
+                    [ 'source' => 'erp' ]
+                );
+            },
+            $contacts
+        );
     }
 }

@@ -78,7 +78,7 @@ class CalderaForms extends AbstractIntegration {
             foreach ( $form_details['fields'] as $caldera_form_field_id => $caldera_form_field ) {
                 $form['fields'][] = [
                     'id'    => $caldera_form_field_id,
-                    'label' => $caldera_form_field['label']
+                    'label' => $caldera_form_field['label'],
                 ];
             }
 
@@ -107,12 +107,12 @@ class CalderaForms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_caldera_forms', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
         $data = [
-            'id' => $form_id
+            'id' => $form_id,
         ];
 
         $posted_data = $processed_data[ $form_id ];

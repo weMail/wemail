@@ -17,8 +17,8 @@ trait Singleton {
      * @return object
      */
     public static function instance() {
-        if (! isset( self::$instance ) && !( self::$instance instanceof self ) ) {
-            self::$instance = new self;
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
+            self::$instance = new self();
 
             if ( method_exists( self::$instance, 'boot' ) ) {
                 self::$instance->boot();

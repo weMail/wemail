@@ -4,7 +4,7 @@
             window.wemail_forms = [];
         }
 
-        window.wemail_forms['<?php echo $id; ?>'] = <?php echo json_encode( $form ); ?>
+        window.wemail_forms['<?php echo $id; ?>'] = <?php echo wp_json_encode( $form ); ?>
     </script>
 
     <div class="wemail-form-container">

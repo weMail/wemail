@@ -65,7 +65,7 @@ class NinjaForms extends AbstractIntegration {
             $form = [
                 'id'     => $form_id,
                 'title'  => $form_settings['title'],
-                'fields' => []
+                'fields' => [],
             ];
 
             foreach ( $fields as $field ) {
@@ -74,7 +74,7 @@ class NinjaForms extends AbstractIntegration {
 
                 $form['fields'][] = [
                     'id'    => $field_id,
-                    'label' => $field_settings['label']
+                    'label' => $field_settings['label'],
                 ];
             }
 
@@ -100,12 +100,12 @@ class NinjaForms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_ninja_forms', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
         $data = [
-            'id' => $form_id
+            'id' => $form_id,
         ];
 
         $field_values = $submission->get_field_values();

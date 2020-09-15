@@ -18,7 +18,8 @@ trait MailerHelper {
         return array_map(
             function ( $address ) {
                 return $address[0];
-            }, $address
+            },
+            $address
         );
     }
 

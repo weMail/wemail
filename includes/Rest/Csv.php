@@ -18,58 +18,72 @@ class Csv {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, $this->rest_base, [
-            'args' => [
-                'id' => [
-                    'description' => __( 'CSV file attachment id', 'wemail' ),
-                    'type'        => 'integer',
-                ],
-            ],
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base,
             [
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback' => [ $this, 'csv_file_info' ],
+                'args' => [
+                    'id' => [
+                        'description' => __( 'CSV file attachment id', 'wemail' ),
+                        'type'        => 'integer',
+                    ],
+                ],
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback' => [ $this, 'csv_file_info' ],
+                ],
             ]
-        ] );
+        );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/meta-fields', [
-            'args' => [
-                'id' => [
-                    'description' => __( 'CSV file attachment id', 'wemail' ),
-                    'type'        => 'integer',
-                ],
-            ],
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/meta-fields',
             [
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback' => [ $this, 'meta_fields' ],
+                'args' => [
+                    'id' => [
+                        'description' => __( 'CSV file attachment id', 'wemail' ),
+                        'type'        => 'integer',
+                    ],
+                ],
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback' => [ $this, 'meta_fields' ],
+                ],
             ]
-        ] );
+        );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/subscribers', [
-            'args' => [
-                'id' => [
-                    'description' => __( 'CSV file attachment id', 'wemail' ),
-                    'type'        => 'integer',
-                ],
-            ],
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/subscribers',
             [
-                'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback' => [ $this, 'subscribers' ],
+                'args' => [
+                    'id' => [
+                        'description' => __( 'CSV file attachment id', 'wemail' ),
+                        'type'        => 'integer',
+                    ],
+                ],
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback' => [ $this, 'subscribers' ],
+                ],
             ]
-        ] );
+        );
     }
 
     public function permission( $request ) {
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query( [
-                'fields'        => 'ID',
-                'meta_key'      => 'wemail_api_key',
-                'meta_value'    => $api_key
-            ] );
+            $query = new WP_User_Query(
+                [
+                    'fields'        => 'ID',
+                    'meta_key'      => 'wemail_api_key',
+                    'meta_value'    => $api_key,
+                ]
+            );
 
             if ( $query->get_total() ) {
                 $results = $query->get_results();
@@ -98,7 +112,7 @@ class Csv {
         $query = $reader->query();
 
         $data = [
-            'total' => iterator_count( $query ) - 1
+            'total' => iterator_count( $query ) - 1,
         ];
 
         return new WP_REST_Response( $data, 200 );
@@ -114,7 +128,7 @@ class Csv {
         $meta_fields = $reader->fetchOne();
 
         $data = [
-            'fields' => $meta_fields
+            'fields' => $meta_fields,
         ];
 
         return new WP_REST_Response( $data, 200 );
@@ -140,7 +154,7 @@ class Csv {
             ->fetchAssoc( $meta_fields );
 
         $data = [
-            'subscribers' => $subscribers
+            'subscribers' => $subscribers,
         ];
 
         return new WP_REST_Response( $data, 200 );

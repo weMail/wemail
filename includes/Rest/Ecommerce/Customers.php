@@ -19,13 +19,17 @@ class Customers extends WP_REST_Controller {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'customers' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'customers' ],
+                ],
             ]
-        ] );
+        );
     }
 
     /**
@@ -33,9 +37,9 @@ class Customers extends WP_REST_Controller {
      * @return bool
      */
     public function permission( $request ) {
-        $weMailMiddleware = new WeMailMiddleware('manage_settings');
+        $middleware = new WeMailMiddleware( 'manage_settings' );
 
-        return $weMailMiddleware->handle($request);
+        return $middleware->handle( $request );
     }
 
     /*
@@ -50,31 +54,31 @@ class Customers extends WP_REST_Controller {
     public function customers( $request ) {
         $source = $request->get_param( 'source' );
 
-        // Pass specific integrations orders by mentioning source
-        if ($source === 'woocommerce') {
+        if ( $source === 'woocommerce' ) {
             return rest_ensure_response(
                 $this->wcCustomers( $request )
             );
         } else {
-            return rest_ensure_response([
-                'data' => [],
-                'message' => __('Unknown source.')
-            ]);
+            return rest_ensure_response(
+                [
+                    'data' => [],
+                    'message' => __( 'Unknown source.', 'wemail' ),
+                ]
+            );
         }
     }
 
-    public function wcCustomers( $request )
-    {
-        $wcCustomers = new WCCustomers();
+    public function wcCustomers( $request ) {
+        $customers = new WCCustomers();
 
         $args = array(
-            'last_synced_id' => $request->get_param('last_synced_id'),
-            'orderby'        => $request->get_param('orderby'),
-            'limit'          => $request->get_param('limit'),
-            'page'           => $request->get_param('page')
+            'last_synced_id' => $request->get_param( 'last_synced_id' ),
+            'orderby'        => $request->get_param( 'orderby' ),
+            'limit'          => $request->get_param( 'limit' ),
+            'page'           => $request->get_param( 'page' ),
         );
 
-        return $wcCustomers->all( $args );
+        return $customers->all( $args );
     }
 
 }

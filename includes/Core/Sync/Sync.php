@@ -10,7 +10,7 @@ class Sync {
     use Singleton;
 
     private $container = [
-        'subscriber' => null
+        'subscriber' => null,
     ];
 
     public function __get( $prop ) {

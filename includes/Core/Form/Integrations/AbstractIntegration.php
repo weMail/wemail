@@ -48,8 +48,9 @@ abstract class AbstractIntegration {
     public function inactivity_message() {
         return new WP_Error(
             'integration_is_not_active',
+            /* translators: %s: search term */
             sprintf( __( '%s plugin is not active', 'wemail' ), $this->title ),
-            ['status' => 422]
+            [ 'status' => 422 ]
         );
     }
 
@@ -105,7 +106,7 @@ abstract class AbstractIntegration {
                 'id'        => $form_id,
                 'list_id'   => $form['list_id'],
                 'overwrite' => $form['overwrite'],
-                'map'       => $form['map']
+                'map'       => $form['map'],
             ];
 
             $form_ids[] = $form_id;

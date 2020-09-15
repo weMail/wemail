@@ -59,7 +59,7 @@ class Site extends RestController {
             update_option( "wemail_{$key}", $setting );
         }
 
-        return rest_ensure_response( ['success' => true] );
+        return rest_ensure_response( [ 'success' => true ] );
     }
 
 }

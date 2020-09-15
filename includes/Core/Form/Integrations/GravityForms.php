@@ -68,15 +68,14 @@ class GravityForms extends AbstractIntegration {
                 if ( empty( $field['inputs'] ) ) {
                     $form['fields'][] = [
                         'id'    => $field->id,
-                        'label' => $field->label
+                        'label' => $field->label,
                     ];
-
                 } else {
-                    foreach ( $field['inputs'] as $i => $group_field) {
+                    foreach ( $field['inputs'] as $i => $group_field ) {
                         if ( empty( $group_field['isHidden'] ) ) {
                             $form['fields'][] = [
                                 'id'    => $group_field['id'],
-                                'label' => $group_field['label']
+                                'label' => $group_field['label'],
                             ];
                         }
                     }
@@ -104,12 +103,12 @@ class GravityForms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_gravity_forms', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
         $data = [
-            'id' => $form_id
+            'id' => $form_id,
         ];
 
         foreach ( $form['fields'] as $field ) {
@@ -117,7 +116,6 @@ class GravityForms extends AbstractIntegration {
 
             if ( empty( $field['inputs'] ) ) {
                 $data['data'][ $field->id ] = $lead[ $field->id ];
-
             } else {
                 foreach ( $field['inputs'] as $group_field ) {
                     if ( empty( $group_field['isHidden'] ) ) {

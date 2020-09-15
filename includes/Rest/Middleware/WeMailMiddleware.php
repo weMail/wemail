@@ -9,10 +9,10 @@ class WeMailMiddleware {
     protected $permission;
 
     /**
-     * weMail constructor.
+     * WeMail constructor.
      * @param $permission
      */
-    public function __construct($permission) {
+    public function __construct( $permission ) {
         $this->permission = $permission;
     }
 
@@ -24,11 +24,13 @@ class WeMailMiddleware {
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query( [
-                'fields'        => 'ID',
-                'meta_key'      => 'wemail_api_key',
-                'meta_value'    => $api_key
-            ] );
+            $query = new WP_User_Query(
+                [
+                    'fields'        => 'ID',
+                    'meta_key'      => 'wemail_api_key',
+                    'meta_value'    => $api_key,
+                ]
+            );
 
             if ( $query->get_total() ) {
                 $results = $query->get_results();
