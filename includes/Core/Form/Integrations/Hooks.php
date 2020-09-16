@@ -25,5 +25,6 @@ class Hooks {
         add_action( 'caldera_forms_submit_complete', [ CalderaForms::instance(), 'submit' ], 999, 4 );
         add_action( 'weforms_entry_submission', [ Weforms::instance(), 'submit' ], 999, 4 );
         add_action( 'nf_save_sub', [ NinjaForms::instance(), 'submit' ], 999, 1 );
+        add_action( 'fluentform_before_insert_submission', [ FluentForms::instance(), 'submit' ], 999, 1 );
     }
 }
