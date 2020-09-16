@@ -11,24 +11,16 @@ class WeMailMailer55 extends PHPMailer {
     /**
      * Overwrite phpmailer send method
      *
-     * @throws \phpmailerException
+     * @throws PHPMailerException
      */
     public function send() {
-        $response = wemail()->api->emails()->transactional()->post(
-            [
-                'to' => $this->formatEmailAddress( $this->phpmailer->getToAddresses() ),
-                'subject' => $this->phpmailer->Subject,
-                'message' => $this->phpmailer->Body,
-                'type' => $this->phpmailer->ContentType,
-                'attachments' => $this->formatAttachments( $this->phpmailer->getAttachments() ),
-            ]
-        );
+        $response = $this->attemptToSend();
 
         if ( is_wp_error( $response ) ) {
             throw new PHPMailerException( $response->get_error_message() );
         }
 
-        if ( isset( $response['success'] ) && ( (bool) $response['success'] !== true || $response['success'] !== 1 ) ) {
+        if ( isset( $response['success'] ) && ! wemail_validate_boolean( $response['success'] ) ) {
             throw new PHPMailerException( 'Could not send transactional email' );
         }
 
