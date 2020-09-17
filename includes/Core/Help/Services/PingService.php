@@ -15,9 +15,11 @@ class PingService {
      */
     public function request_send($request, $callback_url) {
         $api_key    = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
+        
         if (!$api_key) {
-            return wp_send_json_error('User ID not found');
+            return wp_send_json_error(['message' => 'User ID not found']);
         }
+
         $api        = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
         $wemail_api = untrailingslashit( $api );
 
@@ -35,13 +37,14 @@ class PingService {
 
         if ( is_wp_error( $response ) ) {
             $error_message = $response->get_error_message();
-            return wp_send_json_error('Something went wrong: '. $error_message);
+            return wp_send_json_error(['message' => 'Something went wrong: '. $error_message]);
         } else {
 
             $body = wp_remote_retrieve_body($response);
             $code = wp_remote_retrieve_response_code($response);
+            $result = array_merge(['message' => 'Server responded with ' . $code . ' code.'], json_decode($body, true));
 
-            return wp_send_json($body, $code);
+            return wp_send_json_success($result, $code);
         }
     }
 
