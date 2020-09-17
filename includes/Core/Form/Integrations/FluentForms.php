@@ -41,7 +41,7 @@ class FluentForms extends AbstractIntegration {
         return array_map(
             function ( $form ) {
                 return [
-                    'id'     => $form->id,
+                    'id'     => absint( $form->id ),
                     'title'  => $form->title,
                     'fields' => $this->transform_form_fields( json_decode( $form->form_fields, true ) ),
                 ];
