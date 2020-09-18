@@ -100,6 +100,7 @@ class Form {
             'caldera_forms'     => __( 'Caldera Forms', 'wemail' ),
             'weforms'           => __( 'weForms', 'wemail' ),
             'ninja_forms'       => __( 'Ninja Forms', 'wemail' ),
+            'happy_forms'       => __( 'Happy Forms', 'wemail' ),
             'formidable_forms'  => __( 'Formidable Forms', 'wemail' ),
         ];
     }
