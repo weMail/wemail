@@ -12,13 +12,9 @@ class Help extends RestController {
     public $rest_base = '/help';
 
     public function register_routes() {
-<<<<<<< HEAD
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/system_info',
-=======
-        register_rest_route( $this->namespace, $this->rest_base . '/system-info', [
->>>>>>> class for ping add
             [
                 [
                     'methods'             => WP_REST_Server::READABLE,
@@ -26,27 +22,31 @@ class Help extends RestController {
                     'callback'            => [ $this, 'index' ],
                 ],
             ]
-<<<<<<< HEAD
         );
-=======
-        ] );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/tools/ping/send', [
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/tools/ping/send',
             [
-                'methods'             => WP_REST_Server::CREATABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'send_ping' ],
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'send_ping' ],
+                ],
             ]
-        ] );
+        );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/tools/ping/receive', [
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/tools/ping/receive',
             [
-                'methods'             => WP_REST_Server::CREATABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'receive_ping' ],
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'receive_ping' ],
+                ],
             ]
-        ] );
->>>>>>> class for ping add
+        );
     }
 
     /**
@@ -64,7 +64,6 @@ class Help extends RestController {
     public function index() {
         $system = new SystemInfo();
 
-<<<<<<< HEAD
         return rest_ensure_response(
             [
                 'data' => [
@@ -72,25 +71,20 @@ class Help extends RestController {
                 ],
             ]
         );
-=======
-        return rest_ensure_response([
-            'data' => $system->allInfo()
-        ]);
->>>>>>> class for ping add
     }
 
-    public function send_ping($request) {
+    public function send_ping( $request ) {
         $ping = new PingService();
 
         $callback_url = get_rest_url() . $this->namespace . $this->rest_base . '/tools/ping/receive';
 
-        return rest_ensure_response($ping->request_send($request, $callback_url));
+        return rest_ensure_response( $ping->request_send( $request, $callback_url ) );
     }
 
-    public function receive_ping($request) {
+    public function receive_ping( $request ) {
         $ping = new PingService();
 
-        return rest_ensure_response($ping->request_receive($request));
+        return rest_ensure_response( $ping->request_receive( $request ) );
     }
 
 
