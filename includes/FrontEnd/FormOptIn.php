@@ -31,7 +31,7 @@ class FormOptIn {
                 'comment_label'        => '',
                 'comment_list_id'      => '',
                 'form_in_blogs'        => false,
-                'subscription_form_id' => ''
+                'subscription_form_id' => '',
             ]
         );
 

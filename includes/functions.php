@@ -234,13 +234,16 @@ function wemail_get_image_url( $image_id, $size = 'full' ) {
  * @return null|string
  */
 function wemail_form( $id ) {
-    if (is_array( $id )) {
+    if ( is_array( $id ) ) {
         $form = $id;
     } else {
         $form = wp_cache_get( 'wf_' . $id );
         if ( false === $form ) {
-            $form = wemail()->form->get($id);
-            wp_cache_set( 'wf_' . $id , $form);
+            $form = wemail()->form->get( $id );
+            wp_cache_set(
+                'wf_' . $id,
+                $form
+            );
         }
     }
 
