@@ -27,7 +27,7 @@
     "league/csv": "^7.2",
     "danielstjules/stringy": "dev-master",
     "appsero/client": "^1.1",
-    "wemail/wpinfo": "^0.1.0"
+    "wemail/wpinfo": "dev-master"
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-master",

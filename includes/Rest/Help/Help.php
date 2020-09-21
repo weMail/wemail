@@ -14,7 +14,7 @@ class Help extends RestController {
     public function register_routes() {
         register_rest_route(
             $this->namespace,
-            $this->rest_base . '/system_info',
+            $this->rest_base . '/system-info',
             [
                 [
                     'methods'             => WP_REST_Server::READABLE,
@@ -66,9 +66,7 @@ class Help extends RestController {
 
         return rest_ensure_response(
             [
-                'data' => [
-                    $system->allInfo(),
-                ],
+                'data' => $system->allInfo(),
             ]
         );
     }

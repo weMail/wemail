@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "930bf376692dea55f19fcf3fdcf36eff",
+    "content-hash": "6d4401e530eaf2df397448135e5519a1",
     "packages": [
         {
             "name": "appsero/client",
@@ -240,16 +240,16 @@
         },
         {
             "name": "wemail/wpinfo",
-            "version": "0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/emtiazzahid/wpinfo.git",
-                "reference": "84e388cc7d37324610db89cc16b8e8254e816574"
+                "reference": "7703a3e8e4ef551ac3a945ad6f9fec70b5fc7d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/emtiazzahid/wpinfo/zipball/84e388cc7d37324610db89cc16b8e8254e816574",
-                "reference": "84e388cc7d37324610db89cc16b8e8254e816574",
+                "url": "https://api.github.com/repos/emtiazzahid/wpinfo/zipball/7703a3e8e4ef551ac3a945ad6f9fec70b5fc7d71",
+                "reference": "7703a3e8e4ef551ac3a945ad6f9fec70b5fc7d71",
                 "shasum": ""
             },
             "require": {
@@ -278,7 +278,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2020-09-09T14:50:25+00:00"
+            "time": "2020-09-15T06:04:31+00:00"
         }
     ],
     "packages-dev": [
@@ -2154,6 +2154,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "danielstjules/stringy": 20,
+        "wemail/wpinfo": 20,
         "wp-coding-standards/wpcs": 20,
         "tareq1988/wp-php-cs-fixer": 20,
         "phpcompatibility/phpcompatibility-wp": 20
