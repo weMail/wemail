@@ -73,7 +73,6 @@ class User {
 
         if ( $api_key ) {
             $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
-
             if ( ! $user_data ) {
                 $user_data = wemail()->api->auth()->users()->me()->query( [ 'include' => 'role,permissions' ] )->get();
 

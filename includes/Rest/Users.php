@@ -63,14 +63,28 @@ class Users extends RestController {
             foreach ( $users as $user ) {
                 $wp_admin_response = wemail()->api->auth()->users()->post(
                     [
-                        'name'  => $user['name'],
-                        'email' => $user['email'],
-                        'role'  => $role,
+                        'name'    => $user['name'],
+                        'email'   => $user['email'],
+                        'role'    => $role,
+                        'include' => 'role,permissions',
                     ]
                 );
 
                 if ( isset( $wp_admin_response['access_token'] ) && $wp_admin_response['access_token'] !== '' ) {
                     update_user_meta( $user['id'], 'wemail_api_key', $wp_admin_response['access_token'] );
+                    if ( isset( $wp_admin_response['data'] ) ) {
+                        $response = $wp_admin_response['data'];
+                        $user_meta = [
+                            'deleted_at'  => $response['deleted_at'],
+                            'email'       => $response['email'],
+                            'hash'        => $response['hash'],
+                            'name'        => $response['name'],
+                            'permissions' => $response['permissions'],
+                            'role'        => $response['role'],
+                            'roles'       => $response['roles'],
+                        ];
+                        update_user_meta( $user['id'], 'wemail_user_data', $user_meta );
+                    }
                 }
             }
 
@@ -88,16 +102,26 @@ class Users extends RestController {
         if ( $access_token ) {
             wemail()->api->set_api_key( $access_token[0] );
             foreach ( $users as $user ) {
-                $wp_admin_response = wemail()->api->auth()->users()->move()->post(
+                $response = wemail()->api->auth()->users()->move()->post(
                     [
-                        'email' => $user,
-                        'role'  => $role,
+                        'email'   => $user,
+                        'role'    => $role,
+                        'include' => 'role,permissions',
                     ]
                 );
 
                 $wp_user = get_user_by( 'email', $user );
                 if ( isset( $wp_user->ID ) ) {
-                    delete_user_meta( $wp_user->ID, 'wemail_user_data' );
+                    $user_meta = [
+                        'deleted_at'  => $response['data']['deleted_at'],
+                        'email'       => $response['data']['email'],
+                        'hash'        => $response['data']['hash'],
+                        'name'        => $response['data']['name'],
+                        'permissions' => $response['data']['permissions'],
+                        'role'        => $response['data']['role'],
+                        'roles'       => $response['data']['roles'],
+                    ];
+                    update_user_meta( $wp_user->ID, 'wemail_user_data', $user_meta );
                 }
             }
 
