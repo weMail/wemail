@@ -13,3 +13,4 @@ npm-debug.log
 build/*
 !build/index.js
 packages
+/packages
