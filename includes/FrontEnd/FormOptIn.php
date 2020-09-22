@@ -30,6 +30,8 @@ class FormOptIn {
                 'comment_enabled'      => false,
                 'comment_label'        => '',
                 'comment_list_id'      => '',
+                'form_in_blogs'        => false,
+                'subscription_form_id' => '',
             ]
         );
 
@@ -60,6 +62,14 @@ class FormOptIn {
             $this->add_action( 'comment_form_after_fields', 'comment_opt_in_label' );
             $this->add_action( 'comment_post', 'save_subscriber_from_comment' );
         }
+
+        if ( wemail_validate_boolean( $this->settings['form_in_blogs'] ) ) {
+            $this->add_filter( 'the_content', 'wemail_form_footer' );
+        }
+    }
+
+    public function wemail_form_footer( $content ) {
+        return $content . wemail_form( $this->settings['subscription_form_id'] );
     }
 
     /**
@@ -190,5 +200,4 @@ class FormOptIn {
             );
         }
     }
-
 }
