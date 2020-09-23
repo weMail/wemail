@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email, campaign, smtp, marketing, newsletter, newslettes, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -178,6 +178,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v1.0.8 - (23rd September, 2020) =
+ * **Fixed:** Fixed missing table form creation issue when installing the plugin.
 
 = v1.0.7 - (26th August, 2020) =
  * **Fixed:** Fix missing permission callback for Mailpoet rest api.
