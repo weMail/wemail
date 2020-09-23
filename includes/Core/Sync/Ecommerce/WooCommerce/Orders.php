@@ -1,13 +1,12 @@
 <?php
 
-namespace WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Orders;
+namespace WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce;
 
-use WeDevs\WeMail\Core\Ecommerce\Requests\Orders;
-use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrderProducts;
+use WeDevs\WeMail\Core\Ecommerce\Requests\Orders as OrderRequest;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCOrders;
 use WeDevs\WeMail\Traits\Hooker;
 
-class Hooks {
+class Orders {
 
     use Hooker;
 
@@ -26,12 +25,12 @@ class Hooks {
         $this->add_action( 'woocommerce_thankyou', 'wemail_wc_order_received' );
         $this->add_action( 'woocommerce_order_status_changed', 'wemail_wc_order_status_updated', 10, 3 );
 
-        $this->order_request = new Orders();
+        $this->order_request = new OrderRequest();
         $this->wc_order = new WCOrders();
     }
 
     /**
-     * Sync new customer
+     * Sync new order
      *
      * @param $order_id
      * @return void

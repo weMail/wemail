@@ -6,7 +6,7 @@ use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WeDevs\WeMail\RestController;
 use WP_REST_Server;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCIntegration;
-use WP_User_Query;
+use WeDevs\WeMail\Core\Ecommerce\EDD\EDDIntegration;
 
 class Integrations extends RestController {
 
@@ -54,10 +54,14 @@ class Integrations extends RestController {
      */
     public function index() {
         $wc_integration = new WCIntegration();
+        $edd_integration = new EDDIntegration();
 
         return rest_ensure_response(
             [
-                'data' => [ $wc_integration->status() ],
+                'data' => [
+                    $wc_integration->status(),
+                    $edd_integration->status(),
+                ],
             ]
         );
     }
@@ -71,17 +75,20 @@ class Integrations extends RestController {
         $integration = $request->get_param( 'integration' );
 
         $wc_integration = new WCIntegration();
+        $edd_integration = new EDDIntegration();
 
-        // Add other integrations below this
-        if ( $integration === 'woocommerce' ) {
-            return rest_ensure_response( [ 'data' => $wc_integration->status() ] );
-        } else {
-            return rest_ensure_response(
-                [
-                    'data'    => [],
-                    'message' => __( 'Unknown source.', 'wemail' ),
-                ]
-            );
+        switch ( $integration ) {
+            case 'woocommerce':
+                return rest_ensure_response( [ 'data' => $wc_integration->status() ] );
+            case 'edd':
+                return rest_ensure_response( [ 'data' => $edd_integration->status() ] );
+            default:
+                return rest_ensure_response(
+                    [
+                        'data'    => [],
+                        'message' => __( 'Unknown source.', 'wemail' ),
+                    ]
+                );
         }
     }
 
