@@ -63,7 +63,7 @@ class FormOptIn {
             $this->add_action( 'comment_post', 'save_subscriber_from_comment' );
         }
 
-        if ( wemail_validate_boolean( $this->settings['form_in_blogs'] ) ) {
+        if ( isset( $this->settings['form_in_blogs'] ) && wemail_validate_boolean( $this->settings['form_in_blogs'] ) ) {
             $this->add_filter( 'the_content', 'wemail_form_footer' );
         }
     }
