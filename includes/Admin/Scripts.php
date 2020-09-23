@@ -1,6 +1,7 @@
 <?php
 namespace WeDevs\WeMail\Admin;
 
+use WeDevs\WeMail\Core\Ecommerce\EDD\EDDIntegration;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCIntegration;
 use WeDevs\WeMail\Traits\Hooker;
 
@@ -105,6 +106,7 @@ class Scripts {
         $current_user = $current && $current->data ? $current->data : null;
 
         $wc_integration = new WCIntegration();
+        $edd_integration = new EDDIntegration();
 
         $wemail = [
             'version'              => wemail()->version,
@@ -150,6 +152,7 @@ class Scripts {
             'activeIntegrations'    => $this->active_integrations(),
             'integrations'          => [
                 'woocommerce' => $wc_integration->status(),
+                'edd'         => $edd_integration->status(),
             ],
         ];
 

@@ -58,7 +58,7 @@ class Products extends WP_REST_Controller {
 
         // Pass specific integrations orders by mentioning source
 
-        switch ($source) {
+        switch ( $source ) {
             case 'woocommerce':
                 return rest_ensure_response(
                     $this->wcProducts( $request )
