@@ -36,7 +36,7 @@ class EDDIntegration {
      * @return bool
      */
     protected function is_edd_synced_with_wemail() {
-        $synced = get_option( 'is_edd_synced' );
+        $synced = get_option( 'wemail_is_edd_synced' );
 
         return $synced ? true : false;
     }
