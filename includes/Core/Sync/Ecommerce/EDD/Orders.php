@@ -71,7 +71,7 @@ class Orders {
      * @param $payment_id
      * @param $new_status
      */
-    public function wemail_edd_order_status_updated( $payment_id, $new_status ) {
+    public function wemail_edd_update_payment_status( $payment_id, $new_status ) {
         $integrated = get_option( 'wemail_edd_integrated' );
         $synced     = get_option( 'wemail_is_edd_synced' );
         if ( ! $integrated || ! $synced ) {
