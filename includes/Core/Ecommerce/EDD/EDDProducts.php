@@ -29,28 +29,27 @@ class EDDProducts {
 
         $api = new \EDD_API();
 
-        $eddProducts = [];
+        $edd_products = [];
         if ( $product_list->posts ) {
             foreach ( $product_list->posts as $product_info ) {
-                $eddProducts[] = $api->get_product_data( $product_info );
+                $edd_products[] = $api->get_product_data( $product_info );
             }
         }
 
         $products['current_page'] = intval( $args['paged'] );
         $products['total'] = $product_list->found_posts;
-        $products['total_page'] = ceil($product_list->found_posts / $args['posts_per_page']);
+        $products['total_page'] = ceil( $product_list->found_posts / $args['posts_per_page'] );
         $products['data'] = null;
 
-
-        foreach ( $eddProducts as $download ) {
+        foreach ( $edd_products as $download ) {
             $products['data'][] = [
                 'id'          => $download['info']['id'],
                 'source'      => 'edd',
                 'name'        => $download['info']['title'],
                 'slug'        => $download['info']['slug'],
-                'images'      => $this->get_images($download['info']['thumbnail'], $download['info']['title']),
+                'images'      => $this->get_images( $download['info']['thumbnail'], $download['info']['title'] ),
                 'status'      => $download['info']['status'],
-                'price'       => $this->get_price($download['pricing']),
+                'price'       => $this->get_price( $download['pricing'] ),
                 'total_sales' => $download['stats']['total']['sales'],
                 'rating'      => '',
                 'permalink'   => get_permalink( $download['info']['id'] ),
@@ -61,8 +60,8 @@ class EDDProducts {
         return $products;
     }
 
-    private function get_images($thumbnail, $title) {
-        if (!$thumbnail) {
+    private function get_images( $thumbnail, $title ) {
+        if ( ! $thumbnail ) {
             return null;
         }
 
@@ -75,22 +74,23 @@ class EDDProducts {
     }
 
     private function get_price( $pricing ) {
-        if(isset($pricing['amount'])) {
+        if ( isset( $pricing['amount'] ) ) {
             return $pricing['amount'];
-        } else if (isset($pricing['amount'][0])) {
+        } elseif ( isset( $pricing['amount'][0] ) ) {
             // getting first price from price variation
             return $pricing['amount'][0];
-        } else 
-            return 0;
+        } else {
+			return 0;
+        }
     }
 
     private function get_formated_categories( $categories ) {
-        if(!$categories) {
+        if ( ! $categories ) {
             return false;
         }
 
         $result = [];
-        foreach($categories as $category) {
+        foreach ( $categories as $category ) {
             $result[] = [
                 'id'    => $category->term_id,
                 'name'  => $category->name,

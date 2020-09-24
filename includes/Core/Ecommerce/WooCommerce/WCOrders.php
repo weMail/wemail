@@ -30,7 +30,7 @@ class WCOrders {
                 'message' => __( 'WooCommerce not integrated with weMail', 'wemail' ),
             ];
         }
-        
+
         $params = [
             'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
             'order'    => $args['order'] ? $args['order'] : 'DESC',

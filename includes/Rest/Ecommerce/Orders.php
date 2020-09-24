@@ -55,13 +55,12 @@ class Orders extends WP_REST_Controller {
     public function orders( $request ) {
         $source = $request->get_param( 'source' );
 
-
         switch ( $source ) {
             case 'woocommerce':
                 return rest_ensure_response(
                     $this->wcOrders( $request )
                 );
-            case 'edd': 
+            case 'edd':
                 return rest_ensure_response(
                     $this->eddOrders( $request )
                 );

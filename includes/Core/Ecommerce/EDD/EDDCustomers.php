@@ -27,16 +27,16 @@ class EDDCustomers {
         ];
 
         $api = new \EDD_API_V2();
-        $eddCustomers = $api->get_customers( $params );
+        $edd_customers = $api->get_customers( $params );
 
-        $total_customer = count($eddCustomers['customers']);
+        $total_customer = count( $edd_customers['customers'] );
 
         $response['current_page'] = intval( $params['page'] );
         $response['total'] = $total_customer;
-        $response['total_page'] = ceil($total_customer/$params['page']);
+        $response['total_page'] = ceil( $total_customer / $params['page'] );
         $response['data'] = [];
 
-        foreach ( $eddCustomers['customers'] as $item ) {
+        foreach ( $edd_customers['customers'] as $item ) {
             $response['data'][] = [
                 'source'             => 'edd',
                 'wp_user_id'         => $item['info']['user_id'],
@@ -44,7 +44,7 @@ class EDDCustomers {
                 'first_name'         => $item['info']['first_name'],
                 'last_name'          => $item['info']['last_name'],
                 'display_name'       => $item['info']['display_name'],
-                'is_paying_customer' => boolval((int) $item['stats']['total_purchases']),
+                'is_paying_customer' => boolval( (int) $item['stats']['total_purchases'] ),
                 'date_created'       => $item['info']['date_created'],
                 'last_order'         => '',
             ];
