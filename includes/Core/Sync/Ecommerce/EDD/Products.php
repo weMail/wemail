@@ -42,7 +42,7 @@ class Products {
         }
 
         $download = new \EDD_Download( $post_id );
-        if (!$download || $download->post_status !== 'publish' || $download->post_type !== 'download') {
+        if (!$download || $download->post_type !== 'download') {
             return;
         }
 

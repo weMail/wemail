@@ -9,58 +9,94 @@ class EDDProducts {
     use Singleton;
 
     /**
-     * Get a collection of orders
+     * Get a collection of products
      *
      * @param $args
      * @return array|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
-     * Details: https://www.businessbloomer.com/woocommerce-easily-get-product-info-title-sku-desc-product-object/
      * @since 1.0.0
      */
     public function all( $args ) {
         $args = [
+            'post_type' => 'download',
             'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
             'order'    => $args['order'] ? $args['order'] : 'DESC',
             'status'   => $args['status'] ? $args['status'] : 'publish',
-            'limit'    => $args['limit'] ? $args['limit'] : 50,
-            'paginate' => true,
-            'page'     => $args['page'] ? $args['page'] : 1,
+            'posts_per_page'   => $args['limit'] ? $args['limit'] : 50,
+            'paged'     => $args['page'] ? $args['page'] : 1,
         ];
 
-        $a = new \EDD_API();
-        dd($a->get_products());
+        $product_list = new \WP_Query( $args );
 
-        $posts = get_posts( array(
-                'post_type' => 'download',
-                'post_status' => 'any',
-                'suppress_filters' => $args['limit'],
-                'posts_per_page' => -1,
-            )
-        );
+        $api = new \EDD_API();
 
-        $products = [];
+        $eddProducts = [];
+        if ( $product_list->posts ) {
+            foreach ( $product_list->posts as $product_info ) {
+                $eddProducts[] = $api->get_product_data( $product_info );
+            }
+        }
 
-        $products['current_page'] = intval( $args['page'] );
-//        $products['total'] = $collection->total;
-//        $products['total_page'] = $collection->max_num_pages;
+        $products['current_page'] = intval( $args['paged'] );
+        $products['total'] = $product_list->found_posts;
+        $products['total_page'] = ceil($product_list->found_posts / $args['posts_per_page']);
+        $products['data'] = null;
 
-        foreach ( $posts as $post ) {
-            $product = new \EDD_Download( $post->ID );
 
+        foreach ( $eddProducts as $download ) {
             $products['data'][] = [
-                'id'          => $product->ID,
+                'id'          => $download['info']['id'],
                 'source'      => 'edd',
-                'name'        => $product->post_title,
-                'slug'        => $product->post_name,
-//                'images'      => $this->get_product_images( $product ),
-                'status'      => $product->post_status,
-                'price'       => $product->price,
-                'total_sales' => $product->sales,
-//                'rating'      => $product->get_average_rating(),
-                'permalink'   => get_permalink( $product->ID ),
-                'categories'  => get_the_term_list($product->ID, 'download_category'),
+                'name'        => $download['info']['title'],
+                'slug'        => $download['info']['slug'],
+                'images'      => $this->get_images($download['info']['thumbnail'], $download['info']['title']),
+                'status'      => $download['info']['status'],
+                'price'       => $this->get_price($download['pricing']),
+                'total_sales' => $download['stats']['total']['sales'],
+                'rating'      => '',
+                'permalink'   => get_permalink( $download['info']['id'] ),
+                'categories'  => $this->get_formated_categories( $download['info']['category'] ),
             ];
         }
 
         return $products;
+    }
+
+    private function get_images($thumbnail, $title) {
+        if (!$thumbnail) {
+            return null;
+        }
+
+        return [
+            'id' => '',
+            'src' => $thumbnail,
+            'title' => $title,
+            'alt' => $title,
+        ];
+    }
+
+    private function get_price( $pricing ) {
+        if(isset($pricing['amount'])) {
+            return $pricing['amount'];
+        } else if (isset($pricing['amount'][0])) {
+            // getting first price from price variation
+            return $pricing['amount'][0];
+        } else 
+            return 0;
+    }
+
+    private function get_formated_categories( $categories ) {
+        if(!$categories) {
+            return false;
+        }
+
+        $result = [];
+        foreach($categories as $category) {
+            $result[] = [
+                'id'    => $category->term_id,
+                'name'  => $category->name,
+            ];
+        }
+
+        return $result;
     }
 }
