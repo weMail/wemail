@@ -33,29 +33,31 @@ class EDDOrders {
             'number'    => $args['limit'] ? $args['limit'] : 50,
             'page'      => $args['page'] ? $args['page'] : 1,
             'mode'      => edd_is_test_mode() ? 'test' : 'live',
-            'fields'    => 'ids'
+            'fields'    => 'ids',
         ];
 
         if ( $args['status'] ) {
             $params['status'] = $args['status'];
         }
 
-        $allPaymentIds = edd_get_payments( [
-            'number'    => -1,
-            'mode'      => $params['mode'],
-            'fields'    => $params['fields']
-        ] );
-        
-        $total = count($allPaymentIds);
+        $all_payment_ids = edd_get_payments(
+            [
+				'number'    => -1,
+				'mode'      => $params['mode'],
+				'fields'    => $params['fields'],
+			]
+        );
 
-        $eddPaymentIds = edd_get_payments( $params );
+        $total = count( $all_payment_ids );
+
+        $edd_payment_ids = edd_get_payments( $params );
 
         $orders['current_page'] = intval( $params['page'] );
         $orders['total'] = $total;
-        $orders['total_page'] = ceil($total/$params['number']);
+        $orders['total_page'] = ceil( $total / $params['number'] );
         $orders['data'] = null;
 
-        foreach ( $eddPaymentIds as $payment_id ) {
+        foreach ( $edd_payment_ids as $payment_id ) {
             $orders['data'][] = $this->get( $payment_id );
         }
 
@@ -74,9 +76,9 @@ class EDDOrders {
             'status'               => edd_get_payment_status( $payment_id ),
             'currency'             => $payment_meta['currency'],
             'total'                => $payment->total,
-            'payment_method_title' => edd_get_payment_gateway($payment_id),
-            'date_created'         => date('Y-m-d H:m:s', strtotime($payment_meta['date'])),
-            'date_completed'       => date('Y-m-d H:m:s', strtotime($payment->completed_date)),
+            'payment_method_title' => edd_get_payment_gateway( $payment_id ),
+            'date_created'         => gmdate( 'Y-m-d H:m:s', strtotime( $payment_meta['date'] ) ),
+            'date_completed'       => gmdate( 'Y-m-d H:m:s', strtotime( $payment->completed_date ) ),
             'permalink'            => get_permalink( $payment_id ),
             'products'             => $this->get_ordered_products( $payment_meta['cart_details'] ),
         ];
@@ -84,22 +86,22 @@ class EDDOrders {
 
     private function getCustomerInfo( $user ) {
         return [
-            'wp_user_id'      => $user['id'] ?: '',
-            'first_name'      => $user['first_name'] ?: '',
-            'last_name'       => $user['last_name'] ?: '',
-            'email'           => $user['email'] ?: '',
+            'wp_user_id'      => $user['id'] ? $user['id'] : '',
+            'first_name'      => $user['first_name'] ? $user['first_name'] : '',
+            'last_name'       => $user['last_name'] ? $user['last_name'] : '',
+            'email'           => $user['email'] ? $user['email'] : '',
             'phone'           => '',
             'address_1'       => $user['address'],
             'address_2'       => '',
             'city'            => '',
             'state'           => '',
             'postcode'        => '',
-            'country'         => ''
+            'country'         => '',
         ];
     }
 
     private function get_ordered_products( $cart_details ) {
-        foreach($cart_details as $cart_item) {
+        foreach ( $cart_details as $cart_item ) {
             $download = new \EDD_Download( $cart_item['id'] );
 
             $products[] = [

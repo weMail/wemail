@@ -43,10 +43,10 @@ class Orders {
             return;
         }
 
-        $eddOrders = new EDDOrders();
+        $edd_orders = new EDDOrders();
 
         $this->order_request->received(
-            $eddOrders->get( $payment_id ),
+            $edd_orders->get( $payment_id ),
             $this->source
         );
     }

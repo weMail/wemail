@@ -21,7 +21,7 @@ class Products {
      * @return void
      */
     public function __construct() {
-        $this->add_action('post_updated', 'wemail_edd_wp_update_post');
+        $this->add_action( 'post_updated', 'wemail_edd_wp_update_post' );
 
         $this->product_request = new ProductsRequest();
     }
@@ -42,7 +42,7 @@ class Products {
         }
 
         $download = new \EDD_Download( $post_id );
-        if (!$download || $download->post_type !== 'download') {
+        if ( ! $download || $download->post_type !== 'download' ) {
             return;
         }
 
@@ -74,7 +74,7 @@ class Products {
      * @return array
      */
     public function get_download_categories( $download_id ) {
-        $terms = wp_get_post_terms( $download_id, 'download_category', ['fields' => 'all'] );
+        $terms = wp_get_post_terms( $download_id, 'download_category', [ 'fields' => 'all' ] );
 
         $categories = [];
         foreach ( $terms as $term ) {

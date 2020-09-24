@@ -55,7 +55,7 @@ class Customers extends WP_REST_Controller {
         $source = $request->get_param( 'source' );
 
         switch ( $source ) {
-            case 'woocommerce': 
+            case 'woocommerce':
                 return rest_ensure_response(
                     $this->wcCustomers( $request )
                 );
