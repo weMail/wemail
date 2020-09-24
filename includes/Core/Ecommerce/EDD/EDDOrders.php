@@ -17,26 +17,56 @@ class EDDOrders {
      * @since 1.0.0
      */
     public function all( $args ) {
+        $integrated = get_option( 'wemail_edd_integrated' );
+        $synced     = get_option( 'wemail_is_edd_synced' );
+        if ( ! $integrated || ! $synced ) {
+            return [
+                'data' => [],
+                'message' => __( 'EDD not integrated with weMail', 'wemail' ),
+            ];
+        }
+
         $params = [
-            'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
-            'order'    => $args['order'] ? $args['order'] : 'DESC',
-            'limit'    => $args['limit'] ? $args['limit'] : 50,
-            'paginate' => true,
-            'paged'    => $args['page'] ? $args['page'] : 1,
+            'orderby'   => $args['orderby'] ? $args['orderby'] : 'date',
+            'order'     => $args['order'] ? $args['order'] : 'DESC',
+            'number'    => $args['limit'] ? $args['limit'] : 50,
+            'page'      => $args['page'] ? $args['page'] : 1,
+            'mode'      => edd_is_test_mode() ? 'test' : 'live'
         ];
 
         if ( $args['status'] ) {
             $params['status'] = $args['status'];
         }
 
+        $eddPayments = edd_get_payments( $params );
 
-        $orders['current_page'] = intval( $params['paged'] );
-//        $orders['total'] = $collection->total;
-//        $orders['total_page'] = $collection->max_num_pages;
-//
-//        foreach ( $collection->orders as $order ) {
-//            $orders['data'][] = $this->get( $order->get_id() );
-//        }
+        dd($eddPayments);
+        
+        $total = count($eddPayments);
+
+
+        $orders['current_page'] = intval( $params['page'] );
+        $orders['total'] = $total;
+        $orders['total_page'] = ceil($total/$params['number']);
+        $orders['data'] = null;
+
+        foreach ( $eddPayments as $order ) {
+       
+            $orders['data'][] = [
+                'source'               => 'edd',
+                'id'                   => $order->ID,
+                'parent_id'            => $order->get_parent_id(),
+                'customer'             => $this->getCustomerInfo( $order ),
+                'status'               => $order->get_status(),
+                'currency'             => $order->get_currency(),
+                'total'                => $order->get_total(),
+                'payment_method_title' => $order->get_payment_method_title(),
+                'date_created'         => $order->get_date_created()->format( 'Y-m-d H:m:s' ),
+                'date_completed'       => $date_completed ? $date_completed->format( 'Y-m-d H:m:s' ) : '',
+                'permalink'            => get_permalink( $order->get_id() ),
+                'products'             => $this->wc_products->get_ordered_products( $order ),
+            ];
+        }
 
         return $orders;
     }

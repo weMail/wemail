@@ -64,7 +64,7 @@ class Orders extends WP_REST_Controller {
                 );
             case 'edd': 
                 return rest_ensure_response(
-                    $this->wcOrders( $request )
+                    $this->eddOrders( $request )
                 );
             default:
                 return rest_ensure_response(
