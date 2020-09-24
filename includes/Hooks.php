@@ -7,8 +7,9 @@ use WeDevs\WeMail\Core\Sync\Subscriber\Erp\Hooks as SyncSubscriberErp;
 use WeDevs\WeMail\Core\Sync\Subscriber\Wp\Hooks as SyncSubscriberWp;
 use WeDevs\WeMail\Core\User\Integrations\WpUser as SyncWpUser;
 use WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Orders as SyncWCOrders;
-use WeDevs\WeMail\Core\Sync\Ecommerce\EDD\Orders as SyncEDDOrders;
 use WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Products as SyncWCProducts;
+use WeDevs\WeMail\Core\Sync\Ecommerce\EDD\Orders as SyncEDDOrders;
+use WeDevs\WeMail\Core\Sync\Ecommerce\EDD\Products as SyncEDDProducts;
 
 class Hooks {
 
@@ -19,8 +20,9 @@ class Hooks {
         new SyncWpUser();
         new MailHooks();
         new SyncWCOrders();
-        new SyncEDDOrders();
         new SyncWCProducts();
+        new SyncEDDOrders();
+        new SyncEDDProducts();
     }
 
 }

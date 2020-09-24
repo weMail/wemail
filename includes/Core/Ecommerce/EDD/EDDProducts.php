@@ -26,6 +26,9 @@ class EDDProducts {
             'page'     => $args['page'] ? $args['page'] : 1,
         ];
 
+        $a = new \EDD_API();
+        dd($a->get_products());
+
         $posts = get_posts( array(
                 'post_type' => 'download',
                 'post_status' => 'any',
