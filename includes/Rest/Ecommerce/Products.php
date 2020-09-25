@@ -45,6 +45,7 @@ class Products extends WP_REST_Controller {
     /*
      * Params                   | default
      * -----------------------------------------
+     * last_synced_id           | null
      * Page                     | 1
      * Limit                    | 50
      * Status                   | publish
@@ -74,11 +75,12 @@ class Products extends WP_REST_Controller {
         $wc_products = new WCProducts();
 
         $args = array(
-            'orderby'  => $request->get_param( 'orderby' ),
-            'order'    => $request->get_param( 'order' ),
-            'status'   => $request->get_param( 'status' ),
-            'limit'    => $request->get_param( 'limit' ),
-            'page'     => $request->get_param( 'page' ),
+            'last_synced_id' => $request->get_param('last_synced_id'),
+            'orderby'        => $request->get_param('orderby'),
+            'order'          => $request->get_param('order'),
+            'status'         => $request->get_param('status'),
+            'limit'          => $request->get_param('limit'),
+            'page'           => $request->get_param('page'),
         );
 
         return $wc_products->all( $args );

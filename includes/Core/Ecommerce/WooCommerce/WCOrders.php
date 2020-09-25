@@ -23,11 +23,12 @@ class WCOrders {
      */
     public function all( $args ) {
         $params = [
-            'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
-            'order'    => $args['order'] ? $args['order'] : 'DESC',
-            'limit'    => $args['limit'] ? $args['limit'] : 50,
-            'paginate' => true,
-            'paged'    => $args['page'] ? $args['page'] : 1,
+            'exclude'        => $args['last_synced_id'] ? range( 1, $args['last_synced_id'] ) : null,
+            'orderby'        => $args['orderby'] ? $args['orderby'] : 'date',
+            'order'          => $args['order'] ? $args['order'] : 'DESC',
+            'limit'          => $args['limit'] ? $args['limit'] : 50,
+            'paginate'       => true,
+            'paged'          => $args['page'] ? $args['page'] : 1,
         ];
 
         if ( $args['status'] ) {
