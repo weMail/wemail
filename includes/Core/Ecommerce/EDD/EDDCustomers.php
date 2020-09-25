@@ -22,7 +22,7 @@ class EDDCustomers {
 
         $params = [
             'orderby'        => $params['orderby'] ? $params['orderby'] : 'id',
-            'number'          => $params['limit'] ? $params['limit'] : 50,
+            'number'         => $params['limit'] ? $params['limit'] : 50,
             'page'           => $params['page'] ? $params['page'] : 1,
         ];
 
@@ -33,7 +33,7 @@ class EDDCustomers {
 
         $response['current_page'] = intval( $params['page'] );
         $response['total'] = $total_customer;
-        $response['total_page'] = ceil( $total_customer / $params['page'] );
+        $response['total_page'] = ceil( $total_customer / $params['number'] );
         $response['data'] = [];
 
         foreach ( $edd_customers['customers'] as $item ) {
