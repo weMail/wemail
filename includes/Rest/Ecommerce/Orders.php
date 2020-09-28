@@ -44,6 +44,7 @@ class Orders extends WP_REST_Controller {
     /*
      * Params                   | default
      * -----------------------------------------
+     * last_synced_id           | null
      * page                     | 1
      * limit                    | 50
      * status (array or string) | ['completed']
@@ -73,6 +74,7 @@ class Orders extends WP_REST_Controller {
         $wc_orders = new WCOrders();
 
         $args = array(
+            'last_synced_id' => $request->get_param( 'last_synced_id' ),
             'orderby'        => $request->get_param( 'orderby' ),
             'order'          => $request->get_param( 'order' ),
             'status'         => $request->get_param( 'status' ),

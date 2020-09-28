@@ -18,6 +18,7 @@ class WCProducts {
      */
     public function all( $args ) {
         $args = [
+            'exclude'  => $args['last_synced_id'] ? range( 1, $args['last_synced_id'] ) : null,
             'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
             'order'    => $args['order'] ? $args['order'] : 'DESC',
             'status'   => $args['status'] ? $args['status'] : 'publish',
