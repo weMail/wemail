@@ -17,19 +17,29 @@ class EDDCustomers {
      * @throws \Exception
      * @since 1.0.0
      */
-    public function all( $params ) {
-        global $wpdb;
+    public function all( $args ) {
+        $integrated = get_option( 'wemail_edd_integrated' );
+        $synced     = get_option( 'wemail_is_edd_synced' );
+        if ( ! $integrated || ! $synced ) {
+            return [
+                'data' => [],
+                'message' => __( 'EDD not integrated with weMail', 'wemail' ),
+            ];
+        }
 
         $params = [
-            'orderby'        => $params['orderby'] ? $params['orderby'] : 'id',
-            'number'         => $params['limit'] ? $params['limit'] : 50,
-            'page'           => $params['page'] ? $params['page'] : 1,
+            'orderby'        => $args['orderby'] ? $args['orderby'] : 'id',
+            'number'         => $args['limit'] ? $args['limit'] : 50,
+            'page'           => $args['page'] ? $args['page'] : 1,
         ];
 
         $api = new \EDD_API_V2();
-        $edd_customers = $api->get_customers( $params );
 
-        $total_customer = count( $edd_customers['customers'] );
+        $all_edd_customers = $api->get_customers();
+
+        $total_customer = count( $all_edd_customers['customers'] );
+
+        $edd_customers = $api->get_customers( $params );
 
         $response['current_page'] = intval( $params['page'] );
         $response['total'] = $total_customer;
@@ -37,6 +47,10 @@ class EDDCustomers {
         $response['data'] = [];
 
         foreach ( $edd_customers['customers'] as $item ) {
+            if ( $args['last_synced_id'] && $item['info']['user_id'] && $item['info']['user_id'] <= $args['last_synced_id'] ) {
+                continue;
+            }
+
             $response['data'][] = [
                 'source'             => 'edd',
                 'wp_user_id'         => $item['info']['user_id'],

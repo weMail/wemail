@@ -96,12 +96,12 @@ class Products extends WP_REST_Controller {
         $edd_products = new EDDProducts();
 
         $args = array(
-            'last_synced_id' => $request->get_param('last_synced_id'),
-            'orderby'        => $request->get_param('orderby'),
-            'order'          => $request->get_param('order'),
-            'status'         => $request->get_param('status'),
-            'limit'          => $request->get_param('limit'),
-            'page'           => $request->get_param('page'),
+            'last_synced_id' => $request->get_param( 'last_synced_id' ),
+            'orderby'        => $request->get_param( 'orderby' ),
+            'order'          => $request->get_param( 'order' ),
+            'status'         => $request->get_param( 'status' ),
+            'limit'          => $request->get_param( 'limit' ),
+            'page'           => $request->get_param( 'page' ),
         );
 
         return $edd_products->all( $args );

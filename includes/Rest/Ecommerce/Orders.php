@@ -94,6 +94,7 @@ class Orders extends WP_REST_Controller {
         $edd_orders = new EDDOrders();
 
         $args = array(
+            'last_synced_id' => $request->get_param( 'last_synced_id' ),
             'orderby'        => $request->get_param( 'orderby' ),
             'order'          => $request->get_param( 'order' ),
             'status'         => $request->get_param( 'status' ),

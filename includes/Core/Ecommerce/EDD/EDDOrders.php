@@ -28,12 +28,13 @@ class EDDOrders {
         }
 
         $params = [
-            'orderby'   => $args['orderby'] ? $args['orderby'] : 'date',
-            'order'     => $args['order'] ? $args['order'] : 'DESC',
-            'number'    => $args['limit'] ? $args['limit'] : 50,
-            'page'      => $args['page'] ? $args['page'] : 1,
-            'mode'      => edd_is_test_mode() ? 'test' : 'live',
-            'fields'    => 'ids',
+            'post__not_in' => $args['last_synced_id'] ? range( 1, $args['last_synced_id'] ) : null,
+            'orderby'      => $args['orderby'] ? $args['orderby'] : 'date',
+            'order'        => $args['order'] ? $args['order'] : 'DESC',
+            'number'       => $args['limit'] ? $args['limit'] : 50,
+            'page'         => $args['page'] ? $args['page'] : 1,
+            'mode'         => edd_is_test_mode() ? 'test' : 'live',
+            'fields'       => 'ids',
         ];
 
         if ( $args['status'] ) {
@@ -42,9 +43,10 @@ class EDDOrders {
 
         $all_payment_ids = edd_get_payments(
             [
-				'number'    => -1,
-				'mode'      => $params['mode'],
-				'fields'    => $params['fields'],
+                'number'       => -1,
+                'post__not_in' => $params['post__not_in'],
+                'mode'         => $params['mode'],
+                'fields'       => $params['fields'],
 			]
         );
 
