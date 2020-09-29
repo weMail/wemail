@@ -4,7 +4,7 @@ namespace WeDevs\WeMail\Rest\Help;
 
 use WeDevs\WeMail\Core\Help\Services\PingService;
 use WeDevs\WeMail\RestController;
-use WeMail\WPInfo\SystemInfo;
+use WeDevs\WeMail\Core\Help\SystemInfo;
 use WP_REST_Server;
 
 class Help extends RestController {
