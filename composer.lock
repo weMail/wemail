@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d4401e530eaf2df397448135e5519a1",
+    "content-hash": "cbbb8da5abdd66b9000a95b9a3f048ec",
     "packages": [
         {
             "name": "appsero/client",
@@ -237,48 +237,6 @@
                 }
             ],
             "time": "2020-07-14T12:35:20+00:00"
-        },
-        {
-            "name": "wemail/wpinfo",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/emtiazzahid/wpinfo.git",
-                "reference": "7703a3e8e4ef551ac3a945ad6f9fec70b5fc7d71"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/emtiazzahid/wpinfo/zipball/7703a3e8e4ef551ac3a945ad6f9fec70b5fc7d71",
-                "reference": "7703a3e8e4ef551ac3a945ad6f9fec70b5fc7d71",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "WeMail\\WPInfo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Md. Emtiaz Zahid",
-                    "email": "emtiazzahid@gmail.com"
-                }
-            ],
-            "description": "Wordpress System Info",
-            "keywords": [
-                "analytics",
-                "plugin",
-                "theme",
-                "wordpress"
-            ],
-            "time": "2020-09-15T06:04:31+00:00"
         }
     ],
     "packages-dev": [
@@ -884,28 +842,28 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.11.1",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160"
+                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b20034be5efcdab4fb60ca3a29cba2949aead160",
-                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8ce87516be71aae9b956f81906aaf0338e0d8a2d",
+                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.2",
-                "php": "^7.2",
-                "phpdocumentor/reflection-docblock": "^5.0",
+                "php": "^7.2 || ~8.0, <8.1",
+                "phpdocumentor/reflection-docblock": "^5.2",
                 "sebastian/comparator": "^3.0 || ^4.0",
                 "sebastian/recursion-context": "^3.0 || ^4.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^6.0",
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.0 || ^9.0 <9.3"
             },
             "type": "library",
             "extra": {
@@ -943,7 +901,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-07-08T12:44:21+00:00"
+            "time": "2020-09-29T09:10:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1981,12 +1939,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tareq1988/wp-php-cs-fixer.git",
-                "reference": "300a64230dcef2f211431628aa413bdbc6434ba4"
+                "reference": "56b9c1dd2b979a4ff7a25afa2e1c6b290a5ae876"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tareq1988/wp-php-cs-fixer/zipball/300a64230dcef2f211431628aa413bdbc6434ba4",
-                "reference": "300a64230dcef2f211431628aa413bdbc6434ba4",
+                "url": "https://api.github.com/repos/tareq1988/wp-php-cs-fixer/zipball/56b9c1dd2b979a4ff7a25afa2e1c6b290a5ae876",
+                "reference": "56b9c1dd2b979a4ff7a25afa2e1c6b290a5ae876",
                 "shasum": ""
             },
             "type": "library",
@@ -2006,7 +1964,7 @@
                 }
             ],
             "description": "WordPress rules for php-cs-fixer",
-            "time": "2020-09-15T07:49:28+00:00"
+            "time": "2020-09-21T09:47:38+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -2154,7 +2112,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "danielstjules/stringy": 20,
-        "wemail/wpinfo": 20,
         "wp-coding-standards/wpcs": 20,
         "tareq1988/wp-php-cs-fixer": 20,
         "phpcompatibility/phpcompatibility-wp": 20
