@@ -16,13 +16,23 @@ class EDDProducts {
      * @since 1.0.0
      */
     public function all( $args ) {
+        $integrated = get_option( 'wemail_edd_integrated' );
+        $synced     = get_option( 'wemail_is_edd_synced' );
+        if ( ! $integrated || ! $synced ) {
+            return [
+                'data' => [],
+                'message' => __( 'EDD not integrated or not synced with weMail', 'wemail' ),
+            ];
+        }
+
         $args = [
-            'post_type' => 'download',
-            'orderby'  => $args['orderby'] ? $args['orderby'] : 'date',
-            'order'    => $args['order'] ? $args['order'] : 'DESC',
-            'status'   => $args['status'] ? $args['status'] : 'publish',
-            'posts_per_page'   => $args['limit'] ? $args['limit'] : 50,
-            'paged'     => $args['page'] ? $args['page'] : 1,
+            'post__not_in'   => $args['last_synced_id'] ? range( 1, $args['last_synced_id'] ) : null,
+            'post_type'      => 'download',
+            'orderby'        => $args['orderby'] ? $args['orderby'] : 'date',
+            'order'          => $args['order'] ? $args['order'] : 'DESC',
+            'status'         => $args['status'] ? $args['status'] : 'publish',
+            'posts_per_page' => $args['limit'] ? $args['limit'] : 50,
+            'paged'          => $args['page'] ? $args['page'] : 1,
         ];
 
         $product_list = new \WP_Query( $args );
