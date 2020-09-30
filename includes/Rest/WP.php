@@ -33,11 +33,11 @@ class WP extends RestController {
      * @return void
      */
     public function register_routes() {
-        $this->get('/post-types', 'post_types', 'can_update_campaign');
-        $this->get('/posts', 'posts', 'can_update_campaign');
-        $this->get('/user-roles', 'user_roles', 'can_manage_settings');
-        $this->get('/users', 'users', 'can_create_subscriber');
-        $this->get('/products', 'products', 'can_update_campaign');
+        $this->get( '/post-types', 'post_types', 'can_update_campaign' );
+        $this->get( '/posts', 'posts', 'can_update_campaign' );
+        $this->get( '/user-roles', 'user_roles', 'can_manage_settings' );
+        $this->get( '/users', 'users', 'can_create_subscriber' );
+        $this->get( '/products', 'products', 'can_update_campaign' );
     }
 
     /**
@@ -60,7 +60,7 @@ class WP extends RestController {
 
             $post_types[] = [
                 'name' => $object->name,
-                'label' => $object->label
+                'label' => $object->label,
             ];
         }
 
@@ -84,7 +84,7 @@ class WP extends RestController {
 
         $args = [
             'post_type' => $post_type ? $post_type : 'post',
-            's' => $search
+            's' => $search,
         ];
 
         // The Query
@@ -103,18 +103,18 @@ class WP extends RestController {
                 $posts [] = [
                     'id' => $id,
                     'image' => get_the_post_thumbnail_url( $id ),
-                    'title' => strip_tags( $query->post->post_title ),
+                    'title' => wp_strip_all_tags( $query->post->post_title ),
                     'postType' => $query->post->post_type,
                     'postStatus' => $query->post->post_status,
                     'url' => get_permalink( $id ),
-                    'content' =>  $query->post->post_content ,
-                    'excerpt' => strip_tags( $query->post->post_excerpt ),
+                    'content' => $query->post->post_content,
+                    'excerpt' => wp_strip_all_tags( $query->post->post_excerpt ),
                     'meta' => [
                         'tags' => $this->get_tags( get_the_tags( $id ) ),
                         'postDate' => get_the_date( 'Y-m-d', $id ),
-                        'author' => get_the_author( $id ),
-                        'categories' => $this->get_categories( get_the_category( $id ) )
-                    ]
+                        'author' => get_the_author(),
+                        'categories' => $this->get_categories( get_the_category( $id ) ),
+                    ],
                 ];
             }
 
@@ -140,11 +140,14 @@ class WP extends RestController {
 
         $roles = $wp_roles->get_names();
 
-        foreach ($roles as $name => $title) {
-            array_push($user_roles, [
-                'name' => $name,
-                'title' => $title
-            ]);
+        foreach ( $roles as $name => $title ) {
+            array_push(
+                $user_roles,
+                [
+                    'name' => $name,
+                    'title' => $title,
+                ]
+            );
         }
 
         return rest_ensure_response( [ 'data' => $user_roles ] );
@@ -196,13 +199,13 @@ class WP extends RestController {
 
         $users = [];
 
-        foreach ($wp_users as $user) {
+        foreach ( $wp_users as $user ) {
             $users[] = [
                 'ID' => $user->ID,
-                'first_name'    => $user->get('first_name'),
-                'last_name'     => $user->get('last_name'),
+                'first_name'    => $user->get( 'first_name' ),
+                'last_name'     => $user->get( 'last_name' ),
                 'user_email'    => $user->user_email,
-                'user_login'    => $user->user_login
+                'user_login'    => $user->user_login,
             ];
         }
 
@@ -231,17 +234,18 @@ class WP extends RestController {
      * @return mixed|\WP_REST_Response
      */
     public function products( $request ) {
-
         if ( ! class_exists( 'WooCommerce' ) ) {
-            return rest_ensure_response([
-                'data' => (object) [],
-                'message' => __('Please install or active woocomerce plugin.')
-            ]);
+            return rest_ensure_response(
+                [
+                    'data' => (object) [],
+                    'message' => __( 'Please install or active woocomerce plugin.', 'wemail' ),
+                ]
+            );
         }
 
         $args = [
             'limit' => 20,
-            's'     => $request->get_param('s')
+            's'     => $request->get_param( 's' ),
         ];
 
         $products = [];
@@ -249,43 +253,58 @@ class WP extends RestController {
         $query = wc_get_products( $args );
 
         /** @var \WC_Product_Simple $product */
-        foreach ($query as $product) {
-
+        foreach ( $query as $product ) {
             $id = $product->get_id();
 
             $post_thumb_id = get_post_thumbnail_id( $id );
             $image = wemail_get_image_url( $post_thumb_id );
 
-
-            array_push($products, [
-                'id'                => $product->get_id(),
-                'name'              => $product->get_name(),
-                'type'              => $product->get_type(),
-                'rating'            => $product->get_average_rating(),
-                'status'            => $product->get_status(),
-                'image'             => $image,
-                'description'       => $product->get_description(),
-                'short_description' => $product->get_short_description(),
-                'price'             => wc_price( $product->get_price() ),
-                'read_more'         => get_permalink( $id )
-            ]);
+            array_push(
+                $products,
+                [
+                    'id'                => $product->get_id(),
+                    'name'              => $product->get_name(),
+                    'type'              => $product->get_type(),
+                    'rating'            => $product->get_average_rating(),
+                    'status'            => $product->get_status(),
+                    'image'             => $image,
+                    'description'       => $product->get_description(),
+                    'short_description' => $product->get_short_description(),
+                    'price'             => wc_price( $product->get_price() ),
+                    'read_more'         => get_permalink( $id ),
+                ]
+            );
         }
 
-        return rest_ensure_response( [
-            'data' => $products,
-            'message' => __('You don\'t have any products on your store.')
-        ]);
+        return rest_ensure_response(
+            [
+                'data' => $products,
+                'message' => __( 'You don\'t have any products on your store.', 'wemail' ),
+            ]
+        );
     }
 
     protected function get_tags( $tags ) {
-        return implode( ', ', array_map( function ($tag) {
-            return $tag->name;
-        }, $tags ) );
+        return implode(
+            ', ',
+            array_map(
+                function ( $tag ) {
+                    return $tag->name;
+                },
+                $tags
+            )
+        );
     }
 
     protected function get_categories( $categories ) {
-        return implode( ', ', array_map( function ($category) {
-            return $category->cat_name;
-        }, $categories ) );
+        return implode(
+            ', ',
+            array_map(
+                function ( $category ) {
+                    return $category->cat_name;
+                },
+                $categories
+            )
+        );
     }
 }

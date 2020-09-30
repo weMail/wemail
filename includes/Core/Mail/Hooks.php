@@ -25,7 +25,14 @@ class Hooks {
             return;
         }
 
-        $mailer = new WeMailMailer();
+        global $wp_version;
+
+        if ( version_compare( $wp_version, '5.5' ) >= 0 ) {
+            $mailer = new WeMailMailer55();
+        } else {
+            $mailer = new WeMailMailer54();
+        }
+
         $mailer->setPHPMailer( clone $phpmailer );
 
         $phpmailer = $mailer;

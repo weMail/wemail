@@ -17,80 +17,108 @@ class Forms {
     }
 
     public function register_routes() {
-        register_rest_route( $this->namespace, $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base,
             [
-                'methods'             => WP_REST_Server::CREATABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'store' ],
-            ],
-        ] );
-
-        register_rest_route( $this->namespace, $this->rest_base, [
-            [
-                'methods'             => WP_REST_Server::DELETABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'destroy' ],
-            ],
-        ] );
-
-        register_rest_route( $this->namespace, $this->rest_base . '/restore', [
-            [
-                'methods'             => WP_REST_Server::EDITABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'restore' ],
-            ],
-        ] );
-
-        register_rest_route( $this->namespace, $this->rest_base . '/sync', [
-            [
-                'methods'             => WP_REST_Server::EDITABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'sync' ],
-            ],
-        ] );
-
-        register_rest_route( $this->namespace, $this->rest_base . '/(?P<id>[\w-]+)/update', [
-            'args' => [
-                'id' => [
-                    'description' => __( 'Form ID', 'wemail' ),
-                    'type'        => 'string',
-                    'required'    => true
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'store' ],
                 ],
-            ],
-            [
-                'methods'             => WP_REST_Server::EDITABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'update' ],
-            ],
-        ] );
+            ]
+        );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/(?P<id>[\w-]+)', [
-            'args' => [
-                'id' => [
-                    'description' => __( 'Form ID', 'wemail' ),
-                    'type'        => 'string',
-                ],
-            ],
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base,
             [
-                'methods'             => WP_REST_Server::CREATABLE,
-                'permission_callback' => [$this, 'permission'],
-                'callback'            => [$this, 'submit'],
-            ],
-        ] );
+                [
+                    'methods'             => WP_REST_Server::DELETABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'destroy' ],
+                ],
+            ]
+        );
 
-        register_rest_route( $this->namespace, $this->rest_base . '/(?P<id>[\w-]+)/visitors', [
-            'args' => [
-                'id' => [
-                    'description' => __( 'Form ID', 'wemail' ),
-                    'type'        => 'string',
-                ],
-            ],
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/restore',
             [
-                'methods'             => WP_REST_Server::EDITABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'increment_visitor' ],
-            ],
-        ] );
+                [
+                    'methods'             => WP_REST_Server::EDITABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'restore' ],
+                ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/sync',
+            [
+                [
+                    'methods'             => WP_REST_Server::EDITABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'sync' ],
+                ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/(?P<id>[\w-]+)/update',
+            [
+                'args' => [
+                    'id' => [
+                        'description' => __( 'Form ID', 'wemail' ),
+                        'type'        => 'string',
+                        'required'    => true,
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::EDITABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'update' ],
+                ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/(?P<id>[\w-]+)',
+            [
+                'args' => [
+                    'id' => [
+                        'description' => __( 'Form ID', 'wemail' ),
+                        'type'        => 'string',
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'submit' ],
+                ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/(?P<id>[\w-]+)/visitors',
+            [
+                'args' => [
+                    'id' => [
+                        'description' => __( 'Form ID', 'wemail' ),
+                        'type'        => 'string',
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::EDITABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'increment_visitor' ],
+                ],
+            ]
+        );
     }
 
     public function permission( $request ) {
@@ -111,7 +139,7 @@ class Forms {
             return new WP_Error(
                 'invalid_form_data',
                 __( 'Invalid form data', 'wemail' ),
-                ['status' => 422]
+                [ 'status' => 422 ]
             );
         }
 
@@ -119,7 +147,7 @@ class Forms {
 
         foreach ( $data as $form_input ) {
             $field_id = str_replace( 'wemail_form_field_', '', $form_input['name'] );
-            $submitted_data[$field_id] = $form_input['value'];
+            $submitted_data[ $field_id ] = $form_input['value'];
         }
 
         wemail_set_owner_api_key();
@@ -155,14 +183,11 @@ class Forms {
      * @return WP_REST_Response
      */
     public function store( $request ) {
-
         $data = $request->get_body_params();
 
         wemail()->form->create( $data );
 
-        return new WP_REST_Response( [
-            'success' => true,
-        ], 201 );
+        return new WP_REST_Response( [ 'success' => true ], 201 );
     }
 
     /**
@@ -178,9 +203,7 @@ class Forms {
 
         wemail()->form->update( $data, $id );
 
-        return new WP_REST_Response( [
-            'success' => true,
-        ] );
+        return new WP_REST_Response( [ 'success' => true ] );
     }
 
     /**
@@ -196,9 +219,7 @@ class Forms {
 
         wemail()->form->delete( $ids, wemail_validate_boolean( $soft_delete ) );
 
-        return new WP_REST_Response( [
-            'success' => true,
-        ] );
+        return new WP_REST_Response( [ 'success' => true ] );
     }
 
     /**
@@ -211,13 +232,9 @@ class Forms {
     public function restore( $request ) {
         $ids = $request->get_param( 'ids' );
 
-        wemail()->form->update( [
-            'deleted_at' => NULL,
-        ], $ids );
+        wemail()->form->update( [ 'deleted_at' => null ], $ids );
 
-        return new WP_REST_Response( [
-            'success' => true,
-        ] );
+        return new WP_REST_Response( [ 'success' => true ] );
     }
 
     /**
@@ -230,8 +247,6 @@ class Forms {
     public function sync( $request ) {
         wemail()->form->sync();
 
-        return new WP_REST_Response( [
-            'success' => true,
-        ] );
+        return new WP_REST_Response( [ 'success' => true ] );
     }
 }

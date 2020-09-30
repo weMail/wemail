@@ -52,32 +52,30 @@ class Customizer {
          */
         $this->content_types = apply_filters( "wemail_customizer_content_types_{$context}", $content_types );
 
-        // Add website in the social network links
-        // $company = wemail()->settings->company();
-        // $social_networks = wemail()->settings->social_networks();
-        // $social_networks['website'] = $company['website'] ? $company['website'] : 'http://example.com';
+        /**
+         * Add website in the social network links
+         *
+         * $company = wemail()->settings->company();
+         * $social_networks = wemail()->settings->social_networks();
+         * $social_networks['website'] = $company['website'] ? $company['website'] : 'http://example.com';
 
-        // $networks = wemail()->settings->social_networks->networks();
-        // array_unshift( $networks, 'website' );
+         * $networks = wemail()->settings->social_networks->networks();
+         * array_unshift( $networks, 'website' );
 
-        // $social_network_title = wemail()->settings->social_networks->title();
+         * $social_network_title = wemail()->settings->social_networks->title();
+         */
 
         return [
-            'siteURL'          => site_url('/'),
+            'siteURL'          => site_url( '/' ),
             'cdn'              => wemail()->wemail_cdn,
             'contentTypes'     => [
                 'types'        => $this->content_types,
-                'settings'     => $this->get_content_type_settings()
+                'settings'     => $this->get_content_type_settings(),
             ],
             'shortcodes'       => wemail()->shortcode->get(),
             'shortcodeImg'     => wemail()->wemail_cdn . '/images/shortcode.png',
             'placeholderImage' => wemail()->wemail_cdn . '/images/placeholder-image.png',
-            // 'socialNetworks'   => [
-            //     'networks'     => $networks,
-            //     'defaults'     => $social_networks,
-            //     'title'        => $social_network_title,
-            // ],
-            'dividers'         => $this->dividers()
+            'dividers'         => $this->dividers(),
         ];
     }
 
@@ -91,9 +89,12 @@ class Customizer {
     public function get_content_type_settings() {
         $content_types = ContentTypes::get_content_type_settings( $this->context );
 
-        return array_filter( $content_types, function ( $content_type ) {
-            return in_array( $content_type['type'] , $this->content_types );
-        } );
+        return array_filter(
+            $content_types,
+            function ( $content_type ) {
+                return in_array( $content_type['type'], $this->content_types, true );
+            }
+        );
     }
 
     /**
@@ -107,19 +108,55 @@ class Customizer {
         $dividers = [
             'baseURL' => wemail()->wemail_cdn . '/images/dividers/',
             'images'  => [
-                [ 'name' => 'brush-stroke-lite.png', 'height' => '24px' ],
-                [ 'name' => 'brush-stroke-orange.png', 'height' => '24px' ],
-                [ 'name' => 'dotted-line.png', 'height' => '24px' ],
-                [ 'name' => 'handwritten-swirl-black.png', 'height' => '24px' ],
-                [ 'name' => 'handwritten-swirl-cayan.png', 'height' => '24px' ],
-                [ 'name' => 'mail-ribbon.png', 'height' => '3px' ],
-                [ 'name' => 'ornamental-1.png', 'height' => '24px' ],
-                [ 'name' => 'ornamental-2.png', 'height' => '24px' ],
-                [ 'name' => 'ornamental-3.png', 'height' => '24px' ],
-                [ 'name' => 'shadow-1.png', 'height' => '24px' ],
-                [ 'name' => 'shadow-2.png', 'height' => '24px' ],
-                [ 'name' => 'star.png', 'height' => '24px' ],
-            ]
+                [
+                    'name' => 'brush-stroke-lite.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'brush-stroke-orange.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'dotted-line.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'handwritten-swirl-black.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'handwritten-swirl-cayan.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'mail-ribbon.png',
+                    'height' => '3px',
+                ],
+                [
+                    'name' => 'ornamental-1.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'ornamental-2.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'ornamental-3.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'shadow-1.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'shadow-2.png',
+                    'height' => '24px',
+                ],
+                [
+                    'name' => 'star.png',
+                    'height' => '24px',
+                ],
+            ],
         ];
 
         return $dividers;

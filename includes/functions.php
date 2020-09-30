@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return boolean
  * @since 1.0.0
- *
  */
 function wemail_validate_boolean( $var ) {
     return filter_var( $var, FILTER_VALIDATE_BOOLEAN );
@@ -138,7 +137,7 @@ function wemail_get_wp_timezone() {
 
     // Create a UTC+- zone if no timezone string exists
     if ( empty( $tzstring ) ) {
-        if ( 0 == $current_offset ) {
+        if ( 0 === $current_offset ) {
             $tzstring = 'UTC+0';
         } elseif ( $current_offset < 0 ) {
             $tzstring = 'UTC' . $current_offset;
@@ -147,7 +146,7 @@ function wemail_get_wp_timezone() {
         }
     }
 
-    if ( array_key_exists( $tzstring , $timezone_map ) ) {
+    if ( array_key_exists( $tzstring, $timezone_map ) ) {
         $tzstring = $timezone_map[ $tzstring ];
     }
 
@@ -160,10 +159,9 @@ function wemail_get_wp_timezone() {
  * @param bool $check_user_is_logged_in
  * @return void
  * @since 1.0.0
- *
  */
 function wemail_set_owner_api_key( $check_user_is_logged_in = true ) {
-    if( wemail()->api->has_api_key() ) {
+    if ( wemail()->api->has_api_key() ) {
         return;
     }
 
@@ -176,12 +174,11 @@ function wemail_set_owner_api_key( $check_user_is_logged_in = true ) {
     // We are assuming the first wemail_api_key belongs to owner
     $owner_api_key = $wpdb->get_var(
         $wpdb->prepare(
-              'select meta_value'
+            'select meta_value'
             . ' from ' . $wpdb->usermeta
             . ' where meta_key = %s'
             . ' order by umeta_id asc'
             . ' limit 1',
-
             'wemail_api_key'
         )
     );
@@ -217,7 +214,6 @@ function wemail_get_image_url( $image_id, $size = 'full' ) {
     if ( $attachment->have_posts() ) {
         $url_array = wp_get_attachment_image_src( $image_id, $size, true );
         $url = $url_array[0];
-
     } else {
         $url = null;
     }
@@ -238,7 +234,18 @@ function wemail_get_image_url( $image_id, $size = 'full' ) {
  * @return null|string
  */
 function wemail_form( $id ) {
-    $form = ( is_array( $id ) ? $id : wemail()->form->get( $id ) );
+    if ( is_array( $id ) ) {
+        $form = $id;
+    } else {
+        $form = wp_cache_get( 'wf_' . $id );
+        if ( false === $form ) {
+            $form = wemail()->form->get( $id );
+            wp_cache_set(
+                'wf_' . $id,
+                $form
+            );
+        }
+    }
 
     if ( ! $form || is_wp_error( $form ) ) {
         return null;
@@ -270,4 +277,22 @@ function is_erp_crm_active() {
     }
 
     return false;
+}
+
+/**
+ * Array only helper
+ *
+ * @param  [type] $arr  [description]
+ * @param  array  $keys [description]
+ * @return [type]       [description]
+ */
+function wemail_array_only( $arr, $keys = [] ) {
+    $new_arr = [];
+    foreach ( $keys as $key ) {
+        if ( array_key_exists( $key, $arr ) ) {
+            $new_arr[ $key ] = $arr[ $key ];
+        }
+    }
+
+    return $new_arr;
 }

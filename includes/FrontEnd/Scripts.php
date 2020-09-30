@@ -22,15 +22,14 @@ class Scripts {
     }
 
     public function enqueue_styles() {
-        // wp_enqueue_style( 'wemail-frontend', $src, $deps, $ver, $media );
     }
 
     public function enqueue_scripts() {
-        wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/js/frontend-vendor.js', ['jquery'], $this->version, true );
-        wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/js/frontend.js', ['wemail-frontend-vendor'], $this->version, true );
+        wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/js/frontend-vendor.js', [ 'jquery' ], $this->version, true );
+        wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/js/frontend.js', [ 'wemail-frontend-vendor' ], $this->version, true );
 
         $wemail = [
-            'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1') ),
+            'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1' ) ),
             'nonce'     => wp_create_nonce( 'wp_rest' ),
             'cdn'       => wemail()->wemail_cdn,
         ];

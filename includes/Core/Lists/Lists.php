@@ -23,11 +23,8 @@ class Lists {
 
     /**
      * Get all lists
-     *
-     * id-name paired items
-     *
+     * Id-name paired items
      * @since 1.0.0
-     *
      * @return array
      */
     public function items() {
@@ -48,7 +45,6 @@ class Lists {
     public function get( $id ) {
         $list = wemail()->api->lists( $id )->get();
 
-        return !empty( $list['data'] ) ? $list['data'] : null;
+        return ! empty( $list['data'] ) ? $list['data'] : null;
     }
-
 }

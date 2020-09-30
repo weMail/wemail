@@ -88,7 +88,6 @@ class Api {
      *
      * @return Api
      * @since 1.0.0
-     *
      */
     public function set_api_key( $api_key ) {
         $this->api_key = $api_key;
@@ -137,7 +136,7 @@ class Api {
     public function get_props() {
         return [
             'root'     => $this->root,
-            'api_key'  => $this->get_api_key()
+            'api_key'  => $this->get_api_key(),
         ];
     }
 
@@ -153,8 +152,8 @@ class Api {
     private function args( $args ) {
         $defaults = [
             'headers' => [
-                'x-api-key' => $this->get_api_key()
-            ]
+                'x-api-key' => $this->get_api_key(),
+            ],
         ];
 
         return wp_parse_args( $args, $defaults );
@@ -167,7 +166,6 @@ class Api {
      *
      * @return Api
      * @since 1.0.0
-     *
      */
     public function query( $query ) {
         $this->query = array_merge( $query, $this->query );
@@ -191,8 +189,7 @@ class Api {
     private function build_url( $url = '', $query = [] ) {
         if ( $url ) {
             $url = $this->root . $url;
-
-        } else if ( $this->url ) {
+        } elseif ( $this->url ) {
             $url = $this->root . $this->url;
         }
 
@@ -239,7 +236,6 @@ class Api {
      *
      * @return mixed
      * @since 1.0.0
-     *
      */
     public function post( $data = [], $args = [] ) {
         $args = $this->args( $args );
@@ -307,19 +303,29 @@ class Api {
             return $response;
         }
 
-        $response_code = wp_remote_retrieve_response_code($response);
+        $response_code = wp_remote_retrieve_response_code( $response );
         $body = json_decode( $response['body'], true );
 
         if ( $response_code >= 200 && $response_code <= 299 ) {
             return $body;
-
         } else {
             $message = is_array( $body ) && array_key_exists( 'message', $body )
                 ? $body['message']
                 : __( 'Something went wrong', 'wemail' );
 
-            return new WP_Error( 'error', $message, [ 'status' => $response_code ] );
+            $error_data = [
+                'status' => $response_code,
+            ];
+
+            if (
+                isset( $body['errors'] ) &&
+                ! empty( $body['errors'] ) &&
+                is_array( $body['errors'] )
+            ) {
+                $error_data['errors'] = $body['errors'];
+            }
+
+            return new WP_Error( 'error', $message, $error_data );
         }
     }
-
 }
