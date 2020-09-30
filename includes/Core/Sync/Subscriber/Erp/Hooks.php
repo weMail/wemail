@@ -9,6 +9,12 @@ class Hooks {
     use Hooker;
 
     /**
+     * @since 1.0.6
+     * @var array
+     */
+    private $created_contacts = [];
+
+    /**
      * Holds the updated contact ids
      *
      * @since 1.0.0
@@ -50,30 +56,30 @@ class Hooks {
      * @return void
      */
     public function __construct() {
-        $this->add_action( 'wemail_saved_settings_sync_subscriber_erp_contacts', 'create' );
         $this->add_action( 'erp_create_new_people', 'create_subscriber_on_shutdown', 10, 3 );
         $this->add_action( 'erp_update_people', 'update_subscriber_on_shutdown', 10, 3 );
+
         $this->add_action( 'erp_crm_create_contact_subscriber', 'update_subscriber_group_on_shutdown' );
         $this->add_action( 'erp_crm_edit_contact_subscriber', 'update_subscriber_group_on_shutdown' );
         $this->add_action( 'erp_crm_delete_contact_subscriber', 'update_subscriber_group_on_shutdown' );
 
         $this->add_action( 'erp_before_delete_people', 'before_delete_subscriber', 10, 2 );
         $this->add_action( 'erp_after_delete_people', 'delete_subscriber_on_shutdown', 10, 2 );
-
-        $this->add_action( 'erp_after_restoring_people', 'restore_subscriber_on_shutdown', 10, 2 );
     }
 
     /**
      * Add create method in shutdown hook
      *
-     * @since 1.0.0
-     *
-     * @param int $user_id
+     * @param $people_id
+     * @param $args
+     * @param $type
      *
      * @return void
+     * @since 1.0.0
      */
     public function create_subscriber_on_shutdown( $people_id, $args, $type ) {
         if ( $type === 'contact' ) {
+            $this->created_contacts[] = $args;
             $this->add_shutdown_action( 'create' );
         }
     }
@@ -81,15 +87,16 @@ class Hooks {
     /**
      * Add update method in shutdown hook
      *
-     * @since 1.0.0
-     *
-     * @param int $user_id
+     * @param $people_id
+     * @param $args
+     * @param $type
      *
      * @return void
+     * @since 1.0.0
      */
     public function update_subscriber_on_shutdown( $people_id, $args, $type ) {
         if ( $type === 'contact' ) {
-            $this->updated_contacts[] = $people_id;
+            $this->updated_contacts[] = $args;
             $this->add_shutdown_action( 'update' );
         }
     }
@@ -97,38 +104,38 @@ class Hooks {
     /**
      * Add update method in shutdown hook when update the contact group
      *
-     * @since 1.0.0
-     *
-     * @param int $user_id
+     * @param $subscriber
      *
      * @return void
+     * @since 1.0.0
      */
     public function update_subscriber_group_on_shutdown( $subscriber ) {
         if ( ! has_action( 'shutdown', [ $this, 'create' ] ) && ! has_action( 'shutdown', [ $this, 'update' ] ) ) {
             $this->updated_contacts[] = $subscriber->user_id;
-            $this->add_shutdown_action( 'update' );
+
+            $this->add_shutdown_action( 'sync_group' );
         }
     }
 
     /**
-     * erp_before_delete_people hook
+     * Erp_before_delete_people hook
      *
-     * @since 1.0.0
-     *
-     * @param int   $user_id
+     * @param $people_id
      * @param array $data
      *
      * @return void
+     * @since 1.0.0
      */
     public function before_delete_subscriber( $people_id, $data ) {
         if ( ! empty( $data['type'] ) && $data['type'] === 'contact' ) {
+            if ( $data['hard'] !== 1 ) {
+                return;
+            }
+
             $contact = \WeDevs\ERP\Framework\Models\People::find( $people_id );
 
             if ( $contact && $contact->email ) {
-                $this->deleting_contacts[ $contact->id ] = [
-                    'email' => $contact->email,
-                    'hard' => $data['hard']
-                ];
+                $this->deleting_contacts[ $contact->id ] = $contact;
             }
         }
     }
@@ -136,40 +143,22 @@ class Hooks {
     /**
      * Add delete method in shutdown hook
      *
-     * @since 1.0.0
-     *
-     * @param int   $user_id
+     * @param $people_id
      * @param array $data
      *
      * @return void
+     * @since 1.0.0
      */
     public function delete_subscriber_on_shutdown( $people_id, $data ) {
-        if ( isset( $this->deleting_contacts[ $people_id ] ) ) {
-            $this->deleted_contacts[] = $this->deleting_contacts[ $people_id ];
-
-            $this->add_shutdown_action( 'delete' );
+        if ( ( ! empty( $data['type'] ) && $data['type'] !== 'contact' ) || $data['hard'] !== 1 ) {
+            return;
         }
-    }
-
-    /**
-     * Add restore method in shutdown hook
-     *
-     * @since 1.0.0
-     *
-     * @param int   $user_id
-     * @param array $data
-     *
-     * @return void
-     */
-    public function restore_subscriber_on_shutdown( $people_id, $data ) {
-        if ( ! empty( $data['type'] ) && $data['type'] === 'contact' ) {
-            $contact = \WeDevs\ERP\Framework\Models\People::find( $people_id );
-
-            if ( $contact && $contact->email ) {
-                $this->restored_contacts[] = $contact->email;
-                $this->add_shutdown_action( 'restore' );
+        foreach ( $this->deleting_contacts as $people_id => $contact ) {
+            if ( isset( $this->deleting_contacts[ $people_id ] ) ) {
+                $this->deleted_contacts[] = $contact;
             }
         }
+        $this->add_shutdown_action( 'delete' );
     }
 
     /**
@@ -180,7 +169,7 @@ class Hooks {
      * @return void
      */
     public function create() {
-        wemail()->sync->subscriber->erp->create();
+        wemail()->sync->subscriber->erp->create( $this->created_contacts );
     }
 
     /**
@@ -195,6 +184,13 @@ class Hooks {
     }
 
     /**
+     * Sync contact group
+     */
+    public function sync_group() {
+        wemail()->sync->subscriber->erp->sync_group( $this->updated_contacts );
+    }
+
+    /**
      * Sync deleted users
      *
      * @since 1.0.0
@@ -206,22 +202,12 @@ class Hooks {
     }
 
     /**
-     * Sync restore users
-     *
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function restore() {
-        wemail()->sync->subscriber->erp->restore( $this->restored_contacts );
-    }
-
-    /**
      * Add shutdown hook
      *
-     * @since 1.0.0
+     * @param $name
      *
      * @return void
+     * @since 1.0.0
      */
     private function add_shutdown_action( $name ) {
         if ( ! has_action( 'shutdown', [ $this, $name ] ) ) {

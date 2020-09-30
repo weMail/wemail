@@ -1,7 +1,12 @@
 {
-  "name": "tareq1988/wemail-wp",
+  "name": "wemail/wemail",
   "description": "Send Beautiful Email Newsletters with WordPress",
-  "keywords": ["wordpress", "plugin"],
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "email",
+    "newsletter"
+  ],
   "homepage": "https://getwemail.io",
   "type": "wordpress-plugin",
   "license": "GPL-3.0",
@@ -23,7 +28,19 @@
     "danielstjules/stringy": "dev-master",
     "appsero/client": "^1.1"
   },
-  "autoload" : {
+  "require-dev": {
+    "wp-coding-standards/wpcs": "dev-master",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+    "tareq1988/wp-php-cs-fixer": "dev-master",
+    "phpcompatibility/phpcompatibility-wp": "dev-master",
+    "phpunit/phpunit": "7.5.9"
+  },
+  "scripts": {
+    "phpcs": [
+      "phpcs -p -s"
+    ]
+  },
+  "autoload": {
     "psr-4": {
       "WeDevs\\WeMail\\": "includes"
     }

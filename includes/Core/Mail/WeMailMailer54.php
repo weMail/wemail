@@ -4,10 +4,8 @@ namespace WeDevs\WeMail\Core\Mail;
 use PHPMailer;
 
 class WeMailMailer54 extends PHPMailer {
-    /**
-     * @var $phpmailer PHPMailer
-     */
-    protected $phpmailer;
+
+    use MailerHelper;
 
     /**
      * Overwrite phpmailer send method
@@ -15,43 +13,16 @@ class WeMailMailer54 extends PHPMailer {
      * @throws \phpmailerException
      */
     public function send() {
-        $response = wemail()->api->emails()->transactional()->post( array(
-            'to' => $this->formatEmailAddress($this->phpmailer->getToAddresses()),
-            'subject' => $this->phpmailer->Subject,
-            'message' => $this->phpmailer->Body,
-            'type' => $this->phpmailer->ContentType,
-            'attachments' => $this->phpmailer->getAttachments()
-        ) );
+        $response = $this->attemptToSend();
 
         if ( is_wp_error( $response ) ) {
             throw new \phpmailerException( $response->get_error_message() );
         }
 
-        if ( isset( $response['success'] ) && ( $response['success'] != 'true' || $response['success'] != 1 ) ) {
+        if ( isset( $response['success'] ) && ! wemail_validate_boolean( $response['success'] ) ) {
             throw new \phpmailerException( 'Could not send transactional email' );
         }
 
         return true;
-    }
-
-    /**
-     *  Format Email Addresses
-     *
-     * @param $address
-     * @return array
-     */
-    protected function formatEmailAddress( $address ) {
-        return array_map( function ( $address ) {
-            return $address[0];
-        }, $address );
-    }
-
-    /**
-     * Set Mailer
-     *
-     * @param $mailer
-     */
-    public function setPHPMailer( $mailer ) {
-        $this->phpmailer = $mailer;
     }
 }

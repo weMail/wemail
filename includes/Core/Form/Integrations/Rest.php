@@ -38,16 +38,14 @@ class Rest extends RestController {
         $integration = StaticStringy::underscored( $prop );
 
         if ( array_key_exists( $integration, $this->integrations ) ) {
-            return $this->integrations[$integration];
-
-        } else if ( array_key_exists( $integration, wemail()->form->integrations() ) ) {
+            return $this->integrations[ $integration ];
+        } elseif ( array_key_exists( $integration, wemail()->form->integrations() ) ) {
             $class_name = StaticStringy::upperCamelize( $integration );
             $integration_class = "\\WeDevs\\WeMail\\Core\\Form\\Integrations\\$class_name";
-
             if ( class_exists( $integration_class ) ) {
-                $this->integrations[$integration] = $integration_class::instance();
+                $this->integrations[ $integration ] = $integration_class::instance();
 
-                return $this->integrations[$integration];
+                return $this->integrations[ $integration ];
             }
         }
     }

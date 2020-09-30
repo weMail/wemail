@@ -16,14 +16,17 @@ class Pages extends WP_REST_Controller {
     }
 
     public function register_routes() {
-
-        register_rest_route( $this->namespace, '/' . $this->rest_base, [
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
             [
-                'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'index' ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'index' ],
+                ],
             ]
-        ] );
+        );
     }
 
     public function permission( $request ) {
@@ -31,22 +34,26 @@ class Pages extends WP_REST_Controller {
     }
 
     public function index() {
-
         $args = array(
             'sort_order' => 'asc',
             'sort_column' => 'post_title',
             'post_type' => 'page',
-            'post_status' => 'publish'
+            'post_status' => 'publish',
         );
 
-        return rest_ensure_response([
-            'data' => array_map(function ($page){
-                return [
-                    'id'        => $page->ID,
-                    'title'     => $page->post_title,
-                    'permalink' => get_permalink( $page->ID )
-                ];
-            }, get_pages($args))
-        ]);
+        return rest_ensure_response(
+            [
+                'data' => array_map(
+                    function ( $page ) {
+                        return [
+                            'id'        => $page->ID,
+                            'title'     => $page->post_title,
+                            'permalink' => get_permalink( $page->ID ),
+                        ];
+                    },
+                    get_pages( $args )
+                ),
+            ]
+        );
     }
 }

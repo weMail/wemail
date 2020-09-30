@@ -1,0 +1,20 @@
+{
+    "exclude": [
+        ".DS_Store",
+        ".editorconfig",
+        ".github",
+        ".gitignore",
+        ".php_cs",
+        ".svnignore",
+        "appsero.json",
+        "bin",
+        "build",
+        "composer.json",
+        "composer.lock",
+        "node_modules",
+        "package-lock.json",
+        "package.json",
+        "phpcs.xml",
+        "src"
+    ]
+}

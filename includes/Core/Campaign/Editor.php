@@ -52,16 +52,16 @@ class Editor {
                     'action'          => 'wemail_subscribed_to_list',
                     'value'           => '',
                     'schedule_type'   => 'immediately',
-                    'schedule_offset' => 1
-                ]
-            ]
+                    'schedule_offset' => 1,
+                ],
+            ],
         ];
     }
 
     /**
-     * i18n strings for campaign editor page
+     * I18n strings for campaign editor page
      *
-     * i18n for Customizer will add via filter hook at the end
+     * I18n for Customizer will add via filter hook at the end
      * of this function
      *
      * @since 1.0.0
@@ -80,8 +80,8 @@ class Editor {
             'subscribers'            => __( 'Subscribers', 'wemail' ),
             'lists'                  => __( 'Lists', 'wemail' ),
             'segments'               => __( 'Segments', 'wemail' ),
-            'selectLists'            => __( 'Select Lists', 'wemal' ),
-            'selectSegments'         => __( 'Select Segments', 'wemal' ),
+            'selectLists'            => __( 'Select Lists', 'wemail' ),
+            'selectSegments'         => __( 'Select Segments', 'wemail' ),
             'setup'                  => __( 'Setup', 'wemail' ),
             'template'               => __( 'Template', 'wemail' ),
             'design'                 => __( 'Design', 'wemail' ),
@@ -126,11 +126,11 @@ class Editor {
             'invalidEmailAddress'    => __( 'Invalid email address', 'wemail' ),
             'noListSelected'         => __( 'No list selected', 'wemail' ),
             'noSegmentSelected'      => __( 'No segment selected', 'wemail' ),
-            'currentServerTimeIs'    => __( 'Current server time is', 'wemail' )
+            'currentServerTimeIs'    => __( 'Current server time is', 'wemail' ),
         ];
 
         /**
-         * i18n strings for email campaign editor pages
+         * I18n strings for email campaign editor pages
          *
          * @since 1.0.0
          *
@@ -158,7 +158,8 @@ class Editor {
             'footer',
             'wpPosts',
             'countdown',
-            'wooProducts'
+            'wooProducts',
+            'giphy',
         ];
 
         return wemail()->customizer->get( 'campaign', $content_types );
@@ -199,7 +200,7 @@ class Editor {
                 'containerStyle' => [
                     'padding' => '25px',
                     'marginBottom' => '0px',
-                    'backgroundColor' => '#ffffff'
+                    'backgroundColor' => '#ffffff',
                 ],
                 'posts' => [],
                 'layout' => 'list',
@@ -212,7 +213,7 @@ class Editor {
                         'fontWeight' => 'bold',
                         'textTransform' => 'none',
                         'lineHeight' => '50px',
-                        'marginBottom' => '15px'
+                        'marginBottom' => '15px',
                     ],
                 ],
                 'image' => [
@@ -231,14 +232,14 @@ class Editor {
                         'marginLeft' => '0px',
                     ],
                     'containerStyle' => [
-                        'textAlign' => 'left'
-                    ]
+                        'textAlign' => 'left',
+                    ],
                 ],
                 'content' => [
                     'display' => 'show',
                     'content_format' => 'excerpt',
                     'excerpt_length' => 55,
-                
+
                     'style' => [
                         'fontSize' => '14px',
                         'color' => '#556271',
@@ -266,33 +267,33 @@ class Editor {
                         'borderWidth' => '0px',
                         'borderStyle' => 'solid',
                         'borderColor' => '#e5e5e5',
-                        'marginBottom' => '30px'
+                        'marginBottom' => '30px',
                     ],
                     'text' => __( 'Read More', 'wemail' ),
                     'containerStyle' => [
                         'textAlign' => 'left',
-                    ]
+                    ],
                 ],
                 'meta' => [
                     'display' => 'show',
                     'separator' => ' | ',
                     'fields' => [
                         'author' => [
-                            'text' => __('Author: '),
+                            'text' => __( 'Author: ', 'wemail' ),
                             'display' => 'show',
                         ],
                         'categories' => [
-                            'text' => __('Categories: '),
+                            'text' => __( 'Categories: ', 'wemail' ),
                             'display' => 'show',
                         ],
                         'tags' => [
-                            'text' => __('Tags: '),
+                            'text' => __( 'Tags: ', 'wemail' ),
                             'display' => 'show',
                         ],
                         'postDate' => [
-                            'text' => __('Post Date: '),
-                            'display' => 'show'
-                        ]
+                            'text' => __( 'Post Date: ', 'wemail' ),
+                            'display' => 'show',
+                        ],
                     ],
                     'style' => [
                         'fontSize' => '12px',
@@ -300,10 +301,10 @@ class Editor {
                         'textAlign' => 'left',
                         'lineHeight' => '20px',
                         'marginBottom' => '15px',
-                        'fontStyle' => 'normal'
-                    ]
-                ]
-            ]
+                        'fontStyle' => 'normal',
+                    ],
+                ],
+            ],
         ];
     }
 }

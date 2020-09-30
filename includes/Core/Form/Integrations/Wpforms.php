@@ -58,7 +58,7 @@ class Wpforms extends AbstractIntegration {
             $form = [
                 'id'     => $wpform->ID,
                 'title'  => $wpform->post_title,
-                'fields' => []
+                'fields' => [],
             ];
 
             $wpform_fields = wpforms_get_form_fields( $wpform );
@@ -66,7 +66,7 @@ class Wpforms extends AbstractIntegration {
             foreach ( $wpform_fields as $wpform_field ) {
                 $form['fields'][] = [
                     'id'    => $wpform_field['id'],
-                    'label' => $wpform_field['label']
+                    'label' => $wpform_field['label'],
                 ];
             }
 
@@ -93,12 +93,12 @@ class Wpforms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_wpforms', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
         $data = [
-            'id' => $form_id
+            'id' => $form_id,
         ];
 
         foreach ( $fields as $field ) {

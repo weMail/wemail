@@ -48,6 +48,7 @@ class Menu {
 
             $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], WEMAIL_ASSETS . '/images/logo.svg', $menu_position );
 
+            // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
 
             $this->add_action( 'admin_print_styles-' . $wemail, 'enqueue_styles' );

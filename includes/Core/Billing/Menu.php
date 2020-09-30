@@ -25,7 +25,7 @@ class Menu {
      * @return void
      */
     public function __construct() {
-        $this->add_filter('wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2);
+        $this->add_filter( 'wemail_admin_submenu', 'register_submenu', $this->menu_priority, 2 );
     }
 
     /**
@@ -38,9 +38,9 @@ class Menu {
      *
      * @return array
      */
-    public function register_submenu($menu_items, $capability) {
-        if (wemail()->user->can('manage_settings')) {
-            $menu_items[] = [__('Billing', 'wemail'), $capability, 'admin.php?page=wemail#/billing'];
+    public function register_submenu( $menu_items, $capability ) {
+        if ( wemail()->user->can( 'manage_settings' ) ) {
+            $menu_items[] = [ __( 'Billing', 'wemail' ), $capability, 'admin.php?page=wemail#/billing' ];
         }
 
         return $menu_items;

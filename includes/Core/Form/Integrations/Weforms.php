@@ -68,7 +68,7 @@ class Weforms extends AbstractIntegration {
             foreach ( $weforms_form_fields as $weforms_form_fields ) {
                 $form['fields'][] = [
                     'id'    => $weforms_form_fields['id'],
-                    'label' => $weforms_form_fields['label']
+                    'label' => $weforms_form_fields['label'],
                 ];
             }
 
@@ -95,12 +95,12 @@ class Weforms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_weforms', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
         $data = [
-            'id' => $form_id
+            'id' => $form_id,
         ];
 
         $weforms_form = weforms()->form->get( $form_id );

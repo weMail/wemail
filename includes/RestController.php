@@ -276,13 +276,17 @@ abstract class RestController extends WP_REST_Controller {
 
         $route = $this->route( $this->rest_base . $endpoint );
 
-        register_rest_route( $this->namespace, '/' . $route, [
+        register_rest_route(
+            $this->namespace,
+            '/' . $route,
             [
-                'methods'             => $methods,
-                'callback'            => [ $this, $callback ],
-                'permission_callback' => [ $this, $permission_cb ]
+                [
+                    'methods'             => $methods,
+                    'callback'            => [ $this, $callback ],
+                    'permission_callback' => [ $this, $permission_cb ],
+                ],
             ]
-        ] );
+        );
     }
 
     /**
@@ -302,11 +306,13 @@ abstract class RestController extends WP_REST_Controller {
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query( [
-                'fields'        => 'ID',
-                'meta_key'      => 'wemail_api_key',
-                'meta_value'    => $api_key
-            ] );
+            $query = new WP_User_Query(
+                [
+                    'fields'        => 'ID',
+                    'meta_key'      => 'wemail_api_key',
+                    'meta_value'    => $api_key,
+                ]
+            );
 
             if ( $query->get_total() ) {
                 $results = $query->get_results();

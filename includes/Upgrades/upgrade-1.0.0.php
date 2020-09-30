@@ -6,6 +6,7 @@
 
 function wemail_upgrade_1_0_0_create_wemail_tables() {
     global $wpdb;
+
     $charset_collate = $wpdb->get_charset_collate();
 
     $table_schema = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}wemail_forms` (

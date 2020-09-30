@@ -33,6 +33,7 @@ class Form {
     public function get( $id ) {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1", $id );
 
         $form = $wpdb->get_row( $query, ARRAY_A );
@@ -50,7 +51,7 @@ class Form {
     /**
      * Get all form items
      *
-     * id-name paired items
+     * Id-name paired items
      *
      * @since 1.0.0
      *
@@ -61,7 +62,7 @@ class Form {
 
         if ( is_wp_error( $forms ) ) {
             return [];
-        } else if ( ! empty( $forms['data'] ) ) {
+        } elseif ( ! empty( $forms['data'] ) ) {
             return $forms['data'];
         }
 
@@ -93,12 +94,15 @@ class Form {
      */
     public function integrations() {
         return [
-            'contact_form_7' => __( 'Contact Form 7', 'wemail' ),
-            'gravity_forms'  => __( 'Gravity Forms', 'wemail' ),
-            'wpforms'        => __( 'WPForms', 'wemail' ),
-            'caldera_forms'  => __( 'Caldera Forms', 'wemail' ),
-            'weforms'        => __( 'weForms', 'wemail' ),
-            'ninja_forms'    => __( 'Ninja Forms', 'wemail' ),
+            'contact_form_7'    => __( 'Contact Form 7', 'wemail' ),
+            'gravity_forms'     => __( 'Gravity Forms', 'wemail' ),
+            'wpforms'           => __( 'WPForms', 'wemail' ),
+            'caldera_forms'     => __( 'Caldera Forms', 'wemail' ),
+            'weforms'           => __( 'weForms', 'wemail' ),
+            'ninja_forms'       => __( 'Ninja Forms', 'wemail' ),
+            'fluent_forms'      => __( 'Fluent Forms', 'wemail' ),
+            'happy_forms'       => __( 'Happy Forms', 'wemail' ),
+            'formidable_forms'  => __( 'Formidable Forms', 'wemail' ),
         ];
     }
 
@@ -118,13 +122,9 @@ class Form {
     public function create( $data ) {
         global $wpdb;
 
-        $data = $this->fillable_check( $data, [
-            'id', 'name', 'template', 'settings', 'type',
-        ] );
+        $data = $this->fillable_check( $data, [ 'id', 'name', 'template', 'settings', 'type' ] );
 
-        $data = array_merge( $data, [
-            'plugin_version' => wemail()->version,
-        ] );
+        $data = array_merge( $data, [ 'plugin_version' => wemail()->version ] );
 
         $this->to_json_string( $data );
 
@@ -144,29 +144,34 @@ class Form {
 
         $ids = (array) $id;
 
-        $data = $this->fillable_check( $data, [
-            'name', 'template', 'settings', 'type', 'status', 'deleted_at',
-        ] );
+        $data = $this->fillable_check(
+            $data,
+            [ 'name', 'template', 'settings', 'type', 'status', 'deleted_at' ]
+        );
 
-        $data = array_merge( $data, [
-            'plugin_version' => wemail()->version,
-        ] );
+        $data = array_merge( $data, [ 'plugin_version' => wemail()->version ] );
 
         $this->to_json_string( $data );
 
-        $attrs = array_map( function ( $key ) use ( $data ) {
-            return ( '`' . $key . '` = ' . ( is_null( $data[$key] ) ? 'NULL' : '%s' ) );
-        }, array_keys( $data ) );
+        $attrs = array_map(
+            function ( $key ) use ( $data ) {
+                return ( '`' . $key . '` = ' . ( is_null( $data[ $key ] ) ? 'NULL' : '%s' ) );
+            },
+            array_keys( $data )
+        );
 
         $attrs = implode( ', ', $attrs );
 
-        $data = array_filter( $data, function ( $attr ) {
-            return !is_null( $attr );
-        } );
+        $data = array_filter(
+            $data,
+            function ( $attr ) {
+                return ! is_null( $attr );
+            }
+        );
 
-        $idsSql = $this->in_sql( $ids );
-
-        $statement = $wpdb->prepare( "UPDATE {$this->get_table()} SET {$attrs} WHERE `id` IN({$idsSql})", $data );
+        $ids_sql = $this->in_sql( $ids );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $statement = $wpdb->prepare( "UPDATE {$this->get_table()} SET {$attrs} WHERE `id` IN({$ids_sql})", $data );
 
         return $wpdb->query( $statement );
     }
@@ -184,14 +189,13 @@ class Form {
         $ids = (array) $ids;
 
         if ( $soft_delete ) {
-            return $this->update( [
-                'deleted_at' => current_time( 'mysql' ),
-            ], $ids );
+            return $this->update( [ 'deleted_at' => current_time( 'mysql' ) ], $ids );
         }
 
-        $idsString = $this->in_sql( $ids );
+        $ids_string = $this->in_sql( $ids );
 
-        return $wpdb->query( "DELETE FROM {$this->get_table()} WHERE `id` IN ({$idsString})" );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        return $wpdb->query( "DELETE FROM {$this->get_table()} WHERE `id` IN ({$ids_string})" );
     }
 
     /**
@@ -204,24 +208,28 @@ class Form {
     public function get_forms( $args = [] ) {
         global $wpdb;
 
-        $args = array_merge( [
-            'type' => ['floating-bar', 'floating-box', 'modal'],
-            'select' => ['*']
-        ], $args );
+        $args = array_merge(
+            [
+                'type' => [ 'floating-bar', 'floating-box', 'modal' ],
+                'select' => [ '*' ],
+            ],
+            $args
+        );
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $forms = $wpdb->get_results( "SELECT {$this->in_sql( $args['select'], false )} FROM {$this->get_table()} WHERE `type` IN ({$this->in_sql( $args['type'] )}) AND `status` = 1 AND `deleted_at` IS NULL", ARRAY_A );
 
         if ( is_null( $forms ) ) {
             return [];
         }
 
-        foreach ($forms as $index => $form) {
+        foreach ( $forms as $index => $form ) {
             if ( isset( $form['settings'] ) ) {
-                $forms[$index]['settings'] = json_decode( $form['settings'], true );
+                $forms[ $index ]['settings'] = json_decode( $form['settings'], true );
             }
 
             if ( isset( $form['template'] ) ) {
-                $forms[$index]['template'] = json_decode( $form['template'], true );
+                $forms[ $index ]['template'] = json_decode( $form['template'], true );
             }
         }
 
@@ -231,12 +239,15 @@ class Form {
     public function sync() {
         global $wpdb;
 
-        $forms = $this->all( [
-            'per_page'     => -1,
-            'with_trashed' => 1,
-            'fields'       => 'id,name,template,settings,plugin_version,type,status,deleted_at',
-        ] );
+        $forms = $this->all(
+            [
+                'per_page'     => -1,
+                'with_trashed' => 1,
+                'fields'       => 'id,name,template,settings,plugin_version,type,status,deleted_at',
+            ]
+        );
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $local_forms = $wpdb->get_results( "SELECT * FROM {$this->get_table()}" );
 
         if ( is_wp_error( $forms ) || is_null( $local_forms ) ) {
@@ -249,9 +260,12 @@ class Form {
         // Handle common forms
         $common_ids = array_intersect( $api_form_ids, $local_form_ids );
 
-        $common_forms = array_filter( $api_forms, function ( $form ) use ( $common_ids ) {
-            return in_array( $form['id'], $common_ids );
-        } );
+        $common_forms = array_filter(
+            $api_forms,
+            function ( $form ) use ( $common_ids ) {
+                return in_array( $form['id'], $common_ids, true );
+            }
+        );
 
         foreach ( $common_forms as $common_form ) {
             $this->update( $common_form, $common_form['id'] );
@@ -259,10 +273,13 @@ class Form {
 
         // Creating New Forms
         $new_ids = array_diff( $api_form_ids, $local_form_ids );
-        if ( !empty( $new_ids ) ) {
-            $new_forms = array_filter( $api_forms, function ( $form ) use ( $new_ids ) {
-                return in_array( $form['id'], $new_ids );
-            } );
+        if ( ! empty( $new_ids ) ) {
+            $new_forms = array_filter(
+                $api_forms,
+                function ( $form ) use ( $new_ids ) {
+                    return in_array( $form['id'], $new_ids, true );
+                }
+            );
 
             foreach ( $new_forms as $new_form ) {
                 $this->create( $new_form );
@@ -272,7 +289,7 @@ class Form {
         // Delete forms
         $deleted_ids = array_diff( $local_form_ids, $api_form_ids );
 
-        if ( !empty( $deleted_ids ) ) {
+        if ( ! empty( $deleted_ids ) ) {
             $this->delete( $deleted_ids );
         }
 
@@ -285,10 +302,10 @@ class Form {
      * @param $data
      * @param string[] $columns
      */
-    protected function to_json_string( &$data, $columns = ['template', 'settings'] ) {
+    protected function to_json_string( &$data, $columns = [ 'template', 'settings' ] ) {
         foreach ( $columns as $column ) {
-            if ( isset( $data[$column] ) ) {
-                $data[$column] = json_encode( $data[$column] );
+            if ( isset( $data[ $column ] ) ) {
+                $data[ $column ] = wp_json_encode( $data[ $column ] );
             }
         }
     }
@@ -313,9 +330,13 @@ class Form {
      * @return array
      */
     protected function fillable_check( $data, $columns = [] ) {
-        return array_filter( $data, function ( $value, $key ) use ( $columns ) {
-            return in_array( $key, $columns );
-        }, ARRAY_FILTER_USE_BOTH );
+        return array_filter(
+            $data,
+            function ( $value, $key ) use ( $columns ) {
+                return in_array( $key, $columns, true );
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
     }
 
     /**
@@ -327,12 +348,18 @@ class Form {
      *
      * @return string
      */
-    protected function in_sql( $items , $quote = true) {
-        return implode( ', ', array_map( function ( $item ) use( $quote ) {
-            if ( $quote ) {
-                return "'" . esc_sql( $item ) . "'";
-            }
-            return esc_sql( $item );
-        }, $items ) );
+    protected function in_sql( $items, $quote = true ) {
+        return implode(
+            ', ',
+            array_map(
+                function ( $item ) use ( $quote ) {
+                    if ( $quote ) {
+                        return "'" . esc_sql( $item ) . "'";
+                    }
+                    return esc_sql( $item );
+                },
+                $items
+            )
+        );
     }
 }
