@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.0.9
+Stable tag: 1.1
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -265,7 +265,7 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v1.0.9 - (30rd September, 2020) =
+= v1.1 - (30rd September, 2020) =
  * **New:** WooCommerce Integration, Auto append opt-in forms after blog posts, Help Menu.
  * **Integrations:** Fluent Forms, Formidable Forms, HappyForms.
  * **Fixed:** Setup wizard issue, Automatic campaign unsubscribe, weMail Forms Table Creation Issue, Handle Reply-To, CC and BCC Address on Transactional Email.
