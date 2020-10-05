@@ -1,12 +1,12 @@
 <?php
 
-namespace WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Products;
+namespace WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce;
 
-use WeDevs\WeMail\Core\Ecommerce\Requests\Products;
+use WeDevs\WeMail\Core\Ecommerce\Requests\Products as ProductsRequest;
 use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCProducts;
 use WeDevs\WeMail\Traits\Hooker;
 
-class Hooks {
+class Products {
 
     use Hooker;
 
@@ -23,11 +23,11 @@ class Hooks {
     public function __construct() {
         $this->add_action( 'save_post', 'wemail_wc_product_updated', 10, 3 );
 
-        $this->product_request = new Products();
+        $this->product_request = new ProductsRequest();
     }
 
     /**
-     * Sync new customer
+     * Sync new product
      *
      * @param $post_id
      * @param $post
