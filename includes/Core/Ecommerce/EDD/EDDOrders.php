@@ -75,7 +75,7 @@ class EDDOrders {
             'id'                   => $payment_id,
             'parent_id'            => '',
             'customer'             => $this->getCustomerInfo( $payment_meta['user_info'] ),
-            'status'               => edd_get_payment_status( $payment_id ),
+            'status'               => $payment->status === 'publish' ? 'completed' : $payment->status,
             'currency'             => $payment_meta['currency'],
             'total'                => $payment->total,
             'payment_method_title' => edd_get_payment_gateway( $payment_id ),
