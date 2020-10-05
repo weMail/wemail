@@ -103,6 +103,7 @@ class Form {
             'fluent_forms'      => __( 'Fluent Forms', 'wemail' ),
             'happy_forms'       => __( 'Happy Forms', 'wemail' ),
             'formidable_forms'  => __( 'Formidable Forms', 'wemail' ),
+            'popup_builder'     => __( 'Popup Builder', 'wemail' ),
         ];
     }
 
