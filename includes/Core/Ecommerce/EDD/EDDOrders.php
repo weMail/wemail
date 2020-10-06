@@ -81,7 +81,7 @@ class EDDOrders {
             'payment_method_title' => edd_get_payment_gateway( $payment_id ),
             'date_created'         => gmdate( 'Y-m-d H:m:s', strtotime( $payment_meta['date'] ) ),
             'date_completed'       => gmdate( 'Y-m-d H:m:s', strtotime( $payment->completed_date ) ),
-            'permalink'            => get_permalink( $payment_id ),
+            'permalink'            => add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) ),
             'products'             => $this->get_ordered_products( $payment_meta['cart_details'] ),
         ];
     }
