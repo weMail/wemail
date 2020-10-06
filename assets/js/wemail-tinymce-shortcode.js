@@ -28,7 +28,9 @@
             });
         },
     });
-
-    tinymce.PluginManager.add('wemail_forms_button', tinymce.plugins.wemail_forms_button);
+    
+    if (window.hasOwnProperty('wemail_forms_shortcode_button')) {
+        tinymce.PluginManager.add('wemail_forms_button', tinymce.plugins.wemail_forms_button);
+    }
 
 })(jQuery);
