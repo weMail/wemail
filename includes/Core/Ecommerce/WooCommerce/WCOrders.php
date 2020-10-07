@@ -70,7 +70,7 @@ class WCOrders {
             'payment_method_title' => $order->get_payment_method_title(),
             'date_created'         => $order->get_date_created()->format( 'Y-m-d H:m:s' ),
             'date_completed'       => $date_completed ? $date_completed->format( 'Y-m-d H:m:s' ) : '',
-            'permalink'            => get_permalink( $order->get_id() ),
+            'permalink'            => htmlspecialchars_decode( get_edit_post_link( $order->get_id() ) ),
             'products'             => $this->wc_products->get_ordered_products( $order ),
         ];
     }
