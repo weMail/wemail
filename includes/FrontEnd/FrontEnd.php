@@ -100,12 +100,12 @@ class FrontEnd {
                 if ( empty( $settings['pages'] ) ) {
                     return false;
                 }
-                return $this->in_page_ids($settings['pages'], $object_id);
+                return $this->in_page_ids( $settings['pages'], $object_id );
             case 'except':
                 if ( empty( $settings['pages'] ) ) {
                     return false;
                 }
-                return ! $this->in_page_ids($settings['pages'], $object_id);
+                return ! $this->in_page_ids( $settings['pages'], $object_id );
         }
 
         return false;
@@ -119,7 +119,7 @@ class FrontEnd {
      *
      * @return bool
      */
-    protected function in_page_ids($page_ids, $page_id) {
+    protected function in_page_ids( $page_ids, $page_id ) {
         return in_array( $page_id, array_map( 'intval', array_column( $page_ids, 'id' ) ), true );
     }
 
