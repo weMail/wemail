@@ -265,7 +265,7 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v1.1 - (7th October, 2020) =
+= v1.1.1 - (7th October, 2020) =
  * **Fixed:** Fixed woocommerce order permalink.
 
 = v1.1 - (30rd September, 2020) =
