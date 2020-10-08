@@ -20,47 +20,30 @@ class WCCustomers {
     public function all( $params ) {
         global $wpdb;
 
-        $params = [
+        $args = [
             'last_synced_id' => $params['last_synced_id'] ? $params['last_synced_id'] : null,
             'orderby'        => $params['orderby'] ? $params['orderby'] : 'id',
-            'limit'          => $params['limit'] ? $params['limit'] : 50,
-            'page'           => $params['page'] ? $params['page'] : 1,
+            'number'          => '-1',
             'role'           => 'Customer',
-            'fields'         => 'all_with_meta',
+            'fields'         => 'ids',
         ];
-
-        $count_args = array(
-            'role'      => $params['role'],
-            'fields'    => $params['fields'],
-        );
-
-        if ( $params['last_synced_id'] ) {
-            $count_args['exclude'] = range( 1, $params['last_synced_id'] );
-        }
-
-        $user_count_data = count_users();
-        $total_customer = isset( $user_count_data['avail_roles']['customer'] ) ?
-            $user_count_data['avail_roles']['customer'] :
-            1;
-
-        $offset = $params['limit'] * ( $params['page'] - 1 );
-        $total_pages = ceil( $total_customer / $params['limit'] );
-
-        $args = array(
-            'role'      => $params['role'],
-            'orderby'   => $params['orderby'],
-            'fields'    => $params['fields'],
-            'number'    => $params['limit'],
-            'page'      => $params['page'],
-            'offset'    => $offset,
-        );
 
         if ( $params['last_synced_id'] ) {
             $args['exclude'] = range( 1, $params['last_synced_id'] );
         }
 
         $wp_user_query = new WP_User_Query( $args );
+        $total_customer = $wp_user_query->get_total();
 
+        $args['number'] = $params['limit'] ? $params['limit'] : 100;
+        $args['page'] = $params['page'] ? $params['page'] : 1;
+
+        $offset = $args['number'] * ( $args['page'] - 1 );
+        $total_pages = intval( ceil( $total_customer / $args['number'] ) );
+
+        $args['offset'] = $offset;
+
+        $wp_user_query = new WP_User_Query( $args );
         $customers = $wp_user_query->get_results();
 
         $response['current_page'] = intval( $args['page'] );
@@ -69,7 +52,7 @@ class WCCustomers {
         $response['data'] = [];
 
         foreach ( $customers as $item ) {
-            $customer = new \WC_Customer( $item->ID );
+            $customer = new \WC_Customer( $item );
 
             $response['data'][] = [
                 'source'             => 'woocommerce',
