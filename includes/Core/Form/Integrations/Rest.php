@@ -68,10 +68,10 @@ class Rest extends RestController {
      */
     public function integrations( $request ) {
         $integrations = [];
-        foreach (wemail()->form->integrations() as $key => $integration) {
+        foreach ( wemail()->form->integrations() as $key => $integration ) {
             $integrations[] = [
                 'slug' => $key,
-                'is_active' => $this->$key->is_active
+                'is_active' => $this->$key->is_active,
             ];
         }
 
