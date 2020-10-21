@@ -29,5 +29,6 @@ class Hooks {
         add_action( 'happyforms_submission_success', [ HappyForms::instance(), 'submit' ], 999, 1 );
         add_action( 'frm_after_entry_processed', [ FormidableForms::instance(), 'submit' ], 999, 1 );
         add_action( 'wp_ajax_sgpb_process_after_submission', [ PopupBuilder::instance(), 'submit' ], 999, 1 );
+        add_action( 'pum_sub_form_success', [ PopupMaker::instance(), 'submit' ], 999, 1 );
     }
 }

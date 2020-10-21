@@ -51,33 +51,98 @@ class PopupMaker extends AbstractIntegration {
         $popups = pum_get_all_popups();
 
         foreach ( $popups as $popup ) {
+            $fields = $this->get_fields( $popup->post_content );
+            if (!$fields) {
+                continue;
+            }
+
             $forms[] = [
                 'id'     => $popup->ID,
                 'title'  => $popup->post_title ? $popup->post_title : 'no title',
-                'fields' => $this->get_fields( $popup->post_content, $popup->ID ),
+                'fields' => $fields,
             ];
         }
 
         return $forms;
     }
 
-    private function get_fields( $content, $id ) {
+    private function get_fields( $content ) {
 
+        $data = explode('[' , rtrim($content, ']'));
+        if (!$data || !isset($data[1])) {
+            return false;
+        }
+        $data = $data[1];
+        $data = str_replace('"', "'", $data);
+        $data = stripcslashes($data);
+        $data = explode(' ', $data);
 
-//        $content = apply_filters( 'pum_popup_content', $content, $id );
-        return $content;
+        if (!$data || $data[0] !== 'pum_sub_form') {
+            return false;
+        }
 
+        $fields = [];
+        foreach ($data as $item) {
+            $item = explode('=', $item);
+            if (!isset($item[0])) {
+                return false;
+            }
+
+            if ($item[0] === 'label_fname') {
+                $fields[] = [
+                    'id'    => 'first-name',
+                    'label' => 'First Name',
+                ];
+            }elseif ($item[0] === 'label_lname') {
+                $fields[] = [
+                    'id'    => 'last-name',
+                    'label' => 'Last Name',
+                ];
+            }elseif ($item[0] === 'label_name') {
+                $fields[] = [
+                    'id'    => 'name',
+                    'label' => 'Name',
+                ];
+            } elseif ($item[0] === 'label_email') {
+                $fields[] = [
+                    'id'    => 'email',
+                    'label' => 'Email',
+                ];
+            }
+        }
+
+        return $fields;
     }
 
     /**
      * Executes after submit a form
      *
+     * @param $values
+     * @return void
      * @since 1.0.0
      *
-     * @return void
      */
-    public function submit( ) {
+    public function submit( $values ) {
+        if ( !$values ) {
+            return;
+        }
 
+        $user_data = [
+            'email'      => isset($values['email']) ? $values['email'] : '',
+            'name'       => isset($values['name']) ? $values['name'] : '',
+            'first-name' => isset($values['fname']) ? $values['fname'] : '',
+            'last-name'  => isset($values['lname']) ? $values['lname'] : '',
+        ];
+
+        $form_data = [
+            'id'    => $values['popup_id'],
+            'data'  => $user_data,
+        ];
+
+        if ( ! empty( $form_data['data'] ) ) {
+            wemail_set_owner_api_key();
+            wemail()->api->forms()->integrations( 'popup-maker' )->submit()->post( $form_data );
+        }
     }
 
 }
