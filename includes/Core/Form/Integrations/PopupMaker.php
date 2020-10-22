@@ -84,33 +84,43 @@ class PopupMaker extends AbstractIntegration {
         foreach ( $data as $item ) {
             $item = explode( '=', $item );
             if ( ! isset( $item[0] ) ) {
-                return false;
+                continue;
             }
 
-            if ( $item[0] === 'label_fname' ) {
-                $fields[] = [
-                    'id'    => 'first-name',
-                    'label' => 'First Name',
-                ];
-            } elseif ( $item[0] === 'label_lname' ) {
-                $fields[] = [
-                    'id'    => 'last-name',
-                    'label' => 'Last Name',
-                ];
-            } elseif ( $item[0] === 'label_name' ) {
-                $fields[] = [
-                    'id'    => 'name',
-                    'label' => 'Name',
-                ];
-            } elseif ( $item[0] === 'label_email' ) {
-                $fields[] = [
-                    'id'    => 'email',
-                    'label' => 'Email',
-                ];
+            $field = $this->field_data( $item[0] );
+            if ( $field ) {
+                $fields[] = $field;
             }
         }
 
         return $fields;
+    }
+
+    private function field_data( $data ) {
+        switch ( $data ) {
+            case 'label_fname':
+                return [
+                    'id'    => 'first-name',
+                    'label' => 'First Name',
+                ];
+            case 'label_lname':
+                return [
+                    'id'    => 'last-name',
+                    'label' => 'Last Name',
+                ];
+            case 'label_name':
+                return [
+                    'id'    => 'name',
+                    'label' => 'Name',
+                ];
+            case 'label_email':
+                return [
+                    'id'    => 'email',
+                    'label' => 'Email',
+                ];
+            default:
+                return null;
+        }
     }
 
     /**
