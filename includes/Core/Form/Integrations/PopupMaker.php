@@ -52,7 +52,7 @@ class PopupMaker extends AbstractIntegration {
 
         foreach ( $popups as $popup ) {
             $fields = $this->get_fields( $popup->post_content );
-            if (!$fields) {
+            if ( ! $fields ) {
                 continue;
             }
 
@@ -67,43 +67,42 @@ class PopupMaker extends AbstractIntegration {
     }
 
     private function get_fields( $content ) {
-
-        $data = explode('[' , rtrim($content, ']'));
-        if (!$data || !isset($data[1])) {
+        $data = explode( '[', rtrim( $content, ']' ) );
+        if ( ! $data || ! isset( $data[1] ) ) {
             return false;
         }
         $data = $data[1];
-        $data = str_replace('"', "'", $data);
-        $data = stripcslashes($data);
-        $data = explode(' ', $data);
+        $data = str_replace( '"', "'", $data );
+        $data = stripcslashes( $data );
+        $data = explode( ' ', $data );
 
-        if (!$data || $data[0] !== 'pum_sub_form') {
+        if ( ! $data || $data[0] !== 'pum_sub_form' ) {
             return false;
         }
 
         $fields = [];
-        foreach ($data as $item) {
-            $item = explode('=', $item);
-            if (!isset($item[0])) {
+        foreach ( $data as $item ) {
+            $item = explode( '=', $item );
+            if ( ! isset( $item[0] ) ) {
                 return false;
             }
 
-            if ($item[0] === 'label_fname') {
+            if ( $item[0] === 'label_fname' ) {
                 $fields[] = [
                     'id'    => 'first-name',
                     'label' => 'First Name',
                 ];
-            }elseif ($item[0] === 'label_lname') {
+            } elseif ( $item[0] === 'label_lname' ) {
                 $fields[] = [
                     'id'    => 'last-name',
                     'label' => 'Last Name',
                 ];
-            }elseif ($item[0] === 'label_name') {
+            } elseif ( $item[0] === 'label_name' ) {
                 $fields[] = [
                     'id'    => 'name',
                     'label' => 'Name',
                 ];
-            } elseif ($item[0] === 'label_email') {
+            } elseif ( $item[0] === 'label_email' ) {
                 $fields[] = [
                     'id'    => 'email',
                     'label' => 'Email',
@@ -120,18 +119,17 @@ class PopupMaker extends AbstractIntegration {
      * @param $values
      * @return void
      * @since 1.0.0
-     *
      */
     public function submit( $values ) {
-        if ( !$values ) {
+        if ( ! $values ) {
             return;
         }
 
         $user_data = [
-            'email'      => isset($values['email']) ? $values['email'] : '',
-            'name'       => isset($values['name']) ? $values['name'] : '',
-            'first-name' => isset($values['fname']) ? $values['fname'] : '',
-            'last-name'  => isset($values['lname']) ? $values['lname'] : '',
+            'email'      => isset( $values['email'] ) ? $values['email'] : '',
+            'name'       => isset( $values['name'] ) ? $values['name'] : '',
+            'first-name' => isset( $values['fname'] ) ? $values['fname'] : '',
+            'last-name'  => isset( $values['lname'] ) ? $values['lname'] : '',
         ];
 
         $form_data = [
