@@ -27,9 +27,6 @@ class WpUser {
             return;
         }
 
-        // Set weMail api key to header
-        wemail_set_owner_api_key( false );
-
         if ( $this->is_administrator( $user->roles ) ) {
             $this->create_wemail_user( $user, 'admin' );
         } elseif ( $this->is_team( $user->roles ) ) {
@@ -201,7 +198,5 @@ class WpUser {
 
             update_user_meta( $user_id, 'wemail_user_data', $user_data );
         }
-
-        wemail()->api->set_api_key( null );
     }
 }
