@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -264,6 +264,10 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 7. Drag drop template builder
 
 == Changelog ==
+
+= v1.1.2 - (2nd November, 2020) =
+ * **Fixed:** Fixed weMail teams issue on adding/updating new user.
+ * **Fixed:** Fixed forms button initialization error on classic block.
 
 = v1.1.1 - (7th October, 2020) =
  * **Fixed:** Fixed woocommerce order permalink.
