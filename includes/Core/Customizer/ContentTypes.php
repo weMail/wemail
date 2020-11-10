@@ -188,6 +188,7 @@ class ContentTypes {
      */
     public static function social_follow() {
         $settings = wemail()->api->settings()->social_networks()->get();
+        $company = wemail()->api->settings()->company()->get();
 
         $facebook = 'https://facebook.com';
         $twitter  = 'https://twitter.com';
@@ -196,7 +197,10 @@ class ContentTypes {
         if ( ! empty( $settings['data'] ) ) {
             $facebook = $settings['data']['facebook'];
             $twitter = $settings['data']['twitter'];
-            $website = $settings['data']['website'];
+        }
+
+        if ( ! empty( $company['data'] ) ) {
+            $website = $company['data']['website'];
         }
 
         return [

@@ -53,12 +53,14 @@ class SystemService {
 
     private function server_software() {
         if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && ! empty( $_SERVER['SERVER_SOFTWARE'] ) ) {
-            return esc_url_raw( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) );
+            // phpcs:ignore
+            return wp_unslash( $_SERVER['SERVER_SOFTWARE'] );
         }
     }
 
     private function server_ip_address() {
-        return isset( $_SERVER['SERVER_ADDR'] ) ? esc_url_raw( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) : '';
+        // phpcs:ignore
+        return isset( $_SERVER['SERVER_ADDR'] ) ? wp_unslash( $_SERVER['SERVER_ADDR'] ) : '';
     }
 
     private function server_protocol() {
@@ -66,14 +68,17 @@ class SystemService {
     }
 
     private function server_administrator() {
-        return isset( $_SERVER['SERVER_ADMIN'] ) ? esc_url_raw( wp_unslash( $_SERVER['SERVER_ADMIN'] ) ) : '';
+        // phpcs:ignore
+        return isset( $_SERVER['SERVER_ADMIN'] ) ? wp_unslash( $_SERVER['SERVER_ADMIN'] ) : '';
     }
 
     private function server_webport() {
-        return isset( $_SERVER['SERVER_PORT'] ) ? esc_url_raw( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : '';
+        // phpcs:ignore
+        return isset( $_SERVER['SERVER_PORT'] ) ? wp_unslash( $_SERVER['SERVER_PORT'] ) : '';
     }
 
     private function cgi_version() {
-        return isset( $_SERVER['GATEWAY_INTERFACE'] ) ? esc_url_raw( wp_unslash( $_SERVER['GATEWAY_INTERFACE'] ) ) : '';
+        // phpcs:ignore
+        return isset( $_SERVER['GATEWAY_INTERFACE'] ) ? wp_unslash( $_SERVER['GATEWAY_INTERFACE'] ) : '';
     }
 }

@@ -229,6 +229,21 @@ class Api {
     }
 
     /**
+     * Get raw response
+     *
+     * @param string $url
+     *
+     * @return array|WP_Error
+     */
+    public function get_response( $url = '' ) {
+        $url = $this->build_url( $url );
+
+        $args = $this->args( [] );
+
+        return wp_remote_get( $url, $args );
+    }
+
+    /**
      * API - POST request caller
      *
      * @param array $data POST data

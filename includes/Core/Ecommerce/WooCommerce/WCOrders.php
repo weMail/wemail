@@ -22,6 +22,15 @@ class WCOrders {
      * @since 1.0.0
      */
     public function all( $args ) {
+        $integrated = get_option( 'wemail_woocommerce_integrated' );
+        $synced     = get_option( 'wemail_is_woocommerce_synced' );
+        if ( ! $integrated || ! $synced ) {
+            return [
+                'data' => [],
+                'message' => __( 'WooCommerce not integrated with weMail', 'wemail' ),
+            ];
+        }
+
         $params = [
             'exclude'        => $args['last_synced_id'] ? range( 1, $args['last_synced_id'] ) : null,
             'orderby'        => $args['orderby'] ? $args['orderby'] : 'date',
