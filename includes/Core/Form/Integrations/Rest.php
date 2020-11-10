@@ -58,8 +58,24 @@ class Rest extends RestController {
      * @return void
      */
     public function register_routes() {
+        $this->get( '/', 'integrations', 'can_create_form' );
         $this->get( '/{name}/forms', 'forms', 'can_create_form' );
         $this->post( '/{name}', 'save', 'can_create_form' );
+    }
+
+    /*
+     * Get all integrations with status
+     */
+    public function integrations( $request ) {
+        $integrations = [];
+        foreach ( wemail()->form->integrations() as $key => $integration ) {
+            $integrations[] = [
+                'slug' => $key,
+                'is_active' => $this->$key->is_active,
+            ];
+        }
+
+        return $integrations;
     }
 
     /**

@@ -82,22 +82,45 @@ class FrontEnd {
         return $settings['modalTrigger'] === 'auto';
     }
 
+    /**
+     * Checking show page condition
+     *
+     * @param $settings
+     * @param $object_id
+     *
+     * @return bool
+     */
     protected function checking_show_page( $settings, $object_id ) {
         switch ( $settings['showPage'] ) {
             case 'all':
                 return true;
-                break;
-
             case 'home':
                 return is_front_page() || is_home();
-                break;
-
-            default:
+            case 'specific':
                 if ( empty( $settings['pages'] ) ) {
                     return false;
                 }
-                return in_array( $object_id, array_column( $settings['pages'], 'id' ), true );
+                return $this->in_page_ids( $settings['pages'], $object_id );
+            case 'except':
+                if ( empty( $settings['pages'] ) ) {
+                    return false;
+                }
+                return ! $this->in_page_ids( $settings['pages'], $object_id );
         }
+
+        return false;
+    }
+
+    /**
+     * In page ids
+     *
+     * @param $page_ids
+     * @param $page_id
+     *
+     * @return bool
+     */
+    protected function in_page_ids( $page_ids, $page_id ) {
+        return in_array( $page_id, array_map( 'intval', array_column( $page_ids, 'id' ) ), true );
     }
 
     /**
@@ -108,7 +131,6 @@ class FrontEnd {
         switch ( $settings['when'] ) {
             case 'always':
                 return true;
-                break;
             case 'schedule':
                 if ( ! isset( $settings['scheduleFrom'], $settings['scheduleTo'] ) ) {
                     return false;
@@ -118,29 +140,19 @@ class FrontEnd {
                     return true;
                 }
                 break;
-
-            default:
-                return false;
         }
+        return false;
     }
 
     protected function checking_who_see( $settings ) {
         switch ( $settings['who'] ) {
             case 'all_users':
                 return true;
-                break;
-
             case 'logged_users':
                 return is_user_logged_in();
-                break;
-
             case 'not_logged_users':
                 return ! is_user_logged_in();
-                break;
-
-            default:
-                return false;
         }
+        return false;
     }
-
 }
