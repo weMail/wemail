@@ -11,7 +11,7 @@ class Site extends RestController {
     public function register_routes() {
         $this->post( '/settings', 'save_settings', 'can_manage_settings' );
         $this->post( '/settings/save-options', 'save_options', 'manage_options' );
-        $this->delete( '', 'delete_site' );
+        $this->delete( '', 'delete_site', 'save_options' );
     }
 
     /**
@@ -65,7 +65,7 @@ class Site extends RestController {
 
     public function delete_site() {
         $this->delete_option_by_prefix( 'wemail_form_integration_' );
-        $this->delete_user_metadata( [ 'wemail_api_key', 'wemail_user_data' ]);
+        $this->delete_user_metadata( [ 'wemail_api_key', 'wemail_user_data' ] );
 
         $wemail_options = [
             'wemail_version',
@@ -79,7 +79,7 @@ class Site extends RestController {
             'wemail_is_woocommerce_synced',
         ];
 
-        foreach( $wemail_options as $option ) {
+        foreach ( $wemail_options as $option ) {
             delete_option( $option );
         }
 
@@ -89,15 +89,18 @@ class Site extends RestController {
     public function delete_option_by_prefix( $prefix ) {
         global $wpdb;
 
-        $wemail_options = $wpdb->get_results( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE $prefix . '%'" );
-        foreach( $wemail_options as $option ) {
+        $wemail_options = $wpdb->get_results( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '$prefix%' ) );
+
+        foreach ( $wemail_options as $option ) {
             delete_option( $option->option_name );
         }
     }
 
     public function delete_user_metadata( $keys ) {
+        global $wpdb;
+
         foreach ( $keys as $key ) {
-            delete_user_meta(0,$key);
+            $wpdb->query( $wpdb->prepare( 'DELETE  FROM wp_usermeta WHERE meta_key = %s', $key ) );
         }
     }
 }
