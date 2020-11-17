@@ -11,7 +11,7 @@ class Site extends RestController {
     public function register_routes() {
         $this->post( '/settings', 'save_settings', 'can_manage_settings' );
         $this->post( '/settings/save-options', 'save_options', 'manage_options' );
-        $this->delete( '', 'delete_site', 'save_options' );
+        $this->delete( '', 'delete_site', 'can_manage_settings' );
     }
 
     /**
@@ -89,18 +89,12 @@ class Site extends RestController {
     public function delete_option_by_prefix( $prefix ) {
         global $wpdb;
 
-        $wemail_options = $wpdb->get_results( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '$prefix%' ) );
-
-        foreach ( $wemail_options as $option ) {
-            delete_option( $option->option_name );
-        }
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", $prefix . '%' ) );
     }
 
     public function delete_user_metadata( $keys ) {
         global $wpdb;
-
-        foreach ( $keys as $key ) {
-            $wpdb->query( $wpdb->prepare( 'DELETE  FROM wp_usermeta WHERE meta_key = %s', $key ) );
-        }
+        $keys = implode( "','", $keys );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key IN ('" . $keys . "')" ) );
     }
 }
