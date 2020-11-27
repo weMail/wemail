@@ -94,7 +94,7 @@ class Site extends RestController {
 
     public function delete_user_metadata( $keys ) {
         global $wpdb;
-        $keys = implode( "','", $keys );
+        $keys = implode( "','", array_map( 'esc_sql', $keys ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key IN ('" . $keys . "')" ) );
     }
 }
