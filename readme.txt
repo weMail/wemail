@@ -4,13 +4,16 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Description ==
+
+A Simplified email marketing solution for WordPress.
+
 
 weMail will help you to send newsletters, collect leads, automated emails, display subscription forms, auto add subscribers to a list, and manage subscribers all inside the WordPress dashboard.
 
@@ -21,7 +24,7 @@ Having a large email subscriber list should not be expensive. weMail is tightly 
 
 [weMail](https://getwemail.io "weMail")  will keep your email subscription process easy and simple.
 
-[![Best WordPress Email Marketing Tool](http://img.youtube.com/vi/XbNlyJlr53g/0.jpg)](http://www.youtube.com/watch?v=XbNlyJlr53g "weMail Overview - Best WordPress Email Marketing Tool")
+[![Best WordPress Email Marketing Tool](http://img.youtube.com/vi/XbNlyJlr53g/0.jpg)](https://www.youtube.com/watch?v=vy3D4PJWPUU "weMail Overview - Best WordPress Email Marketing Tool")
 
 
 With weMail, you can focus more on growing subscriber lists and email marketing within the WordPress Dashboard.
@@ -32,7 +35,8 @@ weMail features that will help your business -
 ## WordPress Integration:
 WordPress integrations that will help you get email subscribers effortlessly and put them into a list to send an email later. Collecting email addresses from WooCommerce user-product order email collection, new WordPress user registration, and commentators' emails to grow your email list just got easier.
 
-- **[WooCommerce](https://getwemail.io/docs/wemail/settings/) :** With each WooCommerce store order, you can collect subscribers and put them into an email list.
+
+- **[e-Commerce Integration](https://getwemail.io/docs/wemail/settings/) :** With each WooCommerce/EDD & FastSpring store order, you can collect subscribers and put them into an email list.
 
 - **[User Registration](https://getwemail.io/docs/wemail/settings/) :** Collect subscribers each time anyone registers to your website. You can also automate welcome email as well as doubt opt-in to spam check.
 
@@ -44,47 +48,59 @@ WordPress integrations that will help you get email subscribers effortlessly and
 
 - **[WordPress Transactional Email ](https://getwemail.io/docs/wemail/settings/general/):** You can send all the WordPress transactional email via weMail.
 
-## WooCommerce Integration:
+## e-Commerce Integration:
+
+- **[EDD Integration](https://getwemail.io/docs/wemail/settings/easy-digital-downloads/):** Welcome your first time customers with an automated thank you email for EDD customers.
+
+- **[FastSpring Integration](https://getwemail.io/docs/wemail/integrations/fastspring-wemail-integration/):** Collect email contacts from FastSpring checkout and power up your email workflow.
+
+- **[WooCommerce Integration](https://getwemail.io/docs/wemail/integrations/fastspring-wemail-integration/):** Collect email contacts from wooCommerce checkout and send emails.
+
+## e-Commerce Segmentation:
 - **[Send Thank You Email to First Time Customers ](http://getwemail.io/docs/wemail/settings/woocommerce-integration-wemail):** Welcome your first time customers with an automated thank you email.
 
-- **[Advance WooCommerce Segmentation](http://getwemail.io/docs/wemail/settings/woocommerce-integration-wemail):** With our advance WooCommerce segmentation you can target subscribers based on-
+- **[Advance e-Commerce Segmentation](http://getwemail.io/docs/wemail/settings/woocommerce-integration-wemail):** With our advance e-Commerce segmentation you can target subscribers based on-
 
-Order Spending (total order e.g - subscriber who purchased more than $500)
-Order Spending (single order e.g - subscriber who purchased less than $30 on a single order)
-Order Frequency (e.g - how many times a single subscribers purchased)
-Product Purchased (e.g - send email to who hasn’t purchased product A)
-Purchased activity (e.g - has purchased / has not purchased)
-Last Purchased
+    - Order Spending (total order e.g - subscriber who purchased more than $500)
+    - Order Spending (single order e.g - subscriber who purchased less than $30 on a single order)
+    - Order Frequency (e.g - how many times a single subscribers purchased)
+    - Product Purchased (e.g - send email to who hasn’t purchased product A)
+    - Purchased activity (e.g - has purchased / has not purchased)
+    - Last Purchased
 
 
 ## Contact Form Integrations:
 weMail has integration for all your favorite contact form plugins -
-Contact Form 7
-weForms
-Ninja Forms
-Gravity Forms
-WPForms
-Caldera Forms
-Happy Forms
-Formidable Forms
-Fluent Forms
+- [Contact Form 7](https://wordpress.org/plugins/contact-form-7/)
+- [weForms](https://wordpress.org/plugins/weforms/)
+- [Ninja Forms](https://wordpress.org/plugins/ninja-forms/)
+- Gravity Forms
+- [WPForms](https://wordpress.org/plugins/wpforms-lite/)
+- [Caldera Forms](https://wordpress.org/plugins/caldera-forms/)
+- [Happy Forms](https://wordpress.org/plugins/happyforms/)
+- [Formidable Forms](https://wordpress.org/plugins/formidable/)
+- [Fluent Forms](https://wordpress.org/plugins/fluentform/)
 
 
 ## Email Sending API Integrations:
 weMail support world class email sending solution providers so that you don’t have to worry about the sending part. weMail currently supports -
-Amazon SES
-Elastic Mail
-Mailgun
-SparkPost
-PostMark
-SendGrid
-SMTP
+- [Amazon SES](https://getwemail.io/docs/wemail/email-gateways/amazon-ses/)
+- [Elastic Mail](https://getwemail.io/docs/wemail/email-gateways/elastic-email/)
+- [Mailgun](https://getwemail.io/docs/wemail/email-gateways/mailgun/)
+- [SparkPost](https://getwemail.io/docs/wemail/email-gateways/sparkpost/)
+- [Postmark](https://getwemail.io/docs/wemail/email-gateways/postmark/)
+- [SendGrid](https://getwemail.io/docs/wemail/email-gateways/sendgrid/)
+- SMTP
 
 ## Other Useful Integrations:
-[WP ERP](https://wperp.com/)
-[Appsero](https://appsero.com/)
-Elementor
-Gutenberg
+- [WP ERP](https://wperp.com/)
+- [Appsero](https://appsero.com/)
+- [Elementor](https://wordpress.org/plugins/elementor/)
+- [Gutenberg](https://wordpress.org/plugins/gutenberg/)
+- [Mailchimp](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-mailchimp/)
+- [Mailpoet](https://wordpress.org/plugins/mailpoet/)
+- [Campaign Monitor](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-campaign-monitor)
+- [Mailoptin](https://wordpress.org/plugins/mailoptin/)
 
 
 
@@ -150,12 +166,14 @@ Analytics help you with campaign performance, to make a better-informed decision
 ## Import & Export ##
 - **[Import Contacts](https://getwemail.io/docs/wemail/imports/):** Import your custom templates, email list from other email marketing tools to weMail using our built-in import settings. Migration is easy, simple and solid.
 
-- **[Import from Mailchimp](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-mailchimp/:** You can import your email lists from Mailchimp using API into new or existing weMail lists.
+- **[Import from Mailchimp](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-mailchimp/):** You can import your email lists from Mailchimp using API into new or existing weMail lists.
 
-- **[Import from Campaign Monitor]():** You want to import your email marketing subscribers from Campaign Monitor? weMail got your back. You can import Campaign Monitor lists into weMail by using Campaign Monitors API.
+- **[Import from Campaign Monitor](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-campaign-monitor/):** You want to import your email marketing subscribers from Campaign Monitor? weMail got your back. You can import Campaign Monitor lists into weMail by using Campaign Monitors API.
 
 
-- **[Import from MailPoet]():** Import from MailPoet is also possible with weMail. You only just need to insert your Mailpoet API key and weMail will import all the subscribers into weMail. And you can resume your email marketing activities as usual.
+- **[Import from MailPoet](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-mailpoet/):** Import from MailPoet is also possible with weMail. You only just need to insert your Mailpoet API key and weMail will import all the subscribers into weMail. And you can resume your email marketing activities as usual.
+
+- **[Import from Active Campaign](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-active-campaign/):** Import from Active Campaign is also possible with weMail. You only just need to insert your API key, client ID andweMail will import all the subscribers into weMail. And you can resume your email marketing activities as usual.
 
 - **[Import from CSV](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-csv/):** You want more control over what to import. You can use CSV files to import your subscribers for email marketing.
 
@@ -252,7 +270,6 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 =  =
 
-
 == Screenshots ==
 
 1. Send automatic campaigns
@@ -263,7 +280,31 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 6. WP user sync & double-opt-in
 7. Drag drop template builder
 
+
 == Changelog ==
+
+= v1.2.0 - (10th November, 2020) =
+ * **New:** Easy Digital Downloads(EDD) integration.
+ * **New:** Popup Maker integration.
+ * **New:** Added Mailerlite importer.
+ * **New:** Added Active Campaign importer.
+ * **New:** API Key Masking for email gateways.
+ * **New:** Fastspring Webhook Support.
+ * **New:** Create segments while creating campaign.
+ * **New:** Added tinyMCE Editor on HTML Field of the form opt-in Builder.
+ * **New:** Added Play Button on Video Thumbnail.
+ * **New:** Added Option forms "except pages" option.
+ * **Fixed:** Fixed double opt-in redirection.
+ * **Fixed:** Help Menu improvements.
+ * **Fixed:** Form integrations UI improvement.
+ * **Fixed:** Fixed text block switching issue on Email Customizer.
+ * **Fixed:** Fixed Drag & Drop editor white text white background.
+ * **Fixed:** Fixed Double opt-in message customization.
+ * **Fixed:** Fixed Email Template not loading issue.
+
+= v1.1.2 - (2nd November, 2020) =
+ * **Fixed:** Fixed weMail teams issue on adding/updating new user.
+ * **Fixed:** Fixed forms button initialization error on classic block.
 
 = v1.1.1 - (7th October, 2020) =
  * **Fixed:** Fixed woocommerce order permalink.

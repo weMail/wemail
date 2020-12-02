@@ -34,6 +34,7 @@ class FormPreview {
      */
     public function render_form_component() {
         global $wp_scripts;
+        $form = wemail_form( $this->form_id, true );
         ?>
         <html <?php language_attributes(); ?>>
             <head>
@@ -45,12 +46,12 @@ class FormPreview {
                         'nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>',
                         'cdn': '<?php echo wemail()->wemail_cdn; ?>'
                     };
-                    var wemailForm = <?php echo wp_json_encode( wemail()->form->get( $this->form_id ) ); ?>
+                    var wemailForm = <?php echo wp_json_encode( $form ); ?>
                 </script>
             </head>
             <body>
                 <div>
-                    <?php echo sprintf( '<div id="preview-wemail-form"><wemail-form-preview id="%s"/></div>', $this->form_id ); ?>
+                    <?php echo sprintf( '<div id="preview-wemail-form" data-form-type="%s"><wemail-form-preview id="%s"/></div>', $form['type'], $this->form_id ); ?>
                 </div>
 
                 <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>
