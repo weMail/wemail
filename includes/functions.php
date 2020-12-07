@@ -227,13 +227,14 @@ function wemail_get_image_url( $image_id, $size = 'full' ) {
 /**
  * Render a weMail form
  *
- * @since 1.0.0
- *
  * @param string $id
  *
- * @return null|string
+ * @param bool $array
+ *
+ * @return null|string|array
+ * @since 1.0.0
  */
-function wemail_form( $id ) {
+function wemail_form( $id, $array = false ) {
     if ( is_array( $id ) ) {
         $form = $id;
     } else {
@@ -249,6 +250,8 @@ function wemail_form( $id ) {
 
     if ( ! $form || is_wp_error( $form ) ) {
         return null;
+    } elseif ( $array ) {
+        return $form;
     } else {
         $id = $form['id'];
 
