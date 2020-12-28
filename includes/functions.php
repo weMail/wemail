@@ -1,6 +1,8 @@
 <?php
 
 // don't call the file directly
+use WeDevs\WeMail\Admin\Elementor\FormAction;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -298,4 +300,18 @@ function wemail_array_only( $arr, $keys = [] ) {
     }
 
     return $new_arr;
+}
+
+add_action( 'elementor_pro/init', 'register_elementor_wemail_form_action' );
+
+/**
+ * Register weMail form action on Elementor
+ */
+function register_elementor_wemail_form_action() {
+    $action = new FormAction();
+
+    \ElementorPro\Plugin::instance()
+        ->modules_manager
+        ->get_modules( 'forms' )
+        ->add_form_action( $action->get_name(), $action );
 }
