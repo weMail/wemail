@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -282,6 +282,12 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.4.0 - (30th December, 2020) =
+ * **New:** Added opt-in form prebuilt template.
+ * **New:** Added elementor integration.
+ * **Fixed:** weMail test connection check from help menu.
+ * **New:** CRM integration moved from settings to integrations page.
 
 = v1.3.0 - (7th December, 2020) =
  * **New:** Remove site info from plugin and wemail on site delete.
