@@ -25,8 +25,8 @@ class Orders {
         $this->add_action( 'woocommerce_thankyou', 'wemail_wc_order_received' );
         $this->add_action( 'woocommerce_order_status_changed', 'wemail_wc_order_status_updated', 10, 3 );
 
-        $this->order_request = new OrderRequest();
-        $this->wc_order = new WCOrders();
+        $this->order_request = OrderRequest::instance();
+        $this->wc_order = WCOrders::instance();
     }
 
     /**
