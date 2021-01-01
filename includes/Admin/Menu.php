@@ -46,7 +46,7 @@ class Menu {
              */
             $menu_position = apply_filters( 'wemail_main_menu_position', 56 );
 
-            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'data:image/svg+xml;base64,' . base64_encode('<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path d="M10.002 13.806l-8.393-4.7a.407.407 0 00-.402.006.421.421 0 00-.207.351v7.721C1 18.187 1.799 19 2.784 19h14.432c.473 0 .927-.191 1.261-.532.335-.34.523-.802.523-1.284V9.408a.421.421 0 00-.208-.353.407.407 0 00-.405-.002l-8.385 4.753z"/><path d="M10.035 12l7.752-4.263a.404.404 0 00.071-.664c-1.804-1.545-4.937-4.167-6.61-5.618a1.888 1.888 0 00-2.434-.021c-1.75 1.464-4.84 4.145-6.671 5.694a.404.404 0 00.07.664L10.035 12z"/></g></svg>'), $menu_position );
+            $wemail = add_menu_page( __( 'weMail', 'wemail' ), __( 'weMail', 'wemail' ), $capability, 'wemail', [ $this, 'admin_view' ], 'data:image/svg+xml;base64,' . base64_encode( '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path d="M10.002 13.806l-8.393-4.7a.407.407 0 00-.402.006.421.421 0 00-.207.351v7.721C1 18.187 1.799 19 2.784 19h14.432c.473 0 .927-.191 1.261-.532.335-.34.523-.802.523-1.284V9.408a.421.421 0 00-.208-.353.407.407 0 00-.405-.002l-8.385 4.753z"/><path d="M10.035 12l7.752-4.263a.404.404 0 00.071-.664c-1.804-1.545-4.937-4.167-6.61-5.618a1.888 1.888 0 00-2.434-.021c-1.75 1.464-4.84 4.145-6.671 5.694a.404.404 0 00.07.664L10.035 12z"/></g></svg>' ), $menu_position );
 
             // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             $submenu['wemail'] = apply_filters( 'wemail_admin_submenu', [], $capability );
