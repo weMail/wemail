@@ -26,7 +26,7 @@ class Orders {
         $this->add_action( 'edd_complete_purchase', 'wemail_edd_complete_purchase' );
         $this->add_action( 'edd_update_payment_status', 'wemail_edd_update_payment_status', 10, 2 );
 
-        $this->order_request = new OrderRequest();
+        $this->order_request = OrderRequest::instance();
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace WeDevs\WeMail\Core\Sync\Ecommerce\EDD;
 
 use WeDevs\WeMail\Core\Ecommerce\Requests\Products as ProductsRequest;
-use WeDevs\WeMail\Core\Ecommerce\EDD\EDDProducts;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Products {
@@ -21,9 +20,11 @@ class Products {
      * @return void
      */
     public function __construct() {
-        $this->add_action( 'post_updated', 'wemail_edd_wp_update_post' );
+        if ( class_exists( 'Easy_Digital_Downloads' ) ) {
+            $this->add_action( 'post_updated', 'wemail_edd_wp_update_post' );
+        }
 
-        $this->product_request = new ProductsRequest();
+        $this->product_request = ProductsRequest::instance();
     }
 
     /**
