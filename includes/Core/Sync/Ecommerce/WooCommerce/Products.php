@@ -23,7 +23,7 @@ class Products {
     public function __construct() {
         $this->add_action( 'save_post', 'wemail_wc_product_updated', 10, 3 );
 
-        $this->product_request = new ProductsRequest();
+        $this->product_request = ProductsRequest::instance();
     }
 
     /**
@@ -42,13 +42,13 @@ class Products {
             return;
         }
 
-        if ( $post->post_status !== 'publish' || $post->post_type !== 'product' ) {
+        if ( $post->post_status !== 'publish' || $post->post_type !== 'product' || ! class_exists( $this->source ) ) {
             return;
         }
 
         $product = wc_get_product( $post );
 
-        $wc_products = new WCProducts();
+        $wc_products = WCProducts::instance();
 
         if ( ! $product ) {
             return;
