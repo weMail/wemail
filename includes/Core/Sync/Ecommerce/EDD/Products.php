@@ -20,7 +20,7 @@ class Products {
      * @return void
      */
     public function __construct() {
-        if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
+        if ( class_exists( 'Easy_Digital_Downloads' ) ) {
             $this->add_action('post_updated', 'wemail_edd_wp_update_post');
         }
 
