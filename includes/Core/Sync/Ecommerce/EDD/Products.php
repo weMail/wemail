@@ -20,7 +20,9 @@ class Products {
      * @return void
      */
     public function __construct() {
-        $this->add_action( 'post_updated', 'wemail_edd_wp_update_post' );
+        if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
+            $this->add_action('post_updated', 'wemail_edd_wp_update_post');
+        }
 
         $this->product_request = ProductsRequest::instance();
     }
@@ -34,10 +36,6 @@ class Products {
      */
 
     public function wemail_edd_wp_update_post( $post_id ) {
-        if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
-            return;
-        }
-
         $integrated = get_option( 'wemail_edd_integrated' );
         $synced     = get_option( 'wemail_is_edd_synced' );
         if ( ! $integrated || ! $synced ) {
