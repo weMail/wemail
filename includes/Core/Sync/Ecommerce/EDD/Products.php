@@ -21,7 +21,7 @@ class Products {
      */
     public function __construct() {
         if ( class_exists( 'Easy_Digital_Downloads' ) ) {
-            $this->add_action('post_updated', 'wemail_edd_wp_update_post');
+            $this->add_action( 'post_updated', 'wemail_edd_wp_update_post' );
         }
 
         $this->product_request = ProductsRequest::instance();
