@@ -15,7 +15,7 @@ class Scripts {
     }
 
     public function scripts() {
-        $this->version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : WEMAIL_VERSION;
+        $this->version = WEMAIL_VERSION;
 
         $this->enqueue_styles();
         $this->enqueue_scripts();
@@ -25,8 +25,14 @@ class Scripts {
     }
 
     public function enqueue_scripts() {
+        $cdn_url = wemail()->wemail_cdn;
+
+        if (is_wemail_hmr_enable()) {
+            $cdn_url = wemail()->hmr_host();
+        }
+
         wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/js/frontend-vendor.js', [ 'jquery' ], $this->version, true );
-        wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/js/frontend.js', [ 'wemail-frontend-vendor' ], $this->version, true );
+        wp_register_script( 'wemail-frontend', $cdn_url . '/js/frontend.js', [ 'wemail-frontend-vendor' ], $this->version, true );
 
         $wemail = [
             'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1' ) ),

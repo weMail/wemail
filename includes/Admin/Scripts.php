@@ -26,7 +26,7 @@ class Scripts {
      * @return void
      */
     public function __construct() {
-        $this->version = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? time() : WEMAIL_VERSION;
+        $this->version = WEMAIL_VERSION;
 
         $this->add_action( 'wemail_admin_enqueue_styles', 'enqueue_styles' );
         $this->add_action( 'wemail_admin_enqueue_scripts', 'enqueue_scripts' );
@@ -66,6 +66,12 @@ class Scripts {
     public function enqueue_scripts() {
         wp_enqueue_media();
 
+        $cdn_url = wemail()->wemail_cdn;
+
+        if (is_wemail_hmr_enable()) {
+            $cdn_url = wemail()->hmr_host();
+        }
+
         wp_register_script( 'wemail-tiny-mce', site_url( '/wp-includes/js/tinymce/tinymce.min.js' ), [], true );
         wp_register_script( 'wemail-tiny-mce-code', wemail()->wemail_cdn . '/vendor/tinymce/plugins/code/plugin.min.js', [ 'wemail-tiny-mce' ], $this->version, true );
         wp_register_script( 'wemail-tiny-mce-hr', wemail()->wemail_cdn . '/vendor/tinymce/plugins/hr/plugin.min.js', [ 'wemail-tiny-mce-code' ], $this->version, true );
@@ -93,7 +99,7 @@ class Scripts {
         ];
 
         wp_enqueue_script( 'wemail-vendor', wemail()->wemail_cdn . '/js/vendor.js', $dependencies, $this->version, true );
-        wp_enqueue_script( 'wemail', wemail()->wemail_cdn . '/js/wemail.js', [ 'wemail-vendor' ], $this->version, true );
+        wp_enqueue_script( 'wemail', $cdn_url . '/js/wemail.js', [ 'wemail-vendor' ], $this->version, true );
 
         $user = wemail()->user;
 
