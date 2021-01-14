@@ -275,7 +275,7 @@ function wemail_form( $id, $array = false ) {
  * @return bool
  */
 function is_wemail_hmr_enable() {
-    return (defined('WEMAIL_HMR') && WEMAIL_HMR);
+    return ( defined( 'WEMAIL_HMR' ) && WEMAIL_HMR );
 }
 
 /**

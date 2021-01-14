@@ -458,7 +458,7 @@ final class WeMail {
      * @return string
      */
     public function hmr_host() {
-        return (defined('WEMAIL_HMR_HOST') && WEMAIL_HMR_HOST) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
+        return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
     }
 
 }

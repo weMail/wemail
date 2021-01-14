@@ -68,7 +68,7 @@ class Scripts {
 
         $cdn_url = wemail()->wemail_cdn;
 
-        if (is_wemail_hmr_enable()) {
+        if ( is_wemail_hmr_enable() ) {
             $cdn_url = wemail()->hmr_host();
         }
 
