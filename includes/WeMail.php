@@ -452,4 +452,13 @@ final class WeMail {
         $this->wemail_app = untrailingslashit( $app );
     }
 
+    /**
+     * Hot module replacement host
+     *
+     * @return string
+     */
+    public function hmr_host() {
+        return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
+    }
+
 }
