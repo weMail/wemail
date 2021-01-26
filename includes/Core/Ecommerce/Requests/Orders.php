@@ -33,7 +33,7 @@ class Orders {
             ]
         );
 
-        $this->clear_revenue_cookie($response, $payload['status']);
+        $this->clear_revenue_cookie( $response );
     }
 
     /**
@@ -50,7 +50,7 @@ class Orders {
             ]
         );
 
-        $this->clear_revenue_cookie($response, $payload['status']);
+        $this->clear_revenue_cookie( $response );
     }
 
     /**
@@ -58,16 +58,22 @@ class Orders {
      */
     protected function campaign_id() {
         if ( isset( $_COOKIE[ $this->revenue_cookie ] ) ) {
-            return $_COOKIE[ $this->revenue_cookie ];
+            return sanitize_text_field( wp_unslash( $_COOKIE[ $this->revenue_cookie ] ) );
         }
-
-        return;
     }
 
-    protected function clear_revenue_cookie($response, $status) {
-        if ( $status === 'completed' && isset($response['success']) && $response['success'] == true) {
+    /**
+     * @param $response
+     * @param $status
+     */
+    protected function clear_revenue_cookie( $response ) {
+        if ( is_object( $response ) ) {
+            return $response;
+        }
+
+        if ( isset( $response['success'] ) && $response['success'] ) {
             unset( $_COOKIE[ $this->revenue_cookie ] );
-            setcookie($this->revenue_cookie, null, -1, '/');
+            setcookie( $this->revenue_cookie, null, -1, '/' );
             return;
         }
 

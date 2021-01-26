@@ -32,7 +32,7 @@ class RevenueTrack {
             return true;
         }
 
-        setcookie( 'wemail_campaign_revenue', $_GET['campaign_id'], strtotime( '+2 day' ), '/' );
+        setcookie( 'wemail_campaign_revenue', sanitize_text_field( wp_unslash( $_GET['campaign_id'] ) ), strtotime( '+2 day' ), '/' );
 
         return true;
     }
