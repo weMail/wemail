@@ -16,19 +16,19 @@ class RevenueTrack {
      * @return void
      */
     public function __construct() {
-        $this->add_action( 'template_redirect', 'wemail_check_revenue_calculation_cookie' );
+        $this->add_action( 'template_redirect', 'wemail_set_revenue_cookie' );
     }
 
 
     /**
      * @return bool
      */
-    public function wemail_check_revenue_calculation_cookie() {
+    public function wemail_set_revenue_cookie() {
         if ( ! isset( $_GET['campaign_id'] ) ) {
             return true;
         }
 
-        if ( ! class_exists( 'woocommerce' ) && ! class_exists( 'Easy_Digital_Downloads' ) ) {
+        if ( ! class_exists( 'WooCommerce' ) && ! class_exists( 'Easy_Digital_Downloads' ) ) {
             return true;
         }
 
