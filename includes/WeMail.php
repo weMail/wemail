@@ -18,7 +18,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '1.4.1';
+    public $version = '1.5.0';
 
     /**
      * DB version
@@ -450,6 +450,15 @@ final class WeMail {
          */
         $app = apply_filters( 'wemail_app_url', 'https://app.getwemail.io' );
         $this->wemail_app = untrailingslashit( $app );
+    }
+
+    /**
+     * Hot module replacement host
+     *
+     * @return string
+     */
+    public function hmr_host() {
+        return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
     }
 
 }

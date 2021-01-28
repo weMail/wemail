@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -282,6 +282,14 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.5.0 - (28th January, 2021) =
+ * **New:** Stripe integration.
+ * **New:** Paypal integration.
+ * **New:** Convertkit integration.
+ * **New:** Mailjet integration.
+ * **Fixed:** Ecommerce sync optimization.
+ * **Fixed:** form integration UI & settings.
 
 = v1.4.1 - (1st January, 2021) =
  * **Fixed:** Handled fatal error on post update.
