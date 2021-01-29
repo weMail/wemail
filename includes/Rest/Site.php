@@ -2,6 +2,9 @@
 
 namespace WeDevs\WeMail\Rest;
 
+use WeDevs\WeMail\Core\Ecommerce\EDD\EDDSettings;
+use WeDevs\WeMail\Core\Ecommerce\Requests\Settings;
+use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCSettings;
 use WeDevs\WeMail\RestController;
 
 class Site extends RestController {
@@ -54,6 +57,9 @@ class Site extends RestController {
         foreach ( $settings as $key => $setting ) {
             if ( rest_is_boolean( $setting ) ) {
                 update_option( "wemail_{$key}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+
+                // Update site settings data on server
+                $this->update_site_settings_on_server( $key );
                 continue;
             }
 
@@ -96,5 +102,27 @@ class Site extends RestController {
         global $wpdb;
         $keys = implode( "','", array_map( 'esc_sql', $keys ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key IN ('" . $keys . "')" ) );
+    }
+
+    /**
+     * @param $key
+     */
+    public function update_site_settings_on_server( $key ) {
+        switch ( $key ) {
+            case 'is_woocommerce_synced':
+                $setting = new WCSettings();
+                break;
+            case 'is_edd_synced':
+                $setting = new EDDSettings();
+                break;
+            default:
+                return;
+        }
+
+        $settings = $setting->get();
+        $setting = new Settings();
+        $setting->update( $settings );
+
+        return;
     }
 }
