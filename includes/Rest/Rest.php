@@ -7,6 +7,7 @@ use WeDevs\WeMail\Rest\Ecommerce\Customers;
 use WeDevs\WeMail\Rest\Ecommerce\Products;
 use WeDevs\WeMail\Rest\Ecommerce\Orders;
 use WeDevs\WeMail\Rest\Ecommerce\Integrations;
+use WeDevs\WeMail\Rest\Affiliate\Integrations as AffiliateIntegrations;
 use WeDevs\WeMail\Rest\Help\Help;
 use WeDevs\WeMail\Traits\Hooker;
 
@@ -40,6 +41,7 @@ class Rest {
         new Integrations();
         new Customers();
         new Help();
+        new AffiliateIntegrations();
     }
 
 }
