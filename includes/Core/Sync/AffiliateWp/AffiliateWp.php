@@ -47,16 +47,18 @@ class AffiliateWp {
      * @since 1.0.0
      */
     public function affwp_wemail_add_user_to_list( $affiliate_id, $status = true ) {
-        $isEnabled = get_option( 'wemail_affiliatewp_enabled', $default = false );
-        if (!$isEnabled || $isEnabled === 'false') return;
+        $is_enabled = get_option( 'wemail_affiliatewp_enabled', $default = false );
+        if ( ! $is_enabled || $is_enabled === 'false' ) {
+			return;
+        }
 
-        $postData = $_POST;
+        $post_data = $_POST; // phpcs:ignore
         $payload = [];
-        if (isset($postData['affwp_user_name'])) {
-            $name = explode( ' ', sanitize_text_field( $_POST['affwp_user_name'] ) );
+        if ( isset( $post_data['affwp_user_name'] ) ) {
+            $name = explode( ' ', sanitize_text_field( $post_data['affwp_user_name'] ) );
             $first_name = $name[0];
             $last_name  = isset( $name[1] ) ? $name[1] : '';
-            $email      = sanitize_text_field( $_POST['affwp_user_email'] );
+            $email      = sanitize_text_field( $post_data['affwp_user_email'] );
 
             $affiliate = affiliate_wp()->affiliates->get_by( 'affiliate_id', $affiliate_id );
             $user_id   = $affiliate->user_id;
@@ -65,18 +67,18 @@ class AffiliateWp {
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'email' => $email,
-                'wp_user_id' => $user_id
+                'wp_user_id' => $user_id,
             ];
-        } else if (isset($postData['email'])) {
+        } elseif ( isset( $post_data['email'] ) ) {
             $payload = [
-                'first_name' => $postData['first_name'] ? $postData['first_name'] : '',
-                'last_name' => $postData['last_name'] ? $postData['last_name'] : '',
-                'email' => $postData['email'],
-                'wp_user_id' => $postData['wp_user_id'] ? $postData['wp_user_id'] : ''
+                'first_name' => $post_data['first_name'] ? $post_data['first_name'] : '',
+                'last_name' => $post_data['last_name'] ? $post_data['last_name'] : '',
+                'email' => $post_data['email'],
+                'wp_user_id' => $post_data['wp_user_id'] ? $post_data['wp_user_id'] : '',
             ];
         } else {
-            $affiliate = affwp_get_affiliate($affiliate_id);
-            $user = get_userdata($affiliate->user_id);
+            $affiliate = affwp_get_affiliate( $affiliate_id );
+            $user = get_userdata( $affiliate->user_id );
             $name = explode( ' ', $user->display_name );
             $first_name = $name[0];
             $last_name  = isset( $name[1] ) ? $name[1] : '';
@@ -86,19 +88,19 @@ class AffiliateWp {
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'email' => $email,
-                'wp_user_id' => $user->ID
+                'wp_user_id' => $user->ID,
             ];
         }
-        wemail()->api->affiliates()->subscribers()->post($payload);
+        wemail()->api->affiliates()->subscribers()->post( $payload );
     }
 
     public function affwp_wemail_remove_user_from_list( $data ) {
-        error_log('Removing Affiliate');
-        error_log($data);
+        error_log( 'Removing Affiliate' );
+        error_log( $data );
     }
 
-    public function affwp_wemail_affiliate_profile_updated ( $data ) {
-        error_log('Updating Affiliate Profile');
-        error_log(data);
+    public function affwp_wemail_affiliate_profile_updated( $data ) {
+        error_log( 'Updating Affiliate Profile' );
+        error_log( data );
     }
 }

@@ -10,8 +10,8 @@ class Integrations extends RestController {
     public $rest_base = '/affiliates';
 
     public function register_routes() {
-        $this->get('/settings/affiliate-wp', 'getAffiliateWpSettings', 'manage_options');
-        $this->post('/settings/affiliate-wp', 'postAffiliateWpSettings', 'manage_options');
+        $this->get( '/settings/affiliate-wp', 'getAffiliateWpSettings', 'manage_options' );
+        $this->post( '/settings/affiliate-wp', 'postAffiliateWpSettings', 'manage_options' );
     }
 
     /**
@@ -19,7 +19,6 @@ class Integrations extends RestController {
      * @return bool
      */
     public function permission( $request ) {
-
     }
 
     /**
@@ -27,19 +26,20 @@ class Integrations extends RestController {
      * @return \WP_Error|\WP_HTTP_Response|\WP_REST_Response
      */
     public function getAffiliateWpSettings() {
-        $enabled = get_option( 'wemail_affiliatewp_enabled', $default = false );
+        $enabled = get_option( 'wemail_affiliatewp_enabled', false );
+        $rest_url = rest_url( '', 'json' );
         return rest_ensure_response(
             [
                 'data' => [
                     'enabled' => $enabled,
-                    'rest_url' => rest_url( $path = '', $scheme = 'json' )
+                    'rest_url' => $rest_url,
                 ],
             ]
         );
     }
 
     /**
-     * post affiliatewp settings
+     * Post affiliatewp settings
      * @return \WP_Error|\WP_HTTP_Response|\WP_REST_Response
      */
     public function postAffiliateWpSettings( $request ) {
@@ -48,7 +48,7 @@ class Integrations extends RestController {
         return rest_ensure_response(
             [
                 'data' => [
-                    'checked'  => $checked
+                    'checked'  => $checked,
                 ],
             ]
         );

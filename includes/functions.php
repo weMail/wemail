@@ -270,6 +270,15 @@ function wemail_form( $id, $array = false ) {
 }
 
 /**
+ * Is hot module replacement enable or not
+ *
+ * @return bool
+ */
+function is_wemail_hmr_enable() {
+    return ( defined( 'WEMAIL_HMR' ) && WEMAIL_HMR );
+}
+
+/**
  * Checks if ERP CRM is enabled
  *
  * @since 1.0.0

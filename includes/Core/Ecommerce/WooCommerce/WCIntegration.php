@@ -45,6 +45,6 @@ class WCIntegration {
      * @return bool
      */
     protected function is_woocommerce_activated() {
-        return class_exists( $this->source );
+        return class_exists( 'WooCommerce' );
     }
 }

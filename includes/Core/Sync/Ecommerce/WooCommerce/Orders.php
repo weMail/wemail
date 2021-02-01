@@ -22,7 +22,7 @@ class Orders {
      * @return void
      */
     public function __construct() {
-        $this->add_action( 'woocommerce_thankyou', 'wemail_wc_order_received' );
+        $this->add_action( 'woocommerce_thankyou', 'wemail_wc_order_received', 10, 1 );
         $this->add_action( 'woocommerce_order_status_changed', 'wemail_wc_order_status_updated', 10, 3 );
 
         $this->order_request = OrderRequest::instance();
