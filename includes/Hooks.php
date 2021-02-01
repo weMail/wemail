@@ -10,8 +10,8 @@ use WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Orders as SyncWCOrders;
 use WeDevs\WeMail\Core\Sync\Ecommerce\WooCommerce\Products as SyncWCProducts;
 use WeDevs\WeMail\Core\Sync\Ecommerce\EDD\Orders as SyncEDDOrders;
 use WeDevs\WeMail\Core\Sync\Ecommerce\EDD\Products as SyncEDDProducts;
+use WeDevs\WeMail\Core\Sync\AffiliateWp\AffiliateWp as SyncAffiliateWp;
 use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
-
 
 class Hooks {
 
@@ -25,6 +25,7 @@ class Hooks {
         new SyncWCProducts();
         new SyncEDDOrders();
         new SyncEDDProducts();
+        new SyncAffiliateWp();
         new RevenueTrack();
     }
 
