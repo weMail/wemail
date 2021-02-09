@@ -105,7 +105,8 @@ class Form {
             'formidable_forms'  => __( 'Formidable Forms', 'wemail' ),
             'popup_builder'     => __( 'Popup Builder', 'wemail' ),
             'popup_maker'       => __( 'Popup Maker', 'wemail' ),
-            'affiliate_wp'       => __( 'AffiliateWP', 'wemail' ),
+            'affiliate_wp'      => __( 'AffiliateWP', 'wemail' ),
+            'forminator_forms'  => __( 'Forminator Forms', 'wemail' ),
         ];
     }
 
