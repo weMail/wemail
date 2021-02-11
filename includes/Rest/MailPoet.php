@@ -272,32 +272,13 @@ class MailPoet {
      * @return array
      */
     private function subscribers_v3( $request ) {
-        $data = [];
+        global $wpdb;
 
         $list_id = absint( $request['id'] );
+        $offset = ( ! empty( $request['offset'] ) ? $request['offset'] : 0 );
+        $limit = ( ! empty( $request['limit'] ) ? $request['limit'] : 20 );
 
-        $args = [
-            'offset' => ! empty( $request['offset'] ) ? $request['offset'] : 0,
-            'limit' => ! empty( $request['limit'] ) ? $request['limit'] : 20,
-            'filter' => [
-                'segment' => $list_id,
-            ],
-        ];
-
-        /**
-         * NOTE: Ignoring custom fields.
-         */
-        $listings = new \MailPoet\Segments\SubscribersListings(
-            new \MailPoet\Listing\Handler(),
-            new \MailPoet\WP\Functions()
-        );
-        $listing_data = $listings->getListingsInSegment( $args );
-
-        foreach ( $listing_data['items'] as $subscriber ) {
-            $data[] = $subscriber->asArray();
-        }
-
-        return $data;
+        return $wpdb->get_results( $wpdb->prepare( "SELECT subscribers.id, subscribers.first_name, subscribers.last_name, subscribers.email FROM {$wpdb->prefix}mailpoet_subscriber_segment as sub_segment INNER JOIN {$wpdb->prefix}mailpoet_subscribers as subscribers ON sub_segment.subscriber_id = subscribers.id AND sub_segment.status = 'subscribed' WHERE sub_segment.segment_id = %d LIMIT %d, %d", $list_id, $offset, $limit ), ARRAY_A );
     }
 
     /**
