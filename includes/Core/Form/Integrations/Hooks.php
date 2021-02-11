@@ -2,13 +2,6 @@
 
 namespace WeDevs\WeMail\Core\Form\Integrations;
 
-use WeDevs\WeMail\Core\Form\Integrations\CalderaForms;
-use WeDevs\WeMail\Core\Form\Integrations\ContactForm7;
-use WeDevs\WeMail\Core\Form\Integrations\GravityForms;
-use WeDevs\WeMail\Core\Form\Integrations\NinjaForms;
-use WeDevs\WeMail\Core\Form\Integrations\Weforms;
-use WeDevs\WeMail\Core\Form\Integrations\Wpforms;
-
 class Hooks {
 
     /**
@@ -30,5 +23,6 @@ class Hooks {
         add_action( 'frm_after_entry_processed', [ FormidableForms::instance(), 'submit' ], 999, 1 );
         add_action( 'wp_ajax_sgpb_process_after_submission', [ PopupBuilder::instance(), 'submit' ], 999, 1 );
         add_action( 'pum_sub_form_success', [ PopupMaker::instance(), 'submit' ], 999, 1 );
+        add_action( 'forminator_custom_form_submit_before_set_fields', [ ForminatorForms::instance(), 'submit' ], 999, 3 );
     }
 }
