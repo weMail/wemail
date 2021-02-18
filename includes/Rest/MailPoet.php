@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Rest;
 
+use MailPoet\Models\Subscriber;
 use WP_Error;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -170,22 +171,26 @@ class MailPoet {
      * @return array
      */
     private function lists_v3() {
-        $lists = new \MailPoet\Listing\Handler();
-        $lists = $lists->get( '\MailPoet\Models\Segment', [] );
+        global $wpdb;
+        $segment_table = $wpdb->prefix . 'mailpoet_segments';
+        $pivot_table = $wpdb->prefix . 'mailpoet_subscriber_segment';
 
-        $data = [];
+        $lists = $wpdb->get_results( 'SELECT * FROM ' . $segment_table, ARRAY_A );
+        $stats = $wpdb->get_results( $wpdb->prepare( 'SELECT mp_segments.id, COUNT(*) as count FROM ' . $pivot_table . ' as mp_segment_pivot INNER JOIN ' . $segment_table . ' as mp_segments ON mp_segment_pivot.segment_id = mp_segments.id AND mp_segment_pivot.status = %s GROUP BY mp_segments.id', Subscriber::STATUS_SUBSCRIBED ), ARRAY_A );
 
-        foreach ( $lists['items'] as $list ) {
-            $list = $list->withSubscribersCount();
+        $lists = array_column( $lists, 'name', 'id' );
+        $stats = array_column( $stats, 'count', 'id' );
 
-            $data[] = [
-                'id' => absint( $list->id ),
-                'name' => $list->name,
-                'count' => $list->subscribers_count['subscribed'],
-            ];
-        }
-
-        return $data;
+        return array_map(
+            function ( $id ) use ( $lists, $stats ) {
+                return [
+                    'id' => $id,
+                    'name' => $lists[ $id ],
+                    'count' => intval( $stats[ $id ] ),
+                ];
+            },
+            array_keys( $stats )
+        );
     }
 
     /**
@@ -272,32 +277,13 @@ class MailPoet {
      * @return array
      */
     private function subscribers_v3( $request ) {
-        $data = [];
+        global $wpdb;
 
         $list_id = absint( $request['id'] );
+        $offset = ( ! empty( $request['offset'] ) ? $request['offset'] : 0 );
+        $limit = ( ! empty( $request['limit'] ) ? $request['limit'] : 20 );
 
-        $args = [
-            'offset' => ! empty( $request['offset'] ) ? $request['offset'] : 0,
-            'limit' => ! empty( $request['limit'] ) ? $request['limit'] : 20,
-            'filter' => [
-                'segment' => $list_id,
-            ],
-        ];
-
-        /**
-         * NOTE: Ignoring custom fields.
-         */
-        $listings = new \MailPoet\Segments\SubscribersListings(
-            new \MailPoet\Listing\Handler(),
-            new \MailPoet\WP\Functions()
-        );
-        $listing_data = $listings->getListingsInSegment( $args );
-
-        foreach ( $listing_data['items'] as $subscriber ) {
-            $data[] = $subscriber->asArray();
-        }
-
-        return $data;
+        return $wpdb->get_results( $wpdb->prepare( "SELECT subscribers.id, subscribers.first_name, subscribers.last_name, subscribers.email FROM {$wpdb->prefix}mailpoet_subscriber_segment as sub_segment INNER JOIN {$wpdb->prefix}mailpoet_subscribers as subscribers ON sub_segment.subscriber_id = subscribers.id AND sub_segment.status = %s WHERE sub_segment.segment_id = %d LIMIT %d, %d", Subscriber::STATUS_SUBSCRIBED, $list_id, $offset, $limit ), ARRAY_A );
     }
 
     /**

@@ -5,7 +5,6 @@ namespace WeDevs\WeMail;
 use Stringy\StaticStringy;
 use WeDevs\WeMail\Admin\Admin;
 use WeDevs\WeMail\FrontEnd\FrontEnd;
-use WeDevs\WeMail\Hooks;
 use WeDevs\WeMail\Privacy\Privacy;
 use WeDevs\WeMail\Rest\Rest;
 
@@ -18,7 +17,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '1.5.0';
+    public $version = '1.6.0';
 
     /**
      * DB version
@@ -295,11 +294,11 @@ final class WeMail {
      * @return void
      */
     private function init_hooks() {
-        register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
-        register_deactivation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Uninstall', 'uninstall' ] );
-
         add_action( 'init', [ $this, 'init' ], 0 );
         add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
+
+        register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
+        register_deactivation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Uninstall', 'uninstall' ] );
     }
 
     /**
@@ -460,5 +459,4 @@ final class WeMail {
     public function hmr_host() {
         return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
     }
-
 }

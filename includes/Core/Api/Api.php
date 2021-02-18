@@ -220,6 +220,7 @@ class Api {
      */
     public function get( $url = '', $query = [], $args = [] ) {
         $args = $this->args( $args );
+        $args['timeout'] = 50;
 
         $url = $this->build_url( $url, $query );
 
@@ -254,6 +255,7 @@ class Api {
      */
     public function post( $data = [], $args = [] ) {
         $args = $this->args( $args );
+        $args['timeout'] = 50;
 
         $args['body'] = ! empty( $data ) ? $data : null;
 

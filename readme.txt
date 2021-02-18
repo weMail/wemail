@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -282,6 +282,18 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.6.0 - (18th February, 2021) =
+ * **New:** Added Sendinblue importer.
+ * **New:** Added GetResponse importer.
+ * **New:** AffiliateWP integration.
+ * **New:** Added minute frequency on automatic campaign.
+ * **New:** send test mail from Email sending settings section.
+ * **New:** Mailjet integration.
+ * **New:** Calculate & display revenue per campaign.
+ * **Fixed:** Refactor importer.
+ * **Fixed:** Fix MailPoet Importer.
+ * **Fixed:** Fixed event name show on automatic campaign.
 
 = v1.5.0 - (28th January, 2021) =
  * **New:** Stripe integration.
