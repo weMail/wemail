@@ -19,6 +19,9 @@ weMail will help you to send newsletters, collect leads, automated emails, displ
 
 Tightly integrated with WordPress, Cloud-powered email newsletter platform that lets you send emails via Amazon SES, SparkPost, Mailgun, SendGrid, Elasti Mail, or your favorite SMTP provider. A perfect email marketing solution for small to large businesses with large email databases.
 
+### weMail review from SaaSMaster
+
+[youtube https://www.youtube.com/watch?v=T9fdSOVZhS4]
 
 Having a large email subscriber list should not be expensive. weMail is tightly integrated into WordPress to make email marketing inside WordPress dashboard simple and easy and powerful
 
