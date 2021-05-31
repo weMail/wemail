@@ -45,7 +45,7 @@ class WCOrders {
         }
 
         $collection = wc_get_orders( $params );
-
+        $orders['data'] = [];
         $orders['current_page'] = intval( $params['paged'] );
         $orders['total'] = $collection->total;
         $orders['total_page'] = $collection->max_num_pages;
