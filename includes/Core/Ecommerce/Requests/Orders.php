@@ -85,7 +85,7 @@ class Orders {
      * @param $order_id
      * @return bool
      */
-    protected function is_first_order( $order_id ){
+    protected function is_first_order( $order_id ) {
         $order = wc_get_order( $order_id );
 
         $user_id = $order->get_user_id();
@@ -95,7 +95,7 @@ class Orders {
             'return' => 'ids',
         ];
 
-        if ($user_id) {
+        if ( $user_id ) {
             $args['customer_id'] = $user_id;
         } else {
             $args['billing_email'] = $order->get_billing_email();
