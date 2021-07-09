@@ -91,7 +91,7 @@ class Orders {
         $user_id = $order->get_user_id();
 
         $args = [
-            'limit' => 1,
+            'limit' => 2,
             'return' => 'ids',
         ];
 
@@ -103,6 +103,6 @@ class Orders {
 
         $customer_order = wc_get_orders( $args );
 
-        return (bool) empty( $customer_order );
+        return count( $customer_order ) > 1;
     }
 }
