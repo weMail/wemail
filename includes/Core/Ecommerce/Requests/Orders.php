@@ -84,6 +84,7 @@ class Orders {
     /**
      * @param $order_id
      * @return bool
+     * https://github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
      */
     protected function is_first_order( $order_id ) {
         $order = wc_get_order( $order_id );
@@ -101,8 +102,8 @@ class Orders {
             $args['billing_email'] = $order->get_billing_email();
         }
 
-        $customer_order = wc_get_orders( $args );
+        $orders = wc_get_orders( $args );
 
-        return count( $customer_order ) > 1;
+        return $orders->total < 2;
     }
 }
