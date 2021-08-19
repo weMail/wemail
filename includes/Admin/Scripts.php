@@ -160,7 +160,7 @@ class Scripts {
                 'woocommerce' => $wc_integration->status(),
                 'edd'         => $edd_integration->status(),
             ],
-            'site_name' => get_bloginfo('name')
+            'site_name' => get_bloginfo( 'name' ),
         ];
 
         wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
