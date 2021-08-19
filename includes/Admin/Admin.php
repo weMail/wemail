@@ -12,8 +12,10 @@ class Admin {
 
     public function __construct() {
         $this->add_action( 'admin_init', 'redirect_after_activation', 9999 );
-
+        
         $this->includes();
+        $admin_notice = Notice::instance();
+        $admin_notice->show_site_connect_notice();
     }
 
     private function includes() {

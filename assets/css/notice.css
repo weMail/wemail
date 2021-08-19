@@ -1,0 +1,73 @@
+.wemail-connect-notice-flex-container {
+    align-items: center;
+    background-color: #5E72E4;
+    color: #fff;
+    border-left: none;
+    border-radius: 3px;
+    padding: 1%;
+}
+
+.wemail-connect-notice-flex-container h3 {
+    color: #fff;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.wemail-connect-notice-logo {
+    flex-grow: 1;
+    margin-right: 2%;
+}
+
+.wemail-connect-notice-content {
+    flex-grow: 7;
+    margin-right: 24%;
+    text-align: left;
+}
+
+.wemail-connect-notice-connect-button {
+    flex-grow: 1;
+}
+
+.wemail-connect-notice-connect-button button {
+    background: #F8F9FE;
+    border-radius: 5px;
+    color: #5E72E4;
+}
+
+.wemail-connect-notice-connect-button > .button {
+    color: #5E72E4;
+    border-color: #5E72E4;
+    padding: 1px 30px;
+    border-radius: 5px;
+    /* font-weight: bold; */
+}
+
+.custom-notice {
+    padding: 0.9em;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.custom-dismissable-btn {
+    top: -19px;
+    right: -12px;
+    padding: 0;
+    margin: 0;
+}
+ 
+.wemail-connect-notice-flex-container > .notice-dismiss:before {
+    color: #fff;
+}
+
+.custom-ecommerce-notice {
+    background-color: #5E72E4;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+}   
+
+@media screen and (min-width: 768px) {
+    .wemail-connect-notice-flex-container {
+        display: flex;
+    }
+}
