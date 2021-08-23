@@ -4,7 +4,7 @@
     color: #fff;
     border-left: none;
     border-radius: 3px;
-    padding: 1%;
+    padding: 1.5%;
 }
 
 .wemail-connect-notice-flex-container h3 {
@@ -20,7 +20,7 @@
 
 .wemail-connect-notice-content {
     flex-grow: 7;
-    margin-right: 24%;
+    margin-right: 20%;
     text-align: left;
 }
 
