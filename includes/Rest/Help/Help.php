@@ -47,6 +47,18 @@ class Help extends RestController {
                 ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/tools/disconnect',
+            [
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'permission_callback' => [ $this, 'permission' ],
+                    'callback'            => [ $this, 'disconnect_wemail' ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -54,6 +66,7 @@ class Help extends RestController {
      * @return bool
      */
     public function permission( $request ) {
+        //TODO:: need proper permission
         return true;
     }
 
@@ -71,6 +84,10 @@ class Help extends RestController {
         );
     }
 
+    /**
+     * @param $request
+     * @return \WP_Error|\WP_REST_Response
+     */
     public function send_ping( $request ) {
         $ping = new PingService();
 
@@ -79,13 +96,27 @@ class Help extends RestController {
         return rest_ensure_response( $ping->request_send( $request, $callback_url ) );
     }
 
+    /**
+     * @param $request
+     * @return \WP_Error|\WP_REST_Response
+     */
     public function receive_ping( $request ) {
         $ping = new PingService();
 
         return rest_ensure_response( $ping->request_receive( $request ) );
     }
 
+    /**
+     * @return \WP_REST_Response
+     */
+    public function disconnect_wemail() {
+        delete_metadata( 'user', 0, 'wemail_api_key', '', true );
+        delete_metadata( 'user', 0, 'wemail_user_data', '', true );
 
-
-
+        return new \WP_REST_Response(
+            [
+				'status' => 'success',
+			], 200
+        );
+    }
 }
