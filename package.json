@@ -4,8 +4,8 @@
   "description": "Send Beautiful Email Newsletters with WordPress",
   "scripts": {
     "build": "node build",
-    "start": "wp-scripts start src/index.js --output-path=assets/js",
-    "wp:build": "wp-scripts build src/index.js --output-path=assets/js"
+    "start": "wp-scripts start src/index.js --output-path=assets/js/block",
+    "wp:build": "wp-scripts build src/index.js --output-path=assets/js/block"
   },
   "repository": {
     "type": "git",

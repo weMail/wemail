@@ -14,10 +14,10 @@ class GutenbergBlock {
     }
 
     public function register() {
-        $block_meta = require_once WEMAIL_PATH . '/assets/js/index.asset.php';
+        $block_meta = require_once WEMAIL_PATH . '/assets/js/block/index.asset.php';
 
         wp_register_style( 'wemail-block-style', WEMAIL_ASSETS . '/css/gutenberg.css', [], WEMAIL_VERSION );
-        wp_register_script( 'wemail-block-script', WEMAIL_ASSETS . '/js/index.js', $block_meta['dependencies'], $block_meta['version'] );
+        wp_register_script( 'wemail-block-script', WEMAIL_ASSETS . '/js/block/index.js', $block_meta['dependencies'], $block_meta['version'] );
 
         register_block_type(
             'wemail/forms', [
