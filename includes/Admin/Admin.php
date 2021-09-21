@@ -2,8 +2,6 @@
 
 namespace WeDevs\WeMail\Admin;
 
-use WeDevs\WeMail\Admin\Menu;
-use WeDevs\WeMail\Admin\Scripts;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Admin {

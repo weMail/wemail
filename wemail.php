@@ -54,7 +54,7 @@ define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
  *
  * @since 1.0.0
  *
- * @return WeDevs_WeMail
+ * @return WeMail
  */
 function wemail() {
     return WeMail::instance();

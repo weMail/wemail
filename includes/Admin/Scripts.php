@@ -30,9 +30,6 @@ class Scripts {
 
         $this->add_action( 'wemail_admin_enqueue_styles', 'enqueue_styles' );
         $this->add_action( 'wemail_admin_enqueue_scripts', 'enqueue_scripts' );
-
-        $this->add_action( 'enqueue_block_editor_assets', 'enqueue_gutenberg_block_scripts' );
-        $this->add_action( 'enqueue_block_editor_assets', 'enqueue_gutenberg_block_style' );
     }
 
     /**
@@ -216,42 +213,4 @@ class Scripts {
             'mailpoet' => class_exists( 'MailPoet\Listing\Handler' ) || class_exists( 'WYSIJA' ),
         ];
     }
-
-    /**
-     * Add gutenberg weMail block scripts
-     */
-    public function enqueue_gutenberg_block_scripts() {
-        $forms = wemail()->form->get_forms(
-            [
-                'type'      => [ 'modal', 'inline' ],
-                'select'    => [ 'id', 'name' ],
-            ]
-        );
-
-        wp_enqueue_script(
-            'wemail-gutenberg-block',
-            WEMAIL_ASSETS . '/js/main.js',
-            [ 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element', 'wp-editor' ],
-            $this->version
-        );
-
-        wp_localize_script(
-            'wemail-gutenberg-block',
-            'weMailData',
-            [
-                'forms'  => $forms ? $forms : [],
-                'siteUrl' => get_site_url(),
-            ]
-        );
-    }
-
-    public function enqueue_gutenberg_block_style() {
-        wp_enqueue_style(
-            'wemail-gutenberg-block',
-            WEMAIL_ASSETS . '/css/gutenberg.css',
-            [],
-            WEMAIL_VERSION
-        );
-    }
-
 }

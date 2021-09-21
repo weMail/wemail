@@ -2,7 +2,7 @@ const { registerBlockType } = wp.blocks;
 const { __ }  = wp.i18n;
 const { SelectControl, PanelBody, Spinner } = wp.components;
 const { RawHTML, Fragment } = wp.element;
-const { InspectorControls } = wp.editor;
+const { InspectorControls } = wp.blockEditor;
 import { icon } from './icon'
 
 
