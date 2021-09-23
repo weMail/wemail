@@ -41,30 +41,10 @@
     border-radius: 5px;
     /* font-weight: bold; */
 }
-
-.custom-notice {
-    padding: 0.9em;
-    font-size: 1.1em;
-    font-weight: 500;
-}
-
-.custom-dismissable-btn {
-    top: -19px;
-    right: -12px;
-    padding: 0;
-    margin: 0;
-}
  
 .wemail-connect-notice-flex-container > .notice-dismiss:before {
     color: #fff;
-}
-
-.custom-ecommerce-notice {
-    background-color: #5E72E4;
-    display: flex;
-    justify-content: space-between;
-    color: #fff;
-}   
+} 
 
 @media screen and (min-width: 768px) {
     .wemail-connect-notice-flex-container {
