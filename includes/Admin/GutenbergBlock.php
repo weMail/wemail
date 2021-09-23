@@ -20,9 +20,10 @@ class GutenbergBlock {
         wp_register_script( 'wemail-block-script', WEMAIL_ASSETS . '/js/block/index.js', $block_meta['dependencies'], $block_meta['version'] );
 
         register_block_type(
-            'wemail/forms', [
+            'wemail/forms',
+            [
 				'editor_script' => 'wemail-block-script',
-				'editor_style' => 'wemail-block-style',
+				'editor_style'  => 'wemail-block-style',
 			]
         );
     }
