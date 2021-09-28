@@ -2,7 +2,6 @@
 
 namespace WeDevs\WeMail\Core\Api;
 
-use Illuminate\Support\Pluralizer;
 use Stringy\StaticStringy;
 use WP_Error;
 use WeDevs\WeMail\Traits\Hooker;
@@ -112,7 +111,7 @@ class Api {
      * @param string $name
      * @param array $args
      *
-     * @return WeDevs\WeMail\Core\Api\Api|void
+     * @return \WeDevs\WeMail\Core\Api\Api|void
      */
     public function __call( $name, $args ) {
         if ( ! method_exists( $this, $name ) ) {
