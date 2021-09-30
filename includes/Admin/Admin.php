@@ -2,8 +2,6 @@
 
 namespace WeDevs\WeMail\Admin;
 
-use WeDevs\WeMail\Admin\Menu;
-use WeDevs\WeMail\Admin\Scripts;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Admin {
@@ -12,8 +10,9 @@ class Admin {
 
     public function __construct() {
         $this->add_action( 'admin_init', 'redirect_after_activation', 9999 );
-
         $this->includes();
+        $admin_notice = Notice::instance();
+        $admin_notice->connect_notice();
     }
 
     private function includes() {

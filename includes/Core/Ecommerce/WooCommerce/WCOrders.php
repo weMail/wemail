@@ -45,16 +45,66 @@ class WCOrders {
         }
 
         $collection = wc_get_orders( $params );
-
+        $orders['data'] = [];
         $orders['current_page'] = intval( $params['paged'] );
         $orders['total'] = $collection->total;
         $orders['total_page'] = $collection->max_num_pages;
 
         foreach ( $collection->orders as $order ) {
-            $orders['data'][] = $this->get( $order->get_id() );
+            $date_completed = $order->get_date_completed();
+            /** @var \Automattic\WooCommerce\Admin\Overrides\Order $order*/
+
+            $orders['data'][] = [
+                'id' => $order->get_id(),
+                'parent_id' => $order->get_parent_id(),
+                'customer' => [
+                    'wp_user_id' => $order->get_customer_id(),
+                    'first_name' => $order->get_billing_first_name(),
+                    'last_name' => $order->get_billing_last_name(),
+                    'email' => $order->get_billing_email(),
+                    'phone' => $order->get_billing_phone(),
+                    'address1' => $order->get_billing_address_1(),
+                    'address2' => $order->get_billing_address_2(),
+                    'city' => $order->get_billing_city(),
+                    'zip' => $order->get_billing_postcode(),
+                    'country' => $order->get_billing_country(),
+                ],
+                'status' => $order->get_status(),
+                'currency' => $order->get_currency(),
+                'total'    => $order->get_total(),
+                'payment_method_title' => $order->get_payment_method_title(),
+                'permalink'            => htmlspecialchars_decode( get_edit_post_link( $order->get_id() ) ),
+                'products' => $this->get_items( $order ),
+                'source' => 'woocommerce',
+                'created_at' => $order->get_date_created()->format( 'Y-m-d H:m:s' ),
+                'completed_at'       => $date_completed ? $date_completed->format( 'Y-m-d H:m:s' ) : null,
+            ];
         }
 
         return $orders;
+    }
+
+    /**
+     * Get order items
+     *
+     * @param \Automattic\WooCommerce\Admin\Overrides\Order $order
+     * @return array
+     */
+    protected function get_items( $order ) {
+        return array_values(
+            array_map(
+                function ( $item ) {
+                    /** @var \WC_Order_Item $item*/
+                    return [
+                        'id'           => $item->get_product_id(),
+                        'name'         => $item->get_name(),
+                        'total'        => $item->get_total(),
+                        'quantity'     => $item->get_quantity(),
+                        'source'       => 'woocommerce',
+                    ];
+                }, $order->get_items()
+            )
+        );
     }
 
     /**

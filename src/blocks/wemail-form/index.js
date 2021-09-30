@@ -1,8 +1,8 @@
-const { registerBlockType } = wp.blocks;
-const { __ }  = wp.i18n;
-const { SelectControl, PanelBody, Spinner } = wp.components;
-const { RawHTML, Fragment } = wp.element;
-const { InspectorControls } = wp.editor;
+import { registerBlockType } from '@wordpress/blocks'
+import { __ } from '@wordpress/i18n';
+import { SelectControl, PanelBody, Spinner } from '@wordpress/components';
+import { RawHTML, Fragment } from '@wordpress/element'
+import { InspectorControls } from '@wordpress/block-editor';
 import { icon } from './icon'
 
 

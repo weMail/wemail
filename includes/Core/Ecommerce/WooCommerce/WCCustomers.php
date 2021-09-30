@@ -43,14 +43,20 @@ class WCCustomers {
 
         $customer_ids = get_users( $args );
 
-        $customers = $wpdb->get_results(
-            sprintf(
-                "SELECT u.ID, u.user_email, u.display_name, u.user_registered,
-                (select meta_value from $wpdb->usermeta where user_id = u.id and meta_key = 'first_name' limit 1) as first_name,
-                (select meta_value from $wpdb->usermeta where user_id = u.id and meta_key = 'last_name' limit 1) as last_name
-                FROM $wpdb->users u WHERE u.ID IN (%s)", implode( ', ', $customer_ids )
-            )
-        );
+        if ( empty( $customer_ids ) ) {
+            $customers = [];
+        } else {
+            $customers = $wpdb->get_results(
+                sprintf( "SELECT u.ID, u.user_email, u.display_name, u.user_registered FROM $wpdb->users u WHERE u.ID IN (%s)", implode( ', ', $customer_ids ) )
+            );
+
+            $customers_meta = $wpdb->get_results(
+                sprintf( "SELECT * FROM $wpdb->usermeta WHERE `user_id` IN (%s) AND `meta_key` IN('first_name', 'last_name')", implode( ', ', $customer_ids ) ),
+                ARRAY_A
+            );
+
+            $customers_meta = $this->transform_meta( $customers_meta );
+        }
 
         $response['total'] = $total_customer;
         $response['total_page'] = $response['total'] ? ceil( $response['total'] / $args['number'] ) : 0;
@@ -62,13 +68,28 @@ class WCCustomers {
                 'source'             => 'woocommerce',
                 'wp_user_id'         => $customer->ID,
                 'email'              => $customer->user_email,
-                'first_name'         => $customer->first_name,
-                'last_name'          => $customer->last_name,
+                'first_name'         => isset( $customers_meta[ $customer->ID ]['first_name'] ) ? $customers_meta[ $customer->ID ]['first_name'] : null,
+                'last_name'          => isset( $customers_meta[ $customer->ID ]['last_name'] ) ? $customers_meta[ $customer->ID ]['last_name'] : null,
                 'display_name'       => $customer->display_name,
                 'date_created'       => gmdate( 'Y-m-d H:m:s', strtotime( $customer->user_registered ) ),
             ];
         }
 
         return $response;
+    }
+
+    /**
+     * Transform customer meta
+     *
+     * @param array $customers_meta
+     * @return array
+     */
+    protected function transform_meta( $customers_meta ) {
+        $meta = [];
+
+        foreach ( $customers_meta as $customer_meta ) {
+            $meta[ $customer_meta['user_id'] ][ $customer_meta['meta_key'] ] = $customer_meta['meta_value'];
+        }
+        return $meta;
     }
 }
