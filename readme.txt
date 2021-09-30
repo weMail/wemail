@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, jayontasarkar, mehedimi, emtiazzahid, w
 Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
-Tested up to: 5.7
-Stable tag: 1.6.1
+Tested up to: 5.8
+Stable tag: 1.7.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -285,6 +285,13 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.7.0 - (30th September, 2021) =
+ * **Enhanced:** weMail Gutenberg block
+ * **Enhanced:** New site connection
+ * **Fixed:** WordPress 5.8 compatibility
+ * **Fixed:** weMail widget issues
+
 
 = v1.6.1 - (16th April, 2021) =
 * WordPress 5.7 compatibility
