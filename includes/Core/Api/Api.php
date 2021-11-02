@@ -50,6 +50,15 @@ class Api {
     private $query = [];
 
     /**
+     * Content type json or not
+     *
+     * @since 1.8.0
+     *
+     * @var bool
+     */
+    private $json = false;
+
+    /**
      * Executes during instance creation
      *
      * @since 1.0.0
@@ -260,9 +269,30 @@ class Api {
 
         $url = $this->build_url();
 
+        if ( $this->json ) {
+            $args['headers']['Content-Type'] = 'application/json';
+            $args['data_format'] = 'body';
+            $args['body'] = wp_json_encode( $args['body'] );
+        }
+
         $response = wp_remote_post( $url, $args );
 
         return $this->response( $response );
+    }
+
+    /**
+     * Determine if we need to send data as JSON
+     *
+     * @param bool $json
+     *
+     * @since 1.8.0
+     *
+     * @return $this
+     */
+    public function send_json( $json = true ) {
+        $this->json = $json;
+
+        return $this;
     }
 
     /**

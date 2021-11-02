@@ -26,8 +26,8 @@ class Settings {
      * @return false|mixed|void
      */
     public function get() {
-        if (is_null($this->settings)) {
-            $this->settings = get_option($this->option_name, []);
+        if ( is_null( $this->settings ) ) {
+            $this->settings = get_option( $this->option_name, [] );
         }
 
         return $this->settings;
@@ -39,7 +39,16 @@ class Settings {
      * @return bool
      */
     public function is_enabled() {
-        return $this->get_option('enabled', false);
+        return $this->get_option( 'enabled', false );
+    }
+
+    /**
+     * Is ecommerce integrated
+     *
+     * @return bool
+     */
+    public function is_integrated() {
+        return ! empty( $this->get() );
     }
 
     /**
@@ -48,7 +57,7 @@ class Settings {
      * @return bool|null
      */
     public function list_id() {
-        return $this->get_option('list_id', '');
+        return $this->get_option( 'list_id', '' );
     }
 
     /**
@@ -59,13 +68,12 @@ class Settings {
      *
      * @return bool|null
      */
-    public function get_option($option_name, $default = null)
-    {
-        if (! array_key_exists($option_name, $this->get())) {
+    public function get_option( $option_name, $default = null ) {
+        if ( ! array_key_exists( $option_name, $this->get() ) ) {
             return $default;
         }
 
-        return boolval($this->get()[$option_name]);
+        return boolval( $this->get()[ $option_name ] );
     }
 
     /**
@@ -75,7 +83,16 @@ class Settings {
      *
      * @return bool
      */
-    public function update(array $options) {
-        return update_option($this->option_name, $options);
+    public function update( array $options ) {
+        return update_option( $this->option_name, $options );
+    }
+
+    /**
+     * Delete ecommerce option
+     *
+     * @return bool
+     */
+    public function delete() {
+        return delete_option( $this->option_name );
     }
 }

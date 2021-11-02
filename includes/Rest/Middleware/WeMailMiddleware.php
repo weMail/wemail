@@ -44,4 +44,13 @@ class WeMailMiddleware {
 
         return false;
     }
+
+    /**
+     * @param string $permission
+     * @param \WP_REST_Request $request
+     * @return bool
+     */
+    public static function check( $permission, $request ) {
+        return ( new self( $permission ) )->handle( $request );
+    }
 }
