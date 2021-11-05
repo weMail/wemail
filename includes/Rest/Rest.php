@@ -4,7 +4,6 @@ namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\Core\Form\Integrations\Rest as FormIntegrations;
 use WeDevs\WeMail\Rest\Ecommerce\Ecommerce;
-use WeDevs\WeMail\Rest\Ecommerce\Integrations;
 use WeDevs\WeMail\Rest\Affiliate\Integrations as AffiliateIntegrations;
 use WeDevs\WeMail\Rest\Help\Help;
 use WeDevs\WeMail\Traits\Hooker;
@@ -34,7 +33,6 @@ class Rest {
         new Pages();
         new Users();
         new Ecommerce();
-        new Integrations();
         new Help();
         new AffiliateIntegrations();
     }

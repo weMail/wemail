@@ -73,7 +73,16 @@ class Settings {
             return $default;
         }
 
-        return boolval( $this->get()[ $option_name ] );
+        return $this->get()[ $option_name ];
+    }
+
+    /**
+     * Get ecommerce platform name
+     *
+     * @return bool|null
+     */
+    public function platform() {
+        return $this->get_option( 'platform' );
     }
 
     /**

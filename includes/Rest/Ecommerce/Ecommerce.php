@@ -19,7 +19,7 @@ class Ecommerce extends RestController {
      */
     public function register_routes() {
         $this->post( '/(?P<source>woocommerce|edd)/settings', 'settings' );
-        $this->get( '/(?P<source>woocommerce|edd)/(?P<resource>products|orders|customers)', 'resource', 'permission' );
+        $this->get( '/(?P<source>woocommerce|edd)/(?P<resource>products|orders)', 'resource', 'permission' );
         $this->delete( '/disconnect', 'disconnect', 'permission' );
     }
 

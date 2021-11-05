@@ -1,6 +1,7 @@
 <?php
 namespace WeDevs\WeMail\Core\Ecommerce;
 
+use WeDevs\WeMail\Core\Ecommerce\Platforms\AbstractPlatform;
 use WeDevs\WeMail\Core\Ecommerce\Platforms\EDD;
 use WeDevs\WeMail\Traits\Singleton;
 use WeDevs\WeMail\Core\Ecommerce\Platforms\WooCommerce;
@@ -17,7 +18,7 @@ class Ecommerce {
     /**
      * @param $platform
      *
-     * @return PlatformInterface
+     * @return AbstractPlatform
      */
     public function platform( $platform ) {
         return $this->platforms[ $platform ]::instance();

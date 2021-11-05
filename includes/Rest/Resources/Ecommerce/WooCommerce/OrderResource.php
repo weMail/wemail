@@ -2,10 +2,9 @@
 
 namespace WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce;
 
-use Automattic\WooCommerce\Admin\Overrides\OrderRefund;
-use WeDevs\WeMail\Rest\Resources\Resource;
+use WeDevs\WeMail\Rest\Resources\JsonResource;
 
-class OrderResource extends Resource {
+class OrderResource extends JsonResource {
 
     /**
      * Date format
@@ -39,7 +38,7 @@ class OrderResource extends Resource {
             $data['customer'] = $this->customer( $order );
             $data['permalink'] = get_edit_post_link( $order->get_id(), 'raw' );
         } else {
-            /** @var $order OrderRefund */
+            /** @var $order \Automattic\WooCommerce\Admin\Overrides\OrderRefund */
             $data['customer'] = $this->customer( wc_get_order( $order->get_parent_id() ) );
             $data['refunded_at'] = $order->get_date_modified()->format( self::DATE_FORMAT );
             $data['permalink'] = get_edit_post_link( $order->get_parent_id(), 'raw' );

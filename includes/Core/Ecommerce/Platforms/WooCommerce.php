@@ -7,7 +7,7 @@ use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\ProductResource;
 
-class WooCommerce implements PlatformInterface {
+class WooCommerce extends AbstractPlatform {
     use Singleton;
 
     /**
@@ -87,9 +87,6 @@ class WooCommerce implements PlatformInterface {
             'current_page'  => intval( $args['page'] ),
             'total_page'    => $data->max_num_pages,
         ];
-    }
-
-    public function customers() {
     }
 
     /**

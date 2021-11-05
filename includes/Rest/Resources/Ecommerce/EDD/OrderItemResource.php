@@ -2,9 +2,9 @@
 
 namespace WeDevs\WeMail\Rest\Resources\Ecommerce\EDD;
 
-use WeDevs\WeMail\Rest\Resources\Resource;
+use WeDevs\WeMail\Rest\Resources\JsonResource;
 
-class OrderItemResource extends Resource {
+class OrderItemResource extends JsonResource {
 
 	/**
 	 * @inheritDoc

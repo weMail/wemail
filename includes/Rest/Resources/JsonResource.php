@@ -1,7 +1,7 @@
 <?php
 namespace WeDevs\WeMail\Rest\Resources;
 
-abstract class Resource {
+abstract class JsonResource {
 
     protected $rest_keys = false;
 

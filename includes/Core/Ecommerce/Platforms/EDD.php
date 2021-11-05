@@ -8,7 +8,7 @@ use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\ProductResource;
 
-class EDD implements PlatformInterface {
+class EDD extends AbstractPlatform {
 
     use Singleton;
 
