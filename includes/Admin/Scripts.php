@@ -1,8 +1,8 @@
 <?php
 namespace WeDevs\WeMail\Admin;
 
-use WeDevs\WeMail\Core\Ecommerce\EDD\EDDIntegration;
-use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCIntegration;
+use WeDevs\WeMail\Core\Ecommerce\Ecommerce;
+use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Scripts {
@@ -108,9 +108,6 @@ class Scripts {
         $current = wp_get_current_user();
         $current_user = $current && $current->data ? $current->data : null;
 
-        $wc_integration = new WCIntegration();
-        $edd_integration = new EDDIntegration();
-
         $wemail = [
             'version'              => wemail()->version,
             'siteURL'              => site_url( '/' ),
@@ -153,9 +150,15 @@ class Scripts {
                 'campaignEditDesign',
             ],
             'activeIntegrations'    => $this->active_integrations(),
-            'integrations'          => [
-                'woocommerce' => $wc_integration->status(),
-                'edd'         => $edd_integration->status(),
+            'integrations' => [
+                'woocommerce' => [
+                    'is_active' => Ecommerce::instance()->platform( 'woocommerce' )->is_active(),
+                    'is_integrated' => Ecommerce::instance()->platform( 'woocommerce' )->is_integrated(),
+                ],
+                'edd' => [
+                    'is_active' => Ecommerce::instance()->platform( 'edd' )->is_active(),
+                    'is_integrated' => Ecommerce::instance()->platform( 'edd' )->is_integrated(),
+                ],
             ],
             'site_name' => get_bloginfo( 'name' ),
         ];
