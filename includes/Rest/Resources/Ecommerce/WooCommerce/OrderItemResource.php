@@ -6,7 +6,7 @@ use WeDevs\WeMail\Rest\Resources\JsonResource;
 
 class OrderItemResource extends JsonResource {
 
-    protected $rest_keys = true;
+    protected $reset_keys = true;
 
 	/**
 	 * @inheritDoc

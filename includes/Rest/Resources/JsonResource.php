@@ -3,7 +3,7 @@ namespace WeDevs\WeMail\Rest\Resources;
 
 abstract class JsonResource {
 
-    protected $rest_keys = false;
+    protected $reset_keys = false;
 
     /**
      * Blueprint of a resource
@@ -35,7 +35,7 @@ abstract class JsonResource {
 
         $data = array_map( [ $instance, 'blueprint' ], $resources );
 
-        if ( $instance->rest_keys ) {
+        if ( $instance->reset_keys ) {
             $data = array_values( $data );
         }
 
