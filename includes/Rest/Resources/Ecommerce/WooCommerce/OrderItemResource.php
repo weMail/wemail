@@ -20,8 +20,8 @@ class OrderItemResource extends JsonResource {
             'name'      => $order_item->get_name(),
             'quantity'  => $order_item->get_quantity(),
             'total'     => floatval( $order_item->get_total() ),
-            'thumbnail' => wp_get_attachment_image_url( $product->get_image_id() ),
-            'permalink' => $product->get_permalink(),
+            'thumbnail' => $product ? wp_get_attachment_image_url( $product->get_image_id() ) : null,
+            'permalink' => $product ? $product->get_permalink() : null,
         ];
 	}
 }
