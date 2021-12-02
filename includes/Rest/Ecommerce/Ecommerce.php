@@ -75,7 +75,7 @@ class Ecommerce extends RestController {
         if ( ! $platform->is_active() ) {
             return new \WP_REST_Response(
                 [
-					'message' => 'WooCommerce plugin is not active',
+					'message' => sprintf( '%s plugin is not active', $platform->get_name() ),
 				], 422
             );
         }

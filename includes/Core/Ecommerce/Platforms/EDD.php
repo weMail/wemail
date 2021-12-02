@@ -83,7 +83,7 @@ class EDD extends AbstractPlatform {
             $args['date_query'] = [
                 [
                     'column' => 'post_modified_gmt',
-                    'after' => $args['after_updated'],
+                    'after' => gmdate( 'Y-m-d H:i:s', $args['after_updated'] ),
                 ],
             ];
         }
