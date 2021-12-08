@@ -14,7 +14,7 @@ trait Singleton {
     /**
      * Make a class instance
      *
-     * @return object
+     * @return static
      */
     public static function instance() {
         if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {

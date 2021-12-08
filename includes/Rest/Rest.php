@@ -3,10 +3,7 @@
 namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\Core\Form\Integrations\Rest as FormIntegrations;
-use WeDevs\WeMail\Rest\Ecommerce\Customers;
-use WeDevs\WeMail\Rest\Ecommerce\Products;
-use WeDevs\WeMail\Rest\Ecommerce\Orders;
-use WeDevs\WeMail\Rest\Ecommerce\Integrations;
+use WeDevs\WeMail\Rest\Ecommerce\Ecommerce;
 use WeDevs\WeMail\Rest\Affiliate\Integrations as AffiliateIntegrations;
 use WeDevs\WeMail\Rest\Help\Help;
 use WeDevs\WeMail\Traits\Hooker;
@@ -35,11 +32,7 @@ class Rest {
         new ERP();
         new Pages();
         new Users();
-        new Products();
-        new Orders();
-        new Orders();
-        new Integrations();
-        new Customers();
+        new Ecommerce();
         new Help();
         new AffiliateIntegrations();
     }
