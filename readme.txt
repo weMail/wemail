@@ -1,5 +1,5 @@
 === weMail - Email Marketing, Newsletter, Optin Forms, Subscribers WordPress Plugin ===
-Contributors: tareq1988, nizamuddinbabu, jayontasarkar, mehedimi, emtiazzahid, wedevs, wemail
+Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
