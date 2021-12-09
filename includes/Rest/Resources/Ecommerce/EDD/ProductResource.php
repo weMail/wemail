@@ -21,6 +21,7 @@ class ProductResource extends JsonResource {
             'status'     => $resource->post_status,
             'permalink' => get_permalink( $resource ),
             'thumbnail' => $this->get_thumbnail( $resource ),
+            'categories' => $this->get_categories( $resource->ID ),
             'source'    => 'edd',
         ];
 	}
@@ -29,5 +30,15 @@ class ProductResource extends JsonResource {
         $image = get_the_post_thumbnail_url( $download );
 
         return empty( $image ) ? '' : $image;
+    }
+
+    protected function get_categories( $id ) {
+        $terms = get_the_terms( $id, 'download_category' );
+
+        return array_map(
+            function ( $term ) {
+				return $term->term_id;
+			}, is_array( $terms ) ? $terms : []
+        );
     }
 }
