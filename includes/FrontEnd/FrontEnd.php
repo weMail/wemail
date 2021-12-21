@@ -9,12 +9,25 @@ class FrontEnd {
     use Hooker;
 
     public function __construct() {
-        register_widget( '\WeDevs\WeMail\FrontEnd\Widget' );
+        global $pagenow;
+
+        if ( 'widgets.php' === $pagenow ) {
+            new Scripts();
+        }
+
+        $this->add_action( 'widgets_init', 'register_widgets' );
         $this->add_action( 'template_redirect', 'init' );
 
         if ( ! is_admin() ) {
             new FormOptIn();
         }
+    }
+
+    /**
+     * Register the widgets
+     */
+    public function register_widgets() {
+        register_widget( '\WeDevs\WeMail\FrontEnd\Widget' );
     }
 
     public function init() {

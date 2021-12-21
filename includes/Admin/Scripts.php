@@ -1,8 +1,8 @@
 <?php
 namespace WeDevs\WeMail\Admin;
 
-use WeDevs\WeMail\Core\Ecommerce\EDD\EDDIntegration;
-use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCIntegration;
+use WeDevs\WeMail\Core\Ecommerce\Ecommerce;
+use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Traits\Hooker;
 
 class Scripts {
@@ -30,9 +30,6 @@ class Scripts {
 
         $this->add_action( 'wemail_admin_enqueue_styles', 'enqueue_styles' );
         $this->add_action( 'wemail_admin_enqueue_scripts', 'enqueue_scripts' );
-
-        $this->add_action( 'enqueue_block_editor_assets', 'enqueue_gutenberg_block_scripts' );
-        $this->add_action( 'enqueue_block_editor_assets', 'enqueue_gutenberg_block_style' );
     }
 
     /**
@@ -111,9 +108,6 @@ class Scripts {
         $current = wp_get_current_user();
         $current_user = $current && $current->data ? $current->data : null;
 
-        $wc_integration = new WCIntegration();
-        $edd_integration = new EDDIntegration();
-
         $wemail = [
             'version'              => wemail()->version,
             'siteURL'              => site_url( '/' ),
@@ -156,9 +150,15 @@ class Scripts {
                 'campaignEditDesign',
             ],
             'activeIntegrations'    => $this->active_integrations(),
-            'integrations'          => [
-                'woocommerce' => $wc_integration->status(),
-                'edd'         => $edd_integration->status(),
+            'integrations' => [
+                'woocommerce' => [
+                    'is_active' => Ecommerce::instance()->platform( 'woocommerce' )->is_active(),
+                    'is_integrated' => Ecommerce::instance()->platform( 'woocommerce' )->is_integrated(),
+                ],
+                'edd' => [
+                    'is_active' => Ecommerce::instance()->platform( 'edd' )->is_active(),
+                    'is_integrated' => Ecommerce::instance()->platform( 'edd' )->is_integrated(),
+                ],
             ],
             'site_name' => get_bloginfo( 'name' ),
         ];
@@ -216,42 +216,4 @@ class Scripts {
             'mailpoet' => class_exists( 'MailPoet\Listing\Handler' ) || class_exists( 'WYSIJA' ),
         ];
     }
-
-    /**
-     * Add gutenberg weMail block scripts
-     */
-    public function enqueue_gutenberg_block_scripts() {
-        $forms = wemail()->form->get_forms(
-            [
-                'type'      => [ 'modal', 'inline' ],
-                'select'    => [ 'id', 'name' ],
-            ]
-        );
-
-        wp_enqueue_script(
-            'wemail-gutenberg-block',
-            WEMAIL_ASSETS . '/js/main.js',
-            [ 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element', 'wp-editor' ],
-            $this->version
-        );
-
-        wp_localize_script(
-            'wemail-gutenberg-block',
-            'weMailData',
-            [
-                'forms'  => $forms ? $forms : [],
-                'siteUrl' => get_site_url(),
-            ]
-        );
-    }
-
-    public function enqueue_gutenberg_block_style() {
-        wp_enqueue_style(
-            'wemail-gutenberg-block',
-            WEMAIL_ASSETS . '/css/gutenberg.css',
-            [],
-            WEMAIL_VERSION
-        );
-    }
-
 }

@@ -2,7 +2,6 @@
 
 namespace WeDevs\WeMail\Core\Api;
 
-use Illuminate\Support\Pluralizer;
 use Stringy\StaticStringy;
 use WP_Error;
 use WeDevs\WeMail\Traits\Hooker;
@@ -49,6 +48,15 @@ class Api {
      * @var string
      */
     private $query = [];
+
+    /**
+     * Content type json or not
+     *
+     * @since 1.8.0
+     *
+     * @var bool
+     */
+    private $json = false;
 
     /**
      * Executes during instance creation
@@ -112,7 +120,7 @@ class Api {
      * @param string $name
      * @param array $args
      *
-     * @return WeDevs\WeMail\Core\Api\Api|void
+     * @return \WeDevs\WeMail\Core\Api\Api|void
      */
     public function __call( $name, $args ) {
         if ( ! method_exists( $this, $name ) ) {
@@ -261,9 +269,30 @@ class Api {
 
         $url = $this->build_url();
 
+        if ( $this->json ) {
+            $args['headers']['Content-Type'] = 'application/json';
+            $args['data_format'] = 'body';
+            $args['body'] = wp_json_encode( $args['body'] );
+        }
+
         $response = wp_remote_post( $url, $args );
 
         return $this->response( $response );
+    }
+
+    /**
+     * Determine if we need to send data as JSON
+     *
+     * @param bool $json
+     *
+     * @since 1.8.0
+     *
+     * @return $this
+     */
+    public function send_json( $json = true ) {
+        $this->json = $json;
+
+        return $this;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace WeDevs\WeMail;
 
 use Stringy\StaticStringy;
 use WeDevs\WeMail\Admin\Admin;
+use WeDevs\WeMail\Admin\GutenbergBlock;
 use WeDevs\WeMail\FrontEnd\FrontEnd;
 use WeDevs\WeMail\Privacy\Privacy;
 use WeDevs\WeMail\Rest\Rest;
@@ -17,7 +18,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '1.6.1';
+    public $version = '1.8.0';
 
     /**
      * DB version
@@ -317,6 +318,7 @@ final class WeMail {
         $this->set_wemail_api();
         $this->set_wemail_cdn();
         $this->set_wemail_app();
+        $this->register_block();
 
         new Hooks();
         new Rest();
@@ -458,5 +460,12 @@ final class WeMail {
      */
     public function hmr_host() {
         return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
+    }
+
+    /**
+     * Register weMail form block
+     */
+    public function register_block() {
+        GutenbergBlock::instance();
     }
 }

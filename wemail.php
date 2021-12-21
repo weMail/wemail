@@ -6,7 +6,7 @@
  * Plugin URI: https://wordpress.org/plugins/wemail/
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
- * Version: 1.6.1
+ * Version: 1.8.0
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
@@ -54,7 +54,7 @@ define( 'WEMAIL_PATH', dirname( WEMAIL_FILE ) );
  *
  * @since 1.0.0
  *
- * @return WeDevs_WeMail
+ * @return WeMail
  */
 function wemail() {
     return WeMail::instance();

@@ -1,20 +1,20 @@
 {
   "name": "wemail",
-  "version": "1.0.8",
+  "version": "1.8.0",
   "description": "Send Beautiful Email Newsletters with WordPress",
   "scripts": {
     "build": "node build",
-    "start": "wp-scripts start src/index.js --output-path=assets/js",
-    "wp:build": "wp-scripts build src/index.js --output-path=assets/js"
+    "start": "wp-scripts start src/index.js --output-path=assets/js/block",
+    "wp:build": "wp-scripts build src/index.js --output-path=assets/js/block"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/tareq1988/wemail-wp"
   },
   "author": {
-    "name": "weDevs",
-    "email": "info@wedevs.com",
-    "homepage": "https://wedevs.com"
+    "name": "weMail",
+    "email": "support@getwemail.io",
+    "homepage": "https://getwemail.io"
   },
   "contributors": [
     {
@@ -25,13 +25,16 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
+    "@wordpress/scripts": "^18.0.1",
     "archiver": "^2.1.1",
     "filesize": "^3.6.1",
     "fs-extra": "^6.0.1"
   },
   "dependencies": {
-    "@wordpress/components": "^8.5.0",
-    "@wordpress/element": "^2.18.0",
-    "@wordpress/scripts": "^3.4.0"
+    "@wordpress/block-editor": "^7.0.2",
+    "@wordpress/blocks": "^11.1.0",
+    "@wordpress/components": "^17.0.0",
+    "@wordpress/element": "^4.0.1",
+    "@wordpress/i18n": "^4.2.2"
   }
 }
