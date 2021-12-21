@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest\Help;
 
 use WeDevs\WeMail\Core\Help\Services\PingService;
+use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WeDevs\WeMail\RestController;
 use WeDevs\WeMail\Core\Help\SystemInfo;
 use WP_REST_Server;
@@ -54,20 +55,11 @@ class Help extends RestController {
             [
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => [ $this, 'permission' ],
+                    'permission_callback' => [ $this, 'manage_options' ],
                     'callback'            => [ $this, 'disconnect_wemail' ],
                 ],
             ]
         );
-    }
-
-    /**
-     * @param $request
-     * @return bool
-     */
-    public function permission( $request ) {
-        //TODO:: need proper permission
-        return true;
     }
 
     /**
@@ -116,7 +108,7 @@ class Help extends RestController {
         return new \WP_REST_Response(
             [
 				'status' => 'success',
-			], 200
+			]
         );
     }
 }
