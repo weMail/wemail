@@ -54,7 +54,7 @@ class Help extends RestController {
             $this->rest_base . '/tools/disconnect',
             [
                 [
-                    'methods'             => WP_REST_Server::CREATABLE,
+                    'methods'             => WP_REST_Server::DELETABLE,
                     'permission_callback' => [ $this, 'manage_options' ],
                     'callback'            => [ $this, 'disconnect_wemail' ],
                 ],
