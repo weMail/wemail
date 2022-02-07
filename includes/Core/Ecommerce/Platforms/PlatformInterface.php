@@ -13,6 +13,8 @@ interface PlatformInterface {
 
     public function orders( array $args = [] );
 
+    public function categories( array $args = [] );
+
     public function register_hooks();
 
     public function get_name();

@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
+use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\CategoryResource;
 use WP_Post;
 use WeDevs\WeMail\Traits\Singleton;
 use WeDevs\WeMail\Core\Ecommerce\Settings;
@@ -95,6 +96,26 @@ class EDD extends AbstractPlatform {
             'total' => $payments->found_posts,
             'current_page' => intval( $args['paged'] ),
             'total_page' => $payments->max_num_pages,
+        ];
+    }
+
+    /**
+     * Get categories from EDD store
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public function categories( array $args = [] ) {
+        $terms = get_terms(
+            [
+				'taxonomy'   => 'download_category',
+				'hide_empty' => false,
+			]
+        );
+
+        return [
+            'data' => CategoryResource::collection( $terms ),
         ];
     }
 
