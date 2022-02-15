@@ -1,10 +1,10 @@
 === weMail - Email Marketing, Newsletter, Optin Forms, Subscribers WordPress Plugin ===
-Contributors: tareq1988, nizamuddinbabu, jayontasarkar, mehedimi, emtiazzahid, wedevs, wemail
+Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 5.8
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -285,6 +285,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.9.0 - (15th February, 2022) =
+ * **New:** Advance Automation
 
 = v1.8.0 - (8th December, 2021) =
  * **Enhanced:** Ecommerce feature

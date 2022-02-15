@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
+use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
 use WeDevs\WeMail\Traits\Singleton;
 use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
@@ -199,5 +200,25 @@ class WooCommerce extends AbstractPlatform {
 
     public function get_name() {
         return 'woocommerce';
+    }
+
+    /**
+     * Get WooCommerce categories
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public function categories( array $args = [] ) {
+        $terms = get_terms(
+            [
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+			]
+        );
+
+        return [
+            'data' => CategoryResource::collection( $terms ),
+        ];
     }
 }
