@@ -214,6 +214,7 @@ class Scripts {
         return [
             'erp_crm'  => is_erp_crm_active(),
             'mailpoet' => class_exists( 'MailPoet\Listing\Handler' ) || class_exists( 'WYSIJA' ),
+            'subscribe2' => is_subscribe2_active(),
         ];
     }
 }

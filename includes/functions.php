@@ -294,6 +294,21 @@ function is_erp_crm_active() {
 }
 
 /**
+ * Checks if Subscribe2 is enabled
+ *
+ * @since 1.9.0
+ *
+ * @return bool
+ */
+function is_subscribe2_active() {
+    if ( class_exists('S2_Core') ) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Array only helper
  *
  * @param  [type] $arr  [description]
