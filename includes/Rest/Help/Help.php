@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest\Help;
 
 use WeDevs\WeMail\Core\Help\Services\PingService;
+use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WeDevs\WeMail\RestController;
 use WeDevs\WeMail\Core\Help\SystemInfo;
 use WP_REST_Server;
@@ -47,14 +48,18 @@ class Help extends RestController {
                 ],
             ]
         );
-    }
 
-    /**
-     * @param $request
-     * @return bool
-     */
-    public function permission( $request ) {
-        return true;
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/tools/disconnect',
+            [
+                [
+                    'methods'             => WP_REST_Server::DELETABLE,
+                    'permission_callback' => [ $this, 'manage_options' ],
+                    'callback'            => [ $this, 'disconnect_wemail' ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -71,6 +76,10 @@ class Help extends RestController {
         );
     }
 
+    /**
+     * @param $request
+     * @return \WP_Error|\WP_REST_Response
+     */
     public function send_ping( $request ) {
         $ping = new PingService();
 
@@ -79,13 +88,27 @@ class Help extends RestController {
         return rest_ensure_response( $ping->request_send( $request, $callback_url ) );
     }
 
+    /**
+     * @param $request
+     * @return \WP_Error|\WP_REST_Response
+     */
     public function receive_ping( $request ) {
         $ping = new PingService();
 
         return rest_ensure_response( $ping->request_receive( $request ) );
     }
 
+    /**
+     * @return \WP_REST_Response
+     */
+    public function disconnect_wemail() {
+        delete_metadata( 'user', 0, 'wemail_api_key', '', true );
+        delete_metadata( 'user', 0, 'wemail_user_data', '', true );
 
-
-
+        return new \WP_REST_Response(
+            [
+				'status' => 'success',
+			]
+        );
+    }
 }
