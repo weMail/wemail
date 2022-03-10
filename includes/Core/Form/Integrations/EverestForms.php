@@ -39,7 +39,6 @@ class EverestForms extends AbstractIntegration {
         if ( class_exists( 'EverestForms' ) ) {
             $this->is_active = true;
         }
-        $this->forms();
     }
 
     /**
@@ -96,35 +95,26 @@ class EverestForms extends AbstractIntegration {
      * Capture submission data
      *
      * @param $data
+     * @param $entry
      */
-    public function submit( $data ) {
-        $this->data = $data;
+    public function submit( $data, $entry ) {
+        $this->data = $entry['form_fields'];
 
-        add_action( 'everestforms_form_submit_after', [ $this, 'subscribe' ] );
-    }
+        $settings = get_option( 'wemail_form_integration_everest_forms', [] );
 
-    /**
-     * Subscribe subscriber
-     *
-     * @param $form
-     */
-    public function subscribe( $form ) {
-        $form_ids = get_option( 'wemail_form_integration_everest_forms', [] );
+         if ( ! in_array( (int)$entry['id'], $settings, true ) ) {
+             return;
+         }
 
-        if ( ! in_array( $form['ID'], $form_ids, true ) ) {
-            return;
-        }
-
-        $data = [
-            'id' => $form['ID'],
+        $entities = [
+            'id' => $entry['id'],
             'data' => $this->data,
         ];
 
-        if ( ! empty( $data['data'] ) ) {
+        if ( ! empty( $entities['data'] ) ) {
             wemail_set_owner_api_key();
-            wemail()->api->forms()->integrations( 'everest_forms' )->submit()->post( $data );
+            wemail()->api->forms()->integrations( 'everest_forms' )->submit()->post( $entities );
         }
     }
-
 
 }
