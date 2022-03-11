@@ -64,7 +64,7 @@ class EverestForms extends AbstractIntegration {
             $forms[] = [
                 'id' => absint( $post->ID ),
                 'title' => $post->post_title,
-                'fields' => $this->get_fields($post),
+                'fields' => $this->get_fields( $post ),
             ];
         }
 
@@ -75,15 +75,14 @@ class EverestForms extends AbstractIntegration {
      * @param $post
      * @return mixed
      */
-    public function get_fields($post)
-    {
+    public function get_fields( $post ) {
         $fields = [];
 
-        $form_fields = json_decode($post->post_content)->form_fields;
-        $get_columns = get_object_vars($form_fields);
-        foreach ($get_columns as $get_column) {
+        $form_fields = json_decode( $post->post_content )->form_fields;
+        $get_columns = get_object_vars( $form_fields );
+        foreach ( $get_columns as $get_column ) {
             $fields[] = [
-                'id' =>  $get_column->id,
+                'id' => $get_column->id,
                 'label' => $get_column->label,
             ];
         }
@@ -102,9 +101,9 @@ class EverestForms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_everest_forms', [] );
 
-         if ( ! in_array( (int)$entry['id'], $settings, true ) ) {
-             return;
-         }
+		if ( ! in_array( (int) $entry['id'], $settings, true ) ) {
+			return;
+		}
 
         $entities = [
             'id' => $entry['id'],
