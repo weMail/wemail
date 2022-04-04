@@ -13,6 +13,8 @@ class Admin {
         $this->includes();
         $admin_notice = Notice::instance();
         $admin_notice->connect_notice();
+        $review_notice = ReviewNotice::instance();
+        $review_notice->connect_review_notice();
     }
 
     private function includes() {
