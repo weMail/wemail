@@ -2,7 +2,7 @@
 
     function add_installed_time() {
         if ( empty( get_option( 'wemail_installed_time' ) ) ) {
-            $current_time = current_time( 'timestamp' );
+            $current_time = time();
             update_option( 'wemail_installed_time', $current_time );
         }
     }

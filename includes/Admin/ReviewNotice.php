@@ -72,7 +72,7 @@ class ReviewNotice {
         $this->checkCampaign();
 
         if ( (int) get_option( 'wemail_review_notice' ) !== 1 ) {
-            if ( (current_time( 'timestamp') - $installed_time) / 86400 > 7 || (int)get_option('wemail_sent_campaign_count') >= 3) {
+            if ( (time() - $installed_time) / 86400 > 7 || (int)get_option('wemail_sent_campaign_count') >= 3) {
                 add_action('admin_notices', [$this, 'connect_review_notice_html']);
             }
         }
@@ -90,9 +90,9 @@ class ReviewNotice {
     {
         if (false === ($value = get_transient('wemail_sent_campaign_count'))
             && (int) get_option('wemail_sent_campaign_count') < 3) {
-            $countCampaigns = count(wemail()->api->campaigns()->get()['data']);
-            set_transient('wemail_sent_campaign_count', $countCampaigns, 60 * 60 * 2);
-            update_option('wemail_sent_campaign_count', $countCampaigns);
+            $count_campaigns = count(wemail()->api->campaigns()->get()['data']);
+            set_transient('wemail_sent_campaign_count', $count_campaigns, 60 * 60 * 2);
+            update_option('wemail_sent_campaign_count', $count_campaigns);
         }
     }
 
