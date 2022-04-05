@@ -56,17 +56,17 @@ class ReviewNotice {
             <div class="wemail-connect-notice-content">
                 <h3>
                 <?php
-                echo __( 'Great! ' );
+                sprintf( 'Great! ' );
                 if ( $this->time_based_review ) {
-                    echo __( 'You are using weMail for ' . $this->day_count . ' days-absolutely free' );
+                    sprintf( "You are using weMail for $this->day_count days-absolutely free" );
                 } else {
-                    echo __( 'You sent ' . $this->campaign_count . ' campaigns usign weMail successfully. ' );
+                    sprintf( "You sent { $this->campaign_count } campaigns usign weMail successfully." );
                 }
                 ?>
                 </h3>
                 <p>
                 <?php
-                echo __(
+                sprintf(
                     'May we ask for a 5 start rating on WordPress. We put a lot of hard work to develop it and make it better every day.
                     It would motivate us a lot.'
                 );
@@ -103,7 +103,7 @@ class ReviewNotice {
 
 	if ( (int) get_option( 'wemail_review_notice' ) !== 1 ) {
         $this->time_based_review = ( time() - $installed_time ) / 86400 > 7;
-        $this->day_count = ( time() - $installed_time ) / 86400;
+        $this->day_count = (int) ( time() - $installed_time ) / 86400;
         $this->campaign_count = (int) get_option( 'wemail_sent_campaign_count' );
         $campaign_based_review = (int) get_option( 'wemail_sent_campaign_count' ) >= 3;
         if ( $this->time_based_review || $campaign_based_review ) {
