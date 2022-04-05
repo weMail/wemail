@@ -92,23 +92,26 @@ class ReviewNotice {
     /**
      * @return void
      */
-    public function checkCampaign() {         if ( false === ( $value = get_transient( 'wemail_sent_campaign_count' ) )
-            && (int) get_option( 'wemail_sent_campaign_count' ) < 3 ) {
+    public function checkCampaign() {
+        if ( (int) get_option( 'wemail_sent_campaign_count' ) < 3 && get_transient( 'wemail_sent_campaign_count' ) === false ) {
             $count_campaigns = count( wemail()->api->campaigns()->get()['data'] );
             set_transient( 'wemail_sent_campaign_count', $count_campaigns, 60 * 60 * 2 );
             update_option( 'wemail_sent_campaign_count', $count_campaigns );
-	}
+		}
     }
 
     /**
      * @return void
      */
-    public function handleReviewResponse() {         if ( isset( $_POST['review_reposnse_yes'] ) ) {
+    public function handleReviewResponse() {
+        // phpcs:ignore
+        if ( isset( $_POST['review_reposnse_yes'] ) ) {
             $this->review_response( 'yes' );
-	}
-	if ( isset( $_POST['review_response_later'] ) ) {
-		$this->review_response( 'later' );
-	}
+		}
+        // phpcs:ignore
+		if ( isset( $_POST['review_response_later'] ) ) {
+			$this->review_response( 'later' );
+		}
     }
 
 }
