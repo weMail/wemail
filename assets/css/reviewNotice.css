@@ -1,0 +1,47 @@
+.wemail-review-notice-flex-container {
+    background-color: #006188;
+    color: #fff;
+    border-left: none;
+    border-radius: 3px;
+    padding: 1.5%;
+}
+
+.wemail-review-notice-flex-container h3 {
+    color: #fff;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.wemail-connect-notice-content {
+    margin-right: 20%;
+    text-align: left;
+}
+
+.wemail-review-notice-logo {
+    flex-grow: 1;
+    margin-right: 2%;
+}
+
+.response-button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    margin-top: 5px;
+}
+
+.response-button a {
+    color: white;
+}
+
+.wemail-review-notice-flex-container > .notice-dismiss:before {
+    color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+    .wemail-review-notice-flex-container {
+        display: flex;
+    }
+}
