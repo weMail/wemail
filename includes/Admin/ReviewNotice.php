@@ -56,19 +56,21 @@ class ReviewNotice {
             <div class="wemail-connect-notice-content">
                 <h3>
                 <?php
-                sprintf( 'Great! ' );
+                echo __( 'Great! ', 'wemail' );
                 if ( $this->time_based_review ) {
-                    sprintf( "You are using weMail for $this->day_count days-absolutely free" );
+                    /* translators: %d is replaced with the number of days */
+                    printf( __( 'You are using weMail for %d days-absolutely free', 'wemail' ), $this->day_count );
                 } else {
-                    sprintf( "You sent { $this->campaign_count } campaigns usign weMail successfully." );
+                    /* translators: %d is replaced with the number of campaigns */
+                    printf( __( 'You sent %d campaigns usign weMail successfully.', 'wemail' ), $this->campaign_count );
                 }
                 ?>
                 </h3>
                 <p>
                 <?php
-                sprintf(
+                echo __(
                     'May we ask for a 5 start rating on WordPress. We put a lot of hard work to develop it and make it better every day.
-                    It would motivate us a lot.'
+                    It would motivate us a lot.', 'wemail'
                 );
 				?>
                 </p>
@@ -77,8 +79,8 @@ class ReviewNotice {
                         <button type="submit" class="button" name="review_reposnse_yes">
                                 Yes, Absolutely
                         </button>
-                        <button type="submit" class="response-button" name="review_response_later"> <a href="#"> Ask me later </a> </button>
-                        <button type="submit" class="response-button" name="review_response_no"> <a href="#"> No, not good enough </a> </button>
+                        <button type="submit" class="response-button" name="review_response_later">  <u> Ask me later </u> </button>
+                        <button type="submit" class="response-button" name="review_response_no"> <u> No, not good enough </u> </button>
                     </form>
                 </div>
             </div>
