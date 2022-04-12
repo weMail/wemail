@@ -411,7 +411,7 @@ final class WeMail {
          *
          * @param string
          */
-        $api = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
+        $api = apply_filters( 'wemail_api_url', 'http://wemail-api.test/v1' );
         $this->wemail_api = untrailingslashit( $api );
     }
 
@@ -449,7 +449,7 @@ final class WeMail {
          *
          * @param string
          */
-        $app = apply_filters( 'wemail_app_url', 'https://app.getwemail.io' );
+        $app = apply_filters( 'wemail_app_url', 'http://localhost:8081' );
         $this->wemail_app = untrailingslashit( $app );
     }
 

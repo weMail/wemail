@@ -76,7 +76,7 @@ class ReviewNotice {
                 </p>
                 <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 20px">
                     <form action='' method='post'>
-                        <button type="submit" class="button" name="review_reposnse_yes">
+                        <button type="submit" class="button review_reposnse_yes" name="review_reposnse_yes">
                                 Yes, Absolutely
                         </button>
                         <button type="submit" class="response-button" name="review_response_later">  <u> Ask me later </u> </button>
@@ -143,6 +143,10 @@ class ReviewNotice {
 		if ( isset( $_POST['review_response_later'] ) ) {
 			$this->review_response( 'later' );
 		}
+        // phpcs:ignore
+        if ( isset( $_POST['review_response_no'] ) ) {
+            $this->review_response( 'no' );
+        }
     }
 
 }

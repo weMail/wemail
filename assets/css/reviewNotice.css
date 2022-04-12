@@ -1,5 +1,5 @@
 .wemail-review-notice-flex-container {
-    background-color: #006188;
+    background-color: #1A9ED4;
     color: #fff;
     border-left: none;
     border-radius: 3px;
@@ -7,9 +7,31 @@
 }
 
 .wemail-review-notice-flex-container h3 {
-    color: #fff;
     margin-top: 1%;
     margin-bottom: 1%;
+    width: 575px;
+    height: 24px;
+
+    font-family: 'SF Pro Text';
+    font-style: normal;
+    font-size: 20px;
+    line-height: 24px;
+    /* identical to box height */
+    color: #FFFFFF;
+}
+
+.wemail-review-notice-flex-container p {
+    width: 725px;
+    height: 72px;
+
+    font-family: 'SF Pro Text';
+    font-style: normal;
+    font-size: 16px;
+    line-height: 25px;
+    /* or 156% */
+
+
+    color: #fff;
 }
 
 .wemail-connect-notice-content {
@@ -31,6 +53,10 @@
     outline: none;
     margin-top: 5px;
     color: white;
+}
+
+.review_reposnse_yes {
+    color: #1A9ED4;
 }
 
 .wemail-review-notice-flex-container > .notice-dismiss:before {
