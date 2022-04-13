@@ -123,8 +123,9 @@ class ReviewNotice {
      * @return void
      */
     public function checkCampaign() {
-        if ( (int) get_option( 'wemail_sent_campaign_count' ) < 3 && get_transient( 'wemail_sent_campaign_count' ) === false ) {
-            $count_campaigns = count( wemail()->api->campaigns()->get()['data'] );
+        $campaigns = wemail()->api->campaigns()->get();
+            if ( is_array($campaigns) && !empty($campaigns['data']) && (int) get_option( 'wemail_sent_campaign_count' ) < 3 && get_transient( 'wemail_sent_campaign_count' ) === false ) {
+            $count_campaigns = count( $campaigns['data'] );
             set_transient( 'wemail_sent_campaign_count', $count_campaigns, 60 * 60 * 2 );
             update_option( 'wemail_sent_campaign_count', $count_campaigns );
 		}
