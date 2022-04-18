@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\FrontEnd;
 
 use WeDevs\WeMail\Traits\Hooker;
+use WeDevs\WeMail\WeMail;
 
 class Scripts {
     use Hooker;
@@ -16,14 +17,15 @@ class Scripts {
     }
 
     public function enqueue_scripts() {
-        $cdn_url = wemail()->wemail_cdn;
+        if ( ! is_wemail_hmr_enable() ) {
+            wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/build/js/frontend-vendor.js', [ 'jquery' ], WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . 'build/js/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
+        } else {
+            $hmr_host = wemail()->hmr_host();
 
-        if ( is_wemail_hmr_enable() ) {
-            $cdn_url = wemail()->hmr_host();
+            wp_register_script( 'wemail-frontend-vendor', $hmr_host . '/src/js/frontend/frontend-vendor.js', [ 'jquery' ], WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend', $hmr_host . '/src/js/frontend/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
         }
-
-        wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/js/frontend-vendor.js', [ 'jquery' ], WEMAIL_VERSION, true );
-        wp_register_script( 'wemail-frontend', $cdn_url . '/js/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
 
         $wemail = [
             'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1' ) ),
@@ -32,6 +34,8 @@ class Scripts {
         ];
 
         wp_localize_script( 'wemail-frontend-vendor', 'weMail', $wemail );
+
+        WeMail::register_module_scripts();
     }
 
 }

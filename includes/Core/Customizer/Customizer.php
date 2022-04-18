@@ -105,7 +105,7 @@ class Customizer {
      * @return array
      */
     public function dividers() {
-        $dividers = [
+        return [
             'baseURL' => wemail()->wemail_cdn . '/images/dividers/',
             'images'  => [
                 [
@@ -158,7 +158,5 @@ class Customizer {
                 ],
             ],
         ];
-
-        return $dividers;
     }
 }

@@ -9,6 +9,25 @@ class Editor {
     use Hooker;
 
     /**
+     * Default content types
+     *
+     * @var string[] $default_content_types
+     */
+    protected $default_content_types = [
+        'text',
+        'image',
+        'imageCaption',
+        'socialFollow',
+        'button',
+        'divider',
+        'video',
+        'footer',
+        'countdown',
+        'wooProducts',
+        'giphy',
+    ];
+
+    /**
      * Content type images directory
      *
      * @since 1.0.0
@@ -106,7 +125,6 @@ class Editor {
             'preview'                => __( 'Preview', 'wemail' ),
             'selectTemplate'         => __( 'Select Template', 'wemail' ),
             'close'                  => __( 'Close', 'wemail' ),
-            'myTemplates'            => __( 'My Templates', 'wemail' ),
             'emailSubject'           => __( 'Email Subject', 'wemail' ),
             'preHeader'              => __( 'Preheader', 'wemail' ),
             'preHeaderHint'          => __( 'A preheader is the short summary text that follows the subject line when an email is viewed in the inbox.', 'wemail' ),
@@ -146,23 +164,17 @@ class Editor {
      *
      * @return array
      */
-    public function get_customizer_data() {
-        $content_types = [
-            'text',
-            'image',
-            'imageCaption',
-            'socialFollow',
-            'button',
-            'divider',
-            'video',
-            'footer',
-            'wpPosts',
-            'countdown',
-            'wooProducts',
-            'giphy',
-        ];
+    public function get_customizer_data( $context ) {
+        switch ( $context ) {
+            case 'campaign':
+                $this->default_content_types[] = 'wpPosts';
+                break;
+            case 'rss':
+                $this->default_content_types[] = 'rss';
+                break;
+        }
 
-        return wemail()->customizer->get( 'campaign', $content_types );
+        return wemail()->customizer->get( 'campaign', $this->default_content_types );
     }
 
     /**
@@ -177,11 +189,10 @@ class Editor {
     public function content_type_settings( $settings ) {
         $additional_types = [
             'wpPosts'          => self::wp_posts(),
+            'rss'              => self::rss(),
         ];
 
-        $settings = array_merge( $settings, $additional_types );
-
-        return $settings;
+        return array_merge( $settings, $additional_types );
     }
 
     /**
@@ -195,7 +206,7 @@ class Editor {
         return [
             'type'       => 'wpPosts',
             'title'      => __( 'WP Posts', 'wemail' ),
-            'image'      => self::$image_dir . '/wp.png',
+            'image'      => self::$image_dir . '/wp.svg',
             'default'    => [
                 'containerStyle' => [
                     'padding' => '25px',
@@ -302,6 +313,126 @@ class Editor {
                         'lineHeight' => '20px',
                         'marginBottom' => '15px',
                         'fontStyle' => 'normal',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function rss() {
+        return [
+            'type' => 'rss',
+            'title' => __( 'Latest Posts', 'wemail' ),
+            'image' => self::$image_dir . '/wp.svg',
+            'noSettingsTab' => true,
+            'default' => [
+                'source' => 'wp',
+                'payload' => [
+                    'post_type' => 'post',
+                    'tag_id'  => null,
+                    'category_id'  => null,
+                    'limit' => 5,
+                ],
+                'containerStyle' => [
+                    'padding' => '25px 25px 25px 25px',
+                    'marginBottom' => '0px',
+                    'background' => '#ffffff',
+                ],
+                'image' => [
+                    'display' => true,
+                    'style' => [
+                        'max-width'         => '100%',
+                        'border'            => '0px solid #cccccc',
+                        'borderRadius'      => '0px',
+                        'padding'           => '0px 0px 0px 0px',
+                        'background'        => '#ffffff',
+                        'margin'            => '0px 0px 0px 0px',
+                    ],
+                    'containerStyle' => [
+                        'textAlign' => 'left',
+                        'display'   => 'block',
+                    ],
+                    'hyperlink' => [
+                        'enable' => false,
+                    ],
+                ],
+                'title' => [
+                    'style' => [
+                        'padding'       => '0px 0px 0px 0px',
+                        'margin'        => '15px 0px 10px 0px',
+                        'fontSize'      => '25px',
+                        'color'         => '#000',
+                        'textAlign'     => 'left',
+                        'fontWeight'    => '600',
+                        'textTransform' => 'none',
+                    ],
+                ],
+                'content' => [
+                    'display' => true,
+                    'content_format' => 'excerpt',
+                    'style' => [
+                        'fontSize'      => '14px',
+                        'color'         => '#556271',
+                        'textAlign'     => 'left',
+                        'lineHeight'    => '20px',
+                        'margin'        => '5px 0px 5px 0px',
+                    ],
+                ],
+                'readMore' => [
+                    'display' => true,
+                    'text' => 'Read More',
+                    'containerStyle' => [
+                        'textAlign' => 'left',
+                    ],
+                    'style' => [
+                        'padding'           => '8px 15px 8px 15px',
+                        'fontSize'          => '14px',
+                        'fontWeight'        => '400',
+                        'color'             => '#fff',
+                        'textDecoration'    => 'none',
+                        'textTransform'     => 'none',
+                        'background'        => '#0073aa',
+                        'borderRadius'      => '4px',
+                        'border'            => '0px solid #e5e5e5',
+                        'margin'            => '5px 0px 25px 0px',
+                        'display'           => 'inline-block',
+                    ],
+                ],
+                'meta' => [
+                    'display' => true,
+                    'separator' => ' | ',
+                    'fields' => [
+                        'author' => [
+                            'display' => true,
+                            'text' => __( 'Author: ', 'wemail' ),
+                        ],
+                        'categories' => [
+                            'display' => true,
+                            'text' => __( 'Categories: ', 'wemail' ),
+                        ],
+                        'tags' => [
+                            'display' => true,
+                            'text' => __( 'Tags: ', 'wemail' ),
+                        ],
+                        'postDate' => [
+                            'display' => true,
+                            'text' => __( 'Post Date: ', 'wemail' ),
+                        ],
+                    ],
+                    'style' => [
+                        'margin'    => '10px 0px 15px 0px',
+                        'fontSize'  => '14px',
+                        'display'   => 'inline-block',
+                    ],
+                ],
+                'divider' => [
+                    'display' => true,
+                    'style' => [
+                        'borderBottom'  => '1px dashed #ddd',
+                        'width'         => '100%',
+                        'marginLeft'    => 'auto',
+                        'marginRight'   => 'auto',
+                        'marginBottom'  => '25px',
                     ],
                 ],
             ],
