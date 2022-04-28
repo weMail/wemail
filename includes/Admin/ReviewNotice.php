@@ -41,47 +41,38 @@ class ReviewNotice {
      * @return void
      */
     public function connect_review_notice_html() {         ?>
-        <div class="notice wemail-review-notice-flex-container is-dismissible">
-            <div class="wemail-review-notice-logo">
-                <img src="
-                <?php
-                if ( $this->time_based_review ) {
-                    echo WEMAIL_ASSETS . '/images/time_based_review.png';
-				} else {
-					echo WEMAIL_ASSETS . '/images/campaign_based_review.png';
-				}
-                ?>
-                " alt="weMail Notice Logo">
-            </div>
+        <div class="notice wemail-review-notice-flex-container is-dismissible review-time-background-image" >
             <div class="wemail-connect-notice-content">
-                <h3>
-                <?php
-                echo __( 'Great! ', 'wemail' );
-                if ( $this->time_based_review ) {
-                    /* translators: %d is replaced with the number of days */
-                    printf( __( 'You are using weMail for %d days-absolutely free', 'wemail' ), $this->day_count );
-                } else {
-                    /* translators: %d is replaced with the number of campaigns */
-                    printf( __( 'You sent %d campaigns usign weMail successfully.', 'wemail' ), $this->campaign_count );
-                }
-                ?>
-                </h3>
-                <p>
-                <?php
-                echo __(
-                    'May we ask for a 5 start rating on WordPress. We put a lot of hard work to develop it and make it better every day.
+                <div class="wemail-connect-notice-content">
+                    <h3>
+                        <?php
+                        echo __( 'Great! ', 'wemail' );
+                        if ( $this->time_based_review ) {
+                            /* translators: %d is replaced with the number of days */
+                            printf( __( 'You are using weMail for %d days-absolutely free', 'wemail' ), $this->day_count );
+                        } else {
+                            /* translators: %d is replaced with the number of campaigns */
+                            printf( __( 'You sent %d campaigns usign weMail successfully.', 'wemail' ), $this->campaign_count );
+                        }
+                        ?>
+                    </h3>
+                    <p>
+                        <?php
+                        echo __(
+                            'May we ask for a 5 start rating on WordPress. We put a lot of hard work to develop it and make it better every day.
                     It would motivate us a lot.', 'wemail'
-                );
-				?>
-                </p>
-                <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 20px">
-                    <form action='' method='post'>
-                        <button type="submit" class="button review_reposnse_yes" name="review_reposnse_yes">
+                        );
+                        ?>
+                    </p>
+                    <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 20px">
+                        <form action='' method='post'>
+                            <button type="submit" class="button review_reposnse_yes" id="review_reposnse_yes" name="review_reposnse_yes">
                                 Yes, Absolutely
-                        </button>
-                        <button type="submit" class="response-button" name="review_response_later">  <u> Ask me later </u> </button>
-                        <button type="submit" class="response-button" name="review_response_no"> <u> No, not good enough </u> </button>
-                    </form>
+                            </button>
+                            <button type="submit" class="button response-button" id="review_reposnse_later" name="review_response_later">  Ask me later </button>
+                            <button type="submit" class="response-button" id="review_reposnse_no" name="review_response_no"> <u> No, I'm just taking, not giving </u> </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

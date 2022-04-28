@@ -1,48 +1,62 @@
 .wemail-review-notice-flex-container {
-    background-color: #1A9ED4;
+    background-color: #ffffff;
     color: #fff;
     border-left: none;
     border-radius: 3px;
-    padding: 1.5%;
+    background-repeat:no-repeat;
+    height:200px;
+    background-position-x: right;
+    background-size: contain;
+    border: white;
+}
+
+.review-time-background-image {
+    background-image: url("../images/review-notice.svg");
+}
+
+.review-campaign-background-image {
+
 }
 
 .wemail-review-notice-flex-container h3 {
-    margin-top: 1%;
+    margin-top: 5%;
     margin-bottom: 1%;
     width: 575px;
     height: 24px;
+    font-weight: bolder;
 
     font-style: normal;
     font-size: 20px;
     line-height: 24px;
     /* identical to box height */
-    color: #FFFFFF;
+    color: black;
 }
 
 .wemail-review-notice-flex-container p {
-    width: 725px;
+    width: 550px;
     height: 72px;
+    font-weight: 400;
 
     font-style: normal;
-    font-size: 16px;
+    font-size: 13px;
     line-height: 25px;
+    color: #575757;
     /* or 156% */
 
 
-    color: #fff;
+    color: black;
 }
 
 .wemail-connect-notice-content {
-    margin-right: 20%;
     text-align: left;
 }
 
 .wemail-review-notice-logo {
-    flex-grow: 1;
-    margin-right: 2%;
+    height: 150px;
+    z-index: 10;
 }
 
-.response-button {
+#review_reposnse_no {
     background-color: transparent;
     background-repeat: no-repeat;
     border: none;
@@ -50,15 +64,24 @@
     overflow: hidden;
     outline: none;
     margin-top: 5px;
-    color: white;
+    color: black;
 }
 
-.review_reposnse_yes {
-    color: #1A9ED4;
+#review_reposnse_yes {
+    background: #009BFF;
+    color: white;
+    border-color: #009BFF;
+}
+
+#review_reposnse_later {
+    background: #ffffff;
+    color: #565656;
+    border-color: #D4D8DB
+;
 }
 
 .wemail-review-notice-flex-container > .notice-dismiss:before {
-    color: #fff;
+    color: #7b7878;
 }
 
 @media screen and (min-width: 768px) {
