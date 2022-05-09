@@ -403,7 +403,7 @@ final class WeMail {
      *
      * @return void
      */
-    private function set_wemail_api() {
+    public function set_wemail_api() {
         /**
          * WeMail API URL
          *
