@@ -49,12 +49,12 @@ class ReviewNotice {
                     <p>
                         <?php
                         echo __(
-                            'May we ask for a 5 start rating on WordPress. We put a lot of hard work to develop it and make it better every day.
-                    It would motivate us a lot.', 'wemail'
+                            'Don’t worry, we are not asking you to buy the pro plan. But if you give us a great review, if you will. We put a lot of
+                            hard work to develop it and make it better every day. It would motivate the team a lot! Do you think it’s fair?', 'wemail'
                         );
                         ?>
                     </p>
-                    <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 20px">
+                    <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 10px: margin top: 10px">
                         <form action='' method='post'>
                             <button type="submit" class="button review_reposnse_yes" id="review_reposnse_yes" name="review_reposnse_yes">
                                 <?php echo __('Yes, Absolutely'); ?>
@@ -63,7 +63,7 @@ class ReviewNotice {
                                 <?php echo __('Ask me later'); ?>
                             </button>
                             <button type="submit" class="response-button" id="review_reposnse_no" name="review_response_no">
-                                <u> <?php echo __('No, I\'\m just taking, not giving') ?> </u>
+                                <u> <?php echo __('No, I\'m just taking, not giving') ?> </u>
                             </button>
                         </form>
                     </div>
