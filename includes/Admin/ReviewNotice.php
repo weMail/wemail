@@ -1,6 +1,7 @@
 <?php
 
 namespace WeDevs\WeMail\Admin;
+
 use WeDevs\WeMail\Traits\Singleton;
 
 /**
@@ -21,7 +22,7 @@ class ReviewNotice {
     }
 
     public function enqueue_assets() {
-        wp_enqueue_style( 'wemail-review-notice-style', WEMAIL_ASSETS . '/css/review-notice.css', false, WEMAIL_VERSION);
+        wp_enqueue_style( 'wemail-review-notice-style', WEMAIL_ASSETS . '/css/review-notice.css', false, WEMAIL_VERSION );
         wp_enqueue_script( 'wemail-review-notice-script', WEMAIL_ASSETS . '/js/admin-review-notice.js', [ 'jquery' ], WEMAIL_VERSION );
     }
 
@@ -57,13 +58,13 @@ class ReviewNotice {
                     <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 10px: margin top: 10px">
                         <form action='' method='post'>
                             <button type="submit" class="button review_reposnse_yes" id="review_reposnse_yes" name="review_reposnse_yes">
-                                <?php echo __('Yes, Absolutely'); ?>
+                                <?php echo __( 'Yes, Absolutely', 'wemail' ); ?>
                             </button>
                             <button type="submit" class="button response-button" id="review_reposnse_later" name="review_response_later">
-                                <?php echo __('Ask me later'); ?>
+                                <?php echo __( 'Ask me later', 'wemail' ); ?>
                             </button>
                             <button type="submit" class="response-button" id="review_reposnse_no" name="review_response_no">
-                                <u> <?php echo __('No, I\'m just taking, not giving') ?> </u>
+                                <u> <?php echo __( 'No, I\'m just taking, not giving', 'wemail' ); ?> </u>
                             </button>
                         </form>
                     </div>
@@ -81,7 +82,7 @@ class ReviewNotice {
     public function connect_review_notice() {
         if ( isset( $_GET['dismiss_wemail_review_notice'] ) && (int) $_GET['dismiss_wemail_review_notice'] === 1 ) {
             update_option( 'wemail_review_notice', 1 );
-	}
+		}
 
         $installed_time = get_option( 'wemail_installed_time' );
 
@@ -89,15 +90,15 @@ class ReviewNotice {
 
         $this->check_campaign();
 
-	if ( (int) get_option( 'wemail_review_notice' ) !== 1 ) {
-        $this->time_based_review = ( time() - $installed_time ) / 86400 > 7;
-        $this->day_count = (int) ( time() - $installed_time ) / 86400;
-        $this->campaign_count = (int) get_option( 'wemail_sent_campaign_count' );
-        $campaign_based_review = (int) get_option( 'wemail_sent_campaign_count' ) >= 3;
-        if ( $this->time_based_review || $campaign_based_review ) {
-			add_action( 'admin_notices', [ $this, 'connect_review_notice_html' ] );
+		if ( (int) get_option( 'wemail_review_notice' ) !== 1 ) {
+			$this->time_based_review = ( time() - $installed_time ) / 86400 > 7;
+			$this->day_count = (int) ( time() - $installed_time ) / 86400;
+			$this->campaign_count = (int) get_option( 'wemail_sent_campaign_count' );
+			$campaign_based_review = (int) get_option( 'wemail_sent_campaign_count' ) >= 3;
+			if ( $this->time_based_review || $campaign_based_review ) {
+				add_action( 'admin_notices', [ $this, 'connect_review_notice_html' ] );
+			}
 		}
-	}
     }
 
     public function review_response( $response ) {
@@ -110,7 +111,7 @@ class ReviewNotice {
      */
     public function check_campaign() {
         $campaigns = wemail()->api->campaigns()->get();
-            if ( is_array($campaigns) && !empty($campaigns['data']) && (int) get_option( 'wemail_sent_campaign_count' ) < 3 && get_transient( 'wemail_sent_campaign_count' ) === false ) {
+		if ( is_array( $campaigns ) && ! empty( $campaigns['data'] ) && (int) get_option( 'wemail_sent_campaign_count' ) < 3 && get_transient( 'wemail_sent_campaign_count' ) === false ) {
             $count_campaigns = count( $campaigns['data'] );
             set_transient( 'wemail_sent_campaign_count', $count_campaigns, 60 * 60 * 2 );
             update_option( 'wemail_sent_campaign_count', $count_campaigns );
@@ -121,18 +122,18 @@ class ReviewNotice {
      * @return void
      */
     public function handle_review_response() {
-        $nonce = wp_create_nonce('wp_rest');
+        $nonce = wp_create_nonce( 'wp_rest' );
 
-        if ( wp_verify_nonce($nonce, 'wp_rest') && isset( $_POST['review_reposnse_yes'] ) ) {
+        if ( wp_verify_nonce( $nonce, 'wp_rest' ) && isset( $_POST['review_reposnse_yes'] ) ) {
             $this->review_response( 'yes' );
             header( 'Location:https://wordpress.org/support/plugin/wemail/reviews/#new-post' );
 		}
 
-		if ( wp_verify_nonce($nonce, 'wp_rest') && isset( $_POST['review_response_later'] ) ) {
+		if ( wp_verify_nonce( $nonce, 'wp_rest' ) && isset( $_POST['review_response_later'] ) ) {
 			$this->review_response( 'later' );
 		}
 
-        if ( wp_verify_nonce($nonce, 'wp_rest') && isset( $_POST['review_response_no'] ) ) {
+        if ( wp_verify_nonce( $nonce, 'wp_rest' ) && isset( $_POST['review_response_no'] ) ) {
             $this->review_response( 'no' );
         }
     }

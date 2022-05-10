@@ -332,11 +332,10 @@ function register_elementor_wemail_form_action() {
  *
  * @return string
  */
-function wemail_get_host_from_url($url)
-{
-    $url = parse_url($url, PHP_URL_HOST);
+function wemail_get_host_from_url( $url ) {
+    $url = parse_url( $url, PHP_URL_HOST );
 
-    return preg_replace('#^www\.#', '', $url);
+    return preg_replace( '#^www\.#', '', $url );
 }
 
 /**
@@ -347,21 +346,20 @@ function wemail_get_host_from_url($url)
  * @param  string|null  $language
  * @return string
  */
-function wemail_str_slug($title, $separator = '-')
-{
+function wemail_str_slug( $title, $separator = '-' ) {
     // Convert all dashes/underscores into separator
     $flip = $separator === '-' ? '_' : '-';
 
-    $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
+    $title = preg_replace( '![' . preg_quote( $flip ) . ']+!u', $separator, $title );
 
     // Replace @ with the word 'at'
-    $title = str_replace('@', $separator.'at'.$separator, $title);
+    $title = str_replace( '@', $separator . 'at' . $separator, $title );
 
     // Remove all characters that are not the separator, letters, numbers, or whitespace.
-    $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', strtolower($title));
+    $title = preg_replace( '![^' . preg_quote( $separator ) . '\pL\pN\s]+!u', '', strtolower( $title ) );
 
     // Replace all separator characters and whitespace by a single separator
-    $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
+    $title = preg_replace( '![' . preg_quote( $separator ) . '\s]+!u', $separator, $title );
 
-    return trim($title, $separator);
+    return trim( $title, $separator );
 }
