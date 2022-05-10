@@ -62,7 +62,7 @@ class ContentTypes {
         return [
             'type'       => 'text',
             'title'      => __( 'Text', 'wemail' ),
-            'image'      => self::$image_dir . '/text.png',
+            'image'      => self::$image_dir . '/text.svg',
             'default'    => [
                 'style'      => [
                     'backgroundColor' => '#ffffff',
@@ -98,7 +98,7 @@ class ContentTypes {
         return [
             'type'    => 'image',
             'title'   => __( 'Image', 'wemail' ),
-            'image'   => self::$image_dir . '/image.png',
+            'image'   => self::$image_dir . '/image.svg',
             'default' => [
                 'style'  => [
                     'backgroundColor' => '#ffffff',
@@ -136,7 +136,7 @@ class ContentTypes {
         return [
             'type'        => 'imageCaption',
             'title'       => __( 'Image Caption', 'wemail' ),
-            'image'       => self::$image_dir . '/image-caption.png',
+            'image'       => self::$image_dir . '/image-caption.svg',
             'default'     => [
                 'style'       => [
                     'backgroundColor'       => '#ffffff',
@@ -192,7 +192,7 @@ class ContentTypes {
 
         $facebook = 'https://facebook.com';
         $twitter  = 'https://twitter.com';
-        $website  = 'http://example.com';
+        $website  = 'https://example.com';
 
         if ( ! empty( $settings['data'] ) ) {
             $facebook = $settings['data']['facebook'];
@@ -206,7 +206,7 @@ class ContentTypes {
         return [
             'type'       => 'socialFollow',
             'title'      => __( 'Social Follow', 'wemail' ),
-            'image'      => self::$image_dir . '/social-follow.png',
+            'image'      => self::$image_dir . '/social-follow.svg',
             'default'    => [
                 'style'      => [
                     'backgroundColor'       => '#ffffff',
@@ -257,7 +257,7 @@ class ContentTypes {
         return [
             'type'      => 'button',
             'title'     => __( 'Button', 'wemail' ),
-            'image'     => self::$image_dir . '/button.png',
+            'image'     => self::$image_dir . '/button.svg',
             'default'   => [
                 'buttons' => [
                     [
@@ -307,7 +307,7 @@ class ContentTypes {
         return [
             'type'            => 'divider',
             'title'           => __( 'Divider', 'wemail' ),
-            'image'           => self::$image_dir . '/divider.png',
+            'image'           => self::$image_dir . '/divider.svg',
             'default'         => [
                 'dividerType'    => 'line',
                 'containerStyle' => [
@@ -338,7 +338,7 @@ class ContentTypes {
         return [
             'type'      => 'video',
             'title'     => __( 'Video', 'wemail' ),
-            'image'     => self::$image_dir . '/video.png',
+            'image'     => self::$image_dir . '/video.svg',
             'default'   => [
                 'style' => [
                     'backgroundColor' => 'transparent',
@@ -370,7 +370,7 @@ class ContentTypes {
         return [
             'type'       => 'footer',
             'title'      => __( 'Footer', 'wemail' ),
-            'image'      => self::$image_dir . '/footer.png',
+            'image'      => self::$image_dir . '/footer.svg',
             'default'    => [
                 'style'      => [
                     'backgroundColor' => '#ffffff',
@@ -406,7 +406,7 @@ class ContentTypes {
         return [
             'type'       => 'countdown',
             'title'      => __( 'Countdown', 'wemail' ),
-            'image'      => self::$image_dir . '/countdown.png',
+            'image'      => self::$image_dir . '/countdown.svg',
             'default'    => [
                 'containerStyle' => [
                     'textAlign'       => 'center',
@@ -449,7 +449,7 @@ class ContentTypes {
         return [
             'type'      => 'wooProducts',
             'title'     => __( 'Woo Products', 'wemail' ),
-            'image'     => self::$image_dir . '/woo-commerce-product.png',
+            'image'     => self::$image_dir . '/woo-commerce-product.svg',
             'default'   => [
                 'products'         => [],
                 'rowStyle'         => [
@@ -558,7 +558,7 @@ class ContentTypes {
         return [
             'type'      => 'giphy',
             'title'     => __( 'Giphy', 'wemail' ),
-            'image'     => self::$image_dir . '/giphy.png',
+            'image'     => self::$image_dir . '/giphy.svg',
             'default'   => [
                 'image' => (object) [],
                 'size'  => 'fixed_height_small',

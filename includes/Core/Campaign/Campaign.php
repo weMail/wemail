@@ -2,10 +2,11 @@
 
 namespace WeDevs\WeMail\Core\Campaign;
 
-use WeDevs\WeMail\Core\Campaign\Editor;
-use WeDevs\WeMail\Core\Campaign\Event;
 use WeDevs\WeMail\Traits\Singleton;
 
+/**
+ * @property Editor $editor
+ */
 class Campaign {
 
     use Singleton;
@@ -15,7 +16,7 @@ class Campaign {
      *
      * @since 1.0.0
      *
-     * @var WeDevs\WeMail\Core\Campaign\Event
+     * @var \WeDevs\WeMail\Core\Campaign\Event
      */
     public $event;
 
@@ -24,7 +25,7 @@ class Campaign {
      *
      * @since 1.0.0
      *
-     * @var WeDevs\WeMail\Core\Campaign\Editor
+     * @var \WeDevs\WeMail\Core\Campaign\Editor
      */
     public $editor;
 
@@ -56,12 +57,10 @@ class Campaign {
     /**
      * Get a single campaign
      *
-     * @since 1.0.0
-     *
      * @param string $id
-     * @param array  $query
-     *
+     * @param array $include
      * @return array
+     * @since 1.0.0
      */
     public function get( $id, $include = [] ) {
         $campaign = wemail()->api->campaigns( $id );
