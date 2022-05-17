@@ -1,12 +1,12 @@
 <?php
 
-function add_installed_time() {
+function wemail_add_installed_time() {
     if ( empty( get_option( 'wemail_installed_time' ) ) ) {
         \WeDevs\WeMail\WeMail::instance()->set_wemail_api();
         $site = \WeDevs\WeMail\Core\Api\Api::instance()
-            ->auth()->sites( wemail_str_slug( wemail_get_host_from_url( untrailingslashit( site_url( '/' ) ) ), '' ) )->get();
+            ->auth()->sites( get_option('wemail_site_slug') )->get();
         update_option( 'wemail_installed_time', strtotime( $site['data']['created_at'] ) );
     }
 }
 
-add_installed_time();
+wemail_add_installed_time();
