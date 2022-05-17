@@ -23,7 +23,7 @@ class ReviewNotice {
 
     public function enqueue_assets() {
         wp_enqueue_style( 'wemail-review-notice-style', WEMAIL_ASSETS . '/css/review-notice.css', false, WEMAIL_VERSION );
-        wp_enqueue_script( 'wemail-review-notice-script', WEMAIL_ASSETS . '/js/admin-review-notice.js', [ 'jquery' ], WEMAIL_VERSION, true);
+        wp_enqueue_script( 'wemail-review-notice-script', WEMAIL_ASSETS . '/js/admin-review-notice.js', [ 'jquery' ], WEMAIL_VERSION, true );
     }
 
     /**
@@ -32,7 +32,7 @@ class ReviewNotice {
      * @return void
      */
     public function connect_review_notice_html() {         ?>
-        <div class="notice wemail-review-notice-flex-container is-dismissible review-time-background-image" data-nonce="<?php echo wp_create_nonce('_review_nonce');?>" >
+        <div class="notice wemail-review-notice-flex-container is-dismissible review-time-background-image" data-nonce="<?php echo wp_create_nonce( '_review_nonce' ); ?>" >
             <div class="wemail-connect-notice-content">
                 <div class="wemail-connect-notice-content">
                     <h3>
@@ -66,7 +66,7 @@ class ReviewNotice {
                             <button type="submit" class="response-button" id="review_reposnse_no" name="review_response_no">
                                 <u> <?php echo __( 'No, I\'m just taking, not giving', 'wemail' ); ?> </u>
                             </button>
-                            <?php wp_nonce_field('_review_nonce', 'review_nonce'); ?>
+                            <?php wp_nonce_field( '_review_nonce', 'review_nonce' ); ?>
                         </form>
                     </div>
                 </div>
@@ -82,13 +82,12 @@ class ReviewNotice {
      */
     public function connect_review_notice() {
         if ( isset( $_GET['dismiss_wemail_review_notice'] ) && (int) $_GET['dismiss_wemail_review_notice'] === 1 ) {
-
-            if (!isset( $_GET['review_nonce'] )) {
-                wp_die(__( 'Nonce not Found' , 'wemail' ));
+            if ( ! isset( $_GET['review_nonce'] ) ) {
+                wp_die( __( 'Nonce not Found', 'wemail' ) );
             }
 
-            if (!wp_verify_nonce($_GET['review_nonce'], '_review_nonce')) {
-                wp_die(__( 'Security check failed', 'wemail' ));
+            if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['review_nonce'] ) ), '_review_nonce' ) ) {
+                wp_die( __( 'Security check failed', 'wemail' ) );
             }
 
             update_option( 'wemail_review_notice', 1 );
@@ -132,17 +131,17 @@ class ReviewNotice {
      * @return void
      */
     public function handle_review_response() {
-        if (isset($_POST['submit']) && ! isset($_POST['review_nonce'])) {
-            wp_die(__( 'Nonce Not Found', 'wemail' ));
+        if ( isset( $_POST['submit'] ) && ! isset( $_POST['review_nonce'] ) ) {
+            wp_die( __( 'Nonce Not Found', 'wemail' ) );
         }
 
-        if (isset($_POST['submit']) && !wp_verify_nonce($_POST['review_nonce'], '_review_nonce')) {
-            wp_die(__( 'Security check', 'wemail' ));
+        if ( isset( $_POST['submit'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['review_nonce'] ) ), '_review_nonce' ) ) {
+            wp_die( __( 'Security check', 'wemail' ) );
         };
 
         if ( isset( $_POST['review_reposnse_yes'] ) ) {
             $this->review_response( 'yes' );
-            wp_redirect( "https://wordpress.org/support/plugin/wemail/reviews/?filter=5" );
+            wp_redirect( 'https://wordpress.org/support/plugin/wemail/reviews/?filter=5' );
 		} elseif ( isset( $_POST['review_response_later'] ) ) {
 			$this->review_response( 'later' );
 		} elseif ( isset( $_POST['review_response_no'] ) ) {
