@@ -40,7 +40,7 @@ class ReviewNotice {
                         echo __( 'Great! ', 'wemail' );
                         if ( $this->time_based_review ) {
                             /* translators: %d is replaced with the number of days */
-                            printf( __( 'You are using weMail for %s -absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval($this->day_count).' days');
+                            printf( __( 'You are using weMail for %s -absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval( $this->day_count ) . ' days' );
                         } else {
                             /* translators: %d is replaced with the number of campaigns */
                             printf( __( 'You sent %d campaigns usign weMail successfully.', 'wemail' ), $this->campaign_count );
@@ -116,7 +116,7 @@ class ReviewNotice {
     }
 
     public function getDaysCount( $days ) {
-        if ($days > 31) {
+        if ( $days > 31 ) {
             return 1;
         }
         return $days;
