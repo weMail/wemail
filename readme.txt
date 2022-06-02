@@ -3,7 +3,7 @@ Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
-Tested up to: 5.8
+Tested up to: 6.0
 Stable tag: 1.9.0
 Requires PHP: 5.4
 License: GPLv2 or later
