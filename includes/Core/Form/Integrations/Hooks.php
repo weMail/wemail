@@ -24,5 +24,6 @@ class Hooks {
         add_action( 'wp_ajax_sgpb_process_after_submission', [ PopupBuilder::instance(), 'submit' ], 999, 1 );
         add_action( 'pum_sub_form_success', [ PopupMaker::instance(), 'submit' ], 999, 1 );
         add_action( 'forminator_custom_form_submit_before_set_fields', [ ForminatorForms::instance(), 'submit' ], 999, 3 );
+        add_action( 'everest_forms_process', [ EverestForms::instance(), 'submit' ], 999, 3 );
     }
 }

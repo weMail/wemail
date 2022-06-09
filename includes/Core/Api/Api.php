@@ -271,6 +271,7 @@ class Api {
 
         if ( $this->json ) {
             $args['headers']['Content-Type'] = 'application/json';
+            $args['headers']['Accept'] = 'application/json';
             $args['data_format'] = 'body';
             $args['body'] = wp_json_encode( $args['body'] );
         }

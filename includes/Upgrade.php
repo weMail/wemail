@@ -10,6 +10,7 @@ class Upgrade {
      */
     protected $upgrades = [
         '1.0.0' => 'Upgrades/upgrade-1.0.0.php',
+        '1.10.0' => 'Upgrades/upgrade-1.10.0.php',
     ];
 
     /**

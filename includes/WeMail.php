@@ -9,6 +9,10 @@ use WeDevs\WeMail\FrontEnd\FrontEnd;
 use WeDevs\WeMail\Privacy\Privacy;
 use WeDevs\WeMail\Rest\Rest;
 
+/**
+ * @property Core\Campaign\Campaign $campaign
+ * @property Core\Customizer\Customizer $customizer
+ */
 final class WeMail {
 
     /**
@@ -403,7 +407,7 @@ final class WeMail {
      *
      * @return void
      */
-    private function set_wemail_api() {
+    public function set_wemail_api() {
         /**
          * WeMail API URL
          *
@@ -459,7 +463,7 @@ final class WeMail {
      * @return string
      */
     public function hmr_host() {
-        return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:8080';
+        return ( defined( 'WEMAIL_HMR_HOST' ) && WEMAIL_HMR_HOST ) ? WEMAIL_HMR_HOST : 'http://localhost:3000';
     }
 
     /**
@@ -467,5 +471,17 @@ final class WeMail {
      */
     public function register_block() {
         GutenbergBlock::instance();
+    }
+
+    public static function register_module_scripts() {
+        add_filter(
+            'script_loader_tag', function ( $tag, $handle, $src ) {
+				if ( ! preg_match( '/^wemail-?(vendor|bootstrap|client|frontend-vendor|frontend)?$/', $handle ) ) {
+					return $tag;
+				}
+
+				return '<script type="module" src="' . esc_url( $src ) . '" id="' . esc_attr( $handle ) . '-js"></script>'; /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */
+			}, 10, 3
+        );
     }
 }

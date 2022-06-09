@@ -4,6 +4,7 @@ namespace WeDevs\WeMail\Admin;
 use WeDevs\WeMail\Core\Ecommerce\Ecommerce;
 use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Traits\Hooker;
+use WeDevs\WeMail\WeMail;
 
 class Scripts {
 
@@ -50,7 +51,7 @@ class Scripts {
             'wemail-tiny-mce',
         ];
 
-        wp_enqueue_style( 'wemail', wemail()->wemail_cdn . '/css/wemail.css', $dependencies, $this->version );
+        wp_enqueue_style( 'wemail', wemail()->wemail_cdn . '/build/css/wemail.css', $dependencies, $this->version );
     }
 
     /**
@@ -63,12 +64,6 @@ class Scripts {
     public function enqueue_scripts() {
         wp_enqueue_media();
 
-        $cdn_url = wemail()->wemail_cdn;
-
-        if ( is_wemail_hmr_enable() ) {
-            $cdn_url = wemail()->hmr_host();
-        }
-
         wp_register_script( 'wemail-tiny-mce', site_url( '/wp-includes/js/tinymce/tinymce.min.js' ), [], true );
         wp_register_script( 'wemail-tiny-mce-code', wemail()->wemail_cdn . '/vendor/tinymce/plugins/code/plugin.min.js', [ 'wemail-tiny-mce' ], $this->version, true );
         wp_register_script( 'wemail-tiny-mce-hr', wemail()->wemail_cdn . '/vendor/tinymce/plugins/hr/plugin.min.js', [ 'wemail-tiny-mce-code' ], $this->version, true );
@@ -78,7 +73,6 @@ class Scripts {
 
         wp_register_script( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.js', [ 'jquery' ], $this->version, true );
         wp_register_script( 'wemail-popper-js', wemail()->wemail_cdn . '/vendor/popper.js/popper.min.js', [], $this->version, true );
-        wp_register_script( 'wemail-bootstrap', wemail()->wemail_cdn . '/js/bootstrap.js', [ 'jquery', 'wemail-popper-js' ], $this->version, true );
 
         $dependencies = [
             'jquery',
@@ -95,8 +89,17 @@ class Scripts {
             'wemail-bootstrap',
         ];
 
-        wp_enqueue_script( 'wemail-vendor', wemail()->wemail_cdn . '/js/vendor.js', $dependencies, $this->version, true );
-        wp_enqueue_script( 'wemail', $cdn_url . '/js/wemail.js', [ 'wemail-vendor' ], $this->version, true );
+        if ( ! is_wemail_hmr_enable() ) {
+            wp_register_script( 'wemail-bootstrap', wemail()->wemail_cdn . '/build/js/bootstrap.js', [ 'jquery', 'wemail-popper-js' ], $this->version, true );
+            wp_enqueue_script( 'wemail-vendor', wemail()->wemail_cdn . '/build/js/vendor.js', $dependencies, $this->version, true );
+            wp_enqueue_script( 'wemail', wemail()->wemail_cdn . '/build/js/wemail.js', [ 'wemail-vendor' ], $this->version, true );
+        } else {
+            $hmr_host = wemail()->hmr_host();
+
+            wp_register_script( 'wemail-bootstrap', $hmr_host . '/src/vendor/bootstrap/js/bootstrap.js', [ 'jquery', 'wemail-popper-js' ], $this->version, true );
+            wp_enqueue_script( 'wemail-vendor', $hmr_host . '/src/js/vendor.js', $dependencies, $this->version, true );
+            wp_enqueue_script( 'wemail', $hmr_host . '/src/js/wemail.js', [ 'wemail-vendor' ], $this->version, true );
+        }
 
         $user = wemail()->user;
 
@@ -164,6 +167,8 @@ class Scripts {
         ];
 
         wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
+
+        WeMail::register_module_scripts();
     }
 
     /**

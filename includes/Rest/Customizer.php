@@ -9,7 +9,7 @@ class Customizer extends WP_REST_Controller {
 
     public $namespace = 'wemail/v1';
 
-    public $rest_base = '/static/customizer/(?P<context>[\w-]+)';
+    public $rest_base = '/static/customizer/(?P<context>campaign|rss)';
 
     public function __construct() {
         $this->register_routes();
@@ -41,16 +41,10 @@ class Customizer extends WP_REST_Controller {
     }
 
     public function data( $request ) {
-        switch ( $request['context'] ) {
-            case 'campaign':
-            default:
-                $customizer = wemail()->campaign->editor->get_customizer_data();
-                break;
-        }
-
-        $response = rest_ensure_response( [ 'data' => $customizer ] );
-
-        return $response;
+        return rest_ensure_response(
+            [
+				'data' => wemail()->campaign->editor->get_customizer_data( $request['context'] ),
+			]
+        );
     }
-
 }
