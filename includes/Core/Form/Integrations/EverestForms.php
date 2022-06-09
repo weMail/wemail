@@ -68,7 +68,11 @@ class EverestForms extends AbstractIntegration {
             ];
         }
 
-        return $forms;
+        return array_filter(
+            $forms, function( $form ) {
+				return ! empty( $form['fields'] );
+			}
+        );
     }
 
     /**
@@ -78,8 +82,13 @@ class EverestForms extends AbstractIntegration {
     public function get_fields( $post ) {
         $fields = [];
 
-        $form_fields = json_decode( $post->post_content )->form_fields;
-        $get_columns = get_object_vars( $form_fields );
+        $content = json_decode( $post->post_content );
+
+        if ( ! isset( $content->form_fields ) ) {
+            return $fields;
+        }
+
+        $get_columns = get_object_vars( $content->form_fields );
         foreach ( $get_columns as $get_column ) {
             $fields[] = [
                 'id' => $get_column->id,

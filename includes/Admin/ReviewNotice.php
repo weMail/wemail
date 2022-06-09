@@ -4,15 +4,14 @@ namespace WeDevs\WeMail\Admin;
 
 use WeDevs\WeMail\Traits\Singleton;
 
-/**
- * Shiw admin notice.
- */
 class ReviewNotice {
     use Singleton;
 
-    public $time_based_review;
     public $day_count;
+
     public $campaign_count;
+
+    public $time_based_review;
 
     /**
      * Boot the notice
@@ -81,33 +80,41 @@ class ReviewNotice {
      * @return void
      */
     public function connect_review_notice() {
+        if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'wemail' ) {
+            return;
+        }
+
+        if ( (int) get_option( 'wemail_review_notice' ) === 1 ) {
+            return;
+        }
+
         if ( isset( $_GET['dismiss_wemail_review_notice'] ) && (int) $_GET['dismiss_wemail_review_notice'] === 1 ) {
             if ( ! isset( $_GET['review_nonce'] ) ) {
-                wp_die( __( 'Nonce not Found', 'wemail' ) );
+                wp_die( __( 'Nonce not found!', 'wemail' ) );
             }
 
             if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['review_nonce'] ) ), '_review_nonce' ) ) {
-                wp_die( __( 'Security check failed', 'wemail' ) );
+                wp_die( __( 'Invalid nonce!', 'wemail' ) );
             }
 
             update_option( 'wemail_review_notice', 1 );
+            return;
 		}
 
-        $installed_time = get_option( 'wemail_installed_time' );
+        $installed_time = get_option( 'wemail_installed_time', time() );
+        $sent_campaigns = (int) get_option( 'wemail_sent_campaign_count', 0 );
 
         $this->handle_review_response();
 
         $this->check_campaign();
 
-		if ( (int) get_option( 'wemail_review_notice' ) !== 1 ) {
-			$this->time_based_review = ( time() - $installed_time ) / 86400 > 7;
-			$this->day_count = (int) ( time() - $installed_time ) / 86400;
-			$this->campaign_count = (int) get_option( 'wemail_sent_campaign_count' );
-			$campaign_based_review = (int) get_option( 'wemail_sent_campaign_count' ) >= 3;
-			if ( $this->time_based_review || $campaign_based_review ) {
-				add_action( 'admin_notices', [ $this, 'connect_review_notice_html' ] );
-			}
-		}
+        $this->time_based_review = ( time() - $installed_time ) / 86400 > 7;
+        $this->day_count = (int) ( time() - $installed_time ) / 86400;
+        $this->campaign_count = $sent_campaigns;
+
+        if ( $this->time_based_review || $sent_campaigns >= 3 ) {
+            add_action( 'admin_notices', [ $this, 'connect_review_notice_html' ] );
+        }
     }
 
     public function review_response( $response ) {
@@ -115,23 +122,28 @@ class ReviewNotice {
         update_option( 'wemail_review_notice', 1 );
     }
 
-    public function getDaysCount( $days ) {
-        if ( $days > 31 ) {
-            return 1;
-        }
-        return $days;
-    }
-
     /**
      * @return void
      */
     public function check_campaign() {
-        $campaigns = wemail()->api->campaigns()->get();
-		if ( is_array( $campaigns ) && ! empty( $campaigns['data'] ) && (int) get_option( 'wemail_sent_campaign_count' ) < 3 && get_transient( 'wemail_sent_campaign_count' ) === false ) {
-            $count_campaigns = count( $campaigns['data'] );
-            set_transient( 'wemail_sent_campaign_count', $count_campaigns, 60 * 60 * 2 );
-            update_option( 'wemail_sent_campaign_count', $count_campaigns );
-		}
+        if ( get_transient( 'wemail_sent_campaign_count' ) !== false ) {
+            return;
+        }
+
+        $response = wemail()->api->campaigns()->query(
+            [
+				'statuses[]' => 'completed',
+			]
+        )->get();
+
+        if ( is_wp_error( $response ) || ! isset( $response['meta'] ) ) {
+            set_transient( 'wemail_sent_campaign_count', 1, 60 * 60 * 2 );
+            return;
+        }
+
+        $count_campaigns = (int) $response['meta']['total'];
+        set_transient( 'wemail_sent_campaign_count', $count_campaigns, 60 * 60 * 2 );
+        update_option( 'wemail_sent_campaign_count', $count_campaigns );
     }
 
     /**
@@ -155,5 +167,4 @@ class ReviewNotice {
             $this->review_response( 'no' );
         }
     }
-
 }
