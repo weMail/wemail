@@ -42,20 +42,20 @@ class ReviewNotice {
                             printf( __( 'You are using weMail for %s -absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval( $this->day_count ) . ' days' );
                         } else {
                             /* translators: %d is replaced with the number of campaigns */
-                            printf( __( 'You sent %d campaigns usign weMail successfully.', 'wemail' ), $this->campaign_count );
+                            printf( __( 'You sent %d campaigns using weMail successfully.', 'wemail' ), $this->campaign_count );
                         }
                         ?>
                     </h3>
                     <p>
                         <?php
                         echo __(
-                            'Don’t worry, we are not asking you to buy the pro plan. But if you give us a great review, if you will. We put a lot of
-                            hard work to develop it and make it better every day. It would motivate the team a lot! Do you think it’s fair?', 'wemail'
+                            'Don\'t worry, we are not asking you to buy the pro plan. But if you give us a great review, if you will. We put a lot of
+                            hard work to develop it and make it better every day. It would motivate the team a lot! Do you think it\'s fair?', 'wemail'
                         );
                         ?>
                     </p>
                     <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 10px: margin top: 10px">
-                        <form action='' method='post'>
+                        <form method='post'>
                             <button type="submit" class="button review_reposnse_yes" id="review_reposnse_yes" name="review_reposnse_yes">
                                 <?php echo __( 'Yes, Absolutely', 'wemail' ); ?>
                             </button>
@@ -101,12 +101,12 @@ class ReviewNotice {
             return;
 		}
 
-        $installed_time = get_option( 'wemail_installed_time', time() );
-        $sent_campaigns = (int) get_option( 'wemail_sent_campaign_count', 0 );
-
         $this->handle_review_response();
 
         $this->check_campaign();
+
+        $installed_time = get_option( 'wemail_installed_time', time() );
+        $sent_campaigns = (int) get_option( 'wemail_sent_campaign_count', 0 );
 
         $this->time_based_review = ( time() - $installed_time ) / 86400 > 7;
         $this->day_count = (int) ( time() - $installed_time ) / 86400;
@@ -132,7 +132,7 @@ class ReviewNotice {
 
         $response = wemail()->api->campaigns()->query(
             [
-				'statuses[]' => 'completed',
+				'statuses' => [ 'completed' ],
 			]
         )->get();
 
@@ -161,6 +161,7 @@ class ReviewNotice {
         if ( isset( $_POST['review_reposnse_yes'] ) ) {
             $this->review_response( 'yes' );
             wp_redirect( 'https://wordpress.org/support/plugin/wemail/reviews/?filter=5' );
+            exit;
 		} elseif ( isset( $_POST['review_response_later'] ) ) {
 			$this->review_response( 'later' );
 		} elseif ( isset( $_POST['review_response_no'] ) ) {
