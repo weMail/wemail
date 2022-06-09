@@ -4,10 +4,11 @@
     border-left: none;
     border-radius: 3px;
     background-repeat:no-repeat;
-    height:180px;
     background-position-x: right;
     background-size: contain;
     border: white;
+    margin-left: 0;
+    padding: 1em;
 }
 
 .review-time-background-image {
@@ -15,15 +16,12 @@
 }
 
 .wemail-reivew-notice-connect-button{
-    margin-top: 2%;
-    margin-bottom: 2%;
+    margin-top: 1em;
 }
 
 .wemail-review-notice-flex-container h3 {
-    margin-top: 3%;
-    margin-bottom: 1%;
+    margin-bottom: 0.5em;
     width: 650px;
-    height: 24px;
     font-weight: bolder;
 
     font-style: normal;
@@ -73,13 +71,14 @@
     background: #009BFF;
     color: white;
     border-color: #009BFF;
+    margin-right: 0.5em;
 }
 
 #review_reposnse_later {
     background: #ffffff;
     color: #565656;
-    border-color: #D4D8DB
-;
+    border-color: #D4D8DB;
+    margin-right: 0.5em;
 }
 
 .wemail-review-notice-flex-container > .notice-dismiss:before {
