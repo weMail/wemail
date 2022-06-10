@@ -19,7 +19,7 @@ class Scripts {
     public function enqueue_scripts() {
         if ( ! is_wemail_hmr_enable() ) {
             wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/build/js/frontend-vendor.js', [ 'jquery' ], WEMAIL_VERSION, true );
-            wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . 'build/js/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/build/js/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
         } else {
             $hmr_host = wemail()->hmr_host();
 
