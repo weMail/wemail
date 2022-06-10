@@ -40,6 +40,7 @@ class FormPreview {
             <head>
                 <title><?php esc_html_e( 'weMail Form Preview', 'wemail' ); ?></title>
                 <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo get_stylesheet_directory_uri() . '/style.css'; ?>">
+                <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo wemail()->wemail_cdn . '/build/css/Form.css?ver=' . WEMAIL_VERSION; ?>">
                 <script>
                     var weMail = {
                         'restURL': '<?php echo untrailingslashit( get_rest_url( null, '/wemail/v1' ) ); ?>',
@@ -55,8 +56,9 @@ class FormPreview {
                 </div>
 
                 <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>
-                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/js/frontend-vendor.js'; ?>"></script>
-                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/js/preview.js'; ?>"></script>
+                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/build/js/frontend-vendor.js?ver=' . WEMAIL_VERSION; ?>"></script>
+                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/build/js/frontend.js?ver=' . WEMAIL_VERSION; ?>"></script>
+                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/build/js/preview.js?ver=' . WEMAIL_VERSION; ?>"></script>
             </body>
         </html>
 
