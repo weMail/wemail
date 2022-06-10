@@ -39,7 +39,7 @@ class ReviewNotice {
                         echo __( 'Great! ', 'wemail' );
                         if ( $this->time_based_review ) {
                             /* translators: %d is replaced with the number of days */
-                            printf( __( 'You are using weMail for %s -absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval( $this->day_count ) . ' days' );
+                            printf( __( 'You are using weMail for %s absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval( $this->day_count ) . ' days' );
                         } else {
                             /* translators: %d is replaced with the number of campaigns */
                             printf( __( 'You sent %d campaigns using weMail successfully.', 'wemail' ), $this->campaign_count );
@@ -49,7 +49,7 @@ class ReviewNotice {
                     <p>
                         <?php
                         echo __(
-                            'Don\'t worry, we are not asking you to buy the pro plan. But if you give us a great review, if you will. We put a lot of
+                            'Don\'t worry, we are not asking you to buy the pro plan. But would you give us a great review, if you will? We put a lot of
                             hard work to develop it and make it better every day. It would motivate the team a lot! Do you think it\'s fair?', 'wemail'
                         );
                         ?>
