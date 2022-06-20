@@ -20,14 +20,12 @@ class OrderResource extends JsonResource {
             'is_refund'     => $order->get_type() === 'shop_order_refund',
             'parent_id'     => $order->get_parent_id(),
             'products'      => OrderItemResource::collection( $order->get_items() ),
-            'customer'      => [],
             'status'        => $status,
             'currency'      => $order->get_currency(),
             'total'         => floatval( $order->get_total() ),
             'created_at'    => $order->get_date_created()->format( self::DATE_FORMAT ),
             'updated_at'    => $order->get_date_modified()->format( self::DATE_FORMAT ),
             'source'        => 'woocommerce',
-            'permalink'     => '',
         ];
         // Refunded completed order
         if ( $status === 'completed' && ! $order->get_parent_id() ) {
