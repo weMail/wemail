@@ -14,7 +14,7 @@ class Menu {
      *
      * @var integer
      */
-    private $menu_priority = 2;
+    private $menu_priority = 3;
 
     /**
      * Class constructor
