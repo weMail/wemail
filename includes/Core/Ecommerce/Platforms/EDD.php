@@ -8,8 +8,9 @@ use WeDevs\WeMail\Traits\Singleton;
 use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\OrderResource;
-use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\CategoryResource;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\OrderResourceV3;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\ProductResource;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\CategoryResource;
 
 class EDD extends AbstractPlatform {
 
@@ -72,6 +73,10 @@ class EDD extends AbstractPlatform {
      * @return array
      */
     public function orders( array $args = [] ) {
+        if ( $this->is_version_v3() ) {
+            return $this->order_v3( $args );
+        }
+
         $args = wp_parse_args(
             $args,
             [
@@ -101,6 +106,22 @@ class EDD extends AbstractPlatform {
         ];
     }
 
+    public function order_v3( array $args = [] ) {
+        $args = wp_parse_args( $args, [
+            'number' => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
+            'page'   => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+        ] );
+
+        if ( isset( $args['after_updated'] ) ) {
+            $args['start-date'] = gmdate( 'Y-m-d H:i:s', $args['after_updated'] );
+        }
+
+        return [
+            'data' => OrderResourceV3::collection(edd_get_payments($args)),
+            'current_page' => intval($args['page'])
+        ];
+    }
+
     /**
      * Get categories from EDD store
      *
@@ -127,9 +148,12 @@ class EDD extends AbstractPlatform {
      * @return void
      */
     public function register_hooks() {
-        add_action( 'edd_update_payment_status', [ $this, 'handle_order' ] );
-        add_action( 'edd_complete_purchase', [ $this, 'handle_order' ] );
-        add_action( 'after_delete_post', [ $this, 'delete_order' ], 10, 2 );
+        if ( $this->is_version_v3() ) {
+            add_action( 'edd_update_payment_status', [ $this, 'handle_order_v3' ] );
+        } else {
+            add_action( 'edd_update_payment_status', [ $this, 'handle_order' ] );
+            add_action( 'after_delete_post', [ $this, 'delete_order' ], 10, 2 );
+        }
     }
 
     /**
@@ -138,7 +162,7 @@ class EDD extends AbstractPlatform {
      * @return bool
      */
     public function is_active() {
-        return class_exists( 'EDD_API' );
+        return defined( 'EDD_VERSION' );
     }
 
     /**
@@ -155,14 +179,41 @@ class EDD extends AbstractPlatform {
 
         $post = get_post( $payment_id );
 
-        $payload = OrderResource::single( $post );
+        $this->sync_order( $payment_id, OrderResource::single( $post ) );
+    }
 
+    /**
+     * Handling order sync on edd version 3
+     *
+     * @param $payment_id
+     *
+     * @return void
+     */
+    public function handle_order_v3( $payment_id ) {
+        $payment = edd_get_payment( $payment_id );
+
+        if ( ! $payment ) {
+            return;
+        }
+
+        $this->sync_order( $payment_id, OrderResourceV3::single( $payment ) );
+    }
+
+    /**
+     * Sync order with weMail
+     *
+     * @param $id
+     * @param array $payload
+     *
+     * @return void
+     */
+    public function sync_order( $id, array $payload ) {
         RevenueTrack::track_id( $payload );
 
         wemail()->api
             ->send_json()
             ->ecommerce()
-            ->orders( $payment_id )
+            ->orders( $id )
             ->put( $payload );
     }
 
@@ -191,7 +242,21 @@ class EDD extends AbstractPlatform {
             );
     }
 
+    /**
+     * Get integration name
+     *
+     * @return string
+     */
     public function get_name() {
         return 'edd';
+    }
+
+    /**
+     * Is edd version 3
+     *
+     * @return bool|int
+     */
+    public function is_version_v3() {
+        return version_compare( '3', EDD_VERSION, '<=' );
     }
 }
