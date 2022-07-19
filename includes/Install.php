@@ -57,7 +57,6 @@ class Install {
      * Adds plugin installation time.
      *
      * @return void
-     * @since 3.3.1
      */
     public static function add_installed_time() {
         $path      = trailingslashit( __DIR__ );
