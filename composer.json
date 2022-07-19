@@ -25,7 +25,7 @@
   "require": {
     "php": ">=5.5",
     "league/csv": "^7.2",
-    "danielstjules/stringy": "dev-master",
+    "danielstjules/stringy": "~3.1.0",
     "appsero/client": "^1.1"
   },
   "require-dev": {
@@ -33,7 +33,6 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "tareq1988/wp-php-cs-fixer": "dev-master",
     "phpcompatibility/phpcompatibility-wp": "dev-master",
-    "phpunit/phpunit": "7.5.9",
     "symfony/var-dumper": "^5.3"
   },
   "scripts": {
@@ -44,6 +43,11 @@
   "autoload": {
     "psr-4": {
       "WeDevs\\WeMail\\": "includes"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }
