@@ -2,11 +2,13 @@
 
 namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
-use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\CategoryResource;
 use WP_Post;
+use WP_Query;
 use WeDevs\WeMail\Traits\Singleton;
 use WeDevs\WeMail\Core\Ecommerce\Settings;
+use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\OrderResource;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\CategoryResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\EDD\ProductResource;
 
 class EDD extends AbstractPlatform {
@@ -18,18 +20,18 @@ class EDD extends AbstractPlatform {
      *
      * @return string
      */
-	public function currency() {
-		return edd_get_currency();
-	}
+    public function currency() {
+        return edd_get_currency();
+    }
 
     /**
      * Currency symbol
      *
      * @return string
      */
-	public function currency_symbol() {
-		return edd_currency_symbol();
-	}
+    public function currency_symbol() {
+        return edd_currency_symbol();
+    }
 
     /**
      * Get products from edd
@@ -38,29 +40,29 @@ class EDD extends AbstractPlatform {
      *
      * @return array
      */
-	public function products( array $args = [] ) {
-	    $args = wp_parse_args(
+    public function products( array $args = [] ) {
+        $args = wp_parse_args(
             $args, [
-				'page' => 1,
-				'limit' => 50,
-			]
+                'page'  => 1,
+                'limit' => 50,
+            ]
         );
 
-	    $query = new \WP_Query(
+        $query = new WP_Query(
             array(
-				'post_type'         => 'download',
-				'posts_per_page'    => $args['limit'],
-				'paged'             => $args['page'],
+                'post_type'      => 'download',
+                'posts_per_page' => $args['limit'],
+                'paged'          => $args['page'],
             )
         );
 
-	    return [
-	        'data' => ProductResource::collection( $query->get_posts() ),
-            'total' => $query->found_posts,
+        return [
+            'data'         => ProductResource::collection( $query->get_posts() ),
+            'total'        => $query->found_posts,
             'current_page' => intval( $args['page'] ),
-            'total_page' => $query->max_num_pages,
+            'total_page'   => $query->max_num_pages,
         ];
-	}
+    }
 
     /**
      * Get orders from edd
@@ -69,14 +71,14 @@ class EDD extends AbstractPlatform {
      *
      * @return array
      */
-	public function orders( array $args = [] ) {
+    public function orders( array $args = [] ) {
         $args = wp_parse_args(
             $args,
             [
-                'posts_per_page'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
-                'paged'             => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
-                'post_type'         => 'edd_payment',
-                'post_status'       => 'any',
+                'posts_per_page' => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
+                'paged'          => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+                'post_type'      => 'edd_payment',
+                'post_status'    => 'any',
             ]
         );
 
@@ -84,18 +86,18 @@ class EDD extends AbstractPlatform {
             $args['date_query'] = [
                 [
                     'column' => 'post_modified_gmt',
-                    'after' => gmdate( 'Y-m-d H:i:s', $args['after_updated'] ),
+                    'after'  => gmdate( 'Y-m-d H:i:s', $args['after_updated'] ),
                 ],
             ];
         }
 
-        $payments = new \WP_Query( $args );
+        $payments = new WP_Query( $args );
 
         return [
-            'data' => OrderResource::collection( $payments->get_posts() ),
-            'total' => $payments->found_posts,
+            'data'         => OrderResource::collection( $payments->get_posts() ),
+            'total'        => $payments->found_posts,
             'current_page' => intval( $args['paged'] ),
-            'total_page' => $payments->max_num_pages,
+            'total_page'   => $payments->max_num_pages,
         ];
     }
 
@@ -109,9 +111,9 @@ class EDD extends AbstractPlatform {
     public function categories( array $args = [] ) {
         $terms = get_terms(
             [
-				'taxonomy'   => 'download_category',
-				'hide_empty' => false,
-			]
+                'taxonomy'   => 'download_category',
+                'hide_empty' => false,
+            ]
         );
 
         return [
@@ -119,27 +121,49 @@ class EDD extends AbstractPlatform {
         ];
     }
 
-	public function register_hooks() {
+    /**
+     * Register hooks
+     *
+     * @return void
+     */
+    public function register_hooks() {
         add_action( 'edd_update_payment_status', [ $this, 'handle_order' ] );
+        add_action( 'edd_complete_purchase', [ $this, 'handle_order' ] );
         add_action( 'after_delete_post', [ $this, 'delete_order' ], 10, 2 );
-	}
+    }
 
+    /**
+     * Check edd plugin is active or not
+     *
+     * @return bool
+     */
     public function is_active() {
         return class_exists( 'EDD_API' );
     }
 
-    public function handle_order( $order_id ) {
+    /**
+     * Handle edd order
+     *
+     * @param $payment_id
+     *
+     * @return void
+     */
+    public function handle_order( $payment_id ) {
         if ( ! Settings::instance()->is_enabled() ) {
             return;
         }
 
-        $post = get_post( $order_id );
+        $post = get_post( $payment_id );
+
+        $payload = OrderResource::single( $post );
+
+        RevenueTrack::track_id( $payload );
 
         wemail()->api
             ->send_json()
             ->ecommerce()
-            ->orders( $order_id )
-            ->put( OrderResource::single( $post ) );
+            ->orders( $payment_id )
+            ->put( $payload );
     }
 
     /**
@@ -162,8 +186,8 @@ class EDD extends AbstractPlatform {
             ->orders( $order_id )
             ->post(
                 [
-					'_method' => 'delete',
-				]
+                    '_method' => 'delete',
+                ]
             );
     }
 

@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
+use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
 use WeDevs\WeMail\Traits\Singleton;
 use WeDevs\WeMail\Core\Ecommerce\Settings;
@@ -40,20 +41,20 @@ class WooCommerce extends AbstractPlatform {
         $args = wp_parse_args(
             $args,
             [
-                'limit'     => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
-                'page'      => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
-                'status'    => isset( $args['status'] ) ? $args['status'] : null,
-                'paginate'  => true,
+                'limit'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
+                'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+                'status'   => isset( $args['status'] ) ? $args['status'] : null,
+                'paginate' => true,
             ]
         );
 
         $products = wc_get_products( $args );
 
         return [
-            'data'          => ProductResource::collection( $products->products ),
-            'total'         => $products->total,
-            'current_page'  => intval( $args['page'] ),
-            'total_page'    => $products->max_num_pages,
+            'data'         => ProductResource::collection( $products->products ),
+            'total'        => $products->total,
+            'current_page' => intval( $args['page'] ),
+            'total_page'   => $products->max_num_pages,
         ];
     }
 
@@ -68,11 +69,11 @@ class WooCommerce extends AbstractPlatform {
         $args = wp_parse_args(
             $args,
             [
-                'limit'         => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
-                'page'          => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
-                'paginate'      => true,
-                'status'        => [ 'completed', 'refunded', 'on-hold', 'processing', 'cancelled', 'failed' ],
-                'type'          => [ 'shop_order', 'shop_order_refund' ],
+                'limit'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
+                'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+                'paginate' => true,
+                'status'   => [ 'completed', 'refunded', 'on-hold', 'processing', 'cancelled', 'failed' ],
+                'type'     => [ 'shop_order', 'shop_order_refund' ],
             ]
         );
 
@@ -84,10 +85,10 @@ class WooCommerce extends AbstractPlatform {
         $data = wc_get_orders( $args );
 
         return [
-            'data'          => OrderResource::collection( $data->orders ),
-            'total'         => $data->total,
-            'current_page'  => intval( $args['page'] ),
-            'total_page'    => $data->max_num_pages,
+            'data'         => OrderResource::collection( $data->orders ),
+            'total'        => $data->total,
+            'current_page' => intval( $args['page'] ),
+            'total_page'   => $data->max_num_pages,
         ];
     }
 
@@ -118,11 +119,15 @@ class WooCommerce extends AbstractPlatform {
             return;
         }
 
+        $payload = OrderResource::single( $order );
+
+        RevenueTrack::track_id( $payload );
+
         wemail()->api
             ->send_json()
             ->ecommerce()
             ->orders( $order_id )
-            ->put( OrderResource::single( $order ) );
+            ->put( $payload );
     }
 
     /**
@@ -142,12 +147,16 @@ class WooCommerce extends AbstractPlatform {
             return;
         }
 
+        $payload = OrderResource::single( $order );
+
+        RevenueTrack::track_id( $payload );
+
         wemail()->api
             ->send_json()
             ->ecommerce()
             ->orders( $order_id )
             ->refunds( $refund_id )
-            ->put( OrderResource::single( $order ) );
+            ->put( $payload );
     }
 
     /**
@@ -167,8 +176,8 @@ class WooCommerce extends AbstractPlatform {
             ->refunds( $refund_id )
             ->post(
                 [
-					'_method' => 'delete',
-				]
+                    '_method' => 'delete',
+                ]
             );
     }
 
@@ -192,8 +201,8 @@ class WooCommerce extends AbstractPlatform {
             ->orders( $order_id )
             ->post(
                 [
-					'_method' => 'delete',
-				]
+                    '_method' => 'delete',
+                ]
             );
     }
 
@@ -221,9 +230,9 @@ class WooCommerce extends AbstractPlatform {
     public function categories( array $args = [] ) {
         $terms = get_terms(
             [
-				'taxonomy'   => 'product_cat',
-				'hide_empty' => false,
-			]
+                'taxonomy'   => 'product_cat',
+                'hide_empty' => false,
+            ]
         );
 
         return [
