@@ -19,7 +19,6 @@ class RevenueTrack {
      * @return void
      *
      * @since 1.0.0
-     *
      */
     public function __construct() {
         $this->add_action( 'template_redirect', 'track' );
@@ -56,7 +55,7 @@ class RevenueTrack {
      */
     public static function track_id( array &$payload ) {
         if ( isset( $_COOKIE[ self::TRACKING_KEY ] ) ) {
-            $payload[ self::TRACKING_KEY ] = $_COOKIE[ self::TRACKING_KEY ];
+            $payload[ self::TRACKING_KEY ] = sanitize_text_field( wp_unslash( $_COOKIE[ self::TRACKING_KEY ] ) );
             unset( $_COOKIE[ self::TRACKING_KEY ] );
             setcookie( self::TRACKING_KEY, '', time() - ( 15 * 60 ) );
         }

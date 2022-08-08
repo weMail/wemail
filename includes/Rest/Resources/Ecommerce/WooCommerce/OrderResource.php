@@ -2,6 +2,7 @@
 
 namespace WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce;
 
+use DateTimeZone;
 use WeDevs\WeMail\Rest\Resources\JsonResource;
 
 class OrderResource extends JsonResource {
@@ -11,35 +12,48 @@ class OrderResource extends JsonResource {
      */
     const DATE_FORMAT = 'Y-m-d h:i:s';
 
+    /**
+     * Structure of order
+     *
+     * @param $order
+     *
+     * @return array
+     */
     public function blueprint( $order ) {
         /** @var \Automattic\WooCommerce\Admin\Overrides\Order $order */
-        $status = $order->get_status();
+        $items = array_filter(
+            $order->get_items(), function ( $order_item ) {
+				/** @var \WC_Order_Item_Product $order_item */
+				return $order_item->get_product_id();
+			}
+        );
 
         $data = [
-            'id'            => $order->get_id(),
-            'is_refund'     => $order->get_type() === 'shop_order_refund',
-            'parent_id'     => $order->get_parent_id(),
-            'products'      => OrderItemResource::collection( $order->get_items() ),
-            'status'        => $status,
-            'currency'      => $order->get_currency(),
-            'total'         => floatval( $order->get_total() ),
-            'created_at'    => $order->get_date_created()->format( self::DATE_FORMAT ),
-            'updated_at'    => $order->get_date_modified()->format( self::DATE_FORMAT ),
-            'source'        => 'woocommerce',
+            'id'         => (string) $order->get_id(),
+            'parent_id'  => $order->get_parent_id(),
+            'products'   => OrderItemResource::collection( $items ),
+            'status'     => $order->get_status(),
+            'currency'   => $order->get_currency(),
+            'total'      => floatval( $order->get_total() ),
+            'source'     => 'woocommerce',
+            'type'       => $this->get_type( $order->get_type() ),
+            'created_at' => $order->get_date_created()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
+            'updated_at' => $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
         ];
-        // Refunded completed order
-        if ( $status === 'completed' && ! $order->get_parent_id() ) {
-            $data['completed_at'] = $order->get_date_completed()->format( self::DATE_FORMAT );
-        }
 
-        if ( ! $order->get_parent_id() ) {
-            $data['customer'] = $this->customer( $order );
-            $data['permalink'] = get_edit_post_link( $order->get_id(), 'raw' );
-        } else {
+        if ( $this->is_refund( $data['type'] ) ) {
             /** @var $order \Automattic\WooCommerce\Admin\Overrides\OrderRefund */
-            $data['customer'] = $this->customer( wc_get_order( $order->get_parent_id() ) );
-            $data['refunded_at'] = $order->get_date_modified()->format( self::DATE_FORMAT );
-            $data['permalink'] = get_edit_post_link( $order->get_parent_id(), 'raw' );
+            $data['customer_id']  = $this->get_customer_id( wc_get_order( $order->get_parent_id() )->get_billing_email() );
+            $data['permalink']    = get_edit_post_link( $order->get_parent_id(), 'raw' );
+            $data['completed_at'] = $order->get_date_modified()
+                                          ->setTimezone( new DateTimeZone( 'UTC' ) )
+                                          ->format( self::DATE_FORMAT );
+        } else {
+            $data['customer']     = $this->customer( $order );
+            $data['permalink']    = get_edit_post_link( $order->get_id(), 'raw' );
+            $data['customer_id']  = $this->get_customer_id( $data['customer']['email'] );
+            $completed_date       = $order->get_date_completed();
+            $data['completed_at'] = $completed_date && $this->is_completed( $this->get_status( $order->get_status() ) ) ? $completed_date->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null;
         }
 
         return $data;
@@ -65,5 +79,39 @@ class OrderResource extends JsonResource {
             'zip'        => $order->get_billing_postcode(),
             'country'    => $order->get_billing_country(),
         ];
+    }
+
+    /**
+     * Get customer ID
+     *
+     * @param $email
+     *
+     * @return string
+     */
+    protected function get_customer_id( $email ) {
+        return md5( trim( strtolower( $email ) ) );
+    }
+
+
+    /**
+     * Get item type
+     *
+     * @param $type
+     *
+     * @return string
+     */
+    protected function get_type( $type ) {
+        return $type === 'shop_order_refund' ? 'refund' : 'order';
+    }
+
+    /**
+     * Get item status
+     *
+     * @param $status
+     *
+     * @return string
+     */
+    protected function get_status( $status ) {
+        return preg_match( '/^completed|refunded$/', $status ) ? 'completed' : $status;
     }
 }

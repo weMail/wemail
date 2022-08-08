@@ -2,12 +2,13 @@
 
 namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
+use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
-use WeDevs\WeMail\Traits\Singleton;
-use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\ProductResource;
+use WeDevs\WeMail\Traits\Singleton;
+use WP_Post;
 
 class WooCommerce extends AbstractPlatform {
     use Singleton;
@@ -45,6 +46,7 @@ class WooCommerce extends AbstractPlatform {
                 'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
                 'status'   => isset( $args['status'] ) ? $args['status'] : null,
                 'paginate' => true,
+                'type'     => array_unique( array_merge( [ 'variation' ], array_keys( wc_get_product_types() ) ) ),
             ]
         );
 
@@ -99,7 +101,9 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'woocommerce_order_status_changed', [ $this, 'handle_order' ], 10, 4 );
         add_action( 'woocommerce_order_refunded', [ $this, 'create_order_refund' ], 10, 2 );
         add_action( 'woocommerce_refund_deleted', [ $this, 'delete_order_refund' ], 10, 2 );
-        add_action( 'after_delete_post', [ $this, 'delete_order' ], 10, 2 );
+        add_action( 'after_delete_post', [ $this, 'delete' ], 10, 2 );
+        add_action( 'woocommerce_update_product', [ $this, 'handle_product' ], 10, 2 );
+        add_action( 'woocommerce_new_product', [ $this, 'handle_product' ], 10, 2 );
     }
 
     /**
@@ -131,6 +135,28 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Handle product create and update event
+     *
+     * @param $id
+     * @param $product
+     *
+     * @return void
+     */
+    public function handle_product( $id, $product ) {
+        if ( ! Settings::instance()->is_integrated() ) {
+            return;
+        }
+
+        $payload = ProductResource::single( $product );
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->products( $id )
+            ->put( $payload );
+    }
+
+    /**
      * Create a new refund
      *
      * @param $order_id
@@ -148,8 +174,6 @@ class WooCommerce extends AbstractPlatform {
         }
 
         $payload = OrderResource::single( $order );
-
-        RevenueTrack::track_id( $payload );
 
         wemail()->api
             ->send_json()
@@ -184,11 +208,11 @@ class WooCommerce extends AbstractPlatform {
     /**
      * Delete order
      *
-     * @param $order_id
-     * @param \WP_Post $post
+     * @param $post_id
+     * @param WP_Post $post
      */
-    public function delete_order( $order_id, \WP_Post $post ) {
-        if ( ! $this->is_valid_order_item( $post->post_type ) ) {
+    public function delete( $post_id, WP_Post $post ) {
+        if ( ! $this->is_valid_order_item( $post->post_type ) && $post->post_type !== 'product' ) {
             return;
         }
 
@@ -196,14 +220,29 @@ class WooCommerce extends AbstractPlatform {
             return;
         }
 
-        wemail()->api
-            ->ecommerce()
-            ->orders( $order_id )
-            ->post(
-                [
-                    '_method' => 'delete',
-                ]
-            );
+        // Delete product
+        if ( $post->post_type === 'product' ) {
+            $res = wemail()->api
+                ->ecommerce()
+                ->products( $post_id )
+                ->post(
+                    [
+                        '_method' => 'delete',
+                    ]
+                );
+        }
+
+        // Delete order
+        if ( $this->is_valid_order_item( $post->post_type ) ) {
+            wemail()->api
+                ->ecommerce()
+                ->orders( $post_id )
+                ->post(
+                    [
+                        '_method' => 'delete',
+                    ]
+                );
+        }
     }
 
     /**
@@ -216,6 +255,11 @@ class WooCommerce extends AbstractPlatform {
         return class_exists( 'WooCommerce' );
     }
 
+    /**
+     * Get integration name
+     *
+     * @return string
+     */
     public function get_name() {
         return 'woocommerce';
     }

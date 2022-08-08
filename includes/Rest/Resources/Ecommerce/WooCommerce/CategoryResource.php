@@ -17,7 +17,7 @@ class CategoryResource extends JsonResource {
      */
     public function blueprint( $resource ) {
         return [
-            'id' => $resource->term_id,
+            'id'   => $resource->term_id,
             'name' => $resource->name,
         ];
     }
