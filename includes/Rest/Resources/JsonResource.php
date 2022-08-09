@@ -1,4 +1,5 @@
 <?php
+
 namespace WeDevs\WeMail\Rest\Resources;
 
 abstract class JsonResource {
@@ -18,6 +19,7 @@ abstract class JsonResource {
      * Transform single item
      *
      * @param $resource
+     *
      * @return mixed
      */
     public static function single( $resource ) {
@@ -28,6 +30,7 @@ abstract class JsonResource {
      * Transform collection of items
      *
      * @param array $resources
+     *
      * @return array
      */
     public static function collection( array $resources ) {
@@ -40,5 +43,27 @@ abstract class JsonResource {
         }
 
         return $data;
+    }
+
+    /**
+     * Check is it refund item
+     *
+     * @param $type
+     *
+     * @return bool
+     */
+    public function is_refund( $type ) {
+        return $type === 'refund';
+    }
+
+    /**
+     * Check item status is completed
+     *
+     * @param $status
+     *
+     * @return bool
+     */
+    public function is_completed( $status ) {
+        return $status === 'completed';
     }
 }
