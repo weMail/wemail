@@ -30,7 +30,6 @@ class WP extends RestController {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function register_routes() {
         $this->get( '/post-types', 'post_types', 'can_update_campaign' );
@@ -48,7 +47,6 @@ class WP extends RestController {
      *
      * @return \WP_REST_Response|mixed
      * @since 1.0.0
-     *
      */
     public function post_types( $request ) {
         $post_types       = [];
@@ -75,7 +73,6 @@ class WP extends RestController {
      *
      * @return \WP_REST_Response|mixed
      * @since 1.0.0
-     *
      */
     public function posts( $request ) {
         $post_type   = $request->get_param( 'post_type' );
@@ -92,7 +89,7 @@ class WP extends RestController {
             'post_type'      => ! empty( $post_type ) ? $post_type : 'post',
             's'              => $search,
             'posts_per_page' => $limit,
-            'post__not_in'   => get_option( 'sticky_posts' )
+            'post__not_in'   => get_option( 'sticky_posts' ),
         ];
 
         if ( ! empty( $category_id ) ) {
@@ -144,7 +141,6 @@ class WP extends RestController {
      *
      * @return \WP_REST_Response|mixed
      * @since 1.0.0
-     *
      */
     public function user_roles( $request ) {
         global $wp_roles;
@@ -170,7 +166,6 @@ class WP extends RestController {
      *
      * @return \WP_REST_Response|mixed
      * @since 1.0.0
-     *
      */
     public function users( $request ) {
         $roles   = $request->get_param( 'roles' );
@@ -229,7 +224,6 @@ class WP extends RestController {
      *
      * @return void
      * @since 1.0.0
-     *
      */
     public function pre_user_query( $query ) {
         $query_after_id = absint( $this->user_query_after_id );
@@ -249,13 +243,13 @@ class WP extends RestController {
     public function terms( \WP_REST_Request $request ) {
         add_filter(
             'terms_clauses', function ( $clauses, $taxonomy, $args ) {
-            global $wpdb;
+				global $wpdb;
 
-            $clauses['join']  .= " INNER JOIN $wpdb->term_relationships AS r ON r.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN $wpdb->posts AS p ON p.ID = r.object_id";
-            $clauses['where'] .= " AND p.post_type = '" . esc_sql( $args['post_type'] ) . "' GROUP BY t.term_id";
+				$clauses['join']  .= " INNER JOIN $wpdb->term_relationships AS r ON r.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN $wpdb->posts AS p ON p.ID = r.object_id";
+				$clauses['where'] .= " AND p.post_type = '" . esc_sql( $args['post_type'] ) . "' GROUP BY t.term_id";
 
-            return $clauses;
-        }, 10, 3
+				return $clauses;
+			}, 10, 3
         );
 
         $post_type = $request->get_param( 'post_type' );
