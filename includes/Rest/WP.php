@@ -86,11 +86,9 @@ class WP extends RestController {
         $posts = [];
 
         $args = [
-            'post_type'           => ! empty( $post_type ) ? $post_type : 'post',
-            's'                   => $search,
-            'posts_per_page'      => $limit,
-            'post__not_in'        => get_option( 'sticky_posts' ),
-            'ignore_sticky_posts' => true,
+            'post_type'      => ! empty( $post_type ) ? $post_type : 'post',
+            's'              => $search,
+            'posts_per_page' => $limit,
         ];
 
         if ( ! empty( $category_id ) ) {
@@ -109,22 +107,20 @@ class WP extends RestController {
             while ( $query->have_posts() ) {
                 $query->the_post();
 
-                $id = $query->post->ID;
-
                 $posts [] = [
-                    'id'         => $id,
-                    'image'      => get_the_post_thumbnail_url( $id ),
-                    'title'      => html_entity_decode( $query->post->post_title ),
+                    'id'         => get_the_ID(),
+                    'image'      => get_the_post_thumbnail_url(),
+                    'title'      => html_entity_decode( get_the_title() ),
                     'postType'   => $query->post->post_type,
                     'postStatus' => $query->post->post_status,
-                    'url'        => get_permalink( $id ),
+                    'url'        => get_permalink(),
                     'content'    => get_the_content(),
-                    'excerpt'    => html_entity_decode( $query->post->post_excerpt ),
+                    'excerpt'    => html_entity_decode( get_the_excerpt() ),
                     'meta'       => [
-                        'tags'       => $this->get_tags( get_the_tags( $id ) ),
-                        'postDate'   => get_the_date( 'Y-m-d', $id ),
+                        'tags'       => $this->get_tags( get_the_tags() ),
+                        'postDate'   => get_the_date( 'Y-m-d' ),
                         'author'     => get_the_author(),
-                        'categories' => $this->get_categories( get_the_category( $id ) ),
+                        'categories' => $this->get_categories( get_the_category() ),
                     ],
                 ];
             }
