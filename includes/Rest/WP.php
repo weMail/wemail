@@ -114,12 +114,12 @@ class WP extends RestController {
                 $posts [] = [
                     'id'         => $id,
                     'image'      => get_the_post_thumbnail_url( $id ),
-                    'title'      => wp_strip_all_tags( $query->post->post_title ),
+                    'title'      => html_entity_decode( $query->post->post_title ),
                     'postType'   => $query->post->post_type,
                     'postStatus' => $query->post->post_status,
                     'url'        => get_permalink( $id ),
-                    'content'    => apply_filters( 'the_content', get_the_content() ),
-                    'excerpt'    => wp_strip_all_tags( $query->post->post_excerpt ),
+                    'content'    => get_the_content(),
+                    'excerpt'    => html_entity_decode( $query->post->post_excerpt ),
                     'meta'       => [
                         'tags'       => $this->get_tags( get_the_tags( $id ) ),
                         'postDate'   => get_the_date( 'Y-m-d', $id ),
