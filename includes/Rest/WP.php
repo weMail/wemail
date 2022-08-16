@@ -86,10 +86,11 @@ class WP extends RestController {
         $posts = [];
 
         $args = [
-            'post_type'      => ! empty( $post_type ) ? $post_type : 'post',
-            's'              => $search,
-            'posts_per_page' => $limit,
-            'post__not_in'   => get_option( 'sticky_posts' ),
+            'post_type'           => ! empty( $post_type ) ? $post_type : 'post',
+            's'                   => $search,
+            'posts_per_page'      => $limit,
+            'post__not_in'        => get_option( 'sticky_posts' ),
+            'ignore_sticky_posts' => true,
         ];
 
         if ( ! empty( $category_id ) ) {
