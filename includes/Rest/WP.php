@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\RestController;
+use WP_Post;
 use WP_Query;
 
 class WP extends RestController {
@@ -102,21 +103,23 @@ class WP extends RestController {
         $query = new WP_Query();
 
         $posts = array_map(
-            function ( \WP_Post $post ) {
+            function ( WP_Post $post ) use ( $query ) {
+                $query->the_post();
+
                 return [
-                    'id'         => $post->ID,
-                    'image'      => get_the_post_thumbnail_url( $post ),
-                    'title'      => html_entity_decode( get_the_title( $post ) ),
+                    'id'         => get_the_ID(),
+                    'image'      => get_the_post_thumbnail_url(),
+                    'title'      => html_entity_decode( get_the_title() ),
                     'postType'   => $post->post_type,
                     'postStatus' => $post->post_status,
-                    'url'        => get_permalink( $post ),
-                    'content'    => get_the_content( $post ),
-                    'excerpt'    => html_entity_decode( get_the_excerpt( $post ) ),
+                    'url'        => get_permalink(),
+                    'content'    => get_the_content(),
+                    'excerpt'    => html_entity_decode( get_the_excerpt() ),
                     'meta'       => [
-                        'tags'       => $this->get_tags( get_the_tags( $post ) ),
-                        'postDate'   => get_the_date( 'Y-m-d', $post ),
-                        'author'     => get_the_author( $post ),
-                        'categories' => $this->get_categories( get_the_category( $post ) ),
+                        'tags'       => $this->get_tags( get_the_tags() ),
+                        'postDate'   => get_the_date( 'Y-m-d' ),
+                        'author'     => get_the_author(),
+                        'categories' => $this->get_categories( get_the_category() ),
                     ],
                 ];
             }, $query->query( $args )
