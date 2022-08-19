@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest;
 
 use WeDevs\WeMail\RestController;
+use WP_Post;
 use WP_Query;
 
 class WP extends RestController {
@@ -83,12 +84,11 @@ class WP extends RestController {
 
         $limit = empty( $limit ) ? 5 : $limit;
 
-        $posts = [];
-
         $args = [
-            'post_type'      => ! empty( $post_type ) ? $post_type : 'post',
-            's'              => $search,
-            'posts_per_page' => $limit,
+            'post_type'           => ! empty( $post_type ) ? $post_type : 'post',
+            's'                   => $search,
+            'posts_per_page'      => $limit,
+            'ignore_sticky_posts' => true,
         ];
 
         if ( ! empty( $category_id ) ) {
@@ -100,19 +100,18 @@ class WP extends RestController {
         }
 
         // The Query
-        $query = new WP_Query( $args );
+        $query = new WP_Query();
 
-        // The Loop
-        if ( $query->have_posts() ) {
-            while ( $query->have_posts() ) {
+        $posts = array_map(
+            function ( WP_Post $post ) use ( $query ) {
                 $query->the_post();
 
-                $posts [] = [
+                return [
                     'id'         => get_the_ID(),
                     'image'      => get_the_post_thumbnail_url(),
                     'title'      => html_entity_decode( get_the_title() ),
-                    'postType'   => $query->post->post_type,
-                    'postStatus' => $query->post->post_status,
+                    'postType'   => $post->post_type,
+                    'postStatus' => $post->post_status,
                     'url'        => get_permalink(),
                     'content'    => get_the_content(),
                     'excerpt'    => html_entity_decode( get_the_excerpt() ),
@@ -123,10 +122,8 @@ class WP extends RestController {
                         'categories' => $this->get_categories( get_the_category() ),
                     ],
                 ];
-            }
-
-            wp_reset_postdata();
-        }
+            }, $query->query( $args )
+        );
 
         return rest_ensure_response( $posts );
     }
