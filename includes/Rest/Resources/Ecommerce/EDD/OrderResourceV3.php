@@ -19,7 +19,7 @@ class OrderResourceV3 extends OrderResource {
 
         $data = [
             'id'           => (string) $resource->ID,
-            'parent_id'    => (string) $resource->parent_payment,
+            'parent_id'    => $resource->parent_payment ? (string) $resource->parent_payment : null,
             'customer_id'  => $this->customer_id( $resource->user_info['email'] ),
             'products'     => OrderItemResource::collection( $resource->cart_details ),
             'status'       => $this->get_status( $resource->order->status ),

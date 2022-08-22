@@ -30,7 +30,7 @@ class OrderResource extends JsonResource {
 
         $data = [
             'id'         => (string) $order->get_id(),
-            'parent_id'  => $order->get_parent_id(),
+            'parent_id'  => $order->get_parent_id() ? (string) $order->get_parent_id() : null,
             'products'   => OrderItemResource::collection( $items ),
             'status'     => $order->get_status(),
             'currency'   => $order->get_currency(),
