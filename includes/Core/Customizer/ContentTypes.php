@@ -120,7 +120,7 @@ class ContentTypes {
                         'openAttrEditor' => '',
                     ],
                 ],
-            ]
+            ],
         ];
     }
 
