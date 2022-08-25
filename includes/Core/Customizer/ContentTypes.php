@@ -120,8 +120,7 @@ class ContentTypes {
                         'openAttrEditor' => '',
                     ],
                 ],
-            ],
-            'noSettingsTab' => true,
+            ]
         ];
     }
 
