@@ -121,7 +121,6 @@ class ContentTypes {
                     ],
                 ],
             ],
-            'noSettingsTab' => true,
         ];
     }
 
