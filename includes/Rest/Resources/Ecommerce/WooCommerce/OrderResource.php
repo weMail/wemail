@@ -30,7 +30,7 @@ class OrderResource extends JsonResource {
 
         $data = [
             'id'         => (string) $order->get_id(),
-            'parent_id'  => $order->get_parent_id(),
+            'parent_id'  => $order->get_parent_id() ? (string) $order->get_parent_id() : null,
             'products'   => OrderItemResource::collection( $items ),
             'status'     => $order->get_status(),
             'currency'   => $order->get_currency(),
@@ -45,9 +45,7 @@ class OrderResource extends JsonResource {
             /** @var $order \Automattic\WooCommerce\Admin\Overrides\OrderRefund */
             $data['customer_id']  = $this->get_customer_id( wc_get_order( $order->get_parent_id() )->get_billing_email() );
             $data['permalink']    = get_edit_post_link( $order->get_parent_id(), 'raw' );
-            $data['completed_at'] = $order->get_date_modified()
-                                          ->setTimezone( new DateTimeZone( 'UTC' ) )
-                                          ->format( self::DATE_FORMAT );
+            $data['completed_at'] = $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT );
         } else {
             $data['customer']     = $this->customer( $order );
             $data['permalink']    = get_edit_post_link( $order->get_id(), 'raw' );

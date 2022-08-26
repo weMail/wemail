@@ -16,7 +16,7 @@ class OrderResource extends JsonResource {
 
         return [
             'id'           => (string) $payment->transaction_id,
-            'parent_id'    => (string) $payment->parent_payment,
+            'parent_id'    => $payment->parent_payment ? (string) $payment->parent_payment : null,
             'customer_id'  => $this->customer_id( $payment->user_info['email'] ),
             'customer'     => $this->customer( $payment->user_info ),
             'products'     => OrderItemResource::collection( $payment->cart_details ),
