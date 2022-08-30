@@ -9,31 +9,55 @@ class RevenueTrack {
     use Hooker;
 
     /**
+     * Tracking key
+     */
+    const TRACKING_KEY = '_wem_rev_track';
+
+    /**
      * Class constructor
      *
-     * @since 1.0.0
-     *
      * @return void
+     *
+     * @since 1.0.0
      */
     public function __construct() {
-        $this->add_action( 'template_redirect', 'wemail_set_revenue_cookie' );
+        $this->add_action( 'template_redirect', 'track' );
     }
 
 
     /**
-     * @return bool
+     * Track campaign revenue
+     *
+     * @return void
      */
-    public function wemail_set_revenue_cookie() {
-        if ( ! isset( $_GET['campaign_id'] ) ) {
-            return true;
+    public function track() {
+        if ( ! isset( $_GET[ self::TRACKING_KEY ] ) ) {
+            return;
         }
 
         if ( ! class_exists( 'WooCommerce' ) && ! class_exists( 'Easy_Digital_Downloads' ) ) {
-            return true;
+            return;
         }
 
-        setcookie( 'wemail_campaign_revenue', sanitize_text_field( wp_unslash( $_GET['campaign_id'] ) ), strtotime( '+2 day' ), '/' );
+        if ( isset( $_COOKIE[ self::TRACKING_KEY ] ) ) {
+            return;
+        }
 
-        return true;
+        setcookie( self::TRACKING_KEY, sanitize_text_field( wp_unslash( $_GET[ self::TRACKING_KEY ] ) ), strtotime( '+2 day' ), '/' );
+    }
+
+    /**
+     * Extract Tracking ID from Cookie
+     *
+     * @param array $payload
+     *
+     * @return void
+     */
+    public static function track_id( array &$payload ) {
+        if ( isset( $_COOKIE[ self::TRACKING_KEY ] ) ) {
+            $payload[ self::TRACKING_KEY ] = sanitize_text_field( wp_unslash( $_COOKIE[ self::TRACKING_KEY ] ) );
+            unset( $_COOKIE[ self::TRACKING_KEY ] );
+            setcookie( self::TRACKING_KEY, '', time() - ( 15 * 60 ) );
+        }
     }
 }

@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 6.0
-Stable tag: 1.10.5
+Stable tag: 1.11.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -285,6 +285,10 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.11.0 - (30th August, 2022) =
+ * Added settings tab on Image block
+ * Enhance and fixed ecommerce stats issue
 
 = v1.10.5 - (19th August, 2022) =
  * Ignore sticky posts on **New Post Notification**
