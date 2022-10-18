@@ -183,7 +183,10 @@ class Forms {
      * @return WP_REST_Response
      */
     public function store( $request ) {
-        $data = $request->get_body_params();
+        $data = $request->get_json_params();
+        if ( empty( $data ) ) {
+            $data = $request->get_body_params();
+        }
 
         wemail()->form->create( $data );
 
