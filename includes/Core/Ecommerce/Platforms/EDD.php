@@ -129,11 +129,11 @@ class EDD extends AbstractPlatform {
     public function orders_v3( array $args = [] ) {
         $args = wp_parse_args(
             $args, [
-				'number'  => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
-				'page'    => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
-				'type'    => [ 'sale', 'refund' ],
-				'orderby' => 'date_modified',
-			]
+                'number'  => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
+                'page'    => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+                'type'    => [ 'sale', 'refund' ],
+                'orderby' => 'date_modified',
+            ]
         );
 
         if ( isset( $args['limit'] ) ) {
@@ -192,6 +192,7 @@ class EDD extends AbstractPlatform {
         if ( $this->is_version_v3() ) {
             add_action( 'edd_refund_order', [ $this, 'handle_refund' ], 10, 2 );
             add_action( 'edd_update_payment_status', [ $this, 'sync_order_v3' ], 10, 3 );
+            add_action( 'edd_complete_purchase', [ $this, 'completed_order_v3' ], 10, 2 );
         } else {
             add_action( 'after_delete_post', [ $this, 'delete_item' ], 10, 2 );
             add_action( 'edd_complete_purchase', [ $this, 'handle_order' ], 10, 2 );
@@ -247,6 +248,22 @@ class EDD extends AbstractPlatform {
     }
 
     /**
+     * Handle order complete
+     *
+     * @param $order_id
+     * @param EDD_Payment $payment
+     *
+     * @return void
+     */
+    public function completed_order_v3( $order_id, EDD_Payment $payment ) {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->sync_order( OrderResourceV3::single( $payment ) );
+    }
+
+    /**
      * Handling order sync on edd version 3
      *
      * @param $payment_id
@@ -270,6 +287,11 @@ class EDD extends AbstractPlatform {
         if ( $old_status === 'trash' ) {
             $this->orders['restore'][] = $payment_id;
 
+            return;
+        }
+
+        // Handled `complete` status on the [self::completed_order_v3] method
+        if ( $new_status === 'complete' ) {
             return;
         }
 
