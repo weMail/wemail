@@ -31,12 +31,14 @@ class AffiliateWp {
 
             add_action( 'affwp_update_affiliate', array( $this, 'affwp_wemail_affiliate_profile_updated' ), 10, 2 );
 
-            add_action('affwp_updated_affiliate',
+            add_action(
+                'affwp_updated_affiliate',
                 array( $this, 'affwp_wemail_add_user_to_list' ),
                 10, 2
             );
-            add_action('affwp_set_affiliate_status',
-                array($this, 'affwp_wemail_affiliate_status'),
+            add_action(
+                'affwp_set_affiliate_status',
+                array( $this, 'affwp_wemail_affiliate_status' ),
                 10, 2
             );
         } else {
@@ -48,13 +50,12 @@ class AffiliateWp {
         }
     }
 
-    public function affwp_wemail_affiliate_status($affiliate_id, $status) {
-        if ($status === 'active') {
-            $payload = $this->getPayloadForSpecificAffiliateID($affiliate_id);
+    public function affwp_wemail_affiliate_status( $affiliate_id, $status ) {
+        if ( $status === 'active' ) {
+            $payload = $this->getPayloadForSpecificAffiliateID( $affiliate_id );
 
-            wemail()->api->affiliates()->subscribers()->post($payload);
+            wemail()->api->affiliates()->subscribers()->post( $payload );
         }
-
     }
 
     /**
@@ -72,14 +73,14 @@ class AffiliateWp {
 
         $post_data = $_POST; // phpcs:ignore
         $payload = [];
-        if ($post_data['status'] === 'active') {
-            if (isset($post_data['affwp_user_name'])) {
-                $name = explode(' ', sanitize_text_field($post_data['affwp_user_name']));
+        if ( $post_data['status'] === 'active' ) {
+            if ( isset( $post_data['affwp_user_name'] ) ) {
+                $name = explode( ' ', sanitize_text_field( $post_data['affwp_user_name'] ) );
                 $first_name = $name[0];
-                $last_name = isset($name[1]) ? $name[1] : '';
-                $email = sanitize_text_field($post_data['affwp_user_email']);
+                $last_name = isset( $name[1] ) ? $name[1] : '';
+                $email = sanitize_text_field( $post_data['affwp_user_email'] );
 
-                $affiliate = affiliate_wp()->affiliates->get_by('affiliate_id', $affiliate_id);
+                $affiliate = affiliate_wp()->affiliates->get_by( 'affiliate_id', $affiliate_id );
                 $user_id = $affiliate->user_id;
 
                 $payload = [
@@ -88,7 +89,7 @@ class AffiliateWp {
                     'email'      => $email,
                     'wp_user_id' => $user_id,
                 ];
-            } elseif (isset($post_data['email'])) {
+            } elseif ( isset( $post_data['email'] ) ) {
                 $payload = [
                     'first_name' => $post_data['first_name'] ? $post_data['first_name'] : '',
                     'last_name'  => $post_data['last_name'] ? $post_data['last_name'] : '',
@@ -96,7 +97,7 @@ class AffiliateWp {
                     'wp_user_id' => $post_data['wp_user_id'] ? $post_data['wp_user_id'] : '',
                 ];
             } else {
-                $payload = $this->getPayloadForSpecificAffiliateID($affiliate_id);
+                $payload = $this->getPayloadForSpecificAffiliateID( $affiliate_id );
             }
         }
         wemail()->api->affiliates()->subscribers()->post( $payload );
@@ -116,13 +117,12 @@ class AffiliateWp {
      * @param $affiliate_id
      * @return array
      */
-    public function getPayloadForSpecificAffiliateID($affiliate_id): array
-    {
-        $affiliate = affwp_get_affiliate($affiliate_id);
-        $user = get_userdata($affiliate->user_id);
-        $name = explode(' ', $user->display_name);
+    public function getPayloadForSpecificAffiliateID( $affiliate_id ): array {
+        $affiliate = affwp_get_affiliate( $affiliate_id );
+        $user = get_userdata( $affiliate->user_id );
+        $name = explode( ' ', $user->display_name );
         $first_name = $name[0];
-        $last_name = isset($name[1]) ? $name[1] : '';
+        $last_name = isset( $name[1] ) ? $name[1] : '';
         $email = $user->user_email;
 
         $payload = [
