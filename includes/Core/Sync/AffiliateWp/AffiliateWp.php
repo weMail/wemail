@@ -117,7 +117,7 @@ class AffiliateWp {
      * @param $affiliate_id
      * @return array
      */
-    public function getPayloadForSpecificAffiliateID( $affiliate_id ): array {
+    public function getPayloadForSpecificAffiliateID( $affiliate_id ) {
         $affiliate = affwp_get_affiliate( $affiliate_id );
         $user = get_userdata( $affiliate->user_id );
         $name = explode( ' ', $user->display_name );
