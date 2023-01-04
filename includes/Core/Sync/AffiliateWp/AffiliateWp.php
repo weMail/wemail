@@ -30,6 +30,15 @@ class AffiliateWp {
             add_action( 'affwp_delete_affiliates', array( $this, 'affwp_wemail_remove_user_from_list' ), 10, 2 );
 
             add_action( 'affwp_update_affiliate', array( $this, 'affwp_wemail_affiliate_profile_updated' ), 10, 2 );
+
+            add_action('affwp_updated_affiliate',
+                array( $this, 'affwp_wemail_add_user_to_list' ),
+                10, 2
+            );
+            add_action('affwp_set_affiliate_status',
+                array($this, 'affwp_wemail_affiliate_status'),
+                10, 2
+            );
         } else {
             add_action(
                 'affwp_register_user',
@@ -37,6 +46,15 @@ class AffiliateWp {
                 10, 2
             );
         }
+    }
+
+    public function affwp_wemail_affiliate_status($affiliate_id, $status) {
+        if ($status === 'active') {
+            $payload = $this->getPayloadForSpecificAffiliateID($affiliate_id);
+
+            wemail()->api->affiliates()->subscribers()->post($payload);
+        }
+
     }
 
     /**
@@ -54,42 +72,32 @@ class AffiliateWp {
 
         $post_data = $_POST; // phpcs:ignore
         $payload = [];
-        if ( isset( $post_data['affwp_user_name'] ) ) {
-            $name = explode( ' ', sanitize_text_field( $post_data['affwp_user_name'] ) );
-            $first_name = $name[0];
-            $last_name  = isset( $name[1] ) ? $name[1] : '';
-            $email      = sanitize_text_field( $post_data['affwp_user_email'] );
+        if ($post_data['status'] === 'active') {
+            if (isset($post_data['affwp_user_name'])) {
+                $name = explode(' ', sanitize_text_field($post_data['affwp_user_name']));
+                $first_name = $name[0];
+                $last_name = isset($name[1]) ? $name[1] : '';
+                $email = sanitize_text_field($post_data['affwp_user_email']);
 
-            $affiliate = affiliate_wp()->affiliates->get_by( 'affiliate_id', $affiliate_id );
-            $user_id   = $affiliate->user_id;
+                $affiliate = affiliate_wp()->affiliates->get_by('affiliate_id', $affiliate_id);
+                $user_id = $affiliate->user_id;
 
-            $payload = [
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-                'wp_user_id' => $user_id,
-            ];
-        } elseif ( isset( $post_data['email'] ) ) {
-            $payload = [
-                'first_name' => $post_data['first_name'] ? $post_data['first_name'] : '',
-                'last_name' => $post_data['last_name'] ? $post_data['last_name'] : '',
-                'email' => $post_data['email'],
-                'wp_user_id' => $post_data['wp_user_id'] ? $post_data['wp_user_id'] : '',
-            ];
-        } else {
-            $affiliate = affwp_get_affiliate( $affiliate_id );
-            $user = get_userdata( $affiliate->user_id );
-            $name = explode( ' ', $user->display_name );
-            $first_name = $name[0];
-            $last_name  = isset( $name[1] ) ? $name[1] : '';
-            $email      = $user->user_email;
-
-            $payload = [
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-                'wp_user_id' => $user->ID,
-            ];
+                $payload = [
+                    'first_name' => $first_name,
+                    'last_name'  => $last_name,
+                    'email'      => $email,
+                    'wp_user_id' => $user_id,
+                ];
+            } elseif (isset($post_data['email'])) {
+                $payload = [
+                    'first_name' => $post_data['first_name'] ? $post_data['first_name'] : '',
+                    'last_name'  => $post_data['last_name'] ? $post_data['last_name'] : '',
+                    'email'      => $post_data['email'],
+                    'wp_user_id' => $post_data['wp_user_id'] ? $post_data['wp_user_id'] : '',
+                ];
+            } else {
+                $payload = $this->getPayloadForSpecificAffiliateID($affiliate_id);
+            }
         }
         wemail()->api->affiliates()->subscribers()->post( $payload );
     }
@@ -101,6 +109,28 @@ class AffiliateWp {
 
     public function affwp_wemail_affiliate_profile_updated( $data ) {
         error_log( 'Updating Affiliate Profile' );
-        error_log( data );
+        error_log( $data );
+    }
+
+    /**
+     * @param $affiliate_id
+     * @return array
+     */
+    public function getPayloadForSpecificAffiliateID($affiliate_id): array
+    {
+        $affiliate = affwp_get_affiliate($affiliate_id);
+        $user = get_userdata($affiliate->user_id);
+        $name = explode(' ', $user->display_name);
+        $first_name = $name[0];
+        $last_name = isset($name[1]) ? $name[1] : '';
+        $email = $user->user_email;
+
+        $payload = [
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'email'      => $email,
+            'wp_user_id' => $user->ID,
+        ];
+        return $payload;
     }
 }
