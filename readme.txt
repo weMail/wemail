@@ -286,6 +286,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
+= v1.12.1 - (06th January, 2023) =
+ * Fixed AffiliateWP <> weMail Integration
+
 = v1.12.0 - (22th October, 2022) =
  * Fixed order completed status on EDD
 
