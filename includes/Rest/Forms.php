@@ -132,7 +132,7 @@ class Forms {
     }
 
     public function submit( $request ) {
-        $id = $request->get_param( 'id' );
+        $id   = $request->get_param( 'id' );
         $data = $request->get_body_params();
 
         if ( empty( $data ) ) {
@@ -146,7 +146,7 @@ class Forms {
         $submitted_data = [];
 
         foreach ( $data as $form_input ) {
-            $field_id = str_replace( 'wemail_form_field_', '', $form_input['name'] );
+            $field_id                    = str_replace( 'wemail_form_field_', '', $form_input['name'] );
             $submitted_data[ $field_id ] = $form_input['value'];
         }
 
@@ -183,7 +183,10 @@ class Forms {
      * @return WP_REST_Response
      */
     public function store( $request ) {
-        $data = $request->get_body_params();
+        $data = $request->get_json_params();
+        if ( empty( $data ) ) {
+            $data = $request->get_body_params();
+        }
 
         wemail()->form->create( $data );
 
@@ -198,7 +201,10 @@ class Forms {
      * @return WP_REST_Response
      */
     public function update( $request ) {
-        $data = $request->get_body_params();
+        $data = $request->get_json_params();
+        if ( empty( $data ) ) {
+            $data = $request->get_body_params();
+        }
         $id = $request->get_param( 'id' );
 
         wemail()->form->update( $data, $id );
@@ -214,7 +220,7 @@ class Forms {
      * @return WP_REST_Response
      */
     public function destroy( $request ) {
-        $ids = $request->get_param( 'ids' );
+        $ids         = $request->get_param( 'ids' );
         $soft_delete = $request->get_param( 'soft_delete' );
 
         wemail()->form->delete( $ids, wemail_validate_boolean( $soft_delete ) );
