@@ -104,6 +104,9 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'after_delete_post', [ $this, 'delete' ], 10, 2 );
         add_action( 'woocommerce_update_product', [ $this, 'handle_product' ], 10, 2 );
         add_action( 'woocommerce_new_product', [ $this, 'handle_product' ], 10, 2 );
+        add_action( 'woocommerce_new_product_variation', [ $this, 'handle_product_variation' ] );
+        add_action( 'woocommerce_update_product_variation', [ $this, 'handle_product_variation' ] );
+        add_action( 'woocommerce_delete_product_variation', [ $this, 'delete_product_variation']);
     }
 
     /**
@@ -146,6 +149,22 @@ class WooCommerce extends AbstractPlatform {
         if ( ! Settings::instance()->is_integrated() ) {
             return;
         }
+
+        $payload = ProductResource::single( $product );
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->products( $id )
+            ->put( $payload );
+    }
+
+    public function handle_product_variation( $id ) {
+        if ( ! Settings::instance()->is_integrated() ) {
+            return;
+        }
+
+        $product = wc_get_product($id);
 
         $payload = ProductResource::single( $product );
 
@@ -243,6 +262,17 @@ class WooCommerce extends AbstractPlatform {
                     ]
                 );
         }
+    }
+
+    public function delete_product_variation($variation_id) {
+        wemail()->api
+            ->ecommerce()
+            ->products( $variation_id )
+            ->post(
+                [
+                    '_method' => 'delete',
+                ]
+            );
     }
 
     /**
