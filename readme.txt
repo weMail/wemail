@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 6.0
-Stable tag: 1.12.1
+Stable tag: 1.13.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -286,7 +286,15 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v1.12.1 - (06th January, 2023) =
+= v1.13.0 - (28th March, 2023) =
+ * Added A/B testing campaign
+ * Added Custom field for subscribers
+ * Added support for all Amazon AWS Regions
+ * Added block temporary/fake emails
+ * Added Suppression List (Blacklisting emails)
+ * Fix wooCommerce product re-sync with weMail Automation
+
+ = v1.12.1 - (06th January, 2023) =
  * Fixed AffiliateWP <> weMail Integration
 
 = v1.12.0 - (22th October, 2022) =
