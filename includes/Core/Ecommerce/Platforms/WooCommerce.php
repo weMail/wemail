@@ -102,7 +102,7 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'woocommerce_order_refunded', [ $this, 'create_order_refund' ], 10, 2 );
         add_action( 'woocommerce_refund_deleted', [ $this, 'delete_order_refund' ], 10, 2 );
         add_action( 'after_delete_post', [ $this, 'delete' ], 10, 2 );
-        add_action( 'woocommerce_update_product', [ $this, 'handle_product' ], 10, 2 );
+        add_action( 'woocommerce_update_product', [ $this, 'handle_update_product' ], 10, 2 );
         add_action( 'woocommerce_new_product', [ $this, 'handle_product' ], 10, 2 );
         add_action( 'woocommerce_new_product_variation', [ $this, 'handle_product_variation' ] );
         add_action( 'woocommerce_update_product_variation', [ $this, 'handle_product_variation' ] );
@@ -150,13 +150,34 @@ class WooCommerce extends AbstractPlatform {
             return;
         }
 
-        $payload = ProductResource::single( $product );
+        $this->productPostRequest($product, $id);
+    }
 
-        wemail()->api
-            ->send_json()
-            ->ecommerce()
-            ->products( $id )
-            ->put( $payload );
+    public function handle_update_product($id, $product ) {
+        if ( ! Settings::instance()->is_integrated() ) {
+            return;
+        }
+
+        $this->handle_product($id, $product);
+
+        $variations = $product->get_children();
+        $products = [];
+
+        if ($product->is_type('variable') && ! empty($variations)) {
+            foreach ($variations as $variation) {
+                $products[] = wc_get_product($variation);
+            }
+
+            $variantProducts = ProductResource::collection($products);
+
+            $data['data'] = array_values($variantProducts);
+            wemail()->api
+                ->send_json()
+                ->ecommerce()
+                ->products($id)
+                ->variant()
+                ->put($data);
+        }
     }
 
     public function handle_product_variation( $id ) {
@@ -166,13 +187,7 @@ class WooCommerce extends AbstractPlatform {
 
         $product = wc_get_product( $id );
 
-        $payload = ProductResource::single( $product );
-
-        wemail()->api
-            ->send_json()
-            ->ecommerce()
-            ->products( $id )
-            ->put( $payload );
+        $this->productPostRequest($product, $id);
     }
 
     /**
@@ -323,5 +338,21 @@ class WooCommerce extends AbstractPlatform {
      */
     protected function is_valid_order_item( $type ) {
         return (bool) preg_match( '/^shop_order(_refund)?$/', $type );
+    }
+
+    /**
+     * @param $product
+     * @param $id
+     * @return void
+     */
+    public function productPostRequest($product, $id)
+    {
+        $payload = ProductResource::single($product);
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->products($id)
+            ->put($payload);
     }
 }
