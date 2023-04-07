@@ -150,33 +150,33 @@ class WooCommerce extends AbstractPlatform {
             return;
         }
 
-        $this->productPostRequest($product, $id);
+        $this->productPostRequest( $product, $id );
     }
 
-    public function handle_update_product($id, $product ) {
+    public function handle_update_product( $id, $product ) {
         if ( ! Settings::instance()->is_integrated() ) {
             return;
         }
 
-        $this->handle_product($id, $product);
+        $this->handle_product( $id, $product );
 
         $variations = $product->get_children();
         $products = [];
 
-        if ($product->is_type('variable') && ! empty($variations)) {
-            foreach ($variations as $variation) {
-                $products[] = wc_get_product($variation);
+        if ( $product->is_type( 'variable' ) && ! empty( $variations ) ) {
+            foreach ( $variations as $variation ) {
+                $products[] = wc_get_product( $variation );
             }
 
-            $variantProducts = ProductResource::collection($products);
+            $variant_products = ProductResource::collection( $products );
 
-            $data['data'] = array_values($variantProducts);
+            $data['data'] = array_values( $variant_products );
             wemail()->api
                 ->send_json()
                 ->ecommerce()
-                ->products($id)
+                ->products( $id )
                 ->variant()
-                ->put($data);
+                ->put( $data );
         }
     }
 
@@ -187,7 +187,7 @@ class WooCommerce extends AbstractPlatform {
 
         $product = wc_get_product( $id );
 
-        $this->productPostRequest($product, $id);
+        $this->productPostRequest( $product, $id );
     }
 
     /**
@@ -345,14 +345,13 @@ class WooCommerce extends AbstractPlatform {
      * @param $id
      * @return void
      */
-    public function productPostRequest($product, $id)
-    {
-        $payload = ProductResource::single($product);
+    public function productPostRequest( $product, $id ) {
+        $payload = ProductResource::single( $product );
 
         wemail()->api
             ->send_json()
             ->ecommerce()
-            ->products($id)
-            ->put($payload);
+            ->products( $id )
+            ->put( $payload );
     }
 }

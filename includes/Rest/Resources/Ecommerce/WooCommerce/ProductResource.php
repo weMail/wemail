@@ -17,7 +17,7 @@ class ProductResource extends JsonResource {
         return [
             'id'         => (string) $resource->get_id(),
             'parent_id'  => (string) $resource->get_parent_id(),
-            'name'       => $this->get_resource_name($resource),
+            'name'       => $this->get_resource_name( $resource ),
             'price'      => floatval( $resource->get_price() ),
             'status'     => $resource->get_status(),
             'permalink'  => $resource->get_permalink(),
@@ -31,20 +31,19 @@ class ProductResource extends JsonResource {
      * @param \WC_Product $resource
      * @return string
      */
-    public function get_resource_name(\WC_Product $resource)
-    {
-        if ($resource->is_type('variation')) {
+    public function get_resource_name( \WC_Product $resource ) {
+        if ( $resource->is_type( 'variation' ) ) {
             $attributes = $resource->get_attributes();
             $variation_names = array();
 
-            if ($attributes) {
-                foreach ($attributes as $key => $value) {
-                    if ($value) {
+            if ( $attributes ) {
+                foreach ( $attributes as $value ) {
+                    if ( $value ) {
                         $variation_names[] = $value;
                     }
                 }
             }
-            return $resource->get_title() . '- ' . implode(',', $variation_names);
+            return $resource->get_title() . '- ' . implode( ',', $variation_names );
         }
         return $resource->get_name();
     }
