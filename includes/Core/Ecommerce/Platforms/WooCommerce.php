@@ -161,14 +161,14 @@ class WooCommerce extends AbstractPlatform {
         $this->handle_product( $id, $product );
 
         $variations = $product->get_children();
-        $products = [];
+        $variants = [];
 
         if ( $product->is_type( 'variable' ) && ! empty( $variations ) ) {
             foreach ( $variations as $variation ) {
-                $products[] = wc_get_product( $variation );
+                $variants[] = wc_get_product( $variation );
             }
 
-            $variant_products = ProductResource::collection( $products );
+            $variant_products = ProductResource::collection( $variants );
 
             $data['data'] = array_values( $variant_products );
             wemail()->api

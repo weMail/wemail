@@ -37,9 +37,9 @@ class ProductResource extends JsonResource {
             $variation_names = array();
 
             if ( $attributes ) {
-                foreach ( $attributes as $value ) {
-                    if ( $value ) {
-                        $variation_names[] = $value;
+                foreach ( $attributes as $attribute ) {
+                    if ( $attribute ) {
+                        $variation_names[] = $attribute;
                     }
                 }
             }
