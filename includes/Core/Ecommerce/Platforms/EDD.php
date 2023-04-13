@@ -397,13 +397,19 @@ class EDD extends AbstractPlatform {
      * @return void
      */
     public function handle_product( $post_id, WP_Post $post ) {
-        if ( $post->post_type === 'download' ) {
-            wemail()->api
-                ->ecommerce()
-                ->products( $post_id )
-                ->send_json()
-                ->put( ProductResource::single( $post ) );
+        if ( $post->post_type !== 'download' ) {
+            return;
         }
+
+        if ( ! Settings::instance()->is_integrated() ) {
+            return;
+        }
+
+        wemail()->api
+            ->ecommerce()
+            ->products( $post_id )
+            ->send_json()
+            ->put( ProductResource::single( $post ) );
     }
 
     /**
