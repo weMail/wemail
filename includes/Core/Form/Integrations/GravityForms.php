@@ -103,7 +103,7 @@ class GravityForms extends AbstractIntegration {
 
         $settings = get_option( 'wemail_form_integration_gravity_forms', [] );
 
-        if ( ! in_array( $form_id, $settings ) ) {
+        if ( ! in_array( (int) $form_id, $settings, true ) ) {
             return;
         }
 
