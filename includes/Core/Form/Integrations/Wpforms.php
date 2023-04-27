@@ -54,23 +54,25 @@ class Wpforms extends AbstractIntegration {
 
         $wpforms = wpforms()->form->get();
 
-        foreach ( $wpforms as $wpform ) {
-            $form = [
-                'id'     => $wpform->ID,
-                'title'  => $wpform->post_title,
-                'fields' => [],
-            ];
-
-            $wpform_fields = wpforms_get_form_fields( $wpform );
-
-            foreach ( $wpform_fields as $wpform_field ) {
-                $form['fields'][] = [
-                    'id'    => $wpform_field['id'],
-                    'label' => $wpform_field['label'],
+        if ( ! empty( $wpforms ) ) {
+            foreach ( $wpforms as $wpform ) {
+                $form = [
+                    'id' => $wpform->ID,
+                    'title' => $wpform->post_title,
+                    'fields' => [],
                 ];
-            }
 
-            $forms[] = $form;
+                $wpform_fields = wpforms_get_form_fields( $wpform );
+
+                foreach ( $wpform_fields as $wpform_field ) {
+                    $form['fields'][] = [
+                        'id' => $wpform_field['id'],
+                        'label' => $wpform_field['label'],
+                    ];
+                }
+
+                $forms[] = $form;
+            }
         }
 
         return $forms;
