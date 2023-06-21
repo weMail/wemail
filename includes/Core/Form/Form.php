@@ -107,7 +107,8 @@ class Form {
             'popup_maker'       => __( 'Popup Maker', 'wemail' ),
             'affiliate_wp'      => __( 'AffiliateWP', 'wemail' ),
             'forminator_forms'  => __( 'Forminator Forms', 'wemail' ),
-            'everest_forms'       => __( 'Everest Forms', 'wemail' ),
+            'everest_forms'     => __( 'Everest Forms', 'wemail' ),
+            'elementor_forms'   => __( 'Elementor Forms', 'wemail' ),
         ];
     }
 
