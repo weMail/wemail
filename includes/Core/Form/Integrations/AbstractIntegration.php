@@ -100,7 +100,7 @@ abstract class AbstractIntegration {
                 continue;
             }
 
-            $form_id = $this->cast_form_id( $form['id'] );
+            $form_id = $this->slug === 'elementor_forms' ? $form['id'] : $this->cast_form_id( $form['id'] );
 
             $settings[] = [
                 'id'        => $form_id,
