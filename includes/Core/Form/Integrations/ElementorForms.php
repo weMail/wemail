@@ -63,21 +63,21 @@ class ElementorForms extends AbstractIntegration {
             ),
         );
 
-        $query = new WP_Query($args);
+        $query = new WP_Query( $args );
 
-        if ($query->have_posts()) {
+        if ( $query->have_posts() ) {
             // Loop through the posts
-            while ($query->have_posts()) {
+            while ( $query->have_posts() ) {
                 $query->the_post();
 
-                foreach (json_decode(get_post_meta(get_the_ID(), '_elementor_data', true)) as $item) {
-                    foreach ($item->elements as $element) {
-                        foreach ($element->elements as $finalElement) {
-                            if (isset($finalElement->widgetType) && $finalElement->widgetType === 'form') {
+                foreach ( json_decode( get_post_meta( get_the_ID(), '_elementor_data', true ) ) as $item ) {
+                    foreach ( $item->elements as $element ) {
+                        foreach ( $element->elements as $final_element ) {
+                            if ( isset( $final_element->{'widgetType'} ) && $final_element->{'widgetType'} === 'form' ) {
                                 $forms[] = [
-                                    'id' => $finalElement->id,
-                                    'title' => $this->getTitle($finalElement->id, $finalElement->settings->form_name),
-                                    'fields' => $this->get_fields($finalElement->settings->form_fields)
+                                    'id' => $final_element->id,
+                                    'title' => $this->getTitle( $final_element->id, $final_element->settings->form_name ),
+                                    'fields' => $this->get_fields( $final_element->settings->form_fields ),
                                 ];
                             }
                         }
@@ -97,8 +97,8 @@ class ElementorForms extends AbstractIntegration {
      * @param $id
      * @return mixed
      */
-    public function getTitle ($id, $name) {
-        return $name. ' | Form ID: '. $id;
+    public function getTitle( $id, $name ) {
+        return $name . ' | Form ID: ' . $id;
     }
 
     /**
@@ -111,7 +111,7 @@ class ElementorForms extends AbstractIntegration {
         foreach ( $form_fields as $field ) {
             $fields[] = [
                 'id' => $field->custom_id,
-                'label' => isset($field->field_label) ? $field->field_label : $field->custom_id.' (Set label)',
+                'label' => isset( $field->field_label ) ? $field->field_label : $field->custom_id . ' (Set label)',
             ];
         }
 
@@ -125,17 +125,16 @@ class ElementorForms extends AbstractIntegration {
      * @param $entry
      */
     public function submit( $record, $handler ) {
-
         $raw_fields = $record->get( 'fields' );
         $fields = [];
-        $form_id = $record->get('form_settings')['id'];
+        $form_id = $record->get( 'form_settings' )['id'];
         foreach ( $raw_fields as $id => $field ) {
             $fields[ $id ] = $field['value'];
         }
 
         $settings = get_option( 'wemail_form_integration_elementor_forms', [] );
 
-		if ( ! in_array($form_id, $settings, true ) ) {
+		if ( ! in_array( $form_id, $settings, true ) ) {
 			return;
 		}
 

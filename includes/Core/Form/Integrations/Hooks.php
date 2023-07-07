@@ -25,7 +25,6 @@ class Hooks {
         add_action( 'pum_sub_form_success', [ PopupMaker::instance(), 'submit' ], 999, 1 );
         add_action( 'forminator_custom_form_submit_before_set_fields', [ ForminatorForms::instance(), 'submit' ], 999, 3 );
         add_action( 'everest_forms_process', [ EverestForms::instance(), 'submit' ], 999, 3 );
-        add_action('elementor_pro/forms/new_record', [ElementorForms::instance(), 'submit'], 999, 3);
-
+        add_action( 'elementor_pro/forms/new_record', [ ElementorForms::instance(), 'submit' ], 999, 3 );
     }
 }
