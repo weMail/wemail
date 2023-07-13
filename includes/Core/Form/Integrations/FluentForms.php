@@ -68,7 +68,7 @@ class FluentForms extends AbstractIntegration {
                         continue;
                     }
 
-                    $data = $this->getData($column['attributes']['name'], $data);
+                    $data = $this->getData( $column['attributes']['name'], $data );
                 }
             } else {
                 if ( ! array_key_exists( 'name', $field['attributes'] ) ) {
@@ -80,7 +80,7 @@ class FluentForms extends AbstractIntegration {
                     continue;
                 }
 
-                $data = $this->getData($field['attributes']['name'], $data);
+                $data = $this->getData( $field['attributes']['name'], $data );
             }
         }
 
@@ -137,7 +137,7 @@ class FluentForms extends AbstractIntegration {
                 continue;
             }
 
-            $data = $this->getData($sub_field['attributes']['name'], $data);
+            $data = $this->getData( $sub_field['attributes']['name'], $data );
         }
 
         return $data;
@@ -187,11 +187,10 @@ class FluentForms extends AbstractIntegration {
      * @param array $data
      * @return array
      */
-    public function getData($name, array $data)
-    {
+    public function getData( $name, array $data ) {
         $data[] = [
             'id' => $name,
-            'label' => $this->get_label($name),
+            'label' => $this->get_label( $name ),
         ];
         return $data;
     }
