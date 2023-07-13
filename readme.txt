@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 6.0
-Stable tag: 1.13.1
+Stable tag: 1.14.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -286,7 +286,11 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v1.13.1 - (8th May, 2023) =
+= v1.14.0 - (13th Jul, 2023) =
+* **New:** Added Elementor Form integration
+* **Fixed** Fluent Form integration mapping field issue
+
+ = v1.13.1 - (8th May, 2023) =
  * Fix variant product for woocommerce
  * Fix product type for edd
  * Fix wpforms and gravity forms issue
