@@ -61,19 +61,27 @@ class FluentForms extends AbstractIntegration {
         $data = [];
 
         foreach ( $fields['fields'] as $field ) {
-            if ( ! array_key_exists( 'name', $field['attributes'] ) ) {
-                continue;
-            }
+            if ( $field['element'] === 'container' ) {
+                foreach ( $field['columns'] as $column ) {
+                    if ( $this->has_sub_fields( $column ) ) {
+                        $data = array_merge( $data, $this->get_sub_fields( $column ) );
+                        continue;
+                    }
 
-            if ( $this->has_sub_fields( $field ) ) {
-                $data = array_merge( $data, $this->get_sub_fields( $field ) );
-                continue;
-            }
+                    $data = $this->getData($column['attributes']['name'], $data);
+                }
+            } else {
+                if ( ! array_key_exists( 'name', $field['attributes'] ) ) {
+                    continue;
+                }
 
-            $data[] = [
-                'id'    => $field['attributes']['name'],
-                'label' => $this->get_label( $field['attributes']['name'] ),
-            ];
+                if ( $this->has_sub_fields( $field ) ) {
+                    $data = array_merge( $data, $this->get_sub_fields( $field ) );
+                    continue;
+                }
+
+                $data = $this->getData($field['attributes']['name'], $data);
+            }
         }
 
         return $data;
@@ -129,10 +137,7 @@ class FluentForms extends AbstractIntegration {
                 continue;
             }
 
-            $data[] = [
-                'id' => $sub_field['attributes']['name'],
-                'label' => $this->get_label( $sub_field['attributes']['name'] ),
-            ];
+            $data = $this->getData($sub_field['attributes']['name'], $data);
         }
 
         return $data;
@@ -174,6 +179,20 @@ class FluentForms extends AbstractIntegration {
             }
         }
 
+        return $data;
+    }
+
+    /**
+     * @param $name
+     * @param array $data
+     * @return array
+     */
+    public function getData($name, array $data)
+    {
+        $data[] = [
+            'id' => $name,
+            'label' => $this->get_label($name),
+        ];
         return $data;
     }
 }
