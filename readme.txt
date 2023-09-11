@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 6.3
-Stable tag: 1.14.1
+Stable tag: 1.14.2
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -285,6 +285,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.14.2 - (11th Sep, 2023) =
+* Update appsero apk version
 
 = v1.14.1 - (10th Aug, 2023) =
 * WordPress 6.3 compatibility
