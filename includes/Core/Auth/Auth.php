@@ -88,7 +88,7 @@ class Auth {
                     'include' => 'role,permissions',
                 ];
 
-                $wp_admin_response = wemail()->api->auth()->users()->post( $data );
+                $wp_admin_response = wemail()->api->teamUsers()->post( $data );
 
                 if ( ! empty( $wp_admin_response['access_token'] ) ) {
                     $user_meta = [

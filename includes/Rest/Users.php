@@ -61,7 +61,7 @@ class Users extends RestController {
             wemail()->api->set_api_key( $access_token[0] );
 
             foreach ( $users as $user ) {
-                $wp_admin_response = wemail()->api->auth()->users()->post(
+                $wp_admin_response = wemail()->api->teamUsers()->post(
                     [
                         'name'    => $user['name'],
                         'email'   => $user['email'],
@@ -136,7 +136,7 @@ class Users extends RestController {
         $status = $request->get_param( 'status' );
         $user = get_user_by( 'email', $email );
         if ( $user ) {
-            $wp_admin_response = wemail()->api->auth()->users()->status()->post(
+            $wp_admin_response = wemail()->api->team()->users()->status()->post(
                 [
                     'email'  => $email,
                     'status' => $status,
@@ -173,13 +173,10 @@ class Users extends RestController {
         $available_roles = [];
         foreach ( $roles->roles as $key => $role ) {
             if ( $key !== 'subscriber' ) {
-                array_push(
-                    $available_roles,
-                    [
-                        'slug' => $key,
-                        'name' => $role['name'],
-                    ]
-                );
+                $available_roles[] = [
+                    'slug' => $key,
+                    'name' => $role['name'],
+                ];
             }
         }
 

@@ -158,7 +158,7 @@ class WpUser {
      * @param string $role
      */
     protected function create_wemail_user( $user, $role ) {
-        $response = wemail()->api->auth()->users()->post(
+        $response = wemail()->api->teamUsers()->post(
             [
                 'name' => $user->data->display_name,
                 'email' => $user->data->user_email,
