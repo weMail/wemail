@@ -111,4 +111,8 @@ class Help extends RestController {
 			]
         );
     }
+
+    public function permission( $request ) {
+        return wemail()->user->can( 'view_wemail' );
+    }
 }
