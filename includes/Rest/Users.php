@@ -102,7 +102,7 @@ class Users extends RestController {
         if ( $access_token ) {
             wemail()->api->set_api_key( $access_token[0] );
             foreach ( $users as $user ) {
-                $response = wemail()->api->auth()->users()->move()->post(
+                $response = wemail()->api->teamUsers()->update()->put(
                     [
                         'email'   => $user,
                         'role'    => $role,
