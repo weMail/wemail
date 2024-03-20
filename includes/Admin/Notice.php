@@ -30,6 +30,12 @@ class Notice {
 
         wp_enqueue_style( 'wemail-admin-notice-style' );
         wp_enqueue_script( 'wemail-admin-notice-script' );
+
+        wp_localize_script(
+            'wemail-admin-notice-script', 'wemail_notice_nonce', array(
+				'nonce' => wp_create_nonce( 'wemail_dismiss_notice_nonce' ),
+            )
+        );
     }
 
     /**
@@ -61,7 +67,9 @@ class Notice {
      */
     public function connect_notice() {
         if ( isset( $_GET['dismiss_connect_notice'] ) && (int) $_GET['dismiss_connect_notice'] === 1 ) {
-            update_option( 'wemail_site_connection_notice', 1 );
+            if ( isset( $_GET['wemail_dismiss_notice_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wemail_dismiss_notice_nonce'] ) ), 'wemail_dismiss_notice_nonce' ) ) {
+                update_option( 'wemail_site_connection_notice', 1 );
+            }
         }
         if ( ! get_user_meta( get_current_user_id(), 'wemail_api_key', true ) && (int) get_option( 'wemail_site_connection_notice' ) !== 1 && ! ( isset( $_GET['page'] ) && $_GET['page'] === 'wemail' ) ) {
             add_action( 'admin_notices', [ $this, 'connect_notice_html' ] );

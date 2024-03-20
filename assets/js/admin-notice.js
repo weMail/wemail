@@ -3,6 +3,7 @@
         $(document).on("click", '.wemail-connect-notice-flex-container .notice-dismiss', function() {
             var url = new URL(location.href);
             url.searchParams.append("dismiss_connect_notice", 1);
+            url.searchParams.append("wemail_dismiss_notice_nonce", wemail_notice_nonce.nonce); // Add nonce
             location.href = url;
         });
     });
