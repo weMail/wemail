@@ -52,7 +52,7 @@ class Notice {
                     <p><?php echo __( 'You are one step closer to use weMail. Connect your site to get started with weMail. With weMail, you can send marketing and transactional emails to your audience.', 'wemail' ); ?></p>
                 </div>
                 <div class="wemail-connect-notice-connect-button">
-                    <a class="button" href="<?php echo wemail()->wemail_app . '/connect?email=' . urlencode( wp_get_current_user()->user_email ) . '&site_name=' . urlencode( get_bloginfo( 'name' ) ) . '&site_url=' . urlencode( site_url( '/' ) ) . '&redirect_url=' . urlencode( admin_url( 'admin.php?page=wemail' ) ); ?>">Connect</a>
+                    <a class="button" href="<?php echo wemail()->wemail_app . '/connect?email=' . rawurlencode( wp_get_current_user()->user_email ) . '&site_name=' . rawurlencode( get_bloginfo( 'name' ) ) . '&site_url=' . rawurlencode( site_url( '/' ) ) . '&redirect_url=' . rawurlencode( admin_url( 'admin.php?page=wemail' ) ); ?>">Connect</a>
                 </div>
             </div>
         <?php
