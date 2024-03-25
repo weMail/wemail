@@ -19,7 +19,7 @@ class Help extends RestController {
             [
                 [
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
+                    'permission_callback' => [ $this, 'can_view_wemail' ],
                     'callback'            => [ $this, 'index' ],
                 ],
             ]
@@ -31,7 +31,7 @@ class Help extends RestController {
             [
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => [ $this, 'permission' ],
+                    'permission_callback' => [ $this, 'can_view_wemail' ],
                     'callback'            => [ $this, 'send_ping' ],
                 ],
             ]
@@ -43,7 +43,7 @@ class Help extends RestController {
             [
                 [
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => [ $this, 'permission' ],
+                    'permission_callback' => [ $this, 'can_view_wemail' ],
                     'callback'            => [ $this, 'receive_ping' ],
                 ],
             ]
@@ -110,9 +110,5 @@ class Help extends RestController {
 				'status' => 'success',
 			]
         );
-    }
-
-    public function permission( $request ) {
-        return wemail()->user->can( 'view_wemail' );
     }
 }
