@@ -2,18 +2,19 @@
 
 namespace WeDevs\WeMail;
 
-use Stringy\StaticStringy;
 use WeDevs\WeMail\Admin\Admin;
 use WeDevs\WeMail\Admin\GutenbergBlock;
 use WeDevs\WeMail\FrontEnd\FrontEnd;
 use WeDevs\WeMail\Privacy\Privacy;
 use WeDevs\WeMail\Rest\Rest;
+use WeDevs\WeMail\Traits\Stringy;
 
 /**
  * @property Core\Campaign\Campaign $campaign
  * @property Core\Customizer\Customizer $customizer
  */
 final class WeMail {
+    use Stringy;
 
     /**
      * Plugin version
@@ -350,7 +351,7 @@ final class WeMail {
 
         foreach ( $class_dirs as $class_dir ) {
             $class_name  = str_replace( WEMAIL_CORE . '/', '', $class_dir );
-            $class_slug  = StaticStringy::underscored( $class_name );
+            $class_slug  = $this->underscored($class_name);
 
             $core_class = "\\WeDevs\\WeMail\\Core\\$class_name\\$class_name";
             $menu_class = "\\WeDevs\\WeMail\\Core\\$class_name\\Menu";

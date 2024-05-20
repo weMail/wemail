@@ -2,9 +2,10 @@
 
 namespace WeDevs\WeMail\Core\Sync\Subscriber;
 
-use Stringy\StaticStringy;
+use WeDevs\WeMail\Traits\Stringy;
 
 class Subscriber {
+    use Stringy;
 
     private $container = [
         'wp' => null,
@@ -14,7 +15,7 @@ class Subscriber {
     public function __get( $prop ) {
         if ( array_key_exists( $prop, $this->container ) ) {
             if ( ! $this->container[ $prop ] ) {
-                $integration = StaticStringy::upperCamelize( $prop );
+                $integration = $this->upperCamelize( $prop );
                 $class_fqn = "\\WeDevs\\WeMail\\Core\\Sync\\Subscriber\\$integration\\$integration";
 
                 $this->container[ $prop ] = new $class_fqn();

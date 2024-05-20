@@ -2,10 +2,11 @@
 
 namespace WeDevs\WeMail\Core\Form\Integrations;
 
-use Stringy\StaticStringy;
+use WeDevs\WeMail\Traits\Stringy;
 use WP_Error;
 
 abstract class AbstractIntegration {
+    use Stringy;
 
     /**
      * Hold the value if plugin active or not
@@ -112,7 +113,7 @@ abstract class AbstractIntegration {
             $form_ids[] = $form_id;
         }
 
-        $response = wemail()->api->forms()->integrations( StaticStringy::dasherize( $this->slug ) )->post( $settings );
+        $response = wemail()->api->forms()->integrations( $this->dasherize( $this->slug ) )->post( $settings );
 
         if ( is_wp_error( $response ) ) {
             return $response;
