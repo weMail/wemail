@@ -351,7 +351,7 @@ final class WeMail {
 
         foreach ( $class_dirs as $class_dir ) {
             $class_name  = str_replace( WEMAIL_CORE . '/', '', $class_dir );
-            $class_slug  = $this->underscored($class_name);
+            $class_slug  = $this->underscored( $class_name );
 
             $core_class = "\\WeDevs\\WeMail\\Core\\$class_name\\$class_name";
             $menu_class = "\\WeDevs\\WeMail\\Core\\$class_name\\Menu";
