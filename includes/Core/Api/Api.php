@@ -2,14 +2,14 @@
 
 namespace WeDevs\WeMail\Core\Api;
 
-use Stringy\StaticStringy;
+use WeDevs\WeMail\Traits\Stringy;
 use WP_Error;
 use WeDevs\WeMail\Traits\Hooker;
 use WeDevs\WeMail\Traits\Singleton;
 
 class Api {
 
-    use Singleton;
+    use Singleton, Stringy;
 
     use Hooker;
 
@@ -124,7 +124,7 @@ class Api {
      */
     public function __call( $name, $args ) {
         if ( ! method_exists( $this, $name ) ) {
-            $this->url .= '/' . StaticStringy::dasherize( $name );
+            $this->url .= '/' . $this->dasherize( $name );
 
             if ( $args ) {
                 $this->url .= '/' . array_pop( $args );
