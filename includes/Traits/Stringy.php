@@ -9,7 +9,14 @@ trait Stringy {
      * @return string
      */
     public function underscored( $string ) {
-        return strtolower( preg_replace( [ '/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/' ], '$1_$2', $string ) );
+        $trimmed = trim( $string );
+
+        $withUnderscores = preg_replace('/(?<!^)([A-Z])/', '_$1', $trimmed);
+
+        $underscored = preg_replace('/[\s-]+/', '_', $withUnderscores);
+
+        return strtolower($underscored);
+
     }
 
     /**
