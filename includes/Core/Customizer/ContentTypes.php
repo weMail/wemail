@@ -76,7 +76,7 @@ class ContentTypes {
                     'borderColor'     => '#e5e5e5',
                     'marginBottom'    => '0px',
                 ],
-                'twoColumns' => true,
+                'twoColumns' => false,
                 'texts'      => [
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                     sprintf( '<p>%s</p>', __( 'This is a text block 2. You can use it to add text to your template.', 'wemail' ) ),
