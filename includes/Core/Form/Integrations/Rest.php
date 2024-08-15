@@ -2,10 +2,11 @@
 
 namespace WeDevs\WeMail\Core\Form\Integrations;
 
-use Stringy\StaticStringy;
 use WeDevs\WeMail\RestController;
+use WeDevs\WeMail\Traits\Stringy;
 
 class Rest extends RestController {
+    use Stringy;
 
     /**
      * REST Base
@@ -35,12 +36,12 @@ class Rest extends RestController {
      * @return void|object
      */
     public function __get( $prop ) {
-        $integration = StaticStringy::underscored( $prop );
+        $integration = $this->underscored( $prop );
 
         if ( array_key_exists( $integration, $this->integrations ) ) {
             return $this->integrations[ $integration ];
         } elseif ( array_key_exists( $integration, wemail()->form->integrations() ) ) {
-            $class_name = StaticStringy::upperCamelize( $integration );
+            $class_name = $this->upperCamelize( $integration );
             $integration_class = "\\WeDevs\\WeMail\\Core\\Form\\Integrations\\$class_name";
             if ( class_exists( $integration_class ) ) {
                 $this->integrations[ $integration ] = $integration_class::instance();
@@ -114,7 +115,7 @@ class Rest extends RestController {
      */
     public function save( $request ) {
         $integration = $request->get_param( 'name' );
-        $integration = StaticStringy::underscored( $integration );
+        $integration = $this->underscored( $integration );
 
         if ( ! $this->$integration->is_active ) {
             return $this->$integration->inactivity_message();

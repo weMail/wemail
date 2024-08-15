@@ -25,8 +25,7 @@
   "require": {
     "php": ">=5.5",
     "league/csv": "^7.2",
-    "danielstjules/stringy": "~3.1.0",
-    "appsero/client": "v1.2.4"
+    "appsero/client": "^1.1"
   },
   "require-dev": {
     "wp-coding-standards/wpcs": "dev-master",

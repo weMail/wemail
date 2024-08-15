@@ -2,12 +2,12 @@
 
 namespace WeDevs\WeMail\Core\Settings;
 
-use Stringy\StaticStringy;
 use WeDevs\WeMail\Traits\Core;
+use WeDevs\WeMail\Traits\Stringy;
 
 class Settings {
 
-    use Core;
+    use Core, Stringy;
 
     /**
      * Get site settings
@@ -19,7 +19,7 @@ class Settings {
      * @return array|string
      */
     public function get( $name ) {
-        $name = StaticStringy::underscored( $name );
+        $name = $this->underscored( $name );
 
         $settings = wemail()->api->settings()->$name()->get();
 
