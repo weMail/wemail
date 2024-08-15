@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, subscription form, smtp, newsletter, email campaign,
 Requires at least: 4.0
 Tested up to: 6.4.3
-Stable tag: 1.14.5
+Stable tag: 1.14.6
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -285,6 +285,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.14.6 - (15th Aug, 2024) =
+* Fix vulnerability issue for form preview
 
 = v1.14.5 - (21st May, 2024) =
 * Remove deprecated library danielsjules/stringy
