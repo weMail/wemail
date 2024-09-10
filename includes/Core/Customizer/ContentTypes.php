@@ -190,12 +190,12 @@ class ContentTypes {
         $company = wemail()->api->settings()->company()->get();
 
         $facebook = 'https://facebook.com';
-        $twitter  = 'https://twitter.com';
+        $x  = 'https://x.com';
         $website  = 'https://example.com';
 
         if ( ! empty( $settings['data'] ) ) {
             $facebook = $settings['data']['facebook'];
-            $twitter = $settings['data']['twitter'];
+            $x = $settings['data']['twitter'];
         }
 
         if ( ! empty( $company['data'] ) ) {
@@ -231,9 +231,9 @@ class ContentTypes {
                         'text' => 'Facebook',
                     ],
                     [
-                        'site' => 'twitter',
-                        'link' => $twitter,
-                        'text' => 'Twitter',
+                        'site' => 'X',
+                        'link' => $x,
+                        'text' => 'X',
                     ],
                     [
                         'site' => 'website',
