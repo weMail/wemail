@@ -38,9 +38,18 @@ class Auth {
 
         set_transient( 'wemail_validate_me_key', $key, 5 * MINUTE_IN_SECONDS );
 
+        /**
+         * For empty site title, set domain name as site_name
+         */
+        if (get_bloginfo( 'name' )) {
+            $site_name = get_bloginfo( 'name' );
+        } else {
+            $site_name = explode(".", parse_url(get_bloginfo( 'url' ))['host'])[0];
+        }
+
         $data = [
             'api_key'           => $api,
-            'site_name'         => get_bloginfo( 'name' ),
+            'site_name'         => $site_name,
             'site_email'        => get_bloginfo( 'admin_email' ),
             'site_url'          => untrailingslashit( site_url( '/' ) ),
             'home_url'          => untrailingslashit( home_url( '/' ) ),
