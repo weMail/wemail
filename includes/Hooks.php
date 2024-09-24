@@ -22,5 +22,4 @@ class Hooks {
         new SyncAffiliateWp();
         new RevenueTrack();
     }
-
 }

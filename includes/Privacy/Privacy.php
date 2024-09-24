@@ -20,7 +20,7 @@ class Privacy {
      *
      * @var array
      */
-    protected $exporters = [];
+    protected $exporters = array();
 
     /**
      * List of eraser
@@ -29,7 +29,7 @@ class Privacy {
      *
      * @var array
      */
-    protected $eraser = [];
+    protected $eraser = array();
 
     /**
      * Class constructor
@@ -52,9 +52,9 @@ class Privacy {
      * @return void
      */
     protected function init() {
-        add_action( 'admin_init', [ $this, 'add_privacy_message' ] );
-        add_filter( 'wp_privacy_personal_data_exporters', [ $this, 'register_exporters' ] );
-        add_filter( 'wp_privacy_personal_data_erasers', [ $this, 'register_eraser' ] );
+        add_action( 'admin_init', array( $this, 'add_privacy_message' ) );
+        add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'register_exporters' ) );
+        add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'register_eraser' ) );
     }
 
     /**
@@ -94,11 +94,11 @@ class Privacy {
      *
      * @return array
      */
-    public function register_exporters( $exporters = [] ) {
-        $exporters['wemail-subscriber-data'] = [
+    public function register_exporters( $exporters = array() ) {
+        $exporters['wemail-subscriber-data'] = array(
             'exporter_friendly_name' => __( 'weMail Subscriber Data', 'wemail' ),
-            'callback'               => [ $this, 'export_subscriber_data' ],
-        ];
+            'callback'               => array( $this, 'export_subscriber_data' ),
+        );
 
         return $exporters;
     }
@@ -114,25 +114,25 @@ class Privacy {
      * @return array
      */
     public function export_subscriber_data( $email_address, $page ) {
-        $data_to_export = [];
+        $data_to_export = array();
 
         wemail_set_owner_api_key();
         $subscriber = wemail()->subscriber->get( $email_address );
 
         if ( $subscriber ) {
-            $data_to_export[] = [
+            $data_to_export[] = array(
                 'group_id'          => 'wemail_subscriber',
                 'group_label'       => __( 'weMail Subscriber Data', 'wemail' ),
                 'group_description' => __( 'The weMail subscriber data.', 'wemail' ),
                 'item_id'           => 'wemail-subscriber',
                 'data'              => $this->get_subscriber_data( $subscriber ),
-            ];
+            );
         }
 
-        return [
+        return array(
             'data' => $data_to_export,
             'done' => true,
-        ];
+        );
     }
 
     /**
@@ -144,11 +144,11 @@ class Privacy {
      *
      * @return array
      */
-    public function register_eraser( $erasers = [] ) {
-        $erasers['wemail-subscriber-data'] = [
+    public function register_eraser( $erasers = array() ) {
+        $erasers['wemail-subscriber-data'] = array(
             'eraser_friendly_name' => __( 'weMail Subscriber Data', 'wemail' ),
-            'callback'               => [ $this, 'erase_subscriber_data' ],
-        ];
+            'callback'               => array( $this, 'erase_subscriber_data' ),
+        );
 
         return $erasers;
     }
@@ -164,12 +164,12 @@ class Privacy {
      * @return array
      */
     public function erase_subscriber_data( $email_address, $page ) {
-        $response = [
+        $response = array(
             'items_removed'  => false,
             'items_retained' => false,
-            'messages'       => [],
+            'messages'       => array(),
             'done'           => true,
-        ];
+        );
 
         wemail_set_owner_api_key();
         $subscriber = wemail()->subscriber->get( $email_address );
@@ -198,25 +198,24 @@ class Privacy {
      * @return array
      */
     protected function get_subscriber_data( $subscriber ) {
-        $subscriber_data = [];
+        $subscriber_data = array();
 
         $meta_fields = wemail()->api->subscribers()->meta()->get();
         $meta_fields = $meta_fields['data'];
 
-        $ignore_fields = [ 'email' ];
+        $ignore_fields = array( 'email' );
 
         foreach ( $meta_fields as $meta_field ) {
             $meta_name = $meta_field['name'];
 
             if ( isset( $subscriber[ $meta_name ] ) && ! in_array( $meta_name, $ignore_fields, true ) ) {
-                $subscriber_data[] = [
+                $subscriber_data[] = array(
                     'name'  => $meta_field['title'],
                     'value' => $subscriber[ $meta_name ],
-                ];
+                );
             }
         }
 
         return $subscriber_data;
     }
-
 }

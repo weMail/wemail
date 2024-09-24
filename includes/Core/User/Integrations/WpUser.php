@@ -9,9 +9,9 @@ class WpUser {
      * since 1.0.0
      */
     public function __construct() {
-        add_action( 'user_register', [ $this, 'wemail_registration_save' ], 10, 1 );
-        add_action( 'profile_update', [ $this, 'wemail_user_profile_updated' ], 10, 2 );
-        add_action( 'delete_user', [ $this, 'wemail_user_deleted' ] );
+        add_action( 'user_register', array( $this, 'wemail_registration_save' ), 10, 1 );
+        add_action( 'profile_update', array( $this, 'wemail_user_profile_updated' ), 10, 2 );
+        add_action( 'delete_user', array( $this, 'wemail_user_deleted' ) );
     }
 
     /**
@@ -53,11 +53,11 @@ class WpUser {
             return;
         }
 
-        $data = [
+        $data = array(
             'name' => $user->data->display_name,
             'email' => $user->data->user_email,
             'token' => $access_token,
-        ];
+        );
 
         $response = wemail()->api->set_api_key( $access_token )->auth()->users()->profile()->update()->post( $data );
 
@@ -86,9 +86,9 @@ class WpUser {
             return;
         }
 
-        $data = [
+        $data = array(
             'email'  => $user->data->user_email,
-        ];
+        );
 
         $response = wemail()->api->set_api_key( $access_token )->auth()->users()->destroy()->post( $data );
 
@@ -130,7 +130,7 @@ class WpUser {
             return false;
         }
 
-        $roles = array_intersect( $roles, get_option( 'wemail_accessible_roles', [ 'administrator', 'editor' ] ) );
+        $roles = array_intersect( $roles, get_option( 'wemail_accessible_roles', array( 'administrator', 'editor' ) ) );
 
         return ! empty( $roles );
     }
@@ -159,11 +159,11 @@ class WpUser {
      */
     protected function create_wemail_user( $user, $role ) {
         $response = wemail()->api->teamUsers()->post(
-            [
+            array(
                 'name' => $user->data->display_name,
                 'email' => $user->data->user_email,
                 'role' => $role,
-            ]
+            )
         );
 
         if ( is_wp_error( $response ) ) {
@@ -187,7 +187,7 @@ class WpUser {
      */
     protected function update_user_permission( $access_token, $user_id ) {
         $api_key  = apply_filters( 'wemail_api_key', $access_token );
-        $user_data = wemail()->api->set_api_key( $api_key )->auth()->users()->me()->query( [ 'include' => 'role,permissions' ] )->get();
+        $user_data = wemail()->api->set_api_key( $api_key )->auth()->users()->me()->query( array( 'include' => 'role,permissions' ) )->get();
 
         if ( is_wp_error( $user_data ) ) {
             return;

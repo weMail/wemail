@@ -33,19 +33,19 @@ class FormidableForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = FrmDb::get_results( 'frm_forms', [], 'id,name' );
+        $forms = FrmDb::get_results( 'frm_forms', array(), 'id,name' );
 
         if ( ! is_array( $forms ) ) {
-            return [];
+            return array();
         }
 
         return array_map(
             function ( $form ) {
-                return [
+                return array(
                     'id' => absint( $form->id ),
                     'title' => $form->name,
                     'fields' => $this->get_form_fields( $form->id ),
-                ];
+                );
             },
             $forms
         );
@@ -61,21 +61,21 @@ class FormidableForms extends AbstractIntegration {
     protected function get_form_fields( $form_id ) {
         $fields = FrmDb::get_results(
             'frm_fields',
-            [
+            array(
                 'form_id' => $form_id,
-            ], 'id,name'
+            ), 'id,name'
         );
 
         if ( ! is_array( $fields ) ) {
-            return [];
+            return array();
         }
 
         return array_map(
             function ( $field ) {
-                return [
+                return array(
                     'id' => $field->id,
                     'label' => $field->name,
-                ];
+                );
             }, $fields
         );
     }
@@ -86,17 +86,17 @@ class FormidableForms extends AbstractIntegration {
      * @param $data
      */
     public function submit( $data ) {
-        $forms = get_option( 'wemail_form_integration_formidable_forms', [] );
+        $forms = get_option( 'wemail_form_integration_formidable_forms', array() );
         $form_id = absint( $data['form']->id );
 
         if ( ! in_array( $form_id, $forms, true ) ) {
             return;
         }
 
-        $form_data = [
+        $form_data = array(
             'id'    => $form_id,
             'data'  => $this->get_entity_data( $data['entry_id'] ),
-        ];
+        );
 
         if ( ! empty( $form_data['data'] ) ) {
             wemail_set_owner_api_key();
@@ -114,14 +114,14 @@ class FormidableForms extends AbstractIntegration {
     protected function get_entity_data( $entity_id ) {
         $entities = FrmDb::get_results(
             'frm_item_metas',
-            [
+            array(
                 'item_id' => $entity_id,
-            ],
+            ),
             'field_id,meta_value'
         );
 
         if ( ! is_array( $entities ) ) {
-            return [];
+            return array();
         }
 
         return array_column( $entities, 'meta_value', 'field_id' );

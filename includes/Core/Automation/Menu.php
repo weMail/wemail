@@ -39,7 +39,7 @@ class Menu {
      */
     public function register_submenu( $menu_items, $capability ) {
         if ( wemail()->user->can( 'view_campaign' ) ) {
-            $menu_items[] = [ __( 'Automations', 'wemail' ), $capability, 'admin.php?page=wemail#/automations' ];
+            $menu_items[] = array( __( 'Automations', 'wemail' ), $capability, 'admin.php?page=wemail#/automations' );
         }
 
         return $menu_items;

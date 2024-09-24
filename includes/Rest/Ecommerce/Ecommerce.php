@@ -36,11 +36,11 @@ class Ecommerce extends RestController {
         $platform = wemail()->ecommerce->platform( $platform );
 
         $body = array_merge(
-            $body, [
+            $body, array(
 				'currency' => $platform->currency(),
 				'currency_symbol' => $platform->currency_symbol(),
 				'platform' => $platform->get_name(),
-			]
+			)
         );
         // Update settings to wp options
         Settings::instance()->update( $body );
@@ -74,9 +74,9 @@ class Ecommerce extends RestController {
 
         if ( ! $platform->is_active() ) {
             return new \WP_REST_Response(
-                [
+                array(
 					'message' => sprintf( '%s plugin is not active', $platform->get_name() ),
-				], 422
+				), 422
             );
         }
 
@@ -95,9 +95,9 @@ class Ecommerce extends RestController {
         Settings::instance()->delete();
 
         $response = wemail()->api->ecommerce()->disconnect()->post(
-            [
+            array(
 				'_method' => 'delete',
-			]
+			)
         );
 
         if ( is_wp_error( $response ) ) {

@@ -27,12 +27,12 @@ class ForminatorForms extends AbstractIntegration {
      * @inheritdoc
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
         $query = new WP_Query(
-            [
+            array(
                 'post_type'     => 'forminator_forms',
                 'post_count'    => -1,
-            ]
+            )
         );
 
         if ( ! $query->have_posts() ) {
@@ -41,11 +41,11 @@ class ForminatorForms extends AbstractIntegration {
 
         while ( $query->have_posts() ) {
             $query->the_post();
-            $forms[] = [
+            $forms[] = array(
                 'id'        => get_the_ID(),
                 'title'     => get_the_title(),
                 'fields'    => $this->get_form_fields( get_the_ID() ),
-            ];
+            );
         }
 
         return $forms;
@@ -60,20 +60,20 @@ class ForminatorForms extends AbstractIntegration {
     protected function get_form_fields( $form_id ) {
         $form_meta = get_post_meta( $form_id, 'forminator_form_meta', true );
         if ( ! $form_meta ) {
-            return [];
+            return array();
         }
 
-        $fields = [];
+        $fields = array();
 
         foreach ( $form_meta['fields'] as $field ) {
             if ( ! isset( $field['field_label'] ) ) {
                 continue;
             }
 
-            $fields[] = [
+            $fields[] = array(
                 'id'    => $field['id'],
                 'label' => $field['field_label'],
-            ];
+            );
         }
         return $fields;
     }
@@ -86,17 +86,17 @@ class ForminatorForms extends AbstractIntegration {
      * @param $form_data
      */
     public function submit( $entry, $form_id, $form_data ) {
-        $forms = get_option( 'wemail_form_integration_forminator_forms', [] );
+        $forms = get_option( 'wemail_form_integration_forminator_forms', array() );
         $form_id = absint( $form_id );
 
         if ( ! in_array( $form_id, $forms, true ) || empty( $form_data ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id'    => $form_id,
             'data'  => array_column( $form_data, 'value', 'name' ),
-        ];
+        );
 
         wemail_set_owner_api_key();
         wemail()->api->forms()->integrations( 'forminator-forms' )->submit()->post( $data );

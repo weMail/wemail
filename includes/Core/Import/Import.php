@@ -7,5 +7,4 @@ use WeDevs\WeMail\Traits\Singleton;
 class Import {
 
     use Singleton;
-
 }

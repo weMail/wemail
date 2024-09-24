@@ -42,7 +42,7 @@ class Auth extends RestController {
             return $authenticate;
         }
 
-        return $this->respond( [ 'success' => true ], self::HTTP_CREATED );
+        return $this->respond( array( 'success' => true ), self::HTTP_CREATED );
     }
 
     /**
@@ -78,5 +78,4 @@ class Auth extends RestController {
     public function validate_me( $request ) {
         return $this->respond();
     }
-
 }

@@ -51,7 +51,7 @@ abstract class AbstractIntegration {
             'integration_is_not_active',
             /* translators: %s: search term */
             sprintf( __( '%s plugin is not active', 'wemail' ), $this->title ),
-            [ 'status' => 422 ]
+            array( 'status' => 422 )
         );
     }
 
@@ -87,10 +87,10 @@ abstract class AbstractIntegration {
      * @return array|\WP_Error
      */
     public function save( $data ) {
-        $data = ! empty( $data ) ? $data : [];
+        $data = ! empty( $data ) ? $data : array();
 
-        $settings = [];
-        $form_ids = [];
+        $settings = array();
+        $form_ids = array();
 
         foreach ( $data as $form ) {
             if ( ! isset( $form['id'] ) || empty( $form['map'] ) ) {
@@ -103,12 +103,12 @@ abstract class AbstractIntegration {
 
             $form_id = $this->slug === 'elementor_forms' ? $form['id'] : $this->cast_form_id( $form['id'] );
 
-            $settings[] = [
+            $settings[] = array(
                 'id'        => $form_id,
                 'list_id'   => $form['list_id'],
                 'overwrite' => $form['overwrite'],
                 'map'       => $form['map'],
-            ];
+            );
 
             $form_ids[] = $form_id;
         }
@@ -123,5 +123,4 @@ abstract class AbstractIntegration {
 
         return $response;
     }
-
 }

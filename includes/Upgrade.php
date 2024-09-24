@@ -8,10 +8,10 @@ class Upgrade {
      *
      * @var string[] $upgrades
      */
-    protected $upgrades = [
+    protected $upgrades = array(
         '1.0.0' => 'Upgrades/upgrade-1.0.0.php',
         '1.10.0' => 'Upgrades/upgrade-1.10.0.php',
-    ];
+    );
 
     /**
      * WeMail version option key
@@ -61,5 +61,4 @@ class Upgrade {
 
         update_option( $this->option_name, WEMAIL_VERSION );
     }
-
 }

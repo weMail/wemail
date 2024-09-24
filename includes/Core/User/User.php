@@ -51,7 +51,7 @@ class User {
      *
      * @var array
      */
-    public $permissions = [];
+    public $permissions = array();
 
     /**
      * API resource query for URL to build
@@ -74,7 +74,7 @@ class User {
         if ( $api_key ) {
             $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
             if ( ! $user_data ) {
-                $user_data = wemail()->api->auth()->users()->me()->query( [ 'include' => 'role,permissions' ] )->get();
+                $user_data = wemail()->api->auth()->users()->me()->query( array( 'include' => 'role,permissions' ) )->get();
 
                 if ( ! empty( $user_data['data'] ) ) {
                     $user_data = $user_data['data'];
@@ -108,5 +108,4 @@ class User {
 
         return false;
     }
-
 }

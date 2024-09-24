@@ -27,14 +27,14 @@ class Install {
 
         wp_remote_post(
             $wemail_api . '/site/update-activation-status',
-            [
-                'headers' => [
+            array(
+                'headers' => array(
                     'x-api-key' => $api_key,
-                ],
-                'body'    => [
+                ),
+                'body'    => array(
                     'deactivated' => false,
-                ],
-            ]
+                ),
+            )
         );
 
         // set the redirection to setup wizard

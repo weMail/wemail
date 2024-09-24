@@ -7,10 +7,10 @@ use WeDevs\WeMail\Traits\Stringy;
 class Subscriber {
     use Stringy;
 
-    private $container = [
+    private $container = array(
         'wp' => null,
         'erp' => null,
-    ];
+    );
 
     public function __get( $prop ) {
         if ( array_key_exists( $prop, $this->container ) ) {
@@ -24,5 +24,4 @@ class Subscriber {
             return $this->container[ $prop ];
         }
     }
-
 }

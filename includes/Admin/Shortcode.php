@@ -61,10 +61,10 @@ class Shortcode {
      */
     public function print_tinymce_data() {
         $forms = wemail()->form->get_forms(
-            [
-                'type' => [ 'modal', 'inline' ],
-                'select' => [ 'id', 'name' ],
-            ]
+            array(
+                'type' => array( 'modal', 'inline' ),
+                'select' => array( 'id', 'name' ),
+            )
         );
 
         $icon = wemail()->wemail_cdn . '/images/logo/wemail-alt.svg';
@@ -72,11 +72,10 @@ class Shortcode {
             <script type="text/javascript">
                 var wemail_forms_shortcode_button = {
                     title: '<?php echo __( 'Insert weMail form', 'wemail' ); ?>',
-                    forms: <?php echo $forms ? wp_json_encode( $forms ) : wp_json_encode( [] ); ?>,
+                    forms: <?php echo $forms ? wp_json_encode( $forms ) : wp_json_encode( array() ); ?>,
                     icon: '<?php echo $icon; ?>'
                 };
             </script>
         <?php
     }
-
 }

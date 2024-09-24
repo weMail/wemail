@@ -62,10 +62,10 @@ class Orders {
             return;
         }
 
-        $param = [
+        $param = array(
             'order_id' => $order_id,
             'status'   => $new_status,
-        ];
+        );
         $this->order_request->statusUpdated( $param, $this->source );
     }
 }

@@ -7,7 +7,8 @@ use WeDevs\WeMail\Traits\Stringy;
 
 class Settings {
 
-    use Core, Stringy;
+    use Core;
+    use Stringy;
 
     /**
      * Get site settings
@@ -25,5 +26,4 @@ class Settings {
 
         return $this->data( $settings );
     }
-
 }

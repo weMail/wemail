@@ -28,7 +28,7 @@ class OrderResource extends JsonResource {
 			}
         );
 
-        $data = [
+        $data = array(
             'id'         => (string) $order->get_id(),
             'parent_id'  => $order->get_parent_id() ? (string) $order->get_parent_id() : null,
             'products'   => OrderItemResource::collection( $items ),
@@ -39,7 +39,7 @@ class OrderResource extends JsonResource {
             'type'       => $this->get_type( $order->get_type() ),
             'created_at' => $order->get_date_created()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
             'updated_at' => $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
-        ];
+        );
 
         if ( $this->is_refund( $data['type'] ) ) {
             /** @var $order \Automattic\WooCommerce\Admin\Overrides\OrderRefund */
@@ -65,7 +65,7 @@ class OrderResource extends JsonResource {
      * @return array
      */
     protected function customer( $order ) {
-        return [
+        return array(
             'first_name' => $order->get_billing_first_name(),
             'last_name'  => $order->get_billing_last_name(),
             'email'      => $order->get_billing_email(),
@@ -76,7 +76,7 @@ class OrderResource extends JsonResource {
             'state'      => $order->get_billing_state(),
             'zip'        => $order->get_billing_postcode(),
             'country'    => $order->get_billing_country(),
-        ];
+        );
     }
 
     /**

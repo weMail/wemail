@@ -15,7 +15,7 @@ class Hooks {
      *
      * @var array
      */
-    private $created_users = [];
+    private $created_users = array();
 
     /**
      * Holds the updated user ids
@@ -24,7 +24,7 @@ class Hooks {
      *
      * @var array
      */
-    private $updated_users = [];
+    private $updated_users = array();
 
     /**
      * Holds the deleted user ids
@@ -33,7 +33,7 @@ class Hooks {
      *
      * @var array
      */
-    private $deleted_users = [];
+    private $deleted_users = array();
 
     /**
      * Class constructor
@@ -131,7 +131,7 @@ class Hooks {
      * @return void
      */
     private function add_shutdown_action( $name ) {
-        if ( ! has_action( 'shutdown', [ $this, $name ] ) ) {
+        if ( ! has_action( 'shutdown', array( $this, $name ) ) ) {
             $this->add_action( 'shutdown', $name );
         }
     }

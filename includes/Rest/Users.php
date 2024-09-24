@@ -28,27 +28,27 @@ class Users extends RestController {
     public function index() {
         $roles = get_option( 'wemail_accessible_roles', $default = false );
         $args = array(
-            'role__in' => $roles ? $roles : [ 'administrator', 'editor' ],
-            'exclude' => [ get_current_user_id() ],
+            'role__in' => $roles ? $roles : array( 'administrator', 'editor' ),
+            'exclude' => array( get_current_user_id() ),
         );
 
         return rest_ensure_response(
-            [
+            array(
                 'data' => array_map(
                     function ( $user ) {
                         $map = get_user_meta( $user->ID, 'wemail_user_data', null );
                         $hash = isset( $map[0] ) && isset( $map[0]['hash'] ) ? $map[0]['hash'] : null;
-                        return [
+                        return array(
                             'id'       => $user->ID,
                             'name'     => $user->display_name,
                             'email'    => $user->user_email,
                             'roles'    => $user->roles,
                             'hash'     => $hash,
-                        ];
+                        );
                     },
                     get_users( $args )
                 ),
-            ]
+            )
         );
     }
 
@@ -62,19 +62,19 @@ class Users extends RestController {
 
             foreach ( $users as $user ) {
                 $wp_admin_response = wemail()->api->teamUsers()->post(
-                    [
+                    array(
                         'name'    => $user['name'],
                         'email'   => $user['email'],
                         'role'    => $role,
                         'include' => 'role,permissions',
-                    ]
+                    )
                 );
 
                 if ( isset( $wp_admin_response['access_token'] ) && $wp_admin_response['access_token'] !== '' ) {
                     update_user_meta( $user['id'], 'wemail_api_key', $wp_admin_response['access_token'] );
                     if ( isset( $wp_admin_response['data'] ) ) {
                         $response = $wp_admin_response['data'];
-                        $user_meta = [
+                        $user_meta = array(
                             'deleted_at'  => $response['deleted_at'],
                             'email'       => $response['email'],
                             'hash'        => $response['hash'],
@@ -82,16 +82,16 @@ class Users extends RestController {
                             'permissions' => $response['permissions'],
                             'role'        => $response['role'],
                             'roles'       => $response['roles'],
-                        ];
+                        );
                         update_user_meta( $user['id'], 'wemail_user_data', $user_meta );
                     }
                 }
             }
 
-            return $this->respond( [ 'success' => true ], self::HTTP_CREATED );
+            return $this->respond( array( 'success' => true ), self::HTTP_CREATED );
         }
 
-        return $this->respond( [ 'message' => 'Access token not found' ], 422 );
+        return $this->respond( array( 'message' => 'Access token not found' ), 422 );
     }
 
     public function update( $request ) {
@@ -103,16 +103,16 @@ class Users extends RestController {
             wemail()->api->set_api_key( $access_token[0] );
             foreach ( $users as $user ) {
                 $response = wemail()->api->teamUsers()->update()->put(
-                    [
+                    array(
                         'email'   => $user,
                         'role'    => $role,
                         'include' => 'role,permissions',
-                    ]
+                    )
                 );
 
                 $wp_user = get_user_by( 'email', $user );
                 if ( isset( $wp_user->ID ) ) {
-                    $user_meta = [
+                    $user_meta = array(
                         'deleted_at'  => $response['data']['deleted_at'],
                         'email'       => $response['data']['email'],
                         'hash'        => $response['data']['hash'],
@@ -120,15 +120,15 @@ class Users extends RestController {
                         'permissions' => $response['data']['permissions'],
                         'role'        => $response['data']['role'],
                         'roles'       => $response['data']['roles'],
-                    ];
+                    );
                     update_user_meta( $wp_user->ID, 'wemail_user_data', $user_meta );
                 }
             }
 
-            return $this->respond( [ 'success' => true ], self::HTTP_CREATED );
+            return $this->respond( array( 'success' => true ), self::HTTP_CREATED );
         }
 
-        return $this->respond( [ 'message' => 'Access token not found' ], 422 );
+        return $this->respond( array( 'message' => 'Access token not found' ), 422 );
     }
 
     public function toggleStatus( $request ) {
@@ -137,10 +137,10 @@ class Users extends RestController {
         $user = get_user_by( 'email', $email );
         if ( $user ) {
             $wp_admin_response = wemail()->api->team()->users()->status()->post(
-                [
+                array(
                     'email'  => $email,
                     'status' => $status,
-                ]
+                )
             );
             if ( $wp_admin_response['success'] ) {
                 if ( isset( $wp_admin_response['token'] ) ) {
@@ -153,16 +153,16 @@ class Users extends RestController {
                     delete_user_meta( $user->ID, 'wemail_disable_user_access' );
                 }
 
-                return $this->respond( [ 'message' => 'User status changed' ], 200 );
+                return $this->respond( array( 'message' => 'User status changed' ), 200 );
             }
 
-            return $this->respond( [ 'message' => $wp_admin_response ], 422 );
+            return $this->respond( array( 'message' => $wp_admin_response ), 422 );
         }
 
         return $this->respond(
-            [
+            array(
                 'message' => 'User was not found in your site.It maybe removed previously.',
-            ],
+            ),
             422
         );
     }
@@ -170,23 +170,23 @@ class Users extends RestController {
     public function roles() {
         $accessible_roles = get_option( 'wemail_accessible_roles', $default = false );
         $roles = wp_roles();
-        $available_roles = [];
+        $available_roles = array();
         foreach ( $roles->roles as $key => $role ) {
             if ( $key !== 'subscriber' ) {
-                $available_roles[] = [
+                $available_roles[] = array(
                     'slug' => $key,
                     'name' => $role['name'],
-                ];
+                );
             }
         }
 
         return $this->respond(
-            [
-                'data' => [
+            array(
+                'data' => array(
                     'roles' => $available_roles,
-                    'accessible_roles' => $accessible_roles ? $accessible_roles : [ 'administrator', 'editor' ],
-                ],
-            ],
+                    'accessible_roles' => $accessible_roles ? $accessible_roles : array( 'administrator', 'editor' ),
+                ),
+            ),
             200
         );
     }
@@ -196,6 +196,6 @@ class Users extends RestController {
 
         update_option( 'wemail_accessible_roles', $roles );
 
-        return $this->respond( [ 'success' => true ], 200 );
+        return $this->respond( array( 'success' => true ), 200 );
     }
 }

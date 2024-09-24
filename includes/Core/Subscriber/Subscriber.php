@@ -17,7 +17,7 @@ class Subscriber {
      *
      * @return array
      */
-    public function all( $args = [] ) {
+    public function all( $args = array() ) {
         $subscribers = wemail()->api->subscribers()->query( $args )->get();
 
         if ( ! is_wp_error( $subscribers ) ) {
@@ -97,7 +97,7 @@ class Subscriber {
      * @return int|null
      */
     public function delete( $id, $permanent = false ) {
-        $args = [];
+        $args = array();
 
         if ( $permanent ) {
             $args['permanent'] = true;
@@ -123,13 +123,12 @@ class Subscriber {
      * @return array|null
      */
     public function subscribe_to_lists( $id, $list_ids ) {
-        $data = [
+        $data = array(
             'lists' => $list_ids,
-        ];
+        );
 
         $subscriber = wemail()->api->subscribers( $id )->subscribe_to_lists()->put( $data );
 
         return $this->data( $subscriber );
     }
-
 }

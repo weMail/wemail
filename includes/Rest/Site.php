@@ -66,14 +66,14 @@ class Site extends RestController {
             update_option( "wemail_{$key}", $setting );
         }
 
-        return rest_ensure_response( [ 'success' => true ] );
+        return rest_ensure_response( array( 'success' => true ) );
     }
 
     public function delete_site() {
         $this->delete_option_by_prefix( 'wemail_form_integration_' );
-        $this->delete_user_metadata( [ 'wemail_api_key', 'wemail_user_data' ] );
+        $this->delete_user_metadata( array( 'wemail_api_key', 'wemail_user_data' ) );
 
-        $wemail_options = [
+        $wemail_options = array(
             'wemail_version',
             'wemail_site_slug',
             'wemail_accessible_roles',
@@ -83,13 +83,13 @@ class Site extends RestController {
             'wemail_is_edd_synced',
             'wemail_woocommerce_integrated',
             'wemail_is_woocommerce_synced',
-        ];
+        );
 
         foreach ( $wemail_options as $option ) {
             delete_option( $option );
         }
 
-        return rest_ensure_response( [ 'success' => true ] );
+        return rest_ensure_response( array( 'success' => true ) );
     }
 
     public function delete_option_by_prefix( $prefix ) {

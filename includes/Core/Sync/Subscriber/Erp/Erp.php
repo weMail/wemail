@@ -22,13 +22,13 @@ class Erp {
      */
     public function settings() {
         if ( ! isset( $this->settings['sync'] ) ) {
-            $defaults = [
+            $defaults = array(
                 'sync' => false,
                 'import_crm_groups' => false,
                 'default_list' => null,
-            ];
+            );
 
-            $settings = get_option( 'wemail_sync_subscriber_erp_contacts', [] );
+            $settings = get_option( 'wemail_sync_subscriber_erp_contacts', array() );
 
             if ( ! empty( $settings ) ) {
                 if ( ! empty( $data['sync'] ) ) {
@@ -75,7 +75,7 @@ class Erp {
      * @return void
      * @since 1.0.0
      */
-    public function create( $contacts = [] ) {
+    public function create( $contacts = array() ) {
         if ( ! $this->is_active() ) {
             return;
         }
@@ -89,10 +89,10 @@ class Erp {
         wemail_set_owner_api_key( false );
 
         wemail()->api->sync()->subscribers()->erp()->subscribed()->post(
-            [
+            array(
                 'list_id' => $this->settings['default_list'],
                 'contacts' => $contacts,
-            ]
+            )
         );
     }
 
@@ -114,10 +114,10 @@ class Erp {
         wemail_set_owner_api_key( false );
 
         wemail()->api->sync()->subscribers()->erp()->subscribed()->post(
-            [
+            array(
                 'list_id' => $this->settings['default_list'],
                 'contacts' => $contacts,
-            ]
+            )
         );
     }
 
@@ -140,21 +140,21 @@ class Erp {
             return;
         }
 
-        $emails = [];
+        $emails = array();
 
         foreach ( $contacts as $contact ) {
             $emails[] = $contact->email;
         }
 
         wemail()->api->sync()->subscribers()->erp()->unsubscribed()->post(
-            [
+            array(
                 'list_id' => $this->settings['default_list'],
                 'emails' => $emails,
-            ]
+            )
         );
     }
 
-    public function sync_group( $contact_ids = [] ) {
+    public function sync_group( $contact_ids = array() ) {
         if ( ! $this->is_active() ) {
             return;
         }
@@ -166,10 +166,10 @@ class Erp {
         wemail_set_owner_api_key( false );
 
         wemail()->api->sync()->subscribers()->erp()->sync_group()->post(
-            [
+            array(
                 'list_id' => $this->settings['default_list'],
                 'contact_ids' => $contact_ids,
-            ]
+            )
         );
     }
 
@@ -186,7 +186,7 @@ class Erp {
                 return array_merge(
                     wemail_array_only(
                         $contact,
-                        [
+                        array(
                             'first_name',
                             'last_name',
                             'email',
@@ -196,9 +196,9 @@ class Erp {
                             'state',
                             'country',
                             'date_of_birth',
-                        ]
+                        )
                     ),
-                    [ 'source' => 'erp' ]
+                    array( 'source' => 'erp' )
                 );
             },
             $contacts

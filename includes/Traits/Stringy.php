@@ -11,12 +11,11 @@ trait Stringy {
     public function underscored( $string ) {
         $trimmed = trim( $string );
 
-        $withUnderscores = preg_replace('/(?<!^)([A-Z])/', '_$1', $trimmed);
+        $with_underscores = preg_replace( '/(?<!^)([A-Z])/', '_$1', $trimmed );
 
-        $underscored = preg_replace('/[\s-]+/', '_', $withUnderscores);
+        $underscored = preg_replace( '/[\s-]+/', '_', $with_underscores );
 
-        return strtolower($underscored);
-
+        return strtolower( $underscored );
     }
 
     /**

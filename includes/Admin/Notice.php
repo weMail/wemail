@@ -21,12 +21,12 @@ class Notice {
      * Boot the notice
      */
     private function boot() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
     }
 
     public function enqueue_assets() {
         wp_register_style( 'wemail-admin-notice-style', WEMAIL_ASSETS . '/css/notice.css', false, filemtime( WEMAIL_PATH . '/assets/css/notice.css' ) );
-        wp_register_script( 'wemail-admin-notice-script', WEMAIL_ASSETS . '/js/admin-notice.js', [ 'jquery' ], filemtime( WEMAIL_PATH . '/assets/js/admin-notice.js' ), true );
+        wp_register_script( 'wemail-admin-notice-script', WEMAIL_ASSETS . '/js/admin-notice.js', array( 'jquery' ), filemtime( WEMAIL_PATH . '/assets/js/admin-notice.js' ), true );
 
         wp_enqueue_style( 'wemail-admin-notice-style' );
         wp_enqueue_script( 'wemail-admin-notice-script' );
@@ -72,9 +72,8 @@ class Notice {
             }
         }
         if ( ! get_user_meta( get_current_user_id(), 'wemail_api_key', true ) && (int) get_option( 'wemail_site_connection_notice' ) !== 1 && ! ( isset( $_GET['page'] ) && $_GET['page'] === 'wemail' ) ) {
-            add_action( 'admin_notices', [ $this, 'connect_notice_html' ] );
+            add_action( 'admin_notices', array( $this, 'connect_notice_html' ) );
         }
     }
-
 }
 

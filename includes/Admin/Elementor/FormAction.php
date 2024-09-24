@@ -43,10 +43,10 @@ class FormAction extends Action_Base {
             return;
         }
 
-        $data = [
+        $data = array(
             'source' => 'elementor',
             'list_id' => $settings['wemail_list'],
-        ];
+        );
 
         $field_maps = array_column( $settings['wemail_field_maps'], 'form_field_id', 'wemail_field' );
         $raw_fields = $record->get( 'fields' );
@@ -76,31 +76,31 @@ class FormAction extends Action_Base {
     public function register_settings_section( $widget ) {
         $widget->start_controls_section(
             'section_wemail',
-            [
+            array(
                 'label' => $this->get_label(),
-                'condition' => [
+                'condition' => array(
                     'submit_actions' => $this->get_name(),
-                ],
-            ]
+                ),
+            )
         );
 
         $widget->add_control(
             'wemail_list',
-            [
+            array(
                 'label' => __( 'weMail List ID', 'wemail' ),
                 'type' => Controls_Manager::TEXT,
-            ]
+            )
         );
 
         $repeater = new Repeater();
 
         $repeater->add_control(
             'wemail_field',
-            [
+            array(
                 'label' => __( 'weMail Field', 'wemail' ),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'email',
-                'options' => [
+                'options' => array(
                     'address1'          => __( 'Address 1', 'wemail' ),
                     'address2'          => __( 'Address 2', 'wemail' ),
                     'city'              => __( 'City', 'wemail' ),
@@ -115,28 +115,28 @@ class FormAction extends Action_Base {
                     'state'             => __( 'State', 'wemail' ),
                     'timezone'          => __( 'Timezone', 'wemail' ),
                     'zip'               => __( 'Zip', 'wemail' ),
-                ],
+                ),
                 'description'   => __( 'Select column of subscriber of weMail', 'wemail' ),
-            ]
+            )
         );
 
         $repeater->add_control(
-            'form_field_id', [
+            'form_field_id', array(
                 'label' => __( 'Form Field ID', 'wemail' ),
                 'type' => Controls_Manager::TEXT,
                 'default' => 'email',
                 'description'   => __( 'Form Fields > {Form Field} > Advanced > ID', 'wemail' ),
-            ]
+            )
         );
 
         $widget->add_control(
             'wemail_field_maps',
-            [
+            array(
                 'label' => __( 'Map Fields with weMail', 'wemail' ),
                 'type' => Controls_Manager::REPEATER,
                 'fields' => $repeater->get_controls(),
                 'title_field' => '{{{ wemail_field.split(\'_\').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ") }}}',
-            ]
+            )
         );
 
         $widget->end_controls_section();

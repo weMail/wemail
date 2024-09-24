@@ -57,7 +57,7 @@ class Products {
         $is_new = $post->post_date === $post->post_modified;
 
         if ( $is_new ) {
-            $new_arr = [
+            $new_arr = array(
                 'id'          => $product->get_id(),
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
@@ -68,10 +68,10 @@ class Products {
                 'rating'      => $product->get_average_rating(),
                 'permalink'   => get_permalink( $product->get_id() ),
                 'categories'  => $wc_products->get_product_categories( $product->get_id() ),
-            ];
+            );
             $this->product_request->store( $new_arr, $this->source );
         } else {
-            $update_arr = [
+            $update_arr = array(
                 'id'          => $product->get_id(),
                 'name'        => $product->get_name(),
                 'slug'        => $product->get_slug(),
@@ -82,7 +82,7 @@ class Products {
                 'rating'      => $product->get_average_rating(),
                 'permalink'   => get_permalink( $product->get_id() ),
                 'categories'  => $wc_products->get_product_categories( $product->get_id() ),
-            ];
+            );
             $this->product_request->update( $update_arr, $this->source );
         }
     }

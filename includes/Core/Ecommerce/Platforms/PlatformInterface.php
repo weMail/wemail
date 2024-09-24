@@ -9,11 +9,11 @@ interface PlatformInterface {
 
     public function currency_symbol();
 
-    public function products( array $args = []);
+    public function products( array $args = array() );
 
-    public function orders( array $args = [] );
+    public function orders( array $args = array() );
 
-    public function categories( array $args = [] );
+    public function categories( array $args = array() );
 
     public function register_hooks();
 

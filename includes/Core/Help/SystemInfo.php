@@ -23,7 +23,7 @@ class SystemInfo {
     public function allInfo() {
         $name = $this->wp->name( true );
 
-        return [
+        return array(
             'admin_email' => get_option( 'admin_email' ),
             'first_name'  => $name['first_name'],
             'last_name'   => $name['last_name'],
@@ -35,6 +35,6 @@ class SystemInfo {
             'server'      => $this->system->get_server_info(),
             'post_types'  => $this->wp->post_types(),
             'time_info'   => $this->wp->time_info(),
-        ];
+        );
     }
 }

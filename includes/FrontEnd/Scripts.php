@@ -18,24 +18,23 @@ class Scripts {
 
     public function enqueue_scripts() {
         if ( ! is_wemail_hmr_enable() ) {
-            wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/build/js/frontend-vendor.js', [ 'jquery' ], WEMAIL_VERSION, true );
-            wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/build/js/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend-vendor', wemail()->wemail_cdn . '/build/js/frontend-vendor.js', array( 'jquery' ), WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend', wemail()->wemail_cdn . '/build/js/frontend.js', array( 'wemail-frontend-vendor' ), WEMAIL_VERSION, true );
         } else {
             $hmr_host = wemail()->hmr_host();
 
-            wp_register_script( 'wemail-frontend-vendor', $hmr_host . '/src/js/frontend/frontend-vendor.js', [ 'jquery' ], WEMAIL_VERSION, true );
-            wp_register_script( 'wemail-frontend', $hmr_host . '/src/js/frontend/frontend.js', [ 'wemail-frontend-vendor' ], WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend-vendor', $hmr_host . '/src/js/frontend/frontend-vendor.js', array( 'jquery' ), WEMAIL_VERSION, true );
+            wp_register_script( 'wemail-frontend', $hmr_host . '/src/js/frontend/frontend.js', array( 'wemail-frontend-vendor' ), WEMAIL_VERSION, true );
         }
 
-        $wemail = [
+        $wemail = array(
             'restURL'   => untrailingslashit( get_rest_url( null, '/wemail/v1' ) ),
             'nonce'     => wp_create_nonce( 'wp_rest' ),
             'cdn'       => wemail()->wemail_cdn,
-        ];
+        );
 
         wp_localize_script( 'wemail-frontend-vendor', 'weMail', $wemail );
 
         WeMail::register_module_scripts();
     }
-
 }

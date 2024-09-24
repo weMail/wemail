@@ -58,7 +58,7 @@ function wemail_get_country_states( $country_code ) {
     if ( file_exists( $filename ) ) {
         return include $filename;
     } else {
-        return [];
+        return array();
     }
 }
 
@@ -70,7 +70,7 @@ function wemail_get_country_states( $country_code ) {
  * @return string
  */
 function wemail_get_wp_timezone() {
-    $timezone_map = [
+    $timezone_map = array(
         'UTC-12'    => 'Etc/GMT+12',
         'UTC-11.5'  => 'Pacific/Niue',
         'UTC-11'    => 'Pacific/Pago_Pago',
@@ -127,7 +127,7 @@ function wemail_get_wp_timezone() {
         'UTC+13'    => 'Pacific/Fiji',
         'UTC+13.75' => 'Pacific/Chatham',
         'UTC+14'    => 'Pacific/Tongatapu',
-    ];
+    );
 
     $current_offset = get_option( 'gmt_offset' );
     $tzstring = get_option( 'timezone_string' );
@@ -300,8 +300,8 @@ function is_erp_crm_active() {
  * @param  array  $keys [description]
  * @return [type]       [description]
  */
-function wemail_array_only( $arr, $keys = [] ) {
-    $new_arr = [];
+function wemail_array_only( $arr, $keys = array() ) {
+    $new_arr = array();
     foreach ( $keys as $key ) {
         if ( array_key_exists( $key, $arr ) ) {
             $new_arr[ $key ] = $arr[ $key ];

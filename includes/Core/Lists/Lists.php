@@ -17,7 +17,7 @@ class Lists {
      *
      * @return array
      */
-    public function all( $query = [] ) {
+    public function all( $query = array() ) {
         return wemail()->api->lists()->query( $query )->get();
     }
 

@@ -72,7 +72,7 @@ class AffiliateWp {
         }
 
         $post_data = $_POST; // phpcs:ignore
-        $payload = [];
+        $payload = array();
         if ( $post_data['status'] === 'active' ) {
             if ( isset( $post_data['affwp_user_name'] ) ) {
                 $name = explode( ' ', sanitize_text_field( $post_data['affwp_user_name'] ) );
@@ -83,19 +83,19 @@ class AffiliateWp {
                 $affiliate = affiliate_wp()->affiliates->get_by( 'affiliate_id', $affiliate_id );
                 $user_id = $affiliate->user_id;
 
-                $payload = [
+                $payload = array(
                     'first_name' => $first_name,
                     'last_name'  => $last_name,
                     'email'      => $email,
                     'wp_user_id' => $user_id,
-                ];
+                );
             } elseif ( isset( $post_data['email'] ) ) {
-                $payload = [
+                $payload = array(
                     'first_name' => $post_data['first_name'] ? $post_data['first_name'] : '',
                     'last_name'  => $post_data['last_name'] ? $post_data['last_name'] : '',
                     'email'      => $post_data['email'],
                     'wp_user_id' => $post_data['wp_user_id'] ? $post_data['wp_user_id'] : '',
-                ];
+                );
             } else {
                 $payload = $this->getPayloadForSpecificAffiliateID( $affiliate_id );
             }
@@ -125,12 +125,12 @@ class AffiliateWp {
         $last_name = isset( $name[1] ) ? $name[1] : '';
         $email = $user->user_email;
 
-        $payload = [
+        $payload = array(
             'first_name' => $first_name,
             'last_name'  => $last_name,
             'email'      => $email,
             'wp_user_id' => $user->ID,
-        ];
+        );
         return $payload;
     }
 }

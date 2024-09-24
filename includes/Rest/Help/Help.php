@@ -16,49 +16,49 @@ class Help extends RestController {
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/system-info',
-            [
-                [
+            array(
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'can_view_wemail' ],
-                    'callback'            => [ $this, 'index' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'can_view_wemail' ),
+                    'callback'            => array( $this, 'index' ),
+                ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/tools/ping/send',
-            [
-                [
+            array(
+                array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => [ $this, 'can_view_wemail' ],
-                    'callback'            => [ $this, 'send_ping' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'can_view_wemail' ),
+                    'callback'            => array( $this, 'send_ping' ),
+                ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/tools/ping/receive',
-            [
-                [
+            array(
+                array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => [ $this, 'can_view_wemail' ],
-                    'callback'            => [ $this, 'receive_ping' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'can_view_wemail' ),
+                    'callback'            => array( $this, 'receive_ping' ),
+                ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/tools/disconnect',
-            [
-                [
+            array(
+                array(
                     'methods'             => WP_REST_Server::DELETABLE,
-                    'permission_callback' => [ $this, 'manage_options' ],
-                    'callback'            => [ $this, 'disconnect_wemail' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'manage_options' ),
+                    'callback'            => array( $this, 'disconnect_wemail' ),
+                ),
+            )
         );
     }
 
@@ -70,9 +70,9 @@ class Help extends RestController {
         $system = new SystemInfo();
 
         return rest_ensure_response(
-            [
+            array(
                 'data' => $system->allInfo(),
-            ]
+            )
         );
     }
 
@@ -106,9 +106,9 @@ class Help extends RestController {
         delete_metadata( 'user', 0, 'wemail_user_data', '', true );
 
         return new \WP_REST_Response(
-            [
+            array(
 				'status' => 'success',
-			]
+			)
         );
     }
 }

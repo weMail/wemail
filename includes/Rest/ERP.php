@@ -45,24 +45,24 @@ class ERP extends RestController {
             return $is_erp_crm_active;
         }
 
-        $args = [
+        $args = array(
             'number'  => -1,
             'orderby' => 'created_at',
             'order'   => 'asc',
-        ];
+        );
 
         $items = erp_crm_get_contact_groups( $args );
 
-        $groups = [];
+        $groups = array();
 
         foreach ( $items as $item ) {
-            $groups[] = [
+            $groups[] = array(
                 'id'   => $item->id,
                 'name' => $item->name,
-            ];
+            );
         }
 
-        return rest_ensure_response( [ 'data' => $groups ] );
+        return rest_ensure_response( array( 'data' => $groups ) );
     }
 
     /**
@@ -97,7 +97,10 @@ class ERP extends RestController {
 
         $query = $db->table( 'erp_peoples as people' )
             ->select( 'people.*' )
-            ->leftJoin( "{$prefix}erp_people_type_relations as rel", function ( $join ) { $join->on( 'people.id', '=', 'rel.people_id' ); } )
+            ->leftJoin(
+                "{$prefix}erp_people_type_relations as rel", function ( $join ) {
+					$join->on( 'people.id', '=', 'rel.people_id' ); }
+            )
             ->where( 'rel.people_types_id', $type_id )
             ->whereNull( 'rel.deleted_at' );
 
@@ -113,7 +116,7 @@ class ERP extends RestController {
 
         $contacts = $query->orderBy( 'people.id', 'asc' )->get();
 
-        $subscriptions = [];
+        $subscriptions = array();
 
         if ( $contacts->count() ) {
             $contact_ids = $contacts->pluck( 'id' );
@@ -130,7 +133,7 @@ class ERP extends RestController {
                     if ( isset( $subscriptions[ $contact->id ] ) ) {
                         $contact->groups = $subscriptions[ $contact->id ];
                     } else {
-                        $contact->groups = [];
+                        $contact->groups = array();
                     }
 
                     return $contact;
@@ -139,9 +142,9 @@ class ERP extends RestController {
         }
 
         return rest_ensure_response(
-            [
+            array(
                 'data' => $contacts,
-            ]
+            )
         );
     }
 

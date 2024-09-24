@@ -27,7 +27,7 @@ class Settings {
      */
     public function get() {
         if ( is_null( $this->settings ) ) {
-            $this->settings = get_option( $this->option_name, [] );
+            $this->settings = get_option( $this->option_name, array() );
         }
 
         return $this->settings;

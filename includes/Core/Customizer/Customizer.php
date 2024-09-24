@@ -28,7 +28,7 @@ class Customizer {
      *
      * @var array
      */
-    public $content_types = [];
+    public $content_types = array();
 
     /**
      * Get all the data required for a customizer
@@ -65,18 +65,18 @@ class Customizer {
          * $social_network_title = wemail()->settings->social_networks->title();
          */
 
-        return [
+        return array(
             'siteURL'          => site_url( '/' ),
             'cdn'              => wemail()->wemail_cdn,
-            'contentTypes'     => [
+            'contentTypes'     => array(
                 'types'        => $this->content_types,
                 'settings'     => $this->get_content_type_settings(),
-            ],
+            ),
             'shortcodes'       => wemail()->shortcode->get(),
             'shortcodeImg'     => wemail()->wemail_cdn . '/images/shortcode.png',
             'placeholderImage' => wemail()->wemail_cdn . '/images/placeholder-image.png',
             'dividers'         => $this->dividers(),
-        ];
+        );
     }
 
     /**
@@ -105,58 +105,58 @@ class Customizer {
      * @return array
      */
     public function dividers() {
-        return [
+        return array(
             'baseURL' => wemail()->wemail_cdn . '/images/dividers/',
-            'images'  => [
-                [
+            'images'  => array(
+                array(
                     'name' => 'brush-stroke-lite.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'brush-stroke-orange.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'dotted-line.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'handwritten-swirl-black.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'handwritten-swirl-cayan.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'mail-ribbon.png',
                     'height' => '3px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'ornamental-1.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'ornamental-2.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'ornamental-3.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'shadow-1.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'shadow-2.png',
                     'height' => '24px',
-                ],
-                [
+                ),
+                array(
                     'name' => 'star.png',
                     'height' => '24px',
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
     }
 }

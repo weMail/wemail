@@ -14,7 +14,7 @@ class ProductResource extends JsonResource {
 
         $thumbnail = wp_get_attachment_image_url( $resource->get_image_id(), 'woocommerce_thumbnail' );
 
-        return [
+        return array(
             'id'         => (string) $resource->get_id(),
             'parent_id'  => (string) $resource->get_parent_id(),
             'name'       => $this->get_resource_name( $resource ),
@@ -24,7 +24,7 @@ class ProductResource extends JsonResource {
             'thumbnail'  => $thumbnail ? $thumbnail : null,
             'categories' => $resource->get_category_ids(),
             'source'     => 'woocommerce',
-        ];
+        );
     }
 
     /**

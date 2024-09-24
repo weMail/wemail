@@ -12,7 +12,7 @@ class OrderItemResource extends JsonResource {
     public function blueprint( $resource ) {
         $thumbnail = get_the_post_thumbnail_url( $resource['id'], 'thumbnail' );
 
-        return [
+        return array(
             'id'         => (string) $resource['id'],
             'parent_id'  => null,
             'name'       => $resource['name'],
@@ -21,7 +21,7 @@ class OrderItemResource extends JsonResource {
             'thumbnail'  => $thumbnail ? $thumbnail : null,
             'categories' => $this->get_categories( $resource['id'] ),
             'permalink'  => get_permalink( $resource['id'] ),
-        ];
+        );
     }
 
     protected function get_categories( $id ) {
@@ -30,7 +30,7 @@ class OrderItemResource extends JsonResource {
         return array_map(
             function ( $term ) {
                 return $term->term_id;
-            }, is_array( $terms ) ? $terms : []
+            }, is_array( $terms ) ? $terms : array()
         );
     }
 }

@@ -9,106 +9,106 @@ class Shortcode {
     use Singleton;
 
     public function get( $type = '' ) {
-        $shortcodes = [];
+        $shortcodes = array();
 
-        $shortcodes['subscriber'] = [
+        $shortcodes['subscriber'] = array(
             'title' => __( 'Subscriber', 'wemail' ),
-            'codes' => [
-                'first_name'        => [
+            'codes' => array(
+                'first_name'        => array(
                     'title' => __( 'First Name', 'wemail' ),
                     'default' => 'reader',
-                ],
-                'last_name'         => [
+                ),
+                'last_name'         => array(
                     'title' => __( 'Last Name', 'wemail' ),
                     'default' => 'reader',
-                ],
-                'email'             => [
+                ),
+                'email'             => array(
                     'title' => __( 'Email', 'wemail' ),
                     'placeholder' => 'recipient@example.com',
-                ],
-                'date_of_birth'     => [
+                ),
+                'date_of_birth'     => array(
                     'title' => __( 'Date of Birth', 'wemail' ),
                     'placeholder' => 'MM/DD/YYYY',
-                ],
-                'source'            => [
+                ),
+                'source'            => array(
                     'title' => __( 'Source', 'wemail' ),
                     'placeholder' => '',
-                ],
-                'phone'             => [
+                ),
+                'phone'             => array(
                     'title' => __( 'Phone', 'wemail' ),
                     'placeholder' => '8801000000000',
-                ],
-                'mobile'            => [
+                ),
+                'mobile'            => array(
                     'title' => __( 'Mobile', 'wemail' ),
                     'placeholder' => '8801000000000',
-                ],
-                'address'           => [
+                ),
+                'address'           => array(
                     'title' => __( 'Address', 'wemail' ),
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
 
-        $shortcodes['date'] = [
+        $shortcodes['date'] = array(
             'title' => __( 'Date', 'wemail' ),
-            'codes' => [
-                'current_date'              => [
+            'codes' => array(
+                'current_date'              => array(
                     'title' => __( 'Current date', 'wemail' ),
-                ],
-                'current_day_full_name'     => [
+                ),
+                'current_day_full_name'     => array(
                     'title' => __( 'Full name of current day', 'wemail' ),
-                ],
-                'current_day_short_name'    => [
+                ),
+                'current_day_short_name'    => array(
                     'title' => __( 'Short name of current day', 'wemail' ),
-                ],
-                'current_month_number'      => [
+                ),
+                'current_month_number'      => array(
                     'title' => __( 'Current Month number', 'wemail' ),
-                ],
-                'current_month_full_name'   => [
+                ),
+                'current_month_full_name'   => array(
                     'title' => __( 'Full name of current month', 'wemail' ),
-                ],
-                'current_month_short_name'  => [
+                ),
+                'current_month_short_name'  => array(
                     'title' => __( 'Short name of current month', 'wemail' ),
-                ],
-                'year'                      => [
+                ),
+                'year'                      => array(
                     'title' => __( 'Year', 'wemail' ),
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
 
-        $shortcodes['company'] = [
+        $shortcodes['company'] = array(
             'title' => __( 'Company', 'wemail' ),
-            'codes' => [
-                'name'      => [
+            'codes' => array(
+                'name'      => array(
                     'title' => __( 'Name', 'wemail' ),
-                ],
-                'address'   => [
+                ),
+                'address'   => array(
                     'title' => __( 'Mailing Address', 'wemail' ),
-                ],
-                'phone'     => [
+                ),
+                'phone'     => array(
                     'title' => __( 'Phone', 'wemail' ),
-                ],
-                'mobile'    => [
+                ),
+                'mobile'    => array(
                     'title' => __( 'Mobile', 'wemail' ),
-                ],
-                'website'   => [
+                ),
+                'website'   => array(
                     'title' => __( 'Website', 'wemail' ),
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
 
-        $shortcodes['links'] = [
+        $shortcodes['links'] = array(
             'title' => __( 'Links', 'wemail' ),
-            'codes' => [
-                'unsubscribe'       => [
+            'codes' => array(
+                'unsubscribe'       => array(
                     'title' => __( 'Unsubscribe Link', 'wemail' ),
                     'text' => __( 'Unsubscribe', 'wemail' ),
-                ],
-                'archive'           => [
+                ),
+                'archive'           => array(
                     'title' => __( 'Email Archive Link', 'wemail' ),
                     'text' => __( 'View this email in your browser', 'wemail' ),
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
 
         if ( ! empty( $type ) && ! empty( $shortcodes[ $type ] ) ) {
             return $shortcodes[ $type ];
@@ -116,5 +116,4 @@ class Shortcode {
 
         return $shortcodes;
     }
-
 }

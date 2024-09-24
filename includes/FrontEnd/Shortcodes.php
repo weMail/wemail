@@ -12,7 +12,7 @@ class Shortcodes {
      * @return void
      */
     public function __construct() {
-        add_shortcode( 'wemail_form', [ $this, 'form' ] );
+        add_shortcode( 'wemail_form', array( $this, 'form' ) );
     }
 
     /**
@@ -33,6 +33,4 @@ class Shortcodes {
 
         return wemail_form( $id );
     }
-
 }
-

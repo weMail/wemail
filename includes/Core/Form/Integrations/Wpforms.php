@@ -50,25 +50,25 @@ class Wpforms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $wpforms = wpforms()->form->get();
 
         if ( ! empty( $wpforms ) ) {
             foreach ( $wpforms as $wpform ) {
-                $form = [
+                $form = array(
                     'id' => $wpform->ID,
                     'title' => $wpform->post_title,
-                    'fields' => [],
-                ];
+                    'fields' => array(),
+                );
 
                 $wpform_fields = wpforms_get_form_fields( $wpform );
 
                 foreach ( $wpform_fields as $wpform_field ) {
-                    $form['fields'][] = [
+                    $form['fields'][] = array(
                         'id' => $wpform_field['id'],
                         'label' => $wpform_field['label'],
-                    ];
+                    );
                 }
 
                 $forms[] = $form;
@@ -93,15 +93,15 @@ class Wpforms extends AbstractIntegration {
     public function submit( $fields, $entry, $form_data, $entry_id ) {
         $form_id = $this->cast_form_id( $form_data['id'] );
 
-        $settings = get_option( 'wemail_form_integration_wpforms', [] );
+        $settings = get_option( 'wemail_form_integration_wpforms', array() );
 
         if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id' => $form_id,
-        ];
+        );
 
         foreach ( $fields as $field ) {
             $data['data'][ $field['id'] ] = $field['value'];
@@ -112,5 +112,4 @@ class Wpforms extends AbstractIntegration {
             wemail()->api->forms()->integrations( 'wpforms' )->submit()->post( $data );
         }
     }
-
 }

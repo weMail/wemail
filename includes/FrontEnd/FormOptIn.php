@@ -20,7 +20,7 @@ class FormOptIn {
 
         $this->settings = get_option(
             'wemail_general',
-            [
+            array(
                 'registration_enabled' => false,
                 'registration_label'   => '',
                 'registration_list_id' => '',
@@ -32,7 +32,7 @@ class FormOptIn {
                 'comment_list_id'      => '',
                 'form_in_blogs'        => false,
                 'subscription_form_id' => '',
-            ]
+            )
         );
 
         $this->registration_hooks();
@@ -123,10 +123,10 @@ class FormOptIn {
      * @return mixed
      */
     public function add_subscribe_field_woocommerce_billing_form( $fields ) {
-        $fields['wemail_form_opt_in'] = [
+        $fields['wemail_form_opt_in'] = array(
             'type'  => 'checkbox',
             'label' => $this->settings['woocommerce_label'],
-        ];
+        );
 
         return $fields;
     }
@@ -140,10 +140,10 @@ class FormOptIn {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( isset( $_POST['wemail_form_opt_in'] ) ) {
             wemail()->subscriber->createOrUpdate(
-                [
+                array(
                     'email'   => filter_input( INPUT_POST, 'user_email', FILTER_VALIDATE_EMAIL ),
                     'list_id' => $this->settings['registration_list_id'],
-                ]
+                )
             );
         }
     }
@@ -156,10 +156,10 @@ class FormOptIn {
     public function save_subscriber_from_comment( $comment_id ) {
         // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( isset( $_POST['wemail_form_opt_in'] ) ) {
-            $data = [
+            $data = array(
                 'list_id' => $this->settings['comment_list_id'],
                 'email'   => get_comment_author_email( $comment_id ),
-            ];
+            );
 
             $name = explode( ' ', get_comment_author( $comment_id ), 2 );
 
@@ -184,7 +184,7 @@ class FormOptIn {
             $order = wc_get_order( $order_id );
 
             wemail()->subscriber->createOrUpdate(
-                [
+                array(
                     'first_name' => $order->get_billing_first_name(),
                     'last_name'  => $order->get_billing_last_name(),
                     'email'      => $order->get_billing_email(),
@@ -196,7 +196,7 @@ class FormOptIn {
                     'country'    => $order->get_billing_country(),
                     'zip'        => $order->get_billing_postcode(),
                     'list_id'    => $this->settings['woocommerce_list_id'],
-                ]
+                )
             );
         }
     }

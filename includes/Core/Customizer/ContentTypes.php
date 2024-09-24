@@ -25,7 +25,7 @@ class ContentTypes {
     public static function get_content_type_settings( $context ) {
         self::$image_dir = wemail()->wemail_cdn . '/images/content-types';
 
-        $settings = [
+        $settings = array(
             'text'          => self::text(),
             'image'         => self::image(),
             'imageCaption'  => self::image_caption(),
@@ -37,7 +37,7 @@ class ContentTypes {
             'countdown'     => self::countdown(),
             'wooProducts'   => self::woo_commerce_product(),
             'giphy'         => self::giphy(),
-        ];
+        );
 
         /**
          * Filter for weMail customizer content type settings
@@ -59,12 +59,12 @@ class ContentTypes {
      * @return array
      */
     public static function text() {
-        return [
+        return array(
             'type'       => 'text',
             'title'      => __( 'Text', 'wemail' ),
             'image'      => self::$image_dir . '/text.svg',
-            'default'    => [
-                'style'      => [
+            'default'    => array(
+                'style'      => array(
                     'backgroundColor' => '#ffffff',
                     'color'           => '',
                     'paddingTop'      => '15px',
@@ -75,16 +75,16 @@ class ContentTypes {
                     'borderStyle'     => 'solid',
                     'borderColor'     => '#e5e5e5',
                     'marginBottom'    => '0px',
-                ],
+                ),
                 'twoColumns' => false,
-                'texts'      => [
+                'texts'      => array(
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                     sprintf( '<p>%s</p>', __( 'This is a text block 2. You can use it to add text to your template.', 'wemail' ) ),
-                ],
+                ),
                 'columnSplit' => '1-1', // 1-1, 1-2, 2-1
                 'valign'     => 'top',
-            ],
-        ];
+            ),
+        );
     }
 
     /**
@@ -95,12 +95,12 @@ class ContentTypes {
      * @return array
      */
     public static function image() {
-        return [
+        return array(
             'type'    => 'image',
             'title'   => __( 'Image', 'wemail' ),
             'image'   => self::$image_dir . '/image.svg',
-            'default' => [
-                'style'  => [
+            'default' => array(
+                'style'  => array(
                     'backgroundColor' => '#ffffff',
                     'paddingTop'      => '15px',
                     'paddingBottom'   => '15px',
@@ -111,17 +111,17 @@ class ContentTypes {
                     'borderColor'     => '#e5e5e5',
                     'marginBottom'    => '0px',
                     'textAlign'       => 'center',
-                ],
-                'images' => [
-                    [
+                ),
+                'images' => array(
+                    array(
                         'alt' => '',
                         'src' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                         'link' => '',
                         'openAttrEditor' => '',
-                    ],
-                ],
-            ],
-        ];
+                    ),
+                ),
+            ),
+        );
     }
 
     /**
@@ -132,12 +132,12 @@ class ContentTypes {
      * @return array
      */
     public static function image_caption() {
-        return [
+        return array(
             'type'        => 'imageCaption',
             'title'       => __( 'Image Caption', 'wemail' ),
             'image'       => self::$image_dir . '/image-caption.svg',
-            'default'     => [
-                'style'       => [
+            'default'     => array(
+                'style'       => array(
                     'backgroundColor'       => '#ffffff',
                     'color'                 => '',
                     'padding'               => '15px',
@@ -145,37 +145,37 @@ class ContentTypes {
                     'borderColor'           => '#e5e5e5',
                     'marginBottom'          => '0px',
                     'textAlign'             => 'center',
-                    'text'  => [
+                    'text'  => array(
                         'paddingTop'        => '0px',
                         'paddintRight'      => '0px',
                         'paddintBottom'     => '0px',
                         'paddintLeft'       => '0px',
-                    ],
-                ],
-                'captions'    => [
-                    [
+                    ),
+                ),
+                'captions'    => array(
+                    array(
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
-                        'image' => [
+                        'image' => array(
                             'alt' => '',
                             'src' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                             'link' => '',
                             'openAttrEditor' => '',
-                        ],
-                    ],
-                    [
+                        ),
+                    ),
+                    array(
                         'text' => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
-                        'image' => [
+                        'image' => array(
                             'alt' => '',
                             'src' => wemail()->wemail_cdn . '/images/placeholder-image-full.png',
                             'link' => '',
                             'openAttrEditor' => '',
-                        ],
-                    ],
-                ],
+                        ),
+                    ),
+                ),
                 'twoCaptions' => false,
                 'capPosition' => 'bottom',
-            ],
-        ];
+            ),
+        );
     }
 
     /**
@@ -202,12 +202,12 @@ class ContentTypes {
             $website = $company['data']['website'];
         }
 
-        return [
+        return array(
             'type'       => 'socialFollow',
             'title'      => __( 'Social Follow', 'wemail' ),
             'image'      => self::$image_dir . '/social-follow.svg',
-            'default'    => [
-                'style'      => [
+            'default'    => array(
+                'style'      => array(
                     'backgroundColor'       => '#ffffff',
                     'color'                 => '',
                     'padding'               => '15px',
@@ -218,31 +218,31 @@ class ContentTypes {
                     'textTransform'         => 'none',
                     'textAlign'             => 'center',
                     'marginBottom'          => '0px',
-                ],
+                ),
                 'iconStyle'  => 'solid-color',
                 'iconMargin' => '15px',
                 'display'    => 'both', // icon/text/both
                 'layout'     => 'horizontal', // vertical/horizontal
                 'size'       => 'default', // default/large
-                'icons'      => [
-                    [
+                'icons'      => array(
+                    array(
                         'site' => 'facebook',
                         'link' => $facebook,
                         'text' => 'Facebook',
-                    ],
-                    [
+                    ),
+                    array(
                         'site' => 'X',
                         'link' => $x,
                         'text' => 'X',
-                    ],
-                    [
+                    ),
+                    array(
                         'site' => 'website',
                         'link' => $website,
                         'text' => 'Website',
-                    ],
-                ],
-            ],
-        ];
+                    ),
+                ),
+            ),
+        );
     }
 
     /**
@@ -253,14 +253,14 @@ class ContentTypes {
      * @return array
      */
     public static function button() {
-        return [
+        return array(
             'type'      => 'button',
             'title'     => __( 'Button', 'wemail' ),
             'image'     => self::$image_dir . '/button.svg',
-            'default'   => [
-                'buttons' => [
-                    [
-                        'style' => [
+            'default'   => array(
+                'buttons' => array(
+                    array(
+                        'style' => array(
                             'display'         => 'inline-block',
                             'paddingTop'      => '18px',
                             'paddingRight'    => '65px',
@@ -279,20 +279,20 @@ class ContentTypes {
                             'borderWidth'     => '0px',
                             'borderStyle'     => 'solid',
                             'borderColor'     => '#e5e5e5',
-                        ],
+                        ),
                         'text'                => __( 'Button Text', 'wemail' ),
                         'href'                => site_url( '/' ),
                         'title'               => '',
-                    ],
-                ],
-                'containerStyle' => [
+                    ),
+                ),
+                'containerStyle' => array(
                     'textAlign'       => 'center',
                     'backgroundColor' => '#ffffff',
                     'padding'         => '18px',
                     'marginBottom'    => '0px',
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
     }
 
     /**
@@ -303,75 +303,75 @@ class ContentTypes {
      * @return array
      */
     public static function divider() {
-        return [
+        return array(
             'type'            => 'divider',
             'title'           => __( 'Divider', 'wemail' ),
             'image'           => self::$image_dir . '/divider.svg',
-            'default'         => [
+            'default'         => array(
                 'dividerType'    => 'line',
-                'containerStyle' => [
+                'containerStyle' => array(
                     'padding'         => '15px',
                     'backgroundColor' => '#ffffff',
                     'marginBottom'    => '0px',
-                ],
-                'style' => [
+                ),
+                'style' => array(
                     'width'           => '100%',
                     'borderTopWidth'  => '2px',
                     'borderTopStyle'  => 'dashed',
                     'borderTopColor'  => '#e5e5e5',
                     'margin'          => '0 auto',
-                ],
-                'image'     => [
+                ),
+                'image'     => array(
                     'image' => wemail()->wemail_cdn . '/images/dividers/brush-stroke-lite.png',
-                    'style' => [
+                    'style' => array(
                         'height' => '7px',
                         'width'  => '100%',
-                    ],
-                ],
-            ],
+                    ),
+                ),
+            ),
             'noStyleTab' => true,
-        ];
+        );
     }
 
     public static function video() {
-        return [
+        return array(
             'type'      => 'video',
             'title'     => __( 'Video', 'wemail' ),
             'image'     => self::$image_dir . '/video.svg',
-            'default'   => [
-                'style' => [
+            'default'   => array(
+                'style' => array(
                     'backgroundColor' => 'transparent',
                     'padding'         => '15px',
                     'borderWidth'     => '0px',
                     'borderStyle'     => 'solid',
                     'borderColor'     => '#e5e5e5',
                     'textAlign'       => 'center',
-                ],
-                'textStyle' => [
+                ),
+                'textStyle' => array(
                     'backgroundColor' => '#333333',
                     'fontSize'        => '14px',
                     'color'           => '#ffffff',
                     'textAlign'       => 'center',
                     'padding'         => '15px',
-                ],
-                'video' => [
+                ),
+                'video' => array(
                     'link'           => '',
                     'image'          => '',
                     'alt'            => '',
-                ],
+                ),
                 'text'        => sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
                 'capPosition' => 'bottom',
-            ],
-        ];
+            ),
+        );
     }
 
     public static function footer() {
-        return [
+        return array(
             'type'       => 'footer',
             'title'      => __( 'Footer', 'wemail' ),
             'image'      => self::$image_dir . '/footer.svg',
-            'default'    => [
-                'style'      => [
+            'default'    => array(
+                'style'      => array(
                     'backgroundColor' => '#ffffff',
                     'color'           => '',
                     'paddingTop'      => '15px',
@@ -382,16 +382,16 @@ class ContentTypes {
                     'borderStyle'     => 'solid',
                     'borderColor'     => '#e5e5e5',
                     'marginBottom'    => '0px',
-                ],
+                ),
                 'twoColumns' => false,
-                'texts'      => [
+                'texts'      => array(
                     '<p style="text-align: center;"><span style="font-size: 12px;">This email was sent to [subscriber:email] because you have opted in to receive specific updates on our website.</span></p><p style="text-align: center;"><span style="font-size: 12px;">If you would prefer not to receive any email from us in the future, please [links:unsubscribe text="click here to unsubscribe"].</span></p><p style="text-align: center;"><span style="font-size: 12px;"><strong>Our mailing address</strong></span><br /><span style="font-size: 12px;"> [company:name]</span><br /><span style="font-size: 12px;"> [company:address]</span></p><p style="text-align: center;"><span style="font-size: 12px;">Copyright © [date:year] [company:name], All rights reserved.</span></p>',
                     sprintf( '<p>%s</p>', __( 'This is a text block. You can use it to add text to your template.', 'wemail' ) ),
-                ],
+                ),
                 'columnSplit' => '1-1',
                 'valign'     => 'top',
-            ],
-        ];
+            ),
+        );
     }
 
     /**
@@ -402,41 +402,41 @@ class ContentTypes {
     public static function countdown() {
         $api_url = parse_url( wemail()->wemail_api );
 
-        return [
+        return array(
             'type'       => 'countdown',
             'title'      => __( 'Countdown', 'wemail' ),
             'image'      => self::$image_dir . '/countdown.svg',
-            'default'    => [
-                'containerStyle' => [
+            'default'    => array(
+                'containerStyle' => array(
                     'textAlign'       => 'center',
                     'backgroundColor' => '#ffffff',
                     'padding'         => '18px',
                     'marginBottom'    => '0px',
-                ],
-                'label'      => [
+                ),
+                'label'      => array(
                     'days'      => 'Days',
                     'hours'     => 'Hours',
                     'minutes'   => 'Minutes',
                     'seconds'   => 'Seconds',
-                ],
-                'query' => [
+                ),
+                'query' => array(
                     'date'      => '',
                     'time'      => '',
                     'weight'    => 'regular',
                     'timezone'  => '',
-                ],
+                ),
                 'isLabelShow'   => false,
-                'fontWeights'   => [
+                'fontWeights'   => array(
                     'light'    => __( 'Light', 'wemail' ),
                     'regular'  => __( 'Regular', 'wemail' ),
                     'semibold' => __( 'Semibold', 'wemail' ),
                     'bold'     => __( 'Bold', 'wemail' ),
-                ],
+                ),
                 'imageBasePath' => $api_url['scheme'] . '://' . $api_url['host'],
                 'timezones' => timezone_identifiers_list(),
-            ],
+            ),
             'noStyleTab'       => true,
-        ];
+        );
     }
 
     /**
@@ -445,43 +445,43 @@ class ContentTypes {
      * @return array
      */
     public static function woo_commerce_product() {
-        return [
+        return array(
             'type'      => 'wooProducts',
             'title'     => __( 'Woo Products', 'wemail' ),
             'image'     => self::$image_dir . '/woo-commerce-product.svg',
-            'default'   => [
-                'products'         => [],
-                'rowStyle'         => [
-                    'options'      => [
-                        [
+            'default'   => array(
+                'products'         => array(),
+                'rowStyle'         => array(
+                    'options'      => array(
+                        array(
                             'title' => __( 'Grid', 'wemail' ),
                             'value' => 'grid',
-                        ],
-                        [
+                        ),
+                        array(
                             'title' => __( 'List', 'wemail' ),
                             'value' => 'list',
-                        ],
-                    ],
+                        ),
+                    ),
                     'value'        => 'list',
-                ],
-                'containerStyle'   => [
+                ),
+                'containerStyle'   => array(
                     'textAlign'       => 'left',
                     'backgroundColor' => '#ffffff',
                     'padding'         => '18px',
                     'marginBottom'    => '0px',
                     'color'           => '#2c3e50',
-                ],
-                'list' => [
+                ),
+                'list' => array(
                     'imageWidth' => '40%',
-                ],
-                'grid' => [
+                ),
+                'grid' => array(
                     'products' => 2,
-                ],
-                'content' => [
+                ),
+                'content' => array(
                     'valign' => 'top',
-                ],
-                'product' => [
-                    'image' => [
+                ),
+                'product' => array(
+                    'image' => array(
                         'padding'           => '0px',
                         'borderColor'       => '#0073aa',
                         'borderWidth'       => '0px',
@@ -490,43 +490,43 @@ class ContentTypes {
                         'backgroundColor'   => '#fff',
                         'marginBottom'      => '12px',
                         'maxWidth'          => '100%',
-                    ],
+                    ),
                     'borderSpacingTopBottom' => '20',
                     'borderSpacingLeftRight' => '20',
-                    'star' => [
+                    'star' => array(
                         'isShow'       => 'on',
                         'color'        => '#fbd233',
                         'size'         => '18px',
                         'marginBottom' => '3px',
-                    ],
-                    'description' => [
+                    ),
+                    'description' => array(
                         'show' => 'on',
                         'mode'  => 'description',
-                        'style' => [
+                        'style' => array(
                             'color'         => '#4F5055',
                             'fontSize'      => '14px',
                             'marginBottom'  => '8px',
                             'textTransform' => 'initial',
-                        ],
-                    ],
-                    'title' => [
-                        'style' => [
+                        ),
+                    ),
+                    'title' => array(
+                        'style' => array(
                             'fontSize'       => '20px',
                             'color'          => '#4F5055',
                             'textTransform' => 'initial',
                             'marginBottom'   => '5px',
-                        ],
-                    ],
-                    'price' => [
-                        'style' => [
+                        ),
+                    ),
+                    'price' => array(
+                        'style' => array(
                             'color'         => '#4F5055',
                             'fontSize'      => '14px',
                             'marginBottom'  => '0px',
-                        ],
-                    ],
-                    'button' => [
+                        ),
+                    ),
+                    'button' => array(
                         'text'  => __( 'Read More', 'wemail' ),
-                        'style' => [
+                        'style' => array(
                             'color'             => '#fff',
                             'backgroundColor'   => '#1E73BE',
                             'fontSize'          => '14px',
@@ -541,11 +541,11 @@ class ContentTypes {
                             'display'           => 'inline-block',
                             'textTransform'     => 'initial',
                             'marginBottom'      => '5px',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+                        ),
+                    ),
+                ),
+            ),
+        );
     }
 
     /**
@@ -554,14 +554,14 @@ class ContentTypes {
      * @return array
      */
     public static function giphy() {
-        return [
+        return array(
             'type'      => 'giphy',
             'title'     => __( 'Giphy', 'wemail' ),
             'image'     => self::$image_dir . '/giphy.svg',
-            'default'   => [
-                'image' => (object) [],
+            'default'   => array(
+                'image' => (object) array(),
                 'size'  => 'fixed_height_small',
-                'style' => [
+                'style' => array(
                     'borderStyle' => 'solid',
                     'borderWidth' => '0px',
                     'borderColor' => '#eee',
@@ -571,14 +571,14 @@ class ContentTypes {
                     'paddingRight' => '5px',
                     'backgroundColor' => '#fff',
                     'maxWidth' => '100%',
-                ],
-                'containerStyle' => [
+                ),
+                'containerStyle' => array(
                     'textAlign'       => 'center',
                     'backgroundColor' => '#ffffff',
                     'marginBottom'    => '0px',
-                ],
-            ],
+                ),
+            ),
             'noSettingsTab' => true,
-        ];
+        );
     }
 }

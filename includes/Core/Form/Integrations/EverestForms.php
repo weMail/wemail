@@ -49,27 +49,27 @@ class EverestForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $query = new WP_Query(
-            [
+            array(
                 'post_type' => 'everest_form',
                 'post_per_page' => -1,
-            ]
+            )
         );
         while ( $query->have_posts() ) {
             $query->the_post();
             global $post;
 
-            $forms[] = [
+            $forms[] = array(
                 'id' => absint( $post->ID ),
                 'title' => $post->post_title,
                 'fields' => $this->get_fields( $post ),
-            ];
+            );
         }
 
         return array_filter(
-            $forms, function( $form ) {
+            $forms, function ( $form ) {
 				return ! empty( $form['fields'] );
 			}
         );
@@ -80,7 +80,7 @@ class EverestForms extends AbstractIntegration {
      * @return mixed
      */
     public function get_fields( $post ) {
-        $fields = [];
+        $fields = array();
 
         $content = json_decode( $post->post_content );
 
@@ -90,10 +90,10 @@ class EverestForms extends AbstractIntegration {
 
         $get_columns = get_object_vars( $content->form_fields );
         foreach ( $get_columns as $get_column ) {
-            $fields[] = [
+            $fields[] = array(
                 'id' => $get_column->id,
                 'label' => $get_column->label,
-            ];
+            );
         }
 
         return $fields;
@@ -108,21 +108,20 @@ class EverestForms extends AbstractIntegration {
     public function submit( $data, $entry ) {
         $this->data = $entry['form_fields'];
 
-        $settings = get_option( 'wemail_form_integration_everest_forms', [] );
+        $settings = get_option( 'wemail_form_integration_everest_forms', array() );
 
 		if ( ! in_array( (int) $entry['id'], $settings, true ) ) {
 			return;
 		}
 
-        $entities = [
+        $entities = array(
             'id' => $entry['id'],
             'data' => $this->data,
-        ];
+        );
 
         if ( ! empty( $entities['data'] ) ) {
             wemail_set_owner_api_key();
             wemail()->api->forms()->integrations( 'everest_forms' )->submit()->post( $entities );
         }
     }
-
 }
