@@ -40,10 +40,9 @@ class Menu {
      */
     public function register_submenu( $menu_items, $capability ) {
         if ( wemail()->user->can( 'view_list' ) ) {
-            $menu_items[] = [ __( 'Suppressions', 'wemail' ), $capability, 'admin.php?page=wemail#/suppression-lists' ];
+            $menu_items[] = array( __( 'Suppressions', 'wemail' ), $capability, 'admin.php?page=wemail#/suppression-lists' );
         }
 
         return $menu_items;
     }
-
 }

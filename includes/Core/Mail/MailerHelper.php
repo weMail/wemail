@@ -43,7 +43,7 @@ trait MailerHelper {
         global $wpdb;
 
         if ( empty( $attachments ) ) {
-            return [];
+            return array();
         }
 
         $attachments = array_map(

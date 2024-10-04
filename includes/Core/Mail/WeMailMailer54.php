@@ -16,7 +16,7 @@ class WeMailMailer54 extends PHPMailer {
         $response = $this->attemptToSend();
 
         if ( is_wp_error( $response ) ) {
-            throw new \phpmailerException( $response->get_error_message() );
+            throw new \phpmailerException( esc_html( $response->get_error_message() ) );
         }
 
         if ( isset( $response['success'] ) && ! wemail_validate_boolean( $response['success'] ) ) {

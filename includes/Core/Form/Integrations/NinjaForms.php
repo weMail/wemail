@@ -52,7 +52,7 @@ class NinjaForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $nf = Ninja_Forms();
         $nf_forms = $nf->form()->get_forms();
@@ -62,20 +62,20 @@ class NinjaForms extends AbstractIntegration {
             $form_settings = $nform->get_settings();
             $fields = $nf->form( $form_id )->get_fields();
 
-            $form = [
+            $form = array(
                 'id'     => $form_id,
                 'title'  => $form_settings['title'],
-                'fields' => [],
-            ];
+                'fields' => array(),
+            );
 
             foreach ( $fields as $field ) {
                 $field_id = $field->get_id();
                 $field_settings = $field->get_settings();
 
-                $form['fields'][] = [
+                $form['fields'][] = array(
                     'id'    => $field_id,
                     'label' => $field_settings['label'],
-                ];
+                );
             }
 
             $forms[] = $form;
@@ -98,15 +98,15 @@ class NinjaForms extends AbstractIntegration {
 
         $form_id = $this->cast_form_id( $submission->get_form_id() );
 
-        $settings = get_option( 'wemail_form_integration_ninja_forms', [] );
+        $settings = get_option( 'wemail_form_integration_ninja_forms', array() );
 
         if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id' => $form_id,
-        ];
+        );
 
         $field_values = $submission->get_field_values();
 
@@ -125,5 +125,4 @@ class NinjaForms extends AbstractIntegration {
             wemail()->api->forms()->integrations( 'ninja-forms' )->submit()->post( $data );
         }
     }
-
 }

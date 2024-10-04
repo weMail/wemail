@@ -40,7 +40,7 @@ class Menu {
      */
     public function register_submenu( $menu_items, $capability ) {
         if ( wemail()->user->can( 'manage_settings' ) ) {
-            $menu_items[] = [ __( 'Integrations', 'wemail' ), $capability, 'admin.php?page=wemail#/integrations' ];
+            $menu_items[] = array( __( 'Integrations', 'wemail' ), $capability, 'admin.php?page=wemail#/integrations' );
         }
 
         return $menu_items;

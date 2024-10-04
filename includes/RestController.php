@@ -176,7 +176,7 @@ abstract class RestController extends WP_REST_Controller {
      *
      * @return \WP_REST_Response
      */
-    public function respond( $data = null, $status = self::HTTP_OK, $headers = [] ) {
+    public function respond( $data = null, $status = self::HTTP_OK, $headers = array() ) {
         return new WP_REST_Response( $data, $status, $headers );
     }
 
@@ -192,11 +192,11 @@ abstract class RestController extends WP_REST_Controller {
      *
      * @return \WP_Error
      */
-    public function respond_error( $message = '', $code = '', $status = self::HTTP_UNPROCESSABLE_ENTITY, $args = [] ) {
+    public function respond_error( $message = '', $code = '', $status = self::HTTP_UNPROCESSABLE_ENTITY, $args = array() ) {
         $code = ! empty( $code ) ? $code : 'unprocessable_error';
-        $data = [ 'status' => $status ];
+        $data = array( 'status' => $status );
 
-        $data['data'] = ! empty( $args['data'] ) ? $args['data'] : [];
+        $data['data'] = ! empty( $args['data'] ) ? $args['data'] : array();
 
         return new WP_Error( $code, $message, $data );
     }
@@ -279,13 +279,13 @@ abstract class RestController extends WP_REST_Controller {
         register_rest_route(
             $this->namespace,
             '/' . $route,
-            [
-                [
+            array(
+                array(
                     'methods'             => $methods,
-                    'callback'            => [ $this, $callback ],
-                    'permission_callback' => [ $this, $permission_cb ],
-                ],
-            ]
+                    'callback'            => array( $this, $callback ),
+                    'permission_callback' => array( $this, $permission_cb ),
+                ),
+            )
         );
     }
 
@@ -307,11 +307,11 @@ abstract class RestController extends WP_REST_Controller {
 
         if ( ! empty( $api_key ) ) {
             $query = new WP_User_Query(
-                [
+                array(
                     'fields'        => 'ID',
                     'meta_key'      => 'wemail_api_key',
                     'meta_value'    => $api_key,
-                ]
+                )
             );
 
             if ( $query->get_total() ) {
@@ -343,5 +343,4 @@ abstract class RestController extends WP_REST_Controller {
 
         return preg_replace( $pattern, $replacement, $route );
     }
-
 }

@@ -38,26 +38,26 @@ class WooCommerce extends AbstractPlatform {
      *
      * @return array
      */
-    public function products( array $args = [] ) {
+    public function products( array $args = array() ) {
         $args = wp_parse_args(
             $args,
-            [
+            array(
                 'limit'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
                 'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
                 'status'   => isset( $args['status'] ) ? $args['status'] : null,
                 'paginate' => true,
-                'type'     => array_unique( array_merge( [ 'variation' ], array_keys( wc_get_product_types() ) ) ),
-            ]
+                'type'     => array_unique( array_merge( array( 'variation' ), array_keys( wc_get_product_types() ) ) ),
+            )
         );
 
         $products = wc_get_products( $args );
 
-        return [
+        return array(
             'data'         => ProductResource::collection( $products->products ),
             'total'        => $products->total,
             'current_page' => intval( $args['page'] ),
             'total_page'   => $products->max_num_pages,
-        ];
+        );
     }
 
     /**
@@ -67,16 +67,16 @@ class WooCommerce extends AbstractPlatform {
      *
      * @return array
      */
-    public function orders( array $args = [] ) {
+    public function orders( array $args = array() ) {
         $args = wp_parse_args(
             $args,
-            [
+            array(
                 'limit'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
                 'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
                 'paginate' => true,
-                'status'   => [ 'completed', 'refunded', 'on-hold', 'processing', 'cancelled', 'failed' ],
-                'type'     => [ 'shop_order', 'shop_order_refund' ],
-            ]
+                'status'   => array( 'completed', 'refunded', 'on-hold', 'processing', 'cancelled', 'failed' ),
+                'type'     => array( 'shop_order', 'shop_order_refund' ),
+            )
         );
 
         if ( isset( $args['after_updated'] ) ) {
@@ -86,27 +86,27 @@ class WooCommerce extends AbstractPlatform {
 
         $data = wc_get_orders( $args );
 
-        return [
+        return array(
             'data'         => OrderResource::collection( $data->orders ),
             'total'        => $data->total,
             'current_page' => intval( $args['page'] ),
             'total_page'   => $data->max_num_pages,
-        ];
+        );
     }
 
     /**
      * Register post update hooks
      */
     public function register_hooks() {
-        add_action( 'woocommerce_order_status_changed', [ $this, 'handle_order' ], 10, 4 );
-        add_action( 'woocommerce_order_refunded', [ $this, 'create_order_refund' ], 10, 2 );
-        add_action( 'woocommerce_refund_deleted', [ $this, 'delete_order_refund' ], 10, 2 );
-        add_action( 'after_delete_post', [ $this, 'delete' ], 10, 2 );
-        add_action( 'woocommerce_update_product', [ $this, 'handle_update_product' ], 10, 2 );
-        add_action( 'woocommerce_new_product', [ $this, 'handle_product' ], 10, 2 );
-        add_action( 'woocommerce_new_product_variation', [ $this, 'handle_product_variation' ] );
-        add_action( 'woocommerce_update_product_variation', [ $this, 'handle_product_variation' ] );
-        add_action( 'woocommerce_delete_product_variation', [ $this, 'delete_product_variation' ] );
+        add_action( 'woocommerce_order_status_changed', array( $this, 'handle_order' ), 10, 4 );
+        add_action( 'woocommerce_order_refunded', array( $this, 'create_order_refund' ), 10, 2 );
+        add_action( 'woocommerce_refund_deleted', array( $this, 'delete_order_refund' ), 10, 2 );
+        add_action( 'after_delete_post', array( $this, 'delete' ), 10, 2 );
+        add_action( 'woocommerce_update_product', array( $this, 'handle_update_product' ), 10, 2 );
+        add_action( 'woocommerce_new_product', array( $this, 'handle_product' ), 10, 2 );
+        add_action( 'woocommerce_new_product_variation', array( $this, 'handle_product_variation' ) );
+        add_action( 'woocommerce_update_product_variation', array( $this, 'handle_product_variation' ) );
+        add_action( 'woocommerce_delete_product_variation', array( $this, 'delete_product_variation' ) );
     }
 
     /**
@@ -161,7 +161,7 @@ class WooCommerce extends AbstractPlatform {
         $this->handle_product( $id, $product );
 
         $variations = $product->get_children();
-        $variants = [];
+        $variants = array();
 
         if ( $product->is_type( 'variable' ) && ! empty( $variations ) ) {
             foreach ( $variations as $variation ) {
@@ -233,9 +233,9 @@ class WooCommerce extends AbstractPlatform {
             ->orders( $order_id )
             ->refunds( $refund_id )
             ->post(
-                [
+                array(
                     '_method' => 'delete',
-                ]
+                )
             );
     }
 
@@ -260,9 +260,9 @@ class WooCommerce extends AbstractPlatform {
                 ->ecommerce()
                 ->products( $post_id )
                 ->post(
-                    [
+                    array(
                         '_method' => 'delete',
-                    ]
+                    )
                 );
         }
 
@@ -272,9 +272,9 @@ class WooCommerce extends AbstractPlatform {
                 ->ecommerce()
                 ->orders( $post_id )
                 ->post(
-                    [
+                    array(
                         '_method' => 'delete',
-                    ]
+                    )
                 );
         }
     }
@@ -284,9 +284,9 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->products( $variation_id )
             ->post(
-                [
+                array(
                     '_method' => 'delete',
-                ]
+                )
             );
     }
 
@@ -316,17 +316,17 @@ class WooCommerce extends AbstractPlatform {
      *
      * @return array
      */
-    public function categories( array $args = [] ) {
+    public function categories( array $args = array() ) {
         $terms = get_terms(
-            [
+            array(
                 'taxonomy'   => 'product_cat',
                 'hide_empty' => false,
-            ]
+            )
         );
 
-        return [
+        return array(
             'data' => CategoryResource::collection( $terms ),
-        ];
+        );
     }
 
     /**

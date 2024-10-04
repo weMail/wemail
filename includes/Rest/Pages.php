@@ -19,13 +19,13 @@ class Pages extends WP_REST_Controller {
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base,
-            [
-                [
+            array(
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback'            => [ $this, 'index' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback'            => array( $this, 'index' ),
+                ),
+            )
         );
     }
 
@@ -42,18 +42,18 @@ class Pages extends WP_REST_Controller {
         );
 
         return rest_ensure_response(
-            [
+            array(
                 'data' => array_map(
                     function ( $page ) {
-                        return [
+                        return array(
                             'id'        => $page->ID,
                             'title'     => $page->post_title,
                             'permalink' => get_permalink( $page->ID ),
-                        ];
+                        );
                     },
                     get_pages( $args )
                 ),
-            ]
+            )
         );
     }
 }

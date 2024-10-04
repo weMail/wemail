@@ -7,11 +7,12 @@ use WeDevs\WeMail\Traits\Stringy;
 
 class Sync {
 
-    use Singleton, Stringy;
+    use Singleton;
+    use Stringy;
 
-    private $container = [
+    private $container = array(
         'subscriber' => null,
-    ];
+    );
 
     public function __get( $prop ) {
         if ( array_key_exists( $prop, $this->container ) ) {

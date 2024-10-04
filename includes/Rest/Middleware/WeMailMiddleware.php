@@ -25,11 +25,11 @@ class WeMailMiddleware {
 
         if ( ! empty( $api_key ) ) {
             $query = new WP_User_Query(
-                [
+                array(
                     'fields'        => 'ID',
                     'meta_key'      => 'wemail_api_key',
                     'meta_value'    => $api_key,
-                ]
+                )
             );
 
             if ( $query->get_total() ) {

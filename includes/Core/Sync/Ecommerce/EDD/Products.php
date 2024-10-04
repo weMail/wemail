@@ -49,7 +49,7 @@ class Products {
 
         $is_new = $download->post_date === $download->post_modified;
 
-        $product = [
+        $product = array(
             'id'          => $download->ID,
             'name'        => $download->post_title,
             'slug'        => $download->post_name,
@@ -60,7 +60,7 @@ class Products {
             'rating'      => '',
             'permalink'   => get_permalink( $download->ID ),
             'categories'  => $this->get_download_categories( $download->ID ),
-        ];
+        );
 
         if ( $is_new ) {
             $this->product_request->store( $product, $this->source );
@@ -75,14 +75,14 @@ class Products {
      * @return array
      */
     public function get_download_categories( $download_id ) {
-        $terms = wp_get_post_terms( $download_id, 'download_category', [ 'fields' => 'all' ] );
+        $terms = wp_get_post_terms( $download_id, 'download_category', array( 'fields' => 'all' ) );
 
-        $categories = [];
+        $categories = array();
         foreach ( $terms as $term ) {
-            $categories[] = [
+            $categories[] = array(
                 'id'    => $term->term_id,
                 'name'  => $term->name,
-            ];
+            );
         }
 
         return $categories;
@@ -93,11 +93,11 @@ class Products {
 
         $src = wp_get_attachment_image_url( $attachment_id, 'thumbnail' );
 
-        return [
+        return array(
             'id' => (int) $attachment_id,
             'src' => $src,
             'title' => get_the_title( $attachment_id ),
             'alt' => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
-        ];
+        );
     }
 }

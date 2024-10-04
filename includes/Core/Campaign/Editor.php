@@ -13,7 +13,7 @@ class Editor {
      *
      * @var string[] $default_content_types
      */
-    protected $default_content_types = [
+    protected $default_content_types = array(
         'text',
         'image',
         'imageCaption',
@@ -25,7 +25,7 @@ class Editor {
         'countdown',
         'wooProducts',
         'giphy',
-    ];
+    );
 
     /**
      * Content type images directory
@@ -57,24 +57,24 @@ class Editor {
      * @return array
      */
     public function get_setup_data() {
-        return [
+        return array(
             'lists'        => wemail()->lists->items(),
             'segments'     => wemail()->segment->items(),
             'events'       => wemail()->campaign->event->all(),
-            'campaign'     => [
+            'campaign'     => array(
                 'name'     => '',
                 'type'     => 'standard',
                 'version'  => WEMAIL_VERSION,
-                'lists'    => [],
-                'segments' => [],
-                'event'    => [
+                'lists'    => array(),
+                'segments' => array(),
+                'event'    => array(
                     'action'          => 'wemail_subscribed_to_list',
                     'value'           => '',
                     'schedule_type'   => 'immediately',
                     'schedule_offset' => 1,
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
     }
 
     /**
@@ -88,7 +88,7 @@ class Editor {
      * @return array
      */
     private function i18n() {
-        $i18n = [
+        $i18n = array(
             'createCampaign'         => __( 'Create Campaign', 'wemail' ),
             'editCampaign'           => __( 'Edit Campaign', 'wemail' ),
             'campaignName'           => __( 'Campaign Name', 'wemail' ),
@@ -145,7 +145,7 @@ class Editor {
             'noListSelected'         => __( 'No list selected', 'wemail' ),
             'noSegmentSelected'      => __( 'No segment selected', 'wemail' ),
             'currentServerTimeIs'    => __( 'Current server time is', 'wemail' ),
-        ];
+        );
 
         /**
          * I18n strings for email campaign editor pages
@@ -187,10 +187,10 @@ class Editor {
      * @return array
      */
     public function content_type_settings( $settings ) {
-        $additional_types = [
+        $additional_types = array(
             'wpPosts'          => self::wp_posts(),
             'rss'              => self::rss(),
-        ];
+        );
 
         return array_merge( $settings, $additional_types );
     }
@@ -203,21 +203,21 @@ class Editor {
      * @return array
      */
     public static function wp_posts() {
-        return [
+        return array(
             'type'       => 'wpPosts',
             'title'      => __( 'WP Posts', 'wemail' ),
             'image'      => self::$image_dir . '/wp.svg',
-            'default'    => [
-                'containerStyle' => [
+            'default'    => array(
+                'containerStyle' => array(
                     'padding' => '25px',
                     'marginBottom' => '0px',
                     'backgroundColor' => '#ffffff',
-                ],
-                'posts' => [],
+                ),
+                'posts' => array(),
                 'layout' => 'list',
                 'post_per_row' => 2,
-                'title' => [
-                    'style' => [
+                'title' => array(
+                    'style' => array(
                         'fontSize' => '30px',
                         'color' => '#333333',
                         'textAlign' => 'left',
@@ -225,11 +225,11 @@ class Editor {
                         'textTransform' => 'none',
                         'lineHeight' => '50px',
                         'marginBottom' => '15px',
-                    ],
-                ],
-                'image' => [
+                    ),
+                ),
+                'image' => array(
                     'display' => 'show',
-                    'style' => [
+                    'style' => array(
                         'max-width' => '100%',
                         'float' => 'none',
                         'borderWidth' => '0px',
@@ -241,27 +241,27 @@ class Editor {
                         'marginRight' => '0px',
                         'marginBottom' => '10px',
                         'marginLeft' => '0px',
-                    ],
-                    'containerStyle' => [
+                    ),
+                    'containerStyle' => array(
                         'textAlign' => 'left',
-                    ],
-                ],
-                'content' => [
+                    ),
+                ),
+                'content' => array(
                     'display' => 'show',
                     'content_format' => 'excerpt',
                     'excerpt_length' => 55,
 
-                    'style' => [
+                    'style' => array(
                         'fontSize' => '14px',
                         'color' => '#556271',
                         'textAlign' => 'left',
                         'lineHeight' => '20px',
                         'marginBottom' => '15px',
-                    ],
-                ],
-                'readMore' => [
+                    ),
+                ),
+                'readMore' => array(
                     'display' => 'show',
-                    'style' => [
+                    'style' => array(
                         'display' => 'inline-block',
                         'paddingTop' => '10px',
                         'paddingRight' => '15px',
@@ -279,85 +279,85 @@ class Editor {
                         'borderStyle' => 'solid',
                         'borderColor' => '#e5e5e5',
                         'marginBottom' => '30px',
-                    ],
+                    ),
                     'text' => __( 'Read More', 'wemail' ),
-                    'containerStyle' => [
+                    'containerStyle' => array(
                         'textAlign' => 'left',
-                    ],
-                ],
-                'meta' => [
+                    ),
+                ),
+                'meta' => array(
                     'display' => 'show',
                     'separator' => ' | ',
-                    'fields' => [
-                        'author' => [
+                    'fields' => array(
+                        'author' => array(
                             'text' => __( 'Author: ', 'wemail' ),
                             'display' => 'show',
-                        ],
-                        'categories' => [
+                        ),
+                        'categories' => array(
                             'text' => __( 'Categories: ', 'wemail' ),
                             'display' => 'show',
-                        ],
-                        'tags' => [
+                        ),
+                        'tags' => array(
                             'text' => __( 'Tags: ', 'wemail' ),
                             'display' => 'show',
-                        ],
-                        'postDate' => [
+                        ),
+                        'postDate' => array(
                             'text' => __( 'Post Date: ', 'wemail' ),
                             'display' => 'show',
-                        ],
-                    ],
-                    'style' => [
+                        ),
+                    ),
+                    'style' => array(
                         'fontSize' => '12px',
                         'color' => '#556271',
                         'textAlign' => 'left',
                         'lineHeight' => '20px',
                         'marginBottom' => '15px',
                         'fontStyle' => 'normal',
-                    ],
-                ],
-            ],
-        ];
+                    ),
+                ),
+            ),
+        );
     }
 
     public static function rss() {
-        return [
+        return array(
             'type' => 'rss',
             'title' => __( 'Latest Posts', 'wemail' ),
             'image' => self::$image_dir . '/wp.svg',
             'noSettingsTab' => true,
-            'default' => [
+            'default' => array(
                 'source' => 'wp',
-                'payload' => [
+                'payload' => array(
                     'post_type' => 'post',
                     'tag_id'  => null,
                     'category_id'  => null,
                     'limit' => 5,
-                ],
-                'containerStyle' => [
+                ),
+                'containerStyle' => array(
                     'padding' => '25px 25px 25px 25px',
                     'marginBottom' => '0px',
                     'background' => '#ffffff',
-                ],
-                'image' => [
+                ),
+                'image' => array(
                     'display' => true,
-                    'style' => [
+                    'style' => array(
                         'max-width'         => '100%',
                         'border'            => '0px solid #cccccc',
                         'borderRadius'      => '0px',
                         'padding'           => '0px 0px 0px 0px',
                         'background'        => '#ffffff',
                         'margin'            => '0px 0px 0px 0px',
-                    ],
-                    'containerStyle' => [
+                    ),
+                    'containerStyle' => array(
                         'textAlign' => 'left',
                         'display'   => 'block',
-                    ],
-                    'hyperlink' => [
+                    ),
+                    'hyperlink' => array(
                         'enable' => false,
-                    ],
-                ],
-                'title' => [
-                    'style' => [
+                    ),
+                ),
+                'title' => array(
+                    'style' => array(
                         'padding'       => '0px 0px 0px 0px',
                         'margin'        => '15px 0px 10px 0px',
                         'fontSize'      => '25px',
@@ -365,26 +365,26 @@ class Editor {
                         'textAlign'     => 'left',
                         'fontWeight'    => '600',
                         'textTransform' => 'none',
-                    ],
-                ],
-                'content' => [
+                    ),
+                ),
+                'content' => array(
                     'display' => true,
                     'content_format' => 'excerpt',
-                    'style' => [
+                    'style' => array(
                         'fontSize'      => '14px',
                         'color'         => '#556271',
                         'textAlign'     => 'left',
                         'lineHeight'    => '20px',
                         'margin'        => '5px 0px 5px 0px',
-                    ],
-                ],
-                'readMore' => [
+                    ),
+                ),
+                'readMore' => array(
                     'display' => true,
                     'text' => 'Read More',
-                    'containerStyle' => [
+                    'containerStyle' => array(
                         'textAlign' => 'left',
-                    ],
-                    'style' => [
+                    ),
+                    'style' => array(
                         'padding'           => '8px 15px 8px 15px',
                         'fontSize'          => '14px',
                         'fontWeight'        => '400',
@@ -396,46 +396,46 @@ class Editor {
                         'border'            => '0px solid #e5e5e5',
                         'margin'            => '5px 0px 25px 0px',
                         'display'           => 'inline-block',
-                    ],
-                ],
-                'meta' => [
+                    ),
+                ),
+                'meta' => array(
                     'display' => true,
                     'separator' => ' | ',
-                    'fields' => [
-                        'author' => [
+                    'fields' => array(
+                        'author' => array(
                             'display' => true,
                             'text' => __( 'Author: ', 'wemail' ),
-                        ],
-                        'categories' => [
+                        ),
+                        'categories' => array(
                             'display' => true,
                             'text' => __( 'Categories: ', 'wemail' ),
-                        ],
-                        'tags' => [
+                        ),
+                        'tags' => array(
                             'display' => true,
                             'text' => __( 'Tags: ', 'wemail' ),
-                        ],
-                        'postDate' => [
+                        ),
+                        'postDate' => array(
                             'display' => true,
                             'text' => __( 'Post Date: ', 'wemail' ),
-                        ],
-                    ],
-                    'style' => [
+                        ),
+                    ),
+                    'style' => array(
                         'margin'    => '10px 0px 15px 0px',
                         'fontSize'  => '14px',
                         'display'   => 'inline-block',
-                    ],
-                ],
-                'divider' => [
+                    ),
+                ),
+                'divider' => array(
                     'display' => true,
-                    'style' => [
+                    'style' => array(
                         'borderBottom'  => '1px dashed #ddd',
                         'width'         => '100%',
                         'marginLeft'    => 'auto',
                         'marginRight'   => 'auto',
                         'marginBottom'  => '25px',
-                    ],
-                ],
-            ],
-        ];
+                    ),
+                ),
+            ),
+        );
     }
 }

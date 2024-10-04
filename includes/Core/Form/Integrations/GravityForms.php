@@ -48,17 +48,17 @@ class GravityForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $gf_forms = \GFFormsModel::get_forms( true );
 
         foreach ( $gf_forms as $gf_form ) {
             $form_id = $this->cast_form_id( $gf_form->id );
-            $form = [
+            $form = array(
                 'id'     => $form_id,
                 'title'  => $gf_form->title,
-                'fields' => [],
-            ];
+                'fields' => array(),
+            );
 
             $form_meta = \GFFormsModel::get_form_meta( $form_id );
 
@@ -66,17 +66,17 @@ class GravityForms extends AbstractIntegration {
                 $field = \GF_Fields::create( $field );
 
                 if ( empty( $field['inputs'] ) ) {
-                    $form['fields'][] = [
+                    $form['fields'][] = array(
                         'id'    => $field->id,
                         'label' => $field->label,
-                    ];
+                    );
                 } else {
                     foreach ( $field['inputs'] as $i => $group_field ) {
                         if ( empty( $group_field['isHidden'] ) ) {
-                            $form['fields'][] = [
+                            $form['fields'][] = array(
                                 'id'    => $group_field['id'],
                                 'label' => $group_field['label'],
-                            ];
+                            );
                         }
                     }
                 }
@@ -101,15 +101,15 @@ class GravityForms extends AbstractIntegration {
     public function submit( $lead, $form ) {
         $form_id = $lead['form_id'];
 
-        $settings = get_option( 'wemail_form_integration_gravity_forms', [] );
+        $settings = get_option( 'wemail_form_integration_gravity_forms', array() );
 
         if ( ! in_array( (int) $form_id, $settings, true ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id' => $form_id,
-        ];
+        );
 
         foreach ( $form['fields'] as $field ) {
             $field = \GF_Fields::create( $field );
@@ -130,5 +130,4 @@ class GravityForms extends AbstractIntegration {
             wemail()->api->forms()->integrations( 'gravity-forms' )->submit()->post( $data );
         }
     }
-
 }

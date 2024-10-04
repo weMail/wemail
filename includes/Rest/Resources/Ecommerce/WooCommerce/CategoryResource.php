@@ -16,9 +16,9 @@ class CategoryResource extends JsonResource {
      * @return mixed|void
      */
     public function blueprint( $resource ) {
-        return [
+        return array(
             'id'   => $resource->term_id,
             'name' => $resource->name,
-        ];
+        );
     }
 }

@@ -28,7 +28,7 @@ class HappyForms extends AbstractIntegration {
      *
      * @var array $data
      */
-    public $data = [];
+    public $data = array();
 
     /**
      * Checking plugin is active or not
@@ -43,24 +43,24 @@ class HappyForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $query = new WP_Query(
-            [
+            array(
                 'post_type' => 'happyform',
                 'posts_per_page' => -1,
-            ]
+            )
         );
 
         while ( $query->have_posts() ) {
             $query->the_post();
             global $post;
 
-            $forms[] = [
+            $forms[] = array(
                 'id' => absint( $post->ID ),
                 'title' => $post->post_title,
                 'fields' => $this->get_fields( $post->ID ),
-            ];
+            );
         }
 
         return $forms;
@@ -74,7 +74,7 @@ class HappyForms extends AbstractIntegration {
      * @return array
      */
     protected function get_fields( $post_id ) {
-        $fields = [];
+        $fields = array();
 
         $data = get_post_meta( $post_id );
 
@@ -101,10 +101,10 @@ class HappyForms extends AbstractIntegration {
      * @return array
      */
     protected function get_field( $field ) {
-        return [
+        return array(
             'id'    => $field['id'],
             'label' => $field['label'],
-        ];
+        );
     }
 
     /**
@@ -115,7 +115,7 @@ class HappyForms extends AbstractIntegration {
      * @return array
      */
     protected function get_columns( $layouts ) {
-        $columns = [];
+        $columns = array();
 
         foreach ( $layouts as $layout ) {
             $columns = array_merge( $columns, unserialize( $layout ) );
@@ -132,7 +132,7 @@ class HappyForms extends AbstractIntegration {
     public function submit( $data ) {
         $this->data = $data;
 
-        add_action( 'happyforms_form_submit_after', [ $this, 'subscribe' ] );
+        add_action( 'happyforms_form_submit_after', array( $this, 'subscribe' ) );
     }
 
     /**
@@ -141,16 +141,16 @@ class HappyForms extends AbstractIntegration {
      * @param $form
      */
     public function subscribe( $form ) {
-        $form_ids = get_option( 'wemail_form_integration_happy_forms', [] );
+        $form_ids = get_option( 'wemail_form_integration_happy_forms', array() );
 
         if ( ! in_array( $form['ID'], $form_ids, true ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id' => $form['ID'],
             'data' => $this->data,
-        ];
+        );
 
         if ( ! empty( $data['data'] ) ) {
             wemail_set_owner_api_key();

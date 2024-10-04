@@ -17,7 +17,7 @@ class OrderItemResource extends JsonResource {
         $permalink = $product->get_permalink();
         $thumbnail = wp_get_attachment_image_url( $product->get_image_id() );
 
-        return [
+        return array(
             'id'         => (string) $product->get_id(),
             'parent_id'  => (string) $product->get_parent_id(),
             'name'       => $order_item->get_name(),
@@ -26,6 +26,6 @@ class OrderItemResource extends JsonResource {
             'thumbnail'  => $thumbnail ? $thumbnail : null,
             'categories' => $product->get_category_ids(),
             'permalink'  => $permalink ? $permalink : null,
-        ];
+        );
     }
 }

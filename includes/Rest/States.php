@@ -19,20 +19,20 @@ class States extends WP_REST_Controller {
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base,
-            [
-                'args' => [
-                    'country' => [
+            array(
+                'args' => array(
+                    'country' => array(
                         'description' => __( 'ISO 3166-1 alpha-2 country code', 'wemail' ),
                         'type'        => 'string',
                         'required'    => true,
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback'            => [ $this, 'states' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback'            => array( $this, 'states' ),
+                ),
+            )
         );
     }
 
@@ -42,12 +42,11 @@ class States extends WP_REST_Controller {
 
     public function states( $request ) {
         $response = rest_ensure_response(
-            [
+            array(
                 'data' => wemail_get_country_states( $request['country'] ),
-            ]
+            )
         );
 
         return $response;
     }
-
 }

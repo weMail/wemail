@@ -17,7 +17,7 @@ class OrderResourceV3 extends OrderResource {
         /** @var EDD_Payment $resource */
         $is_order = $resource->order->type === 'sale';
 
-        $data = [
+        $data = array(
             'id'           => (string) $resource->ID,
             'parent_id'    => $resource->parent_payment ? (string) $resource->parent_payment : null,
             'customer_id'  => $this->customer_id( $resource->user_info['email'] ),
@@ -31,7 +31,7 @@ class OrderResourceV3 extends OrderResource {
             'created_at'   => $resource->order->date_created,
             'updated_at'   => $resource->order->date_modified,
             'source'       => 'edd',
-        ];
+        );
 
         if ( $is_order ) {
             $data['customer'] = $this->customer( $resource->user_info );

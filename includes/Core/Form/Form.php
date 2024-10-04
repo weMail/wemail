@@ -61,7 +61,7 @@ class Form {
         $forms = wemail()->api->forms()->items()->get();
 
         if ( is_wp_error( $forms ) ) {
-            return [];
+            return array();
         } elseif ( ! empty( $forms['data'] ) ) {
             return $forms['data'];
         }
@@ -93,7 +93,7 @@ class Form {
      * @return array
      */
     public function integrations() {
-        return [
+        return array(
             'contact_form_7'    => __( 'Contact Form 7', 'wemail' ),
             'gravity_forms'     => __( 'Gravity Forms', 'wemail' ),
             'wpforms'           => __( 'WPForms', 'wemail' ),
@@ -109,11 +109,11 @@ class Form {
             'forminator_forms'  => __( 'Forminator Forms', 'wemail' ),
             'everest_forms'     => __( 'Everest Forms', 'wemail' ),
             'elementor_forms'   => __( 'Elementor Forms', 'wemail' ),
-        ];
+        );
     }
 
     public function increment_visitor_count( $form_id ) {
-        $form = wemail()->api->forms( $form_id )->visitors()->put( [] );
+        $form = wemail()->api->forms( $form_id )->visitors()->put( array() );
 
         return $form;
     }
@@ -128,9 +128,9 @@ class Form {
     public function create( $data ) {
         global $wpdb;
 
-        $data = $this->fillable_check( $data, [ 'id', 'name', 'template', 'settings', 'type' ] );
+        $data = $this->fillable_check( $data, array( 'id', 'name', 'template', 'settings', 'type' ) );
 
-        $data = array_merge( $data, [ 'plugin_version' => wemail()->version ] );
+        $data = array_merge( $data, array( 'plugin_version' => wemail()->version ) );
 
         $this->to_json_string( $data );
 
@@ -152,10 +152,10 @@ class Form {
 
         $data = $this->fillable_check(
             $data,
-            [ 'name', 'template', 'settings', 'type', 'status', 'deleted_at' ]
+            array( 'name', 'template', 'settings', 'type', 'status', 'deleted_at' )
         );
 
-        $data = array_merge( $data, [ 'plugin_version' => wemail()->version ] );
+        $data = array_merge( $data, array( 'plugin_version' => wemail()->version ) );
 
         $this->to_json_string( $data );
 
@@ -195,7 +195,7 @@ class Form {
         $ids = (array) $ids;
 
         if ( $soft_delete ) {
-            return $this->update( [ 'deleted_at' => current_time( 'mysql' ) ], $ids );
+            return $this->update( array( 'deleted_at' => current_time( 'mysql' ) ), $ids );
         }
 
         $ids_string = $this->in_sql( $ids );
@@ -211,14 +211,14 @@ class Form {
      *
      * @return array|array[]
      */
-    public function get_forms( $args = [] ) {
+    public function get_forms( $args = array() ) {
         global $wpdb;
 
         $args = array_merge(
-            [
-                'type' => [ 'floating-bar', 'floating-box', 'modal' ],
-                'select' => [ '*' ],
-            ],
+            array(
+                'type' => array( 'floating-bar', 'floating-box', 'modal' ),
+                'select' => array( '*' ),
+            ),
             $args
         );
 
@@ -226,7 +226,7 @@ class Form {
         $forms = $wpdb->get_results( "SELECT {$this->in_sql( $args['select'], false )} FROM {$this->get_table()} WHERE `type` IN ({$this->in_sql( $args['type'] )}) AND `status` = 1 AND `deleted_at` IS NULL", ARRAY_A );
 
         if ( is_null( $forms ) ) {
-            return [];
+            return array();
         }
 
         foreach ( $forms as $index => $form ) {
@@ -246,11 +246,11 @@ class Form {
         global $wpdb;
 
         $forms = $this->all(
-            [
+            array(
                 'per_page'     => -1,
                 'with_trashed' => 1,
                 'fields'       => 'id,name,template,settings,plugin_version,type,status,deleted_at',
-            ]
+            )
         );
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -308,7 +308,7 @@ class Form {
      * @param $data
      * @param string[] $columns
      */
-    protected function to_json_string( &$data, $columns = [ 'template', 'settings' ] ) {
+    protected function to_json_string( &$data, $columns = array( 'template', 'settings' ) ) {
         foreach ( $columns as $column ) {
             if ( isset( $data[ $column ] ) ) {
                 $data[ $column ] = wp_json_encode( $data[ $column ] );
@@ -335,7 +335,7 @@ class Form {
      *
      * @return array
      */
-    protected function fillable_check( $data, $columns = [] ) {
+    protected function fillable_check( $data, $columns = array() ) {
         return array_filter(
             $data,
             function ( $value, $key ) use ( $columns ) {

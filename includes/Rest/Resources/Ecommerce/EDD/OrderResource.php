@@ -14,7 +14,7 @@ class OrderResource extends JsonResource {
         /** @var WP_Post $resource */
         $payment = new EDD_Payment( $resource->ID );
 
-        return [
+        return array(
             'id'           => (string) $payment->transaction_id,
             'parent_id'    => $payment->parent_payment ? (string) $payment->parent_payment : null,
             'customer_id'  => $this->customer_id( $payment->user_info['email'] ),
@@ -29,7 +29,7 @@ class OrderResource extends JsonResource {
             'permalink'    => add_query_arg( 'id', $payment->ID, admin_url( 'edit.php?post_type=download&page=edd-payment-history&view=view-order-details' ) ),
             'source'       => 'edd',
             'type'         => $this->is_refund( $resource->post_status ) ? 'refund' : 'order',
-        ];
+        );
     }
 
     /**
@@ -51,7 +51,7 @@ class OrderResource extends JsonResource {
      * @return array
      */
     protected function customer( $customer ) {
-        return [
+        return array(
             'first_name' => $customer['first_name'],
             'last_name'  => $customer['last_name'],
             'email'      => $customer['email'],
@@ -61,7 +61,7 @@ class OrderResource extends JsonResource {
             'state'      => isset( $customer['address']['state'] ) ? $customer['address']['state'] : null,
             'zip'        => isset( $customer['address']['zip'] ) ? $customer['address']['zip'] : null,
             'country'    => isset( $customer['address']['country'] ) ? $customer['address']['country'] : null,
-        ];
+        );
     }
 
     /**

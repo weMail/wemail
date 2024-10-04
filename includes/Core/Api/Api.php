@@ -9,7 +9,8 @@ use WeDevs\WeMail\Traits\Singleton;
 
 class Api {
 
-    use Singleton, Stringy;
+    use Singleton;
+    use Stringy;
 
     use Hooker;
 
@@ -47,7 +48,7 @@ class Api {
      *
      * @var string
      */
-    private $query = [];
+    private $query = array();
 
     /**
      * Content type json or not
@@ -142,10 +143,10 @@ class Api {
      * @return array
      */
     public function get_props() {
-        return [
+        return array(
             'root'     => $this->root,
             'api_key'  => $this->get_api_key(),
-        ];
+        );
     }
 
     /**
@@ -158,11 +159,11 @@ class Api {
      * @return array
      */
     private function args( $args ) {
-        $defaults = [
-            'headers' => [
+        $defaults = array(
+            'headers' => array(
                 'x-api-key' => $this->get_api_key(),
-            ],
-        ];
+            ),
+        );
 
         return wp_parse_args( $args, $defaults );
     }
@@ -194,7 +195,7 @@ class Api {
      *
      * @return string
      */
-    private function build_url( $url = '', $query = [] ) {
+    private function build_url( $url = '', $query = array() ) {
         if ( $url ) {
             $url = $this->root . $url;
         } elseif ( $this->url ) {
@@ -210,7 +211,7 @@ class Api {
         }
 
         $this->url   = '';
-        $this->query = [];
+        $this->query = array();
 
         return $url;
     }
@@ -226,7 +227,7 @@ class Api {
      *
      * @return mixed
      */
-    public function get( $url = '', $query = [], $args = [] ) {
+    public function get( $url = '', $query = array(), $args = array() ) {
         $args = $this->args( $args );
         $args['timeout'] = 50;
 
@@ -247,7 +248,7 @@ class Api {
     public function get_response( $url = '' ) {
         $url = $this->build_url( $url );
 
-        $args = $this->args( [] );
+        $args = $this->args( array() );
 
         return wp_remote_get( $url, $args );
     }
@@ -261,7 +262,7 @@ class Api {
      * @return mixed
      * @since 1.0.0
      */
-    public function post( $data = [], $args = [] ) {
+    public function post( $data = array(), $args = array() ) {
         $args = $this->args( $args );
         $args['timeout'] = 50;
 
@@ -306,7 +307,7 @@ class Api {
      *
      * @return mixed
      */
-    public function put( $data, $args = [] ) {
+    public function put( $data, $args = array() ) {
         $data['_method'] = 'put';
 
         return $this->post( $data, $args );
@@ -322,7 +323,7 @@ class Api {
      *
      * @return mixed
      */
-    public function delete( $data = [], $args = [] ) {
+    public function delete( $data = array(), $args = array() ) {
         $args = $this->args( $args );
 
         $args['method'] = 'delete';
@@ -360,9 +361,9 @@ class Api {
                 ? $body['message']
                 : __( 'Something went wrong', 'wemail' );
 
-            $error_data = [
+            $error_data = array(
                 'status' => $response_code,
-            ];
+            );
 
             if (
                 isset( $body['errors'] ) &&

@@ -7,21 +7,21 @@ use WP_Widget;
 class Widget extends WP_Widget {
 
     public function __construct() {
-        $args = [
+        $args = array(
             'classname'   => 'wemail-form-widget',
             'description' => __( 'weMail Form Widget', 'wemail' ),
-        ];
+        );
 
         parent::__construct( 'wemail-form-widget', __( 'weMail Form', 'wemail' ), $args );
     }
 
     public function form( $instance ) {
-        $forms = wemail()->form->get_forms( [ 'type' => [ 'inline', 'modal' ] ] );
+        $forms = wemail()->form->get_forms( array( 'type' => array( 'inline', 'modal' ) ) );
 
-        $defaults = [
+        $defaults = array(
             'title' => __( 'Subscribe to our newsletter', 'wemail' ),
             'form'  => '',
-        ];
+        );
 
         $instance = wp_parse_args( $instance, $defaults );
 
@@ -63,5 +63,4 @@ class Widget extends WP_Widget {
 
         echo $args['after_widget'];
     }
-
 }

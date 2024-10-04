@@ -50,7 +50,7 @@ class ElementorForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $args = array(
             'post_type' => 'any',
@@ -74,11 +74,11 @@ class ElementorForms extends AbstractIntegration {
                     foreach ( $item->elements as $element ) {
                         foreach ( $element->elements as $final_element ) {
                             if ( isset( $final_element->{'widgetType'} ) && $final_element->{'widgetType'} === 'form' ) {
-                                $forms[] = [
+                                $forms[] = array(
                                     'id' => $final_element->id,
                                     'title' => $this->getTitle( $final_element->id, $final_element->settings->form_name ),
                                     'fields' => $this->get_fields( $final_element->settings->form_fields ),
-                                ];
+                                );
                             }
                         }
                     }
@@ -86,7 +86,7 @@ class ElementorForms extends AbstractIntegration {
             }
         }
         return array_filter(
-            $forms, function( $form ) {
+            $forms, function ( $form ) {
 				return ! empty( $form['fields'] );
 			}
         );
@@ -106,13 +106,13 @@ class ElementorForms extends AbstractIntegration {
      * @return mixed
      */
     public function get_fields( $form_fields ) {
-        $fields = [];
+        $fields = array();
 
         foreach ( $form_fields as $field ) {
-            $fields[] = [
+            $fields[] = array(
                 'id' => $field->custom_id,
                 'label' => isset( $field->field_label ) ? $field->field_label : $field->custom_id . ' (Set label)',
-            ];
+            );
         }
 
         return $fields;
@@ -126,27 +126,26 @@ class ElementorForms extends AbstractIntegration {
      */
     public function submit( $record, $handler ) {
         $raw_fields = $record->get( 'fields' );
-        $fields = [];
+        $fields = array();
         $form_id = $record->get( 'form_settings' )['id'];
         foreach ( $raw_fields as $id => $field ) {
             $fields[ $id ] = $field['value'];
         }
 
-        $settings = get_option( 'wemail_form_integration_elementor_forms', [] );
+        $settings = get_option( 'wemail_form_integration_elementor_forms', array() );
 
 		if ( ! in_array( $form_id, $settings, true ) ) {
 			return;
 		}
 
-        $entities = [
+        $entities = array(
             'id' => $form_id,
             'data' => $fields,
-        ];
+        );
 
         if ( ! empty( $entities['data'] ) ) {
             wemail_set_owner_api_key();
             wemail()->api->forms()->integrations( 'elementor_forms' )->submit()->post( $entities );
         }
     }
-
 }

@@ -22,10 +22,10 @@ trait Ajax {
             $tag = $tag . '_' . $method;
         }
 
-        add_action( 'wp_ajax_wemail_' . $tag, [ $this, $method ] );
+        add_action( 'wp_ajax_wemail_' . $tag, array( $this, $method ) );
 
         if ( $nopriv ) {
-            add_action( 'wp_ajax_nopriv_wemail_' . $tag, [ $this, $method ] );
+            add_action( 'wp_ajax_nopriv_wemail_' . $tag, array( $this, $method ) );
         }
     }
 
@@ -69,5 +69,4 @@ trait Ajax {
     public function send_error( $data = null ) {
         wp_send_json_error( $data );
     }
-
 }

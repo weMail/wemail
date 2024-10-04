@@ -17,12 +17,12 @@ class ReviewNotice {
      * Boot the notice
      */
     private function boot() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
     }
 
     public function enqueue_assets() {
         wp_enqueue_style( 'wemail-review-notice-style', WEMAIL_ASSETS . '/css/review-notice.css', false, WEMAIL_VERSION );
-        wp_enqueue_script( 'wemail-review-notice-script', WEMAIL_ASSETS . '/js/admin-review-notice.js', [ 'jquery' ], WEMAIL_VERSION, true );
+        wp_enqueue_script( 'wemail-review-notice-script', WEMAIL_ASSETS . '/js/admin-review-notice.js', array( 'jquery' ), WEMAIL_VERSION, true );
     }
 
     /**
@@ -30,7 +30,8 @@ class ReviewNotice {
      *
      * @return void
      */
-    public function connect_review_notice_html() {         ?>
+    public function connect_review_notice_html() {
+		?>
         <div class="notice wemail-review-notice-flex-container is-dismissible review-time-background-image" data-nonce="<?php echo wp_create_nonce( '_review_nonce' ); ?>" >
             <div class="wemail-connect-notice-content">
                 <div class="wemail-connect-notice-content">
@@ -113,7 +114,7 @@ class ReviewNotice {
         $this->campaign_count = $sent_campaigns;
 
         if ( $this->time_based_review || $sent_campaigns >= 3 ) {
-            add_action( 'admin_notices', [ $this, 'connect_review_notice_html' ] );
+            add_action( 'admin_notices', array( $this, 'connect_review_notice_html' ) );
         }
     }
 
@@ -131,9 +132,9 @@ class ReviewNotice {
         }
 
         $response = wemail()->api->campaigns()->query(
-            [
-				'statuses' => [ 'completed' ],
-			]
+            array(
+				'statuses' => array( 'completed' ),
+			)
         )->get();
 
         if ( is_wp_error( $response ) || ! isset( $response['meta'] ) ) {
@@ -156,7 +157,7 @@ class ReviewNotice {
 
         if ( isset( $_POST['submit'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['review_nonce'] ) ), '_review_nonce' ) ) {
             wp_die( __( 'Security check', 'wemail' ) );
-        };
+        }
 
         if ( isset( $_POST['review_reposnse_yes'] ) ) {
             $this->review_response( 'yes' );

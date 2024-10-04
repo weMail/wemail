@@ -40,10 +40,9 @@ class Menu {
      */
     public function register_submenu( $menu_items, $capability ) {
         if ( wemail()->user->can( 'view_form' ) ) {
-            $menu_items[] = [ __( 'Forms', 'wemail' ), $capability, 'admin.php?page=wemail#/forms' ];
+            $menu_items[] = array( __( 'Forms', 'wemail' ), $capability, 'admin.php?page=wemail#/forms' );
         }
 
         return $menu_items;
     }
-
 }

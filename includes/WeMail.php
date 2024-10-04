@@ -68,7 +68,7 @@ final class WeMail {
      *
      * @var object
      */
-    public $core = [];
+    public $core = array();
 
     /**
      * WeMail site URL
@@ -119,7 +119,7 @@ final class WeMail {
      *
      * @var array
      */
-    private $admin_notices = [];
+    private $admin_notices = array();
 
     /**
      * Initializes the WeMail() class
@@ -150,7 +150,7 @@ final class WeMail {
     private function boot() {
         // Check requirements
         if ( ! $this->met_requirements() ) {
-            add_action( 'admin_notices', [ $this, 'admin_notices' ] );
+            add_action( 'admin_notices', array( $this, 'admin_notices' ) );
             return;
         }
 
@@ -300,11 +300,11 @@ final class WeMail {
      * @return void
      */
     private function init_hooks() {
-        add_action( 'init', [ $this, 'init' ], 0 );
-        add_action( 'plugins_loaded', [ $this, 'plugin_upgrades' ] );
+        add_action( 'init', array( $this, 'init' ), 0 );
+        add_action( 'plugins_loaded', array( $this, 'plugin_upgrades' ) );
 
-        register_activation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Install', 'install' ] );
-        register_deactivation_hook( WEMAIL_FILE, [ '\WeDevs\WeMail\Uninstall', 'uninstall' ] );
+        register_activation_hook( WEMAIL_FILE, array( '\WeDevs\WeMail\Install', 'install' ) );
+        register_deactivation_hook( WEMAIL_FILE, array( '\WeDevs\WeMail\Uninstall', 'uninstall' ) );
     }
 
     /**

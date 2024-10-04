@@ -9,7 +9,7 @@ class Segment {
     use Singleton;
 
     public function conditions() {
-        $conditions = [
+        $conditions = array(
             'IS'        => __( 'is', 'wemail' ),
             'ISNOT'     => __( 'is not', 'wemail' ),
             'CONT'      => __( 'contains', 'wemail' ),
@@ -31,7 +31,7 @@ class Segment {
             'BEFORE'    => __( 'Before', 'wemail' ),
             'IN'        => __( 'in', 'wemail' ),
             'NIN'       => __( 'not in', 'wemail' ),
-        ];
+        );
         return apply_filters( 'wemail_segment_conditions', $conditions );
     }
 
@@ -46,5 +46,4 @@ class Segment {
     public function get( $id ) {
         return wemail()->api->segments( $id )->get();
     }
-
 }

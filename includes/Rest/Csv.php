@@ -21,55 +21,55 @@ class Csv {
         register_rest_route(
             $this->namespace,
             $this->rest_base,
-            [
-                'args' => [
-                    'id' => [
+            array(
+                'args' => array(
+                    'id' => array(
                         'description' => __( 'CSV file attachment id', 'wemail' ),
                         'type'        => 'integer',
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback' => [ $this, 'csv_file_info' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback' => array( $this, 'csv_file_info' ),
+                ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/meta-fields',
-            [
-                'args' => [
-                    'id' => [
+            array(
+                'args' => array(
+                    'id' => array(
                         'description' => __( 'CSV file attachment id', 'wemail' ),
                         'type'        => 'integer',
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback' => [ $this, 'meta_fields' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback' => array( $this, 'meta_fields' ),
+                ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/subscribers',
-            [
-                'args' => [
-                    'id' => [
+            array(
+                'args' => array(
+                    'id' => array(
                         'description' => __( 'CSV file attachment id', 'wemail' ),
                         'type'        => 'integer',
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback' => [ $this, 'subscribers' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback' => array( $this, 'subscribers' ),
+                ),
+            )
         );
     }
 
@@ -78,11 +78,11 @@ class Csv {
 
         if ( ! empty( $api_key ) ) {
             $query = new WP_User_Query(
-                [
+                array(
                     'fields'        => 'ID',
                     'meta_key'      => 'wemail_api_key',
                     'meta_value'    => $api_key,
-                ]
+                )
             );
 
             if ( $query->get_total() ) {
@@ -111,9 +111,9 @@ class Csv {
 
         $query = $reader->query();
 
-        $data = [
+        $data = array(
             'total' => iterator_count( $query ) - 1,
-        ];
+        );
 
         return new WP_REST_Response( $data, 200 );
     }
@@ -127,9 +127,9 @@ class Csv {
 
         $meta_fields = $reader->fetchOne();
 
-        $data = [
+        $data = array(
             'fields' => $meta_fields,
-        ];
+        );
 
         return new WP_REST_Response( $data, 200 );
     }
@@ -153,11 +153,10 @@ class Csv {
             ->setLimit( $limit )
             ->fetchAssoc( $meta_fields );
 
-        $data = [
+        $data = array(
             'subscribers' => $subscribers,
-        ];
+        );
 
         return new WP_REST_Response( $data, 200 );
     }
-
 }

@@ -22,12 +22,12 @@ class Wp {
      */
     public function settings() {
         if ( ! isset( $this->settings['auto_sync'] ) ) {
-            $defaults = [
+            $defaults = array(
                 'auto_sync' => false,
-                'user_roles' => [],
-            ];
+                'user_roles' => array(),
+            );
 
-            $settings = get_option( 'wemail_sync_subscriber_wp', [] );
+            $settings = get_option( 'wemail_sync_subscriber_wp', array() );
 
             $this->settings = wp_parse_args( $settings, $defaults );
         }
@@ -59,7 +59,7 @@ class Wp {
      *
      * @return void
      */
-    public function create( $user_ids = [] ) {
+    public function create( $user_ids = array() ) {
         if ( ! $this->is_active() ) {
             return;
         }
@@ -78,7 +78,7 @@ class Wp {
         }
 
         $users = array_map(
-            function( $user ) {
+            function ( $user ) {
                 return array(
                     'full_name' => $user->data->display_name,
                     'email' => $user->data->user_email,
@@ -94,9 +94,9 @@ class Wp {
          */
         wemail_set_owner_api_key( false );
 
-        $post_data = [
+        $post_data = array(
             'users' => $users,
-        ];
+        );
 
         wemail()->api->sync()->subscribers()->wp()->subscribe()->post( $post_data );
     }
@@ -122,16 +122,16 @@ class Wp {
         wemail_set_owner_api_key( false );
 
         $users = array_map(
-            function( $user ) {
-                return [
+            function ( $user ) {
+                return array(
                     'email' => $user->data->user_email,
                     'full_name' => $user->data->display_name,
-                ];
+                );
             },
             $users
         );
 
-        wemail()->api->sync()->subscribers()->wp()->update()->post( [ 'users' => $users ] );
+        wemail()->api->sync()->subscribers()->wp()->update()->post( array( 'users' => $users ) );
     }
 
     /**
@@ -143,13 +143,13 @@ class Wp {
      */
     public function delete( $users ) {
         wemail_set_owner_api_key( false );
-        $emails = [];
+        $emails = array();
 
         foreach ( $users as $user ) {
             $emails[] = $user->data->user_email;
         }
 
-        wemail()->api->sync()->subscribers()->wp()->unsubscribe()->post( [ 'emails' => $emails ] );
+        wemail()->api->sync()->subscribers()->wp()->unsubscribe()->post( array( 'emails' => $emails ) );
     }
 
     /**
@@ -160,7 +160,7 @@ class Wp {
      * @since 1.0.0
      */
     private function filter_syncable_users( $user_ids ) {
-        $syncables = [];
+        $syncables = array();
 
         if ( $this->is_active() && ! empty( $this->settings['user_roles'] ) && is_array( $this->settings['user_roles'] ) ) {
             foreach ( $user_ids as $user_id ) {
@@ -187,5 +187,4 @@ class Wp {
 
         return $syncables;
     }
-
 }

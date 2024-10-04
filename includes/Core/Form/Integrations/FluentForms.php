@@ -40,11 +40,11 @@ class FluentForms extends AbstractIntegration {
 
         return array_map(
             function ( $form ) {
-                return [
+                return array(
                     'id'     => absint( $form->id ),
                     'title'  => $form->title,
                     'fields' => $this->transform_form_fields( json_decode( $form->form_fields, true ) ),
-                ];
+                );
             },
             $forms
         );
@@ -58,7 +58,7 @@ class FluentForms extends AbstractIntegration {
      * @return array
      */
     protected function transform_form_fields( $fields ) {
-        $data = [];
+        $data = array();
 
         foreach ( $fields['fields'] as $field ) {
             if ( $field['element'] === 'container' ) {
@@ -93,15 +93,15 @@ class FluentForms extends AbstractIntegration {
      * @param $data
      */
     public function submit( $data ) {
-        $settings = get_option( 'wemail_form_integration_fluent_forms', [] );
+        $settings = get_option( 'wemail_form_integration_fluent_forms', array() );
 
         if ( ! in_array( intval( $data['form_id'] ), $settings, true ) ) {
             return;
         }
 
-        $submission = [
+        $submission = array(
             'id' => $data['form_id'],
-        ];
+        );
 
         $submission['data'] = $this->get_submissions( json_decode( $data['response'], true ) );
 
@@ -130,7 +130,7 @@ class FluentForms extends AbstractIntegration {
      * @return array
      */
     protected function get_sub_fields( $field ) {
-        $data = [];
+        $data = array();
 
         foreach ( $field['fields'] as $sub_field ) {
             if ( ! array_key_exists( 'name', $sub_field['attributes'] ) ) {
@@ -151,7 +151,7 @@ class FluentForms extends AbstractIntegration {
      * @return string
      */
     protected function get_label( $label ) {
-        return ucwords( str_replace( [ '-', '_' ], [ ' ', ' ' ], $label ) );
+        return ucwords( str_replace( array( '-', '_' ), array( ' ', ' ' ), $label ) );
     }
 
     /**
@@ -163,13 +163,13 @@ class FluentForms extends AbstractIntegration {
      * @return array
      */
     protected function get_submissions( $response ) {
-        foreach ( [ '__fluent_form_embded_post_id', '_fluentform_1_fluentformnonce', '_wp_http_referer' ] as $field ) {
+        foreach ( array( '__fluent_form_embded_post_id', '_fluentform_1_fluentformnonce', '_wp_http_referer' ) as $field ) {
             if ( array_key_exists( $field, $response ) ) {
                 unset( $response[ $field ] );
             }
         }
 
-        $data = [];
+        $data = array();
 
         foreach ( $response as $field => $value ) {
             if ( is_array( $value ) ) {
@@ -188,10 +188,10 @@ class FluentForms extends AbstractIntegration {
      * @return array
      */
     public function getData( $name, array $data ) {
-        $data[] = [
+        $data[] = array(
             'id' => $name,
             'label' => $this->get_label( $name ),
-        ];
+        );
         return $data;
     }
 }

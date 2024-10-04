@@ -19,20 +19,20 @@ class Customizer extends WP_REST_Controller {
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base,
-            [
-                'args' => [
-                    'context' => [
+            array(
+                'args' => array(
+                    'context' => array(
                         'description' => __( 'Customizer context like campaign, wp, woocommerce etc', 'wemail' ),
                         'type'        => 'string',
                         'required'    => true,
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback'            => [ $this, 'data' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback'            => array( $this, 'data' ),
+                ),
+            )
         );
     }
 
@@ -42,9 +42,9 @@ class Customizer extends WP_REST_Controller {
 
     public function data( $request ) {
         return rest_ensure_response(
-            [
+            array(
 				'data' => wemail()->campaign->editor->get_customizer_data( $request['context'] ),
-			]
+			)
         );
     }
 }

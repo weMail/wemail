@@ -5,11 +5,10 @@ namespace WeDevs\WeMail;
 class Uninstall {
 
     public static function uninstall() {
-        $data = [
+        $data = array(
             'deactivated' => true,
-        ];
+        );
 
         wemail()->api->site()->update_activation_status()->post( $data );
     }
-
 }

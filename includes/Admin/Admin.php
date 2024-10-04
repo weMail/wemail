@@ -52,5 +52,4 @@ class Admin {
         wp_safe_redirect( admin_url( 'admin.php?page=wemail' ) );
         exit;
     }
-
 }

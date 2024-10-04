@@ -24,7 +24,7 @@ class Rest extends RestController {
      *
      * @var array
      */
-    private $integrations = [];
+    private $integrations = array();
 
     /**
      * Magic method to create integration instances on demand
@@ -68,12 +68,12 @@ class Rest extends RestController {
      * Get all integrations with status
      */
     public function integrations( $request ) {
-        $integrations = [];
+        $integrations = array();
         foreach ( wemail()->form->integrations() as $key => $integration ) {
-            $integrations[] = [
+            $integrations[] = array(
                 'slug' => $key,
                 'is_active' => $this->$key->is_active,
-            ];
+            );
         }
 
         return $integrations;

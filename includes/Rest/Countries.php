@@ -19,13 +19,13 @@ class Countries extends WP_REST_Controller {
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base,
-            [
-                [
+            array(
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => [ $this, 'permission' ],
-                    'callback'            => [ $this, 'countries' ],
-                ],
-            ]
+                    'permission_callback' => array( $this, 'permission' ),
+                    'callback'            => array( $this, 'countries' ),
+                ),
+            )
         );
     }
 
@@ -35,12 +35,11 @@ class Countries extends WP_REST_Controller {
 
     public function countries() {
         $response = rest_ensure_response(
-            [
+            array(
                 'data' => wemail_get_countries(),
-            ]
+            )
         );
 
         return $response;
     }
-
 }

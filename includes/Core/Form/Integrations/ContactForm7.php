@@ -49,12 +49,12 @@ class ContactForm7 extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
-        $args = [
+        $args = array(
             'post_type' => 'wpcf7_contact_form',
             'posts_per_page' => -1,
-        ];
+        );
 
         $cf7_query = new WP_Query( $args );
 
@@ -68,17 +68,17 @@ class ContactForm7 extends AbstractIntegration {
 
                 $cf7 = \WPCF7_ContactForm::get_instance( $post->ID );
 
-                $form = [
+                $form = array(
                     'id'     => $post->ID,
                     'title'  => $post->post_title,
-                    'fields' => [],
-                ];
+                    'fields' => array(),
+                );
 
                 foreach ( $cf7->collect_mail_tags() as $tag ) {
-                    $form['fields'][] = [
+                    $form['fields'][] = array(
                         'id'    => $tag,
                         'label' => "[{$tag}]",
-                    ];
+                    );
                 }
 
                 $forms[] = $form;
@@ -105,7 +105,7 @@ class ContactForm7 extends AbstractIntegration {
 
         $form_id = $wpcf7->id();
 
-        $settings = get_option( 'wemail_form_integration_contact_form_7', [] );
+        $settings = get_option( 'wemail_form_integration_contact_form_7', array() );
 
         if ( ! in_array( $form_id, $settings, true ) ) {
             return;
@@ -115,9 +115,9 @@ class ContactForm7 extends AbstractIntegration {
         $submission  = \WPCF7_Submission::get_instance();
         $posted_data = $submission->get_posted_data();
 
-        $data = [
+        $data = array(
             'id' => $form_id,
-        ];
+        );
 
         foreach ( $form_tags as $form_tag ) {
             $tag = $form_tag->name;
@@ -132,5 +132,4 @@ class ContactForm7 extends AbstractIntegration {
             wemail()->api->forms()->integrations( 'contact-form-7' )->submit()->post( $data );
         }
     }
-
 }

@@ -49,7 +49,7 @@ class Weforms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $weforms_forms = weforms()->form->all();
         $weforms_forms = $weforms_forms['forms'];
@@ -57,19 +57,19 @@ class Weforms extends AbstractIntegration {
         foreach ( $weforms_forms as $weforms_form ) {
             $form_id = $this->cast_form_id( $weforms_form->id );
 
-            $form = [
+            $form = array(
                 'id'     => $form_id,
                 'title'  => $weforms_form->name,
-                'fields' => [],
-            ];
+                'fields' => array(),
+            );
 
             $weforms_form_fields = $weforms_form->get_fields();
 
             foreach ( $weforms_form_fields as $weforms_form_fields ) {
-                $form['fields'][] = [
+                $form['fields'][] = array(
                     'id'    => $weforms_form_fields['id'],
                     'label' => $weforms_form_fields['label'],
-                ];
+                );
             }
 
             $forms[] = $form;
@@ -93,15 +93,15 @@ class Weforms extends AbstractIntegration {
     public function submit( $entry_id, $form_id, $page_id, $form_settings ) {
         $form_id = $this->cast_form_id( $form_id );
 
-        $settings = get_option( 'wemail_form_integration_weforms', [] );
+        $settings = get_option( 'wemail_form_integration_weforms', array() );
 
         if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id' => $form_id,
-        ];
+        );
 
         $weforms_form = weforms()->form->get( $form_id );
 
@@ -119,5 +119,4 @@ class Weforms extends AbstractIntegration {
             wemail()->api->forms()->integrations( 'weforms' )->submit()->post( $data );
         }
     }
-
 }

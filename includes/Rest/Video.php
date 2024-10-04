@@ -21,11 +21,11 @@ class Video extends WP_REST_Controller {
         register_rest_route(
             $this->namespace,
             '/' . $this->rest_base,
-            [
+            array(
                 'methods'             => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback'            => [ $this, 'thumb' ],
-            ]
+                'permission_callback' => array( $this, 'permission' ),
+                'callback'            => array( $this, 'thumb' ),
+            )
         );
     }
 
@@ -41,7 +41,7 @@ class Video extends WP_REST_Controller {
             return new WP_Error(
                 'invalid_request',
                 __( 'source and video_id fields are required', 'wemail' ),
-                [ 'status' => 400 ]
+                array( 'status' => 400 )
             );
         }
 
@@ -57,7 +57,7 @@ class Video extends WP_REST_Controller {
             }
         }
 
-        return rest_ensure_response( [ 'image' => $image_link ] );
+        return rest_ensure_response( array( 'image' => $image_link ) );
     }
 
     /**
@@ -70,17 +70,17 @@ class Video extends WP_REST_Controller {
      */
     protected function get_existing_thumbnail( $source, $video_id ) {
         $query = new WP_Query(
-            [
+            array(
                 'post_type' => 'attachment',
                 'post_status' => 'inherit',
                 'posts_per_page' => 1,
-                'meta_query' => [
-                    [
+                'meta_query' => array(
+                    array(
                         'key'   => sprintf( 'wemail_%s_id', $source ),
                         'value' => $video_id,
-                    ],
-                ],
-            ]
+                    ),
+                ),
+            )
         );
 
         if ( ! $query->have_posts() ) {
@@ -108,7 +108,7 @@ class Video extends WP_REST_Controller {
             return new WP_Error(
                 'invalid_request',
                 $body->message,
-                [ 'status' => wp_remote_retrieve_response_code( $response ) ]
+                array( 'status' => wp_remote_retrieve_response_code( $response ) )
             );
         }
         $content_type = wp_remote_retrieve_header( $response, 'content-type' );

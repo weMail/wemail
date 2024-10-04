@@ -47,7 +47,7 @@ class PopupMaker extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
         $popups = pum_get_all_popups();
 
         foreach ( $popups as $popup ) {
@@ -56,11 +56,11 @@ class PopupMaker extends AbstractIntegration {
                 continue;
             }
 
-            $forms[] = [
+            $forms[] = array(
                 'id'     => $popup->ID,
                 'title'  => $popup->post_title ? $popup->post_title : 'no title',
                 'fields' => $fields,
-            ];
+            );
         }
 
         return $forms;
@@ -80,7 +80,7 @@ class PopupMaker extends AbstractIntegration {
             return false;
         }
 
-        $fields = [];
+        $fields = array();
         foreach ( $data as $item ) {
             $item = explode( '=', $item );
             if ( ! isset( $item[0] ) ) {
@@ -99,25 +99,25 @@ class PopupMaker extends AbstractIntegration {
     private function field_data( $data ) {
         switch ( $data ) {
             case 'label_fname':
-                return [
+                return array(
                     'id'    => 'first-name',
                     'label' => 'First Name',
-                ];
+                );
             case 'label_lname':
-                return [
+                return array(
                     'id'    => 'last-name',
                     'label' => 'Last Name',
-                ];
+                );
             case 'label_name':
-                return [
+                return array(
                     'id'    => 'name',
                     'label' => 'Name',
-                ];
+                );
             case 'label_email':
-                return [
+                return array(
                     'id'    => 'email',
                     'label' => 'Email',
-                ];
+                );
             default:
                 return null;
         }
@@ -135,22 +135,21 @@ class PopupMaker extends AbstractIntegration {
             return;
         }
 
-        $user_data = [
+        $user_data = array(
             'email'      => isset( $values['email'] ) ? $values['email'] : '',
             'name'       => isset( $values['name'] ) ? $values['name'] : '',
             'first-name' => isset( $values['fname'] ) ? $values['fname'] : '',
             'last-name'  => isset( $values['lname'] ) ? $values['lname'] : '',
-        ];
+        );
 
-        $form_data = [
+        $form_data = array(
             'id'    => $values['popup_id'],
             'data'  => $user_data,
-        ];
+        );
 
         if ( ! empty( $form_data['data'] ) ) {
             wemail_set_owner_api_key();
             wemail()->api->forms()->integrations( 'popup-maker' )->submit()->post( $form_data );
         }
     }
-
 }

@@ -28,7 +28,7 @@ class OrderResource extends JsonResource {
 			}
         );
 
-        $data = [
+        $data = array(
             'id'         => (string) $order->get_id(),
             'parent_id'  => $order->get_parent_id() ? (string) $order->get_parent_id() : null,
             'products'   => OrderItemResource::collection( $items ),
@@ -39,16 +39,16 @@ class OrderResource extends JsonResource {
             'type'       => $this->get_type( $order->get_type() ),
             'created_at' => $order->get_date_created()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
             'updated_at' => $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
-        ];
+        );
 
         if ( $this->is_refund( $data['type'] ) ) {
             /** @var $order \Automattic\WooCommerce\Admin\Overrides\OrderRefund */
             $data['customer_id']  = $this->get_customer_id( wc_get_order( $order->get_parent_id() )->get_billing_email() );
-            $data['permalink']    = get_edit_post_link( $order->get_parent_id(), 'raw' );
+            $data['permalink']    = wc_get_order( $order->get_parent_id() )->get_edit_order_url();
             $data['completed_at'] = $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT );
         } else {
             $data['customer']     = $this->customer( $order );
-            $data['permalink']    = get_edit_post_link( $order->get_id(), 'raw' );
+            $data['permalink']    = $order->get_edit_order_url();
             $data['customer_id']  = $this->get_customer_id( $data['customer']['email'] );
             $completed_date       = $order->get_date_completed();
             $data['completed_at'] = $completed_date && $this->is_completed( $this->get_status( $order->get_status() ) ) ? $completed_date->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null;
@@ -65,7 +65,7 @@ class OrderResource extends JsonResource {
      * @return array
      */
     protected function customer( $order ) {
-        return [
+        return array(
             'first_name' => $order->get_billing_first_name(),
             'last_name'  => $order->get_billing_last_name(),
             'email'      => $order->get_billing_email(),
@@ -76,7 +76,7 @@ class OrderResource extends JsonResource {
             'state'      => $order->get_billing_state(),
             'zip'        => $order->get_billing_postcode(),
             'country'    => $order->get_billing_country(),
-        ];
+        );
     }
 
     /**

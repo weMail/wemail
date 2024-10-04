@@ -47,7 +47,7 @@ class PopupBuilder extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $subscription_popup = new SubscriptionPopup();
         $subscription_popups = $subscription_popup->getAllSubscriptions();
@@ -57,11 +57,11 @@ class PopupBuilder extends AbstractIntegration {
         }
 
         foreach ( $subscription_popups as $popup ) {
-            $forms[] = [
+            $forms[] = array(
                 'id'     => $popup->getId(),
                 'title'  => $popup->getTitle() ? $popup->getTitle() : 'no title',
                 'fields' => $this->get_fields( $popup ),
-            ];
+            );
         }
 
         return $forms;
@@ -77,12 +77,12 @@ class PopupBuilder extends AbstractIntegration {
     protected function get_fields( $popup ) {
         $subs_fields = $popup->getOptionValue( 'sgpb-subs-fields' );
         if ( empty( $subs_fields ) ) {
-            return [];
+            return array();
         }
 
-        $fields = [];
+        $fields = array();
         foreach ( $subs_fields as $key => $field ) {
-            if ( ! in_array( $field['attrs']['type'], [ 'text', 'email' ], true ) ) {
+            if ( ! in_array( $field['attrs']['type'], array( 'text', 'email' ), true ) ) {
                 continue;
             }
 
@@ -90,10 +90,10 @@ class PopupBuilder extends AbstractIntegration {
                 continue;
             }
 
-            $fields[] = [
+            $fields[] = array(
                 'id'    => $key,
                 'label' => $field['attrs']['placeholder'],
-            ];
+            );
         }
 
         return $fields;
@@ -107,7 +107,7 @@ class PopupBuilder extends AbstractIntegration {
      * @since 1.0.0
      */
     public function submit( $data ) {
-        $forms = get_option( 'wemail_form_integration_popup_builder', [] );
+        $forms = get_option( 'wemail_form_integration_popup_builder', array() );
 
         check_ajax_referer( SG_AJAX_NONCE, 'nonce' );
         $sgpb_ajax = new Ajax();
@@ -121,16 +121,16 @@ class PopupBuilder extends AbstractIntegration {
         $submission_data = $sgpb_ajax->getValueFromPost( 'formData' );
         parse_str( $submission_data, $form_data );
 
-        $user_data = [
+        $user_data = array(
             'email'      => sanitize_email( $form_data['sgpb-subs-email'] ),
             'first-name' => sanitize_text_field( $form_data['sgpb-subs-first-name'] ),
             'last-name'  => sanitize_text_field( $form_data['sgpb-subs-last-name'] ),
-        ];
+        );
 
-        $form_data = [
+        $form_data = array(
             'id'    => $popup_post_id,
             'data'  => $user_data,
-        ];
+        );
 
         if ( ! empty( $form_data['data'] ) ) {
             wemail_set_owner_api_key();

@@ -52,7 +52,7 @@ class FormPreview {
             </head>
             <body>
                 <div>
-                    <?php echo sprintf( '<div id="preview-wemail-form" data-form-type="%s"><wemail-form-preview id="%s"/></div>', $form['type'], $this->form_id ); ?>
+                    <?php printf( '<div id="preview-wemail-form" data-form-type="%s"><wemail-form-preview id="%s"/></div>', $form['type'], $this->form_id ); ?>
                 </div>
 
                 <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>

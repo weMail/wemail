@@ -62,24 +62,24 @@ class CalderaForms extends AbstractIntegration {
      * @return array
      */
     public function forms() {
-        $forms = [];
+        $forms = array();
 
         $caldera_forms = \Caldera_Forms_Forms::get_forms( true );
 
         foreach ( $caldera_forms as $form_id => $caldera_form ) {
             $form_details = \Caldera_Forms_Forms::get_form( $caldera_form['ID'] );
 
-            $form = [
+            $form = array(
                 'id'     => $this->cast_form_id( $caldera_form['ID'] ),
                 'title'  => $caldera_form['name'],
-                'fields' => [],
-            ];
+                'fields' => array(),
+            );
 
             foreach ( $form_details['fields'] as $caldera_form_field_id => $caldera_form_field ) {
-                $form['fields'][] = [
+                $form['fields'][] = array(
                     'id'    => $caldera_form_field_id,
                     'label' => $caldera_form_field['label'],
-                ];
+                );
             }
 
             $forms[] = $form;
@@ -105,15 +105,15 @@ class CalderaForms extends AbstractIntegration {
 
         $form_id = $form['ID'];
 
-        $settings = get_option( 'wemail_form_integration_caldera_forms', [] );
+        $settings = get_option( 'wemail_form_integration_caldera_forms', array() );
 
         if ( ! in_array( $form_id, $settings, true ) ) {
             return;
         }
 
-        $data = [
+        $data = array(
             'id' => $form_id,
-        ];
+        );
 
         $posted_data = $processed_data[ $form_id ];
 
@@ -126,5 +126,4 @@ class CalderaForms extends AbstractIntegration {
             wemail()->api->forms()->integrations( 'caldera-forms' )->submit()->post( $data );
         }
     }
-
 }

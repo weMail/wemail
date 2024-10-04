@@ -50,31 +50,31 @@ class MailPoet {
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/lists',
-            [
+            array(
                 'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback' => [ $this, 'lists' ],
-            ]
+                'permission_callback' => array( $this, 'permission' ),
+                'callback' => array( $this, 'lists' ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/lists/(?P<id>[\d]+)/subscribers',
-            [
+            array(
                 'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback' => [ $this, 'subscribers' ],
-            ]
+                'permission_callback' => array( $this, 'permission' ),
+                'callback' => array( $this, 'subscribers' ),
+            )
         );
 
         register_rest_route(
             $this->namespace,
             $this->rest_base . '/meta-fields',
-            [
+            array(
                 'methods' => WP_REST_Server::READABLE,
-                'permission_callback' => [ $this, 'permission' ],
-                'callback' => [ $this, 'meta_fields' ],
-            ]
+                'permission_callback' => array( $this, 'permission' ),
+                'callback' => array( $this, 'meta_fields' ),
+            )
         );
     }
 
@@ -92,11 +92,11 @@ class MailPoet {
 
         if ( ! empty( $api_key ) ) {
             $query = new WP_User_Query(
-                [
+                array(
                     'fields'        => 'ID',
                     'meta_key'      => 'wemail_api_key',
                     'meta_value'    => $api_key,
-                ]
+                )
             );
 
             if ( $query->get_total() ) {
@@ -123,22 +123,22 @@ class MailPoet {
      * @return \WP_Error|\WP_REST_Response|void
      */
     public function __call( $name, $args ) {
-        $callbacks = [ 'lists', 'meta_fields', 'subscribers' ];
+        $callbacks = array( 'lists', 'meta_fields', 'subscribers' );
 
         if ( in_array( $name, $callbacks, true ) ) {
             $active_version = $this->active_version();
 
             if ( ! $active_version ) {
-                return new WP_Error( 'mailpoet_is_not_active', __( 'MailPoet is not active', 'wemail' ), [ 'status' => 422 ] );
+                return new WP_Error( 'mailpoet_is_not_active', __( 'MailPoet is not active', 'wemail' ), array( 'status' => 422 ) );
             }
 
             $method = ( $active_version === 'v3' ) ? "{$name}_v3" : "{$name}_v2";
 
             $request = $args[0];
 
-            $data = [
+            $data = array(
                 $name => $this->$method( $request ),
-            ];
+            );
 
             return new WP_REST_Response( $data, 200 );
         }
@@ -183,11 +183,11 @@ class MailPoet {
 
         return array_map(
             function ( $id ) use ( $lists, $stats ) {
-                return [
+                return array(
                     'id' => $id,
                     'name' => $lists[ $id ],
                     'count' => intval( $stats[ $id ] ),
-                ];
+                );
             },
             array_keys( $stats )
         );
@@ -207,17 +207,17 @@ class MailPoet {
 
         $users = \WYSIJA::get( 'user', 'model' );
 
-        $data = [];
+        $data = array();
 
         foreach ( $lists as $list ) {
             $list_id = absint( $list['list_id'] );
-            $count = absint( $users->countSubscribers( [ $list_id ] ) );
+            $count = absint( $users->countSubscribers( array( $list_id ) ) );
 
-            $data[] = [
+            $data[] = array(
                 'id' => $list_id,
                 'name' => $list['name'],
                 'count' => $count,
-            ];
+            );
         }
 
         return $data;
@@ -231,15 +231,15 @@ class MailPoet {
      * @return array
      */
     private function meta_fields_v3() {
-        $data = [];
+        $data = array();
 
         $fields = \MailPoet\API\API::MP( 'v1' )->getSubscriberFields();
 
         foreach ( $fields as $field ) {
-            $data[] = [
+            $data[] = array(
                 'name' => $field['id'],
                 'title' => $field['name'],
-            ];
+            );
         }
 
         return $data;
@@ -253,17 +253,17 @@ class MailPoet {
      * @return array
      */
     private function meta_fields_v2() {
-        $data = [];
+        $data = array();
 
         $user = \WYSIJA::get( 'user_field', 'model' );
 
         $fields = $user->getFields();
 
         foreach ( $fields as $name => $title ) {
-            $data[] = [
+            $data[] = array(
                 'name' => $name,
                 'title' => $title,
-            ];
+            );
         }
 
         return $data;
@@ -295,7 +295,7 @@ class MailPoet {
      */
     private function subscribers_v2( $request ) {
         if ( empty( $request['id'] ) ) {
-            return new WP_Error( 'required_field', __( 'List id is missing', 'wemail' ), [ 'status' => 422 ] );
+            return new WP_Error( 'required_field', __( 'List id is missing', 'wemail' ), array( 'status' => 422 ) );
         }
 
         // get subscribers
@@ -318,7 +318,7 @@ class MailPoet {
 
         $select = array( 'A.*, B.sub_date, B.unsub_date' );
 
-        $filters = [];
+        $filters = array();
 
         $filters['lists'] = $request['id'];
 

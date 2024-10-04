@@ -12,7 +12,7 @@ class Hooks {
      * @since 1.0.6
      * @var array
      */
-    private $created_contacts = [];
+    private $created_contacts = array();
 
     /**
      * Holds the updated contact ids
@@ -21,7 +21,7 @@ class Hooks {
      *
      * @var array
      */
-    private $updated_contacts = [];
+    private $updated_contacts = array();
 
     /**
      * Holds the deleting contacts
@@ -30,7 +30,7 @@ class Hooks {
      *
      * @var array
      */
-    private $deleting_contacts = [];
+    private $deleting_contacts = array();
 
     /**
      * Holds the deleted contacts
@@ -39,14 +39,14 @@ class Hooks {
      *
      * @var array
      */
-    private $deleted_contacts = [];
+    private $deleted_contacts = array();
 
     /**
      * Holds the restored contact ids
      *
      * @var array
      */
-    private $restored_contacts = [];
+    private $restored_contacts = array();
 
     /**
      * Class constructor
@@ -110,7 +110,7 @@ class Hooks {
      * @since 1.0.0
      */
     public function update_subscriber_group_on_shutdown( $subscriber ) {
-        if ( ! has_action( 'shutdown', [ $this, 'create' ] ) && ! has_action( 'shutdown', [ $this, 'update' ] ) ) {
+        if ( ! has_action( 'shutdown', array( $this, 'create' ) ) && ! has_action( 'shutdown', array( $this, 'update' ) ) ) {
             $this->updated_contacts[] = $subscriber->user_id;
 
             $this->add_shutdown_action( 'sync_group' );
@@ -210,7 +210,7 @@ class Hooks {
      * @since 1.0.0
      */
     private function add_shutdown_action( $name ) {
-        if ( ! has_action( 'shutdown', [ $this, $name ] ) ) {
+        if ( ! has_action( 'shutdown', array( $this, $name ) ) ) {
             $this->add_action( 'shutdown', $name );
         }
     }

@@ -29,12 +29,12 @@ class Integrations extends RestController {
         $enabled = get_option( 'wemail_affiliatewp_enabled', false );
         $rest_url = rest_url( '', 'json' );
         return rest_ensure_response(
-            [
-                'data' => [
+            array(
+                'data' => array(
                     'enabled' => $enabled,
                     'rest_url' => $rest_url,
-                ],
-            ]
+                ),
+            )
         );
     }
 
@@ -46,11 +46,11 @@ class Integrations extends RestController {
         $checked = $request->get_param( 'checked' );
         update_option( 'wemail_affiliatewp_enabled', $checked );
         return rest_ensure_response(
-            [
-                'data' => [
+            array(
+                'data' => array(
                     'checked'  => $checked,
-                ],
-            ]
+                ),
+            )
         );
     }
 }

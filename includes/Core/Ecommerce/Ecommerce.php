@@ -10,10 +10,10 @@ use WeDevs\WeMail\Core\Ecommerce\Platforms\AbstractPlatform;
 class Ecommerce {
     use Singleton;
 
-    protected $platforms = [
+    protected $platforms = array(
         'woocommerce' => WooCommerce::class,
         'edd'         => EDD::class,
-    ];
+    );
 
     /**
      * @param $platform

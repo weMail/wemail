@@ -17,7 +17,7 @@ class SystemService {
      * @return array
      */
     public function get_server_info() {
-        $server_data = [];
+        $server_data = array();
 
         if ( function_exists( 'phpversion' ) ) {
             $server_data['php_version'] = phpversion();

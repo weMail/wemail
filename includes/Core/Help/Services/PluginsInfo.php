@@ -15,12 +15,12 @@ class PluginsInfo {
         }
 
         $plugins             = get_plugins();
-        $active_plugins_keys = get_option( 'active_plugins', [] );
-        $active_plugins      = [];
+        $active_plugins_keys = get_option( 'active_plugins', array() );
+        $active_plugins      = array();
 
         foreach ( $plugins as $k => $v ) {
             // Take care of formatting the data how we want it.
-            $formatted         = [];
+            $formatted         = array();
             $formatted['name'] = strip_tags( $v['Name'] );
 
             if ( isset( $v['Version'] ) ) {
@@ -52,9 +52,9 @@ class PluginsInfo {
             }
         }
 
-        return [
+        return array(
             'active_plugins' => $active_plugins,
             'inactive_plugins' => $plugins,
-        ];
+        );
     }
 }

@@ -16,7 +16,7 @@ class ProductResource extends JsonResource {
 
         $download = new EDD_Download( $resource->ID );
 
-        return [
+        return array(
             'id'         => (string) $resource->ID,
             'parent_id'  => (string) $resource->post_parent,
             'name'       => $resource->post_title,
@@ -26,7 +26,7 @@ class ProductResource extends JsonResource {
             'thumbnail'  => $this->get_thumbnail( $resource ),
             'categories' => $this->get_categories( $resource->ID ),
             'source'     => 'edd',
-        ];
+        );
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductResource extends JsonResource {
         return array_map(
             function ( $term ) {
                 return $term->term_id;
-            }, is_array( $terms ) ? $terms : []
+            }, is_array( $terms ) ? $terms : array()
         );
     }
 }

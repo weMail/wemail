@@ -17,7 +17,7 @@ class WordpressInfo {
      * @return array
      */
     public function get_wp_info() {
-        $wp_data = [];
+        $wp_data = array();
 
         $wp_data['site_url']                    = esc_url( home_url() );
         $wp_data['memory_limit']                = WP_MEMORY_LIMIT;
@@ -87,7 +87,7 @@ class WordpressInfo {
      * @return array
      */
     public function get_user_counts() {
-        $user_count          = [];
+        $user_count          = array();
         $user_count_data     = count_users();
         $user_count['total'] = $user_count_data['total_users'];
 
@@ -101,13 +101,13 @@ class WordpressInfo {
 
     public function name( $as_array = false ) {
         $users = get_users(
-            [
+            array(
                 'role'    => 'administrator',
                 'orderby' => 'ID',
                 'order'   => 'ASC',
                 'number'  => 1,
                 'paged'   => 1,
-            ]
+            )
         );
 
         $admin_user = ( is_array( $users ) && ! empty( $users ) ) ? $users[0] : false;
@@ -120,10 +120,10 @@ class WordpressInfo {
         }
 
         if ( $as_array ) {
-            return [
+            return array(
                 'first_name' => $first_name,
                 'last_name'  => $last_name,
-            ];
+            );
         }
 
         return $first_name . ' ' . $last_name;
@@ -152,25 +152,25 @@ class WordpressInfo {
 
         $post_types = $wpdb->get_results( "SELECT post_type AS 'type', count(1) AS 'count' FROM {$wpdb->posts} GROUP BY post_type ORDER BY count DESC;", ARRAY_A );
 
-        return is_array( $post_types ) ? $post_types : [];
+        return is_array( $post_types ) ? $post_types : array();
     }
 
     public function time_info() {
         global $wpdb;
-        $data = [
-            [
+        $data = array(
+            array(
                 'label' => 'WP Local Time',
                 'value' => $this::get_timezone(),
-            ],
-            [
+            ),
+            array(
                 'label' => 'DB Time ',
                 'value' => $wpdb->get_var( 'SELECT utc_timestamp()' ),
-            ],
-            [
+            ),
+            array(
                 'label' => 'PHP Time',
                 'value' => gmdate( 'Y-m-d H:i:s' ),
-            ],
-        ];
+            ),
+        );
 
         return $data;
     }

@@ -36,7 +36,7 @@ abstract class JsonResource {
     public static function collection( array $resources ) {
         $instance = new static();
 
-        $data = array_map( [ $instance, 'blueprint' ], $resources );
+        $data = array_map( array( $instance, 'blueprint' ), $resources );
 
         if ( $instance->reset_keys ) {
             $data = array_values( $data );

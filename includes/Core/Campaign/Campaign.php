@@ -50,7 +50,7 @@ class Campaign {
      *
      * @return array
      */
-    public function all( $query = [] ) {
+    public function all( $query = array() ) {
         return wemail()->api->campaigns()->query( $query )->get();
     }
 
@@ -62,11 +62,11 @@ class Campaign {
      * @return array
      * @since 1.0.0
      */
-    public function get( $id, $include = [] ) {
+    public function get( $id, $include = array() ) {
         $campaign = wemail()->api->campaigns( $id );
 
         if ( ! empty( $include ) ) {
-            $campaign = $campaign->query( [ 'include' => implode( ',', $include ) ] );
+            $campaign = $campaign->query( array( 'include' => implode( ',', $include ) ) );
         }
 
         $campaign = $campaign->get();
@@ -82,5 +82,4 @@ class Campaign {
 
         return $campaign;
     }
-
 }

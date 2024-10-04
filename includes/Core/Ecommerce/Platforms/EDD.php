@@ -22,10 +22,10 @@ class EDD extends AbstractPlatform {
     /**
      * @var null|array
      */
-    protected $orders = [
-        'trash'   => [],
-        'restore' => [],
-    ];
+    protected $orders = array(
+        'trash'   => array(),
+        'restore' => array(),
+    );
 
     /**
      * Currency name
@@ -52,12 +52,12 @@ class EDD extends AbstractPlatform {
      *
      * @return array
      */
-    public function products( array $args = [] ) {
+    public function products( array $args = array() ) {
         $args = wp_parse_args(
-            $args, [
+            $args, array(
                 'page'  => 1,
                 'limit' => 50,
-            ]
+            )
         );
 
         $query = new WP_Query(
@@ -68,12 +68,12 @@ class EDD extends AbstractPlatform {
             )
         );
 
-        return [
+        return array(
             'data'         => ProductResource::collection( $query->get_posts() ),
             'total'        => $query->found_posts,
             'current_page' => intval( $args['page'] ),
             'total_page'   => $query->max_num_pages,
-        ];
+        );
     }
 
     /**
@@ -83,40 +83,40 @@ class EDD extends AbstractPlatform {
      *
      * @return array
      */
-    public function orders( array $args = [] ) {
+    public function orders( array $args = array() ) {
         if ( $this->is_version_v3() ) {
             return $this->orders_v3( $args );
         }
 
         $args = wp_parse_args(
             $args,
-            [
+            array(
                 'posts_per_page' => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
                 'paged'          => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
                 'post_type'      => 'edd_payment',
-                'post_status'    => [ 'publish', 'pending' ],
-            ]
+                'post_status'    => array( 'publish', 'pending' ),
+            )
         );
 
         if ( isset( $args['after_updated'] ) ) {
-            $args['date_query'] = [
-                [
+            $args['date_query'] = array(
+                array(
                     'column' => 'post_modified_gmt',
                     'after'  => gmdate( 'Y-m-d H:i:s', $args['after_updated'] ),
-                ],
-            ];
+                ),
+            );
         }
 
         $payments = new WP_Query( $args );
 
         $data = OrderResource::collection( $payments->get_posts() );
 
-        return [
+        return array(
             'data'         => $data,
             'total'        => $payments->found_posts,
             'current_page' => intval( $args['paged'] ),
             'total_page'   => $payments->max_num_pages,
-        ];
+        );
     }
 
     /**
@@ -126,14 +126,14 @@ class EDD extends AbstractPlatform {
      *
      * @return array
      */
-    public function orders_v3( array $args = [] ) {
+    public function orders_v3( array $args = array() ) {
         $args = wp_parse_args(
-            $args, [
+            $args, array(
                 'number'  => isset( $args['limit'] ) ? intval( $args['limit'] ) : 50,
                 'page'    => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
-                'type'    => [ 'sale', 'refund' ],
+                'type'    => array( 'sale', 'refund' ),
                 'orderby' => 'date_modified',
-            ]
+            )
         );
 
         if ( isset( $args['limit'] ) ) {
@@ -141,24 +141,24 @@ class EDD extends AbstractPlatform {
         }
 
         if ( isset( $args['after_updated'] ) ) {
-            $args['date_query'] = [
-                [
+            $args['date_query'] = array(
+                array(
                     'after'     => gmdate( 'Y-m-d H:i:s', (int) $args['after_updated'] ),
                     'column'    => 'date_modified',
                     'inclusive' => true,
-                ],
-            ];
+                ),
+            );
 
             unset( $args['after_updated'] );
         }
 
         $data = edd_get_payments( $args );
 
-        return [
+        return array(
             'data'         => OrderResourceV3::collection( $data ),
             'current_page' => intval( $args['page'] ),
             'total_page'   => empty( $data ) ? intval( $args['page'] ) : 'next',
-        ];
+        );
     }
 
     /**
@@ -168,17 +168,17 @@ class EDD extends AbstractPlatform {
      *
      * @return array
      */
-    public function categories( array $args = [] ) {
+    public function categories( array $args = array() ) {
         $terms = get_terms(
-            [
+            array(
                 'taxonomy'   => 'download_category',
                 'hide_empty' => false,
-            ]
+            )
         );
 
-        return [
+        return array(
             'data' => CategoryResource::collection( $terms ),
-        ];
+        );
     }
 
     /**
@@ -187,16 +187,16 @@ class EDD extends AbstractPlatform {
      * @return void
      */
     public function register_hooks() {
-        add_action( 'post_updated', [ $this, 'handle_product' ], 10, 2 );
+        add_action( 'post_updated', array( $this, 'handle_product' ), 10, 2 );
 
         if ( $this->is_version_v3() ) {
-            add_action( 'edd_refund_order', [ $this, 'handle_refund' ], 10, 2 );
-            add_action( 'edd_update_payment_status', [ $this, 'sync_order_v3' ], 10, 3 );
-            add_action( 'edd_complete_purchase', [ $this, 'completed_order_v3' ], 10, 2 );
+            add_action( 'edd_refund_order', array( $this, 'handle_refund' ), 10, 2 );
+            add_action( 'edd_update_payment_status', array( $this, 'sync_order_v3' ), 10, 3 );
+            add_action( 'edd_complete_purchase', array( $this, 'completed_order_v3' ), 10, 2 );
         } else {
-            add_action( 'after_delete_post', [ $this, 'delete_item' ], 10, 2 );
-            add_action( 'edd_complete_purchase', [ $this, 'handle_order' ], 10, 2 );
-            add_action( 'edd_update_payment_status', [ $this, 'handle_order' ] );
+            add_action( 'after_delete_post', array( $this, 'delete_item' ), 10, 2 );
+            add_action( 'edd_complete_purchase', array( $this, 'handle_order' ), 10, 2 );
+            add_action( 'edd_update_payment_status', array( $this, 'handle_order' ) );
         }
     }
 
@@ -274,7 +274,7 @@ class EDD extends AbstractPlatform {
      */
     public function sync_order_v3( $payment_id, $new_status, $old_status ) {
         if ( ! $this->registered_shutdown ) {
-            add_action( 'shutdown', [ $this, 'on_shutdown' ] );
+            add_action( 'shutdown', array( $this, 'on_shutdown' ) );
             $this->registered_shutdown = true;
         }
 
@@ -351,9 +351,9 @@ class EDD extends AbstractPlatform {
                 ->products( $post_id )
                 ->send_json()
                 ->post(
-                    [
+                    array(
                         '_method' => 'delete',
-                    ]
+                    )
                 );
         }
 
@@ -363,9 +363,9 @@ class EDD extends AbstractPlatform {
                 ->orders( $post_id )
                 ->send_json()
                 ->post(
-                    [
+                    array(
                         '_method' => 'delete',
-                    ]
+                    )
                 );
         }
     }
@@ -483,6 +483,6 @@ class EDD extends AbstractPlatform {
             $module->orders( $payment->transaction_id );
         }
 
-        $module->post( [ '_method' => 'delete' ] );
+        $module->post( array( '_method' => 'delete' ) );
     }
 }
