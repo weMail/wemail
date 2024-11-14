@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 4.0
-Tested up to: 6.4.7
-Stable tag: 1.14.8
+Tested up to: 6.7
+Stable tag: 1.14.9
 Requires PHP: 5.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -331,6 +331,9 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 
 == Changelog ==
+
+= v1.14.9 - (14th Nov, 2024) =
+* WordPress 6.7 compatibility
 
 = v1.14.8 - (14th Nov, 2024) =
 * WordPress 6.4.7 compatibility
