@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 4.0
 Tested up to: 6.4.3
-Stable tag: 1.14.7
+Stable tag: 1.14.10
 Requires PHP: 5.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -332,7 +332,10 @@ weMail doesn't require any pre-requisite. But we do advise you first look throug
 
 == Changelog ==
 
-= v1.14.6 - (4th Oct, 2024) =
+= v1.14.10 - (24th Dec, 2024) =
+* Fix translation loading triggered too early notice
+
+= v1.14.7 - (4th Oct, 2024) =
 * Editor enhancement
 * Update team feature
 
