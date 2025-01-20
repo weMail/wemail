@@ -17,10 +17,13 @@ class Auth {
      * @return void
      */
     public function site( $api = '' ) {
-        $start_of_week = get_option( 'start_of_week', 1 );
-        $week_days = array( 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' );
+        // $start_of_week = get_option( 'start_of_week', 1 );
+        // $week_days = array( 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' );
 
         $user = wp_get_current_user();
+
+        error_log($user->data->user_email);
+        error_log(print_r($user, true));
 
         $admin_name = $user->data->display_name;
 
@@ -39,13 +42,13 @@ class Auth {
         set_transient( 'wemail_validate_me_key', $key, 5 * MINUTE_IN_SECONDS );
 
         $data = array(
-            'api_key'           => $api,
+            // 'api_key'           => $api,
             'site_name'         => get_bloginfo( 'name' ),
             'site_email'        => get_bloginfo( 'admin_email' ),
             'site_url'          => untrailingslashit( site_url( '/' ) ),
             'home_url'          => untrailingslashit( home_url( '/' ) ),
             'rest_url_prefix'   => rest_get_url_prefix(),
-            'start_of_week'     => $week_days[ $start_of_week ],
+            // 'start_of_week'     => $week_days[ $start_of_week ],
             'timezone'          => wemail_get_wp_timezone(),
             'language'          => $lang,
             'date_format'       => get_option( 'date_format', 'F j, Y' ),
@@ -54,9 +57,15 @@ class Auth {
             'admin_email'       => $user->data->user_email,
             'rest_url'          => untrailingslashit( get_rest_url( null, '/wemail/v1/auth/validate-me' ) ),
             'key'               => $key,
+            'created_by'        => $user->data->user_email,
+            'brand_name'        => 'weMail new brand',
+            'brand_url'         => 'http://example.com',
+            'brand_email'       => 'email@brand',
+            'brand_slug'        => 'brand-slug',
         );
 
-        $response = wemail()->api->auth()->sites()->post( $data );
+        // $response = wemail()->api->auth()->sites()->post( $data );
+        $response = wemail()->api->onboarding()->wp()->brands()->send_json()->post( $data );
 
         if ( is_wp_error( $response ) ) {
             $data = $response->get_error_data();

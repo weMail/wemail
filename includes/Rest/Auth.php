@@ -35,8 +35,12 @@ class Auth extends RestController {
      * @return \WP_REST_Response
      */
     public function site( $request ) {
-        $key     = $request->get_param( 'api' );
-        $authenticate = wemail()->auth->site( $key );
+        // $key     = $request->get_param( 'api' );
+        // $authenticate = wemail()->auth->site( $key );
+        error_log('Authenticating site');
+        // error_log(print_r($request->get_params(), true));
+
+        $authenticate = wemail()->auth->site();
 
         if ( is_wp_error( $authenticate ) ) {
             return $authenticate;
