@@ -63,6 +63,7 @@ class User {
     public function boot() {
         $user_id = get_current_user_id();
 
+
         $disabled = get_user_meta( $user_id, 'wemail_disable_user_access' );
         if ( $disabled ) {
             return;

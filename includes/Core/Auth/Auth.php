@@ -16,14 +16,11 @@ class Auth {
      *
      * @return void
      */
-    public function site( $api = '' ) {
+    public function site( $request = '') {
         // $start_of_week = get_option( 'start_of_week', 1 );
         // $week_days = array( 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' );
 
         $user = wp_get_current_user();
-
-        error_log($user->data->user_email);
-        error_log(print_r($user, true));
 
         $admin_name = $user->data->display_name;
 
@@ -58,13 +55,11 @@ class Auth {
             'rest_url'          => untrailingslashit( get_rest_url( null, '/wemail/v1/auth/validate-me' ) ),
             'key'               => $key,
             'created_by'        => $user->data->user_email,
-            'brand_name'        => 'weMail new brand',
-            'brand_url'         => 'http://example.com',
-            'brand_email'       => 'email@brand',
-            'brand_slug'        => 'brand-slug',
+            'brand_name'        => $request->get_param( 'name' ),
+            'brand_slug'              => $request->get_param( 'slug' ),
         );
 
-        // $response = wemail()->api->auth()->sites()->post( $data );
+//         $response = wemail()->api->auth()->sites()->post( $data );
         $response = wemail()->api->onboarding()->wp()->brands()->send_json()->post( $data );
 
         if ( is_wp_error( $response ) ) {
@@ -88,32 +83,32 @@ class Auth {
                 )
             );
 
-            foreach ( $wp_admins as $wp_admin ) {
-                $roles = array_values( $wp_admin->roles );
-                $data = array(
-                    'name' => $wp_admin->data->display_name,
-                    'email' => $wp_admin->data->user_email,
-                    'role' => in_array( 'administrator', $roles, true ) ? 'admin' : 'team',
-                    'include' => 'role,permissions',
-                );
-
-                $wp_admin_response = wemail()->api->teamUsers()->post( $data );
-
-                if ( ! empty( $wp_admin_response['access_token'] ) ) {
-                    $user_meta = array(
-                        'deleted_at' => $wp_admin_response['data']['deleted_at'],
-                        'email' => $wp_admin_response['data']['email'],
-                        'hash' => $wp_admin_response['data']['hash'],
-                        'name' => $wp_admin_response['data']['name'],
-                        'permissions' => $wp_admin_response['data']['permissions'],
-                        'role' => $wp_admin_response['data']['role'],
-                        'roles' => $wp_admin_response['data']['roles'],
-                    );
-
-                    update_user_meta( $wp_admin->ID, 'wemail_api_key', $wp_admin_response['access_token'] );
-                    update_user_meta( $wp_admin->ID, 'wemail_user_data', $user_meta );
-                }
-            }
+//            foreach ( $wp_admins as $wp_admin ) {
+//                $roles = array_values( $wp_admin->roles );
+//                $data = array(
+//                    'name' => $wp_admin->data->display_name,
+//                    'email' => $wp_admin->data->user_email,
+//                    'role' => in_array( 'administrator', $roles, true ) ? 'admin' : 'team',
+//                    'include' => 'role,permissions',
+//                );
+//
+//                $wp_admin_response = wemail()->api->teamUsers()->post( $data );
+//
+//                if ( ! empty( $wp_admin_response['access_token'] ) ) {
+//                    $user_meta = array(
+//                        'deleted_at' => $wp_admin_response['data']['deleted_at'],
+//                        'email' => $wp_admin_response['data']['email'],
+//                        'hash' => $wp_admin_response['data']['hash'],
+//                        'name' => $wp_admin_response['data']['name'],
+//                        'permissions' => $wp_admin_response['data']['permissions'],
+//                        'role' => $wp_admin_response['data']['role'],
+//                        'roles' => $wp_admin_response['data']['roles'],
+//                    );
+//
+//                    update_user_meta( $wp_admin->ID, 'wemail_api_key', $wp_admin_response['access_token'] );
+//                    update_user_meta( $wp_admin->ID, 'wemail_user_data', $user_meta );
+//                }
+//            }
 
             /**
              * Action hook fires after a site is authenticated
@@ -124,7 +119,7 @@ class Auth {
              */
             do_action( 'wemail_site_authenticated', $response );
 
-            return true;
+            return $response;
         }
 
         $message = __( 'Could not connect your site, please try again', 'wemail' );
