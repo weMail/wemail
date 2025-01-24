@@ -14,7 +14,7 @@ class Auth {
      *
      * @since 1.0.0
      *
-     * @return void
+     * @return \WP_Error|array
      */
     public function site( $request = '') {
         // $start_of_week = get_option( 'start_of_week', 1 );
@@ -59,7 +59,6 @@ class Auth {
             'brand_slug'              => $request->get_param( 'slug' ),
         );
 
-//         $response = wemail()->api->auth()->sites()->post( $data );
         $response = wemail()->api->onboarding()->wp()->brands()->send_json()->post( $data );
 
         if ( is_wp_error( $response ) ) {
@@ -71,44 +70,9 @@ class Auth {
             update_option( 'wemail_site_slug', $response['data']['slug'] );
             $available_roles = array( 'administrator', 'editor' );
             update_option( 'wemail_accessible_roles', $available_roles );
-
-            update_user_meta( $user->ID, 'wemail_api_key', $response['access_token'] );
+            update_option( 'wemail_api_key', $response['access_token'] );
 
             wemail()->api->set_api_key( $response['access_token'] );
-
-            $wp_admins = get_users(
-                array(
-                    'role__in' => $available_roles,
-                    'exclude' => array( $user->ID ),
-                )
-            );
-
-//            foreach ( $wp_admins as $wp_admin ) {
-//                $roles = array_values( $wp_admin->roles );
-//                $data = array(
-//                    'name' => $wp_admin->data->display_name,
-//                    'email' => $wp_admin->data->user_email,
-//                    'role' => in_array( 'administrator', $roles, true ) ? 'admin' : 'team',
-//                    'include' => 'role,permissions',
-//                );
-//
-//                $wp_admin_response = wemail()->api->teamUsers()->post( $data );
-//
-//                if ( ! empty( $wp_admin_response['access_token'] ) ) {
-//                    $user_meta = array(
-//                        'deleted_at' => $wp_admin_response['data']['deleted_at'],
-//                        'email' => $wp_admin_response['data']['email'],
-//                        'hash' => $wp_admin_response['data']['hash'],
-//                        'name' => $wp_admin_response['data']['name'],
-//                        'permissions' => $wp_admin_response['data']['permissions'],
-//                        'role' => $wp_admin_response['data']['role'],
-//                        'roles' => $wp_admin_response['data']['roles'],
-//                    );
-//
-//                    update_user_meta( $wp_admin->ID, 'wemail_api_key', $wp_admin_response['access_token'] );
-//                    update_user_meta( $wp_admin->ID, 'wemail_user_data', $user_meta );
-//                }
-//            }
 
             /**
              * Action hook fires after a site is authenticated

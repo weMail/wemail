@@ -60,6 +60,11 @@ class Api {
     private $json = false;
 
     /**
+     * @var array
+     */
+    private $roles;
+
+    /**
      * Executes during instance creation
      *
      * @since 1.0.0
@@ -68,8 +73,11 @@ class Api {
      */
     public function boot() {
         $this->root = wemail()->wemail_api;
-        $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
+        $user = wp_get_current_user();
+        $roles = ( array ) $user->roles;
+        $api_key = get_option( 'wemail_api_key' );
         $this->set_api_key( $api_key );
+        $this->set_roles( $roles );
     }
 
     /**
@@ -102,6 +110,27 @@ class Api {
         $this->api_key = $api_key;
 
         return $this;
+    }
+
+    /**
+     * Set user roles
+     * @since 1.14.10
+     * @param array $roles
+     * @return Api
+     */
+    public function set_roles( $roles ) {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get user roles
+     * @since 1.14.10
+     * @return array
+     */
+    public function get_roles() {
+        return $this->roles;
     }
 
     /**
@@ -146,6 +175,7 @@ class Api {
         return array(
             'root'     => $this->root,
             'api_key'  => $this->get_api_key(),
+            'user_roles' => $this->get_roles(),
         );
     }
 
@@ -162,6 +192,7 @@ class Api {
         $defaults = array(
             'headers' => array(
                 'x-api-key' => $this->get_api_key(),
+                'user-roles' => $this->get_roles(),
             ),
         );
 
