@@ -192,7 +192,7 @@ class Api {
         $defaults = array(
             'headers' => array(
                 'x-api-key' => $this->get_api_key(),
-                'user-roles' => $this->get_roles(),
+                'x-user-roles' => $this->get_roles(),
             ),
         );
 

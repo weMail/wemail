@@ -62,6 +62,7 @@ class User {
      */
     public function boot() {
         $user_id = get_current_user_id();
+        $user_email = get_user_by('id', $user_id)->user_email;
 
 
         $disabled = get_user_meta( $user_id, 'wemail_disable_user_access' );
@@ -69,41 +70,18 @@ class User {
             return;
         }
 
-        $api_key  = get_user_meta( $user_id, 'wemail_api_key', true );
+//        $api_key  = get_user_meta( $user_id, 'wemail_api_key', true );
+        $api_key  = get_option('wemail_api_key');
         $api_key  = apply_filters( 'wemail_api_key', $api_key, $user_id );
 
         if ( $api_key ) {
             $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
             if ( ! $user_data ) {
-//                $user_data = wemail()->api->auth()->users()->me()->query( array( 'include' => 'role,permissions' ) )->get();
-                $user_data = [
-                  "data" => [
-                      "name" => "admin",
-                      "email" => "mousumaisa@gmail.com",
-                      "hash" => "YzcP7I6b",
-                      "roles" => "Owner",
-                      "deleted_at" => null,
-                      "role" => "owner",
-                      "permissions" => [
-                          "update_site" => true,
-                          "delete_site" => true,
-                          "create_user" => true,
-                          "view_user" => true,
-                          "update_user" => true,
-                          "delete_user" => true,
-                          "manage_settings" => true,
-                          "view_wemail" => true,
-                          "view_dashboard" => true,
-                          "create_subscriber" => true,
-                          "view_subscriber" => true,
-                          "update_subscriber" => true,
-                          "create_campaign" => true,
-                          "view_campaign" => true,
-                          "update_campaign" => true,
-                          "delete_campaign" => true
-                      ]
-                  ]
-                ];
+                $user_data = wemail()->api->wp()->users()->rolePermissions()->query( array( 'email' => $user_email ) )->get();
+
+                if ( is_wp_error( $user_data ) ) {
+                    return;
+                }
 
                 if ( ! empty( $user_data['data'] ) ) {
                     $user_data = $user_data['data'];
