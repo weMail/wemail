@@ -60,7 +60,7 @@ class Api {
     private $json = false;
 
     /**
-     * @var array
+     * @var string
      */
     private $roles;
 
@@ -115,7 +115,7 @@ class Api {
     /**
      * Set user roles
      * @since 1.14.10
-     * @param array $roles
+     * @param string $roles
      * @return Api
      */
     public function set_roles( $roles ) {
