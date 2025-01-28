@@ -45,7 +45,7 @@ class Auth extends RestController {
             return $authenticate;
         }
 
-        return $this->respond( array( 'success' => true ), self::HTTP_CREATED );
+        return $this->respond( array( 'success' => true, 'data' => $authenticate ), self::HTTP_CREATED );
     }
 
     /**
