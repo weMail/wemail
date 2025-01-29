@@ -16,11 +16,13 @@ class Auth {
      *
      * @return \WP_Error|array
      */
-    public function brand( $request = '') {
-        $data = array_merge($this->getData(), [
-            'brand_name' => $request->get_param( 'name' ),
-            'brand_slug' => $request->get_param( 'slug' ),
-        ]);
+    public function brand( $request = '' ) {
+        $data = array_merge(
+            $this->getData(), array(
+				'brand_name' => $request->get_param( 'name' ),
+				'brand_slug' => $request->get_param( 'slug' ),
+            )
+        );
 
         $response = wemail()->api->onboarding()->wp()->brands()->send_json()->post( $data );
 
@@ -34,10 +36,12 @@ class Auth {
      *
      * @return \WP_Error|array
      */
-    public function site( $request = '') {
-        $data = array_merge($this->getData(), [
-            'api_key' => $request->get_param( 'api_key' ),
-        ]);
+    public function site( $request = '' ) {
+        $data = array_merge(
+            $this->getData(), array(
+				'api_key' => $request->get_param( 'api_key' ),
+            )
+        );
 
         $response = wemail()->api->onboarding()->wp()->siteConnect()->send_json()->post( $data );
 
@@ -51,8 +55,7 @@ class Auth {
      *
      * @return array
      */
-    public function getData()
-    {
+    public function getData() {
         // $start_of_week = get_option( 'start_of_week', 1 );
         // $week_days = array( 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' );
 
@@ -105,8 +108,7 @@ class Auth {
      *
      * @return \WP_Error|array
      */
-    private function handleResponse($response)
-    {
+    private function handleResponse( $response ) {
         if ( is_wp_error( $response ) ) {
             $data = $response->get_error_data();
             return new WP_Error( 'failed_to_connect_wemail', $response->get_error_message(), $data );
@@ -139,8 +141,7 @@ class Auth {
      *
      * @param array $response
      */
-    private function saveAuthData($response)
-    {
+    private function saveAuthData( $response ) {
         update_option( 'wemail_site_slug', $response['slug'] );
         $available_roles = array( 'administrator', 'editor' );
         update_option( 'wemail_accessible_roles', $available_roles );

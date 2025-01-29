@@ -33,22 +33,31 @@ class Auth extends RestController {
      *
      * @return \WP_REST_Response
      *@since 1.0.0
-     *
      */
     public function site( $request ) {
-        $api_key = $request->get_param('api_key');
+        $api_key = $request->get_param( 'api_key' );
 
-        if (empty($api_key)) {
-            return $this->respond( array( 'success' => false, 'message' => 'API key is required' ), self::HTTP_UNPROCESSABLE_ENTITY );
+        if ( empty( $api_key ) ) {
+            return $this->respond(
+                array(
+					'success' => false,
+					'message' => 'API key is required',
+                ), self::HTTP_UNPROCESSABLE_ENTITY
+            );
         }
 
-        $authenticate = wemail()->auth->site($request);
+        $authenticate = wemail()->auth->site( $request );
 
         if ( is_wp_error( $authenticate ) ) {
             return $authenticate;
         }
 
-        return $this->respond( array( 'success' => true, 'data' => $authenticate ), self::HTTP_CREATED );
+        return $this->respond(
+            array(
+				'success' => true,
+				'data' => $authenticate,
+            ), self::HTTP_CREATED
+        );
     }
 
     /**
@@ -59,17 +68,22 @@ class Auth extends RestController {
      * @return \WP_REST_Response
      */
     public function brand( $request ) {
-//         $key     = $request->get_param( 'api' );
-//         $authenticate = wemail()->auth->site( $key );
+		//         $key     = $request->get_param( 'api' );
+		//         $authenticate = wemail()->auth->site( $key );
         // error_log(print_r($request->get_params(), true));
 
-        $authenticate = wemail()->auth->brand($request);
+        $authenticate = wemail()->auth->brand( $request );
 
         if ( is_wp_error( $authenticate ) ) {
             return $authenticate;
         }
 
-        return $this->respond( array( 'success' => true, 'data' => $authenticate ), self::HTTP_CREATED );
+        return $this->respond(
+            array(
+				'success' => true,
+				'data' => $authenticate,
+            ), self::HTTP_CREATED
+        );
     }
 
     /**
