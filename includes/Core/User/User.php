@@ -109,7 +109,7 @@ class User {
      * @return bool
      */
     public function can( $permission ) {
-        if ( array_key_exists( $permission, $this->permissions ) ) {
+        if ( $this->permissions && array_key_exists( $permission, $this->permissions ) ) {
             return true;
         }
 
