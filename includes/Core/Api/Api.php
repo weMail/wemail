@@ -60,7 +60,7 @@ class Api {
     private $json = false;
 
     /**
-     * @var array
+     * @var string
      */
     private $roles;
 
@@ -74,7 +74,7 @@ class Api {
     public function boot() {
         $this->root = wemail()->wemail_api;
         $user = wp_get_current_user();
-        $roles = json_encode($user->roles);
+        $roles = json_encode( $user->roles );
         $api_key = get_option( 'wemail_api_key' );
         $this->set_api_key( $api_key );
         $this->set_roles( $roles );
@@ -115,7 +115,7 @@ class Api {
     /**
      * Set user roles
      * @since 1.14.10
-     * @param array $roles
+     * @param string $roles
      * @return Api
      */
     public function set_roles( $roles ) {
