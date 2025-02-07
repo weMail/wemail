@@ -52,7 +52,7 @@ class Users extends RestController {
         );
     }
 
-    public function store( $request ) {
+    public function storeRoles( $request ) {
         $roles = $this->saveAccessibleRoles($request);
         $access_token = get_option('wemail_api_key');
 
@@ -175,11 +175,17 @@ class Users extends RestController {
         );
     }
 
-    public function storeRoles( $request ) {
-        $this->saveAccessibleRoles($request);
-//        $roles = $request->get_param( 'roles' );
-//
-//        update_option( 'wemail_accessible_roles', $roles );
+    public function store( $request ) {
+        $args = array(
+            'role' => $request->get_param( 'role' ),
+            'exclude' => array( get_current_user_id() ),
+        );
+
+        $users = get_users( $args );
+
+        foreach ($users as $user) {
+            delete_user_meta($user->ID, 'wemail_user_data');
+        }
 
         return $this->respond( array( 'success' => true ), 200 );
     }

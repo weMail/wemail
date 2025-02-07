@@ -76,6 +76,7 @@ class User {
 
         if ( $api_key ) {
             $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
+            $this->check_user_role($user_id);
             if ( ! $user_data ) {
                 $user_data = wemail()->api->wp()->users()->rolePermissions()->query( array( 'email' => $user_email ) )->get();
 
@@ -114,5 +115,18 @@ class User {
         }
 
         return false;
+    }
+
+    public function check_user_role($user_id)
+    {
+        $accessible_roles = get_option( 'wemail_accessible_roles' );
+        if (!empty(array_intersect(wp_get_current_user()->roles, $accessible_roles)) && empty($this->permissions)) {
+            delete_user_meta($user_id, 'wemail_user_data');
+        }
+        if (empty(array_intersect(wp_get_current_user()->roles, $accessible_roles))) {
+            if (get_user_meta( $user_id, 'wemail_user_data', true )) {
+                delete_user_meta($user_id, 'wemail_user_data');
+            }
+        }
     }
 }
