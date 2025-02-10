@@ -20,7 +20,7 @@ class Auth {
         $data = array_merge(
             $this->getData(), array(
 				'brand_name' => $request->get_param( 'name' ),
-				'brand_slug' => $request->get_param( 'slug' ),
+				'brand_email' => $request->get_param( 'email' ),
             )
         );
 
