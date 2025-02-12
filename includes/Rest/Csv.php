@@ -76,6 +76,17 @@ class Csv {
     public function permission( $request ) {
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
+        $user_email = $request->get_header( 'x-wemail-user' );
+
+        if ( ! empty( $user_email ) ) {
+            $user = get_user_by( 'email', $user_email );
+
+            if ( $user ) {
+                wp_set_current_user( $user->ID );
+                return wemail()->user->can( 'create_subscriber' );
+            }
+        }
+
         if ( ! empty( $api_key ) ) {
             $query = new WP_User_Query(
                 array(

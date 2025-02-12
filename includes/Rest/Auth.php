@@ -24,28 +24,66 @@ class Auth extends RestController {
      */
     public function register_routes() {
         $this->post( '/site', 'site', 'manage_options' );
+        $this->post( '/brand', 'brand', 'manage_options' );
         $this->get( '/validate-me', 'validate_me', 'permission_for_validate_me' );
     }
 
     /**
      * Authenticate WP Site
      *
-     * @since 1.0.0
-     *
      * @return \WP_REST_Response
+     *@since 1.0.0
      */
     public function site( $request ) {
-//         $key     = $request->get_param( 'api' );
-//         $authenticate = wemail()->auth->site( $key );
-        // error_log(print_r($request->get_params(), true));
+        $api_key = $request->get_param( 'api_key' );
 
-        $authenticate = wemail()->auth->site($request);
+        if ( empty( $api_key ) ) {
+            return $this->respond(
+                array(
+					'success' => false,
+					'message' => 'API key is required',
+                ), self::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        $authenticate = wemail()->auth->site( $request );
 
         if ( is_wp_error( $authenticate ) ) {
             return $authenticate;
         }
 
-        return $this->respond( array( 'success' => true, 'data' => $authenticate ), self::HTTP_CREATED );
+        return $this->respond(
+            array(
+				'success' => true,
+				'data' => $authenticate,
+            ), self::HTTP_CREATED
+        );
+    }
+
+    /**
+     * Create brand on SaaS and connect this site with the brand
+     *
+     * @since 1.0.0
+     *
+     * @return \WP_REST_Response
+     */
+    public function brand( $request ) {
+		//         $key     = $request->get_param( 'api' );
+		//         $authenticate = wemail()->auth->site( $key );
+        // error_log(print_r($request->get_params(), true));
+
+        $authenticate = wemail()->auth->brand( $request );
+
+        if ( is_wp_error( $authenticate ) ) {
+            return $authenticate;
+        }
+
+        return $this->respond(
+            array(
+				'success' => true,
+				'data' => $authenticate,
+            ), self::HTTP_CREATED
+        );
     }
 
     /**

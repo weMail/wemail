@@ -60,9 +60,14 @@ class Api {
     private $json = false;
 
     /**
-     * @var array
+     * @var string
      */
     private $roles;
+
+    /**
+     * @var string
+     */
+    private $email;
 
     /**
      * Executes during instance creation
@@ -74,10 +79,11 @@ class Api {
     public function boot() {
         $this->root = wemail()->wemail_api;
         $user = wp_get_current_user();
-        $roles = json_encode($user->roles);
+        $roles = wp_json_encode( $user->roles );
         $api_key = get_option( 'wemail_api_key' );
         $this->set_api_key( $api_key );
         $this->set_roles( $roles );
+        $this->set_user_email( $user->user_email );
     }
 
     /**
@@ -115,7 +121,7 @@ class Api {
     /**
      * Set user roles
      * @since 1.14.10
-     * @param array $roles
+     * @param string $roles
      * @return Api
      */
     public function set_roles( $roles ) {
@@ -125,12 +131,33 @@ class Api {
     }
 
     /**
+     * Set user roles
+     * @since 1.14.10
+     * @param string $email
+     * @return Api
+     */
+    public function set_user_email( $email ) {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
      * Get user roles
      * @since 1.14.10
-     * @return array
+     * @return string
      */
     public function get_roles() {
         return $this->roles;
+    }
+
+    /**
+     * Get user email
+     * @since 1.14.10
+     * @return string
+     */
+    public function get_user_email() {
+        return $this->email;
     }
 
     /**
@@ -193,6 +220,7 @@ class Api {
             'headers' => array(
                 'x-api-key' => $this->get_api_key(),
                 'x-user-roles' => $this->get_roles(),
+                'x-wemail-user' => $this->get_user_email(),
             ),
         );
 
