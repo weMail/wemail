@@ -39,7 +39,7 @@ class Menu {
      * @return array
      */
     public function register_submenu( $menu_items, $capability ) {
-        if ( wemail()->user->can( 'manage_settings' ) ) {
+        if (wemail()->user->can('manage_settings') && in_array('administrator', wp_get_current_user()->roles, true) ) {
             $menu_items[] = array(
                 __( 'Teams', 'wemail' ),
                 $capability,
