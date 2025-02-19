@@ -306,15 +306,15 @@ abstract class RestController extends WP_REST_Controller {
         $api_key = $request->get_header( 'x-wemail-key' );
 
         if ( ! empty( $api_key ) ) {
-            $wpApiKey = get_option( 'wemail_api_key' );
-            if ( $api_key !== $wpApiKey ) {
+            $wp_api_key = get_option( 'wemail_api_key' );
+            if ( $api_key !== $wp_api_key ) {
                 return false;
             }
 
-            $userEmail = $request->get_header( 'x-wemail-user' );
+            $user_email = $request->get_header( 'x-wemail-user' );
 
-            if ( ! empty( $userEmail ) ) {
-                $user = get_user_by( 'email', $userEmail );
+            if ( ! empty( $user_email ) ) {
+                $user = get_user_by( 'email', $user_email );
 
                 if ( $user ) {
                     $this->current_user = wp_set_current_user( $user->ID, $user->user_login );

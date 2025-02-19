@@ -24,8 +24,8 @@ class WeMailMiddleware {
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $api_key ) ) {
-            $weMailApiKey = get_option('wemail_api_key');
-            if ( $api_key === $weMailApiKey ) {
+            $wemail_api_key = get_option( 'wemail_api_key' );
+            if ( $api_key === $wemail_api_key ) {
                 return true;
             }
         }
