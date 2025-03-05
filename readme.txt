@@ -2,10 +2,10 @@
 Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
-Requires at least: 4.0
+Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.14.11
-Requires PHP: 5.4
+Stable tag: 1.14.12
+Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -273,6 +273,10 @@ emails.
 
 
 == Changelog ==
+
+= v1.14.12 - (5th Mar, 2025) =
+* Updated tested up to WordPress 5.6 or higher
+* Updated tested up to PHP 7.4 or higher
 
 = v1.14.11 - (5th Mar, 2025) =
 * **New**: Add lists subscribers endpoint to client api
