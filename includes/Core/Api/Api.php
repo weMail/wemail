@@ -79,7 +79,7 @@ class Api {
     public function boot() {
         $this->root = wemail()->wemail_api;
         $user = wp_get_current_user();
-        $roles = wp_json_encode( $user->roles );
+        $roles = implode( ',', $user->roles );
         $api_key = get_option( 'wemail_api_key' );
         $this->set_api_key( $api_key );
         $this->set_roles( $roles );
