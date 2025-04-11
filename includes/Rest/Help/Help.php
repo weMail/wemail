@@ -127,15 +127,15 @@ class Help extends RestController {
             'role' => 'administrator',
         );
 
-        $users = get_users($args);
+        $users = get_users( $args );
 
         $emails = array_map(
-            function($user) {
+            function ( $user ) {
                 return $user->user_email;
             },
             $users
         );
 
-        return rest_ensure_response($emails);
+        return rest_ensure_response( $emails );
     }
 }
