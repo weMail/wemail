@@ -60,6 +60,16 @@ class Help extends RestController {
                 ),
             )
         );
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/admin/users',
+            array(
+                array(
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => array( $this, 'users' ),
+                ),
+            )
+        );
     }
 
     /**
@@ -110,5 +120,22 @@ class Help extends RestController {
 				'status' => 'success',
 			)
         );
+    }
+
+    public function users() {
+        $args = array(
+            'role' => 'administrator',
+        );
+
+        $users = get_users($args);
+
+        $emails = array_map(
+            function($user) {
+                return $user->user_email;
+            },
+            $users
+        );
+
+        return rest_ensure_response($emails);
     }
 }
