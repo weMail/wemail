@@ -67,6 +67,9 @@ class Help extends RestController {
                 array(
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => array( $this, 'users' ),
+                    'permission_callback' => function () {
+                        return true;
+                    },
                 ),
             )
         );
