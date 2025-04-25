@@ -68,7 +68,7 @@ class Help extends RestController {
                 array(
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => array( $this, 'users' ),
-                    'permission_callback' => array( $this, 'permission' )
+                    'permission_callback' => array( $this, 'permission' ),
                 ),
             )
         );
@@ -152,7 +152,7 @@ class Help extends RestController {
                     'meta_value'    => $api_key,
                 )
             );
-            return (bool)$query->get_total();
+            return (bool) $query->get_total();
         }
         return false;
     }
