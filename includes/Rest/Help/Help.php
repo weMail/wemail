@@ -7,6 +7,7 @@ use WeDevs\WeMail\Rest\Middleware\WeMailMiddleware;
 use WeDevs\WeMail\RestController;
 use WeDevs\WeMail\Core\Help\SystemInfo;
 use WP_REST_Server;
+use WP_User_Query;
 
 class Help extends RestController {
 
@@ -60,6 +61,17 @@ class Help extends RestController {
                 ),
             )
         );
+        register_rest_route(
+            $this->namespace,
+            $this->rest_base . '/admin/users',
+            array(
+                array(
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => array( $this, 'users' ),
+                    'permission_callback' => array( $this, 'permission' ),
+                ),
+            )
+        );
     }
 
     /**
@@ -110,5 +122,38 @@ class Help extends RestController {
 				'status' => 'success',
 			)
         );
+    }
+
+    public function users() {
+        $args = array(
+            'role' => 'administrator',
+        );
+
+        $users = get_users( $args );
+
+        $emails = array_map(
+            function ( $user ) {
+                return $user->user_email;
+            },
+            $users
+        );
+
+        return rest_ensure_response( $emails );
+    }
+
+    public function permission( $request ) {
+        $api_key = $request->get_header( 'X-WeMail-Key' );
+
+        if ( ! empty( $api_key ) ) {
+            $query = new WP_User_Query(
+                array(
+                    'fields'        => 'ID',
+                    'meta_key'      => 'wemail_api_key',
+                    'meta_value'    => $api_key,
+                )
+            );
+            return (bool) $query->get_total();
+        }
+        return false;
     }
 }
