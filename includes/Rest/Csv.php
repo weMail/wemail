@@ -111,7 +111,7 @@ class Csv {
 
         $count = 0;
         foreach ( $reader as $record ) {
-            $count++;
+            ++$count;
         }
 
         $data = array(
@@ -148,15 +148,15 @@ class Csv {
         $reader = $this->reader( $file_id );
 
         // Set the header offset so records are returned as associative arrays
-        $reader->setHeaderOffset(0);
+        $reader->setHeaderOffset( 0 );
 
         // Use Statement for offset/limit
         $stmt = \League\Csv\Statement::create()
-            ->offset($offset)
-            ->limit($limit);
+            ->offset( $offset )
+            ->limit( $limit );
 
-        $records = $stmt->process($reader); // Iterator of associative arrays
-        $subscribers = iterator_to_array($records);
+        $records = $stmt->process( $reader ); // Iterator of associative arrays
+        $subscribers = iterator_to_array( $records );
 
         $data = array(
             'subscribers' => $subscribers,
