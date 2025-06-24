@@ -109,10 +109,7 @@ class Csv {
 
         $reader = $this->reader( $file_id );
 
-        $count = 0;
-        foreach ( $reader as $record ) {
-            ++$count;
-        }
+        $count = iterator_count($reader);
 
         $data = array(
             'total' => $count - 1, // Subtract 1 for header row
