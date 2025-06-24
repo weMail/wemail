@@ -109,10 +109,10 @@ class Csv {
 
         $reader = $this->reader( $file_id );
 
-        $query = $reader->query();
+        $count = iterator_count( $reader );
 
         $data = array(
-            'total' => iterator_count( $query ) - 1,
+            'total' => $count - 1, // Subtract 1 for header row
         );
 
         return new WP_REST_Response( $data, 200 );
@@ -144,14 +144,16 @@ class Csv {
 
         $reader = $this->reader( $file_id );
 
-        $meta_fields = $reader->fetchOne();
-        $meta_fields = array_filter( $meta_fields );
-        $meta_fields = array_unique( $meta_fields );
+        // Set the header offset so records are returned as associative arrays
+        $reader->setHeaderOffset( 0 );
 
-        $subscribers = $reader
-            ->setOffset( $offset + 1 ) // +1 to ignore the header
-            ->setLimit( $limit )
-            ->fetchAssoc( $meta_fields );
+        // Use Statement for offset/limit
+        $stmt = \League\Csv\Statement::create()
+            ->offset( $offset )
+            ->limit( $limit );
+
+        $records = $stmt->process( $reader ); // Iterator of associative arrays
+        $subscribers = iterator_to_array( $records );
 
         $data = array(
             'subscribers' => $subscribers,
