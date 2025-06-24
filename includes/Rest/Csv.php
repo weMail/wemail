@@ -147,44 +147,16 @@ class Csv {
 
         $reader = $this->reader( $file_id );
 
-        // Get header row first
-        $header_record = $reader->fetchOne();
-        $meta_fields = array_filter( $header_record );
-        $meta_fields = array_unique( $meta_fields );
+        // Set the header offset so records are returned as associative arrays
+        $reader->setHeaderOffset(0);
 
-        // Manually implement offset and limit by iterating through records
-        $subscribers = [];
-        $current_row = 0;
-        $collected = 0;
+        // Use Statement for offset/limit
+        $stmt = \League\Csv\Statement::create()
+            ->offset($offset)
+            ->limit($limit);
 
-        foreach ( $reader as $record ) {
-            // Skip header row
-            if ( $current_row === 0 ) {
-                $current_row++;
-                continue;
-            }
-
-            // Skip rows until we reach the offset
-            if ( $current_row - 1 < $offset ) {
-                $current_row++;
-                continue;
-            }
-
-            // Stop if we've collected enough records
-            if ( $collected >= $limit ) {
-                break;
-            }
-
-            // Convert to associative array using header
-            $subscriber = [];
-            foreach ( $meta_fields as $index => $field ) {
-                $subscriber[$field] = isset( $record[$index] ) ? $record[$index] : null;
-            }
-            $subscribers[] = $subscriber;
-
-            $current_row++;
-            $collected++;
-        }
+        $records = $stmt->process($reader); // Iterator of associative arrays
+        $subscribers = iterator_to_array($records);
 
         $data = array(
             'subscribers' => $subscribers,
