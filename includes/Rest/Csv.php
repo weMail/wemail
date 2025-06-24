@@ -109,10 +109,13 @@ class Csv {
 
         $reader = $this->reader( $file_id );
 
-        $query = $reader->query();
+        $count = 0;
+        foreach ( $reader as $record ) {
+            $count++;
+        }
 
         $data = array(
-            'total' => iterator_count( $query ) - 1,
+            'total' => $count - 1, // Subtract 1 for header row
         );
 
         return new WP_REST_Response( $data, 200 );
@@ -144,14 +147,44 @@ class Csv {
 
         $reader = $this->reader( $file_id );
 
-        $meta_fields = $reader->fetchOne();
-        $meta_fields = array_filter( $meta_fields );
+        // Get header row first
+        $header_record = $reader->fetchOne();
+        $meta_fields = array_filter( $header_record );
         $meta_fields = array_unique( $meta_fields );
 
-        $subscribers = $reader
-            ->setOffset( $offset + 1 ) // +1 to ignore the header
-            ->setLimit( $limit )
-            ->fetchAssoc( $meta_fields );
+        // Manually implement offset and limit by iterating through records
+        $subscribers = [];
+        $current_row = 0;
+        $collected = 0;
+
+        foreach ( $reader as $record ) {
+            // Skip header row
+            if ( $current_row === 0 ) {
+                $current_row++;
+                continue;
+            }
+
+            // Skip rows until we reach the offset
+            if ( $current_row - 1 < $offset ) {
+                $current_row++;
+                continue;
+            }
+
+            // Stop if we've collected enough records
+            if ( $collected >= $limit ) {
+                break;
+            }
+
+            // Convert to associative array using header
+            $subscriber = [];
+            foreach ( $meta_fields as $index => $field ) {
+                $subscriber[$field] = isset( $record[$index] ) ? $record[$index] : null;
+            }
+            $subscribers[] = $subscriber;
+
+            $current_row++;
+            $collected++;
+        }
 
         $data = array(
             'subscribers' => $subscribers,
