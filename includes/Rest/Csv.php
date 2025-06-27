@@ -99,9 +99,10 @@ class Csv {
     }
 
     private function reader( $file_id ) {
-        $file_path = get_attached_file( $file_id, false );
-
-        return Reader::createFromPath( $file_path, 'r' );
+        $file_url = wp_get_attachment_url( $file_id );
+        $response = wp_remote_get( $file_url );
+        $csv_content = wp_remote_retrieve_body( $response );
+        return Reader::createFromString( $csv_content );
     }
 
     public function csv_file_info( $request ) {
@@ -120,12 +121,10 @@ class Csv {
 
     public function meta_fields( $request ) {
         $file_id = $request->get_param( 'id' );
+        $reader = $this->reader( $file_id );
 
-        $file_path = get_attached_file( $file_id, false );
-
-        $reader = Reader::createFromPath( $file_path, 'r' );
-
-        $meta_fields = $reader->fetchOne();
+        $reader->setHeaderOffset( 0 );
+        $meta_fields = array_keys( $reader->fetchOne() );
 
         $data = array(
             'fields' => $meta_fields,
