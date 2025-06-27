@@ -123,8 +123,8 @@ class Csv {
         $file_id = $request->get_param( 'id' );
         $reader = $this->reader( $file_id );
 
-        $reader->setHeaderOffset(0);
-        $meta_fields = array_keys($reader->fetchOne());
+        $reader->setHeaderOffset( 0 );
+        $meta_fields = array_keys( $reader->fetchOne() );
 
         $data = array(
             'fields' => $meta_fields,
