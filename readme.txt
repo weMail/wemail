@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.14.15
+Stable tag: 1.14.16
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -273,6 +273,8 @@ emails.
 
 
 == Changelog ==
+= v1.14.16 - (27rd June, 2025) =
+* **Fix** Resolved the issue with CSV importing for remote media URLs
 
 = v1.14.15 - (23rd June, 2025) =
 * **Fix** Resolved CSV import issues on PHP 8.1 and 8.2.
