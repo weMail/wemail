@@ -45,13 +45,13 @@ class User {
     public $role = null;
 
     /**
-     * User permissions
+     * Is user allowed to access weMail
      *
-     * @since 1.0.0
+     * @since 1.14.16
      *
-     * @var array
+     * @var boolean
      */
-    public $permissions = array();
+    public $allowed = false;
 
     /**
      * API resource query for URL to build
@@ -74,25 +74,9 @@ class User {
         $api_key  = apply_filters( 'wemail_api_key', $api_key, $user_id );
 
         if ( $api_key ) {
-            $user_data = get_user_meta( $user_id, 'wemail_user_data', true );
-            $this->check_user_role($user_id);
-            if ( ! $user_data ) {
-                $user_data = wemail()->api->wp()->users()->rolePermissions()->query( array( 'email' => $user_email ) )->get();
-
-                if ( is_wp_error( $user_data ) ) {
-                    return;
-                }
-
-                if ( ! empty( $user_data['data'] ) ) {
-                    $user_data = $user_data['data'];
-
-                    update_user_meta( $user_id, 'wemail_user_data', $user_data );
-                }
-            }
-
-            $this->hash = $user_data['hash'];
-            $this->role = $user_data['role'];
-            $this->permissions = $user_data['permissions'];
+            $this->hash = $api_key ? true : false;
+            $this->role = wp_get_current_user()->roles;
+            $this->allowed = $this->check_user_role($user_id);
         }
 
         $this->user_id = $user_id;
@@ -109,23 +93,32 @@ class User {
      * @return bool
      */
     public function can( $permission ) {
-        if ( $this->permissions && array_key_exists( $permission, $this->permissions ) ) {
-            return true;
-        }
+        // if ( $this->permissions && array_key_exists( $permission, $this->permissions ) ) {
+        //     return true;
+        // }
 
-        return false;
+        return $this->check_user_role($this->user_id);
+
+        // return false;
     }
 
-    public function check_user_role($user_id)
+    public function check_user_role($user_id): bool
     {
-        $accessible_roles = get_option( 'wemail_accessible_roles' );
-        if (!empty(array_intersect(wp_get_current_user()->roles, $accessible_roles)) && empty($this->permissions)) {
-            delete_user_meta($user_id, 'wemail_user_data');
-        }
-        if (empty(array_intersect(wp_get_current_user()->roles, $accessible_roles))) {
+        $accessible_roles = get_option( 'wemail_accessible_roles', [] );
+        $current_roles = wp_get_current_user()->roles;
+
+        // Check if user has any accessible role
+        $has_accessible_role = !empty(array_intersect($current_roles, $accessible_roles));
+
+        if ($has_accessible_role) {
+            // User has accessible role - keep their data
+            return true;
+        } else {
+            // User doesn't have accessible role - delete their data
             if (get_user_meta( $user_id, 'wemail_user_data', true )) {
                 delete_user_meta($user_id, 'wemail_user_data');
             }
+            return false;
         }
     }
 }
