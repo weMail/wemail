@@ -36,7 +36,7 @@ class Remote extends RestController {
         if ( $method === 'get' ) {
             $response = wemail()->api->send_json()->get( $path, $query );
         } else {
-            $data = array_merge( $data ?? array(), $query ?? array() );
+            $data = array_merge( count($data) ? $data : array(), count($query) ? $query : array() );
             $response = wemail()->api->url( $path )->send_json()->{$method}( $data, array() );
         }
 
