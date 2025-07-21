@@ -102,7 +102,7 @@ class User {
         // return false;
     }
 
-    public function check_user_role( $user_id ): bool {
+    public function check_user_role( $user_id ) {
         $accessible_roles = get_option( 'wemail_accessible_roles', array() );
         $current_roles = wp_get_current_user()->roles;
 
