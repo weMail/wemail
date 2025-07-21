@@ -47,7 +47,7 @@ class WpUser {
             return;
         }
 
-        $access_token = get_option('wemail_api_key');
+        $access_token = get_option( 'wemail_api_key' );
 
         if ( empty( $access_token ) ) {
             return;

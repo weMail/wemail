@@ -76,7 +76,7 @@ class User {
         if ( $api_key ) {
             $this->hash = $api_key ? true : false;
             $this->role = wp_get_current_user()->roles;
-            $this->allowed = $this->check_user_role($user_id);
+            $this->allowed = $this->check_user_role( $user_id );
         }
 
         $this->user_id = $user_id;
@@ -97,26 +97,25 @@ class User {
         //     return true;
         // }
 
-        return $this->check_user_role($this->user_id);
+        return $this->check_user_role( $this->user_id );
 
         // return false;
     }
 
-    public function check_user_role($user_id): bool
-    {
-        $accessible_roles = get_option( 'wemail_accessible_roles', [] );
+    public function check_user_role( $user_id ): bool {
+        $accessible_roles = get_option( 'wemail_accessible_roles', array() );
         $current_roles = wp_get_current_user()->roles;
 
         // Check if user has any accessible role
-        $has_accessible_role = !empty(array_intersect($current_roles, $accessible_roles));
+        $has_accessible_role = ! empty( array_intersect( $current_roles, $accessible_roles ) );
 
-        if ($has_accessible_role) {
+        if ( $has_accessible_role ) {
             // User has accessible role - keep their data
             return true;
         } else {
             // User doesn't have accessible role - delete their data
-            if (get_user_meta( $user_id, 'wemail_user_data', true )) {
-                delete_user_meta($user_id, 'wemail_user_data');
+            if ( get_user_meta( $user_id, 'wemail_user_data', true ) ) {
+                delete_user_meta( $user_id, 'wemail_user_data' );
             }
             return false;
         }

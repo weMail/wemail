@@ -175,7 +175,7 @@ class Api {
      * @param [string] $url
      * @return void
      */
-    public function url($url) {
+    public function url( $url ) {
         $this->url = $url;
         return $this;
     }
@@ -414,7 +414,7 @@ class Api {
 
         $args['method'] = 'DELETE';
 
-        return $this->post($data, $args);
+        return $this->post( $data, $args );
     }
 
     /**

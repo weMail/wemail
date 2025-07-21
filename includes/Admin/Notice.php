@@ -71,7 +71,7 @@ class Notice {
                 update_option( 'wemail_site_connection_notice', 1 );
             }
         }
-        if ( ! get_option( 'wemail_api_key') && (int) get_option( 'wemail_site_connection_notice' ) !== 1 && ! ( isset( $_GET['page'] ) && $_GET['page'] === 'wemail' ) ) {
+        if ( ! get_option( 'wemail_api_key' ) && (int) get_option( 'wemail_site_connection_notice' ) !== 1 && ! ( isset( $_GET['page'] ) && $_GET['page'] === 'wemail' ) ) {
             add_action( 'admin_notices', array( $this, 'connect_notice_html' ) );
         }
     }

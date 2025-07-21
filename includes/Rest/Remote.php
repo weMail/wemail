@@ -26,18 +26,18 @@ class Remote extends RestController {
      * @return \WP_REST_Response|mixed
      */
     public function call_remote( $request ) {
-        $url = $request->get_param('url');
-        $method = strtolower(sanitize_text_field($request->get_param('method')));
-        $data = $request->get_param('data');
+        $url = $request->get_param( 'url' );
+        $method = strtolower( sanitize_text_field( $request->get_param( 'method' ) ) );
+        $data = $request->get_param( 'data' );
         $wemail_api_base = wemail()->wemail_api;
-        $path = str_replace($wemail_api_base, '', $url);
-        $query = $request->get_param('query');
+        $path = str_replace( $wemail_api_base, '', $url );
+        $query = $request->get_param( 'query' );
 
-        if ($method === 'get') {
-            $response = wemail()->api->send_json()->get($path, $query);
+        if ( $method === 'get' ) {
+            $response = wemail()->api->send_json()->get( $path, $query );
         } else {
-            $data = array_merge($data ?? [], $query ?? []);
-            $response = wemail()->api->url($path)->send_json()->{$method}($data, []);
+            $data = array_merge( $data ?? array(), $query ?? array() );
+            $response = wemail()->api->url( $path )->send_json()->{$method}( $data, array() );
         }
 
         return $response;
