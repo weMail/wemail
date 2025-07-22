@@ -16,7 +16,7 @@ class Hooks {
         new FormIntegrations();
         new SyncSubscriberWp();
         new SyncSubscriberErp();
-//        new SyncWpUser();
+		//        new SyncWpUser();
         new MailHooks();
         Ecommerce::instance();
         new SyncAffiliateWp();

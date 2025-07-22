@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.14.12
+Stable tag: 1.14.15
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -273,6 +273,15 @@ emails.
 
 
 == Changelog ==
+
+= v1.14.15 - (23rd June, 2025) =
+* **Fix** Resolved CSV import issues on PHP 8.1 and 8.2.
+
+= v1.14.14 - (25th Apr, 2025) =
+* **Fix** Fix vulnerability issue for access admin user
+
+= v1.14.13 - (15th Apr, 2025) =
+* **Enhancement**: Added functionality to send transaction disable notification emails to all admin users, with a compatibility layer for both updated and legacy plugin versions
 
 = v1.14.12 - (5th Mar, 2025) =
 * Updated tested up to WordPress 5.6 or higher

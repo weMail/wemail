@@ -35,5 +35,6 @@ class Rest {
         new Ecommerce();
         new Help();
         new AffiliateIntegrations();
+        new Remote();
     }
 }

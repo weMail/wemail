@@ -53,15 +53,15 @@ class Users extends RestController {
     }
 
     public function storeRoles( $request ) {
-        $roles = $this->saveAccessibleRoles($request);
-        $access_token = get_option('wemail_api_key');
+        $roles = $this->saveAccessibleRoles( $request );
+        $access_token = get_option( 'wemail_api_key' );
 
-        if (empty($roles) || !is_array($roles)) {
-            return $this->respond(array('message' => 'Invalid roles provided'), 422);
+        if ( empty( $roles ) || ! is_array( $roles ) ) {
+            return $this->respond( array( 'message' => 'Invalid roles provided' ), 422 );
         }
 
-        if (empty($access_token)) {
-            return $this->respond(array('message' => 'API token not available'), 422);
+        if ( empty( $access_token ) ) {
+            return $this->respond( array( 'message' => 'API token not available' ), 422 );
         }
 
         $data = array(
@@ -69,13 +69,13 @@ class Users extends RestController {
             'api_token' => $access_token,
         );
 
-        $response = wemail()->api->wp()->users()->rolePermissions()->post($data);
+        $response = wemail()->api->wp()->users()->rolePermissions()->post( $data );
 
-        if ($response['success'] === true) {
-            return $this->respond(array('message' => $response['message']), 200);
+        if ( $response['success'] === true ) {
+            return $this->respond( array( 'message' => $response['message'] ), 200 );
         }
 
-        return $this->respond(array('message' => 'Failed to update roles'), 422);
+        return $this->respond( array( 'message' => 'Failed to update roles' ), 422 );
     }
 
     public function update( $request ) {
@@ -183,8 +183,8 @@ class Users extends RestController {
 
         $users = get_users( $args );
 
-        foreach ($users as $user) {
-            delete_user_meta($user->ID, 'wemail_user_data');
+        foreach ( $users as $user ) {
+            delete_user_meta( $user->ID, 'wemail_user_data' );
         }
 
         return $this->respond( array( 'success' => true ), 200 );
@@ -194,11 +194,10 @@ class Users extends RestController {
      * @param $request
      * @return mixed
      */
-    public function saveAccessibleRoles($request)
-    {
-        $roles = $request->get_param('roles');
+    public function saveAccessibleRoles( $request ) {
+        $roles = $request->get_param( 'roles' );
 
-        update_option('wemail_accessible_roles', $roles);
+        update_option( 'wemail_accessible_roles', $roles );
         return $roles;
     }
 }

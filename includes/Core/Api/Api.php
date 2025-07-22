@@ -170,6 +170,17 @@ class Api {
     }
 
     /**
+     * Added url
+     *
+     * @param [string] $url
+     * @return void
+     */
+    public function url( $url ) {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
      * Magic method to set resource and endpoints
      *
      * @since 1.0.0
@@ -367,7 +378,25 @@ class Api {
      * @return mixed
      */
     public function put( $data, $args = array() ) {
-        $data['_method'] = 'put';
+        $args = $this->args( $args );
+        $args['method'] = 'PUT';
+
+        return $this->post( $data, $args );
+    }
+
+    /**
+     * API - PATCH request caller
+     *
+     * @since 2.0.0
+     *
+     * @param array  $data PUT data
+     * @param array  $args wp_remote_request argument overrides
+     *
+     * @return mixed
+     */
+    public function patch( $data, $args = array() ) {
+        $args = $this->args( $args );
+        $args['method'] = 'PATCH';
 
         return $this->post( $data, $args );
     }
@@ -385,15 +414,9 @@ class Api {
     public function delete( $data = array(), $args = array() ) {
         $args = $this->args( $args );
 
-        $args['method'] = 'delete';
+        $args['method'] = 'DELETE';
 
-        $args['body'] = ! empty( $data ) ? $data : null;
-
-        $url = $this->build_url();
-
-        $response = wp_remote_request( $url, $args );
-
-        return $this->response( $response );
+        return $this->post( $data, $args );
     }
 
     /**
