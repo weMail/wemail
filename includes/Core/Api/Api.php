@@ -378,7 +378,8 @@ class Api {
      * @return mixed
      */
     public function put( $data, $args = array() ) {
-        $data['method'] = 'PUT';
+        $args = $this->args( $args );
+        $args['method'] = 'PUT';
 
         return $this->post( $data, $args );
     }
@@ -394,7 +395,8 @@ class Api {
      * @return mixed
      */
     public function patch( $data, $args = array() ) {
-        $data['method'] = 'PATCH';
+        $args = $this->args( $args );
+        $args['method'] = 'PATCH';
 
         return $this->post( $data, $args );
     }
