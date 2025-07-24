@@ -139,7 +139,8 @@ class Scripts {
             'user'                 => array(
                 'hash'             => $user->hash,
                 'role'             => $user->role,
-                'permissions'      => $user->permissions,
+                'allowed'          => $user->allowed,
+                // 'permissions'      => $user->permissions,
             ),
             'currentUser' => $current_user ? array(
                 'name' => $current_user->display_name,

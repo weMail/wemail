@@ -47,7 +47,7 @@ class WpUser {
             return;
         }
 
-        $access_token = get_user_meta( $user_id, 'wemail_api_key', true );
+        $access_token = get_option( 'wemail_api_key' );
 
         if ( empty( $access_token ) ) {
             return;
@@ -56,7 +56,6 @@ class WpUser {
         $data = array(
             'name' => $user->data->display_name,
             'email' => $user->data->user_email,
-            'token' => $access_token,
         );
 
         $response = wemail()->api->set_api_key( $access_token )->auth()->users()->profile()->update()->post( $data );
@@ -65,7 +64,7 @@ class WpUser {
             return;
         }
 
-        $this->update_user_permission( $access_token, $user_id );
+        // $this->update_user_permission( $access_token, $user_id );
     }
 
     /**
@@ -174,9 +173,9 @@ class WpUser {
             return;
         }
 
-        update_user_meta( $user->ID, 'wemail_api_key', $response['access_token'] );
+        // update_user_meta( $user->ID, 'wemail_api_key', $response['access_token'] );
 
-        $this->update_user_permission( $response['access_token'], $user->ID );
+        // $this->update_user_permission( $response['access_token'], $user->ID );
     }
 
     /**
@@ -186,17 +185,17 @@ class WpUser {
      * @param $user_id
      */
     protected function update_user_permission( $access_token, $user_id ) {
-        $api_key  = apply_filters( 'wemail_api_key', $access_token );
-        $user_data = wemail()->api->set_api_key( $api_key )->auth()->users()->me()->query( array( 'include' => 'role,permissions' ) )->get();
+        // $api_key  = apply_filters( 'wemail_api_key', $access_token );
+        // $user_data = wemail()->api->set_api_key( $api_key )->auth()->users()->me()->query( array( 'include' => 'role,permissions' ) )->get();
 
-        if ( is_wp_error( $user_data ) ) {
-            return;
-        }
+        // if ( is_wp_error( $user_data ) ) {
+        //     return;
+        // }
 
-        if ( ! empty( $user_data['data'] ) ) {
-            $user_data = $user_data['data'];
+        // if ( ! empty( $user_data['data'] ) ) {
+        //     $user_data = $user_data['data'];
 
-            update_user_meta( $user_id, 'wemail_user_data', $user_data );
-        }
+        //     update_user_meta( $user_id, 'wemail_user_data', $user_data );
+        // }
     }
 }
