@@ -96,6 +96,10 @@ class User {
         // if ( $this->permissions && array_key_exists( $permission, $this->permissions ) ) {
         //     return true;
         // }
+        $wemail_api_key = get_option( 'wemail_api_key' );
+        if ( ! $wemail_api_key ) {
+            return false;
+        }
 
         return $this->check_user_role( $this->user_id );
 
