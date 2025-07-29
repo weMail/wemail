@@ -22,6 +22,7 @@ class Hooks {
         add_action( 'happyforms_submission_success', array( HappyForms::instance(), 'submit' ), 999, 1 );
         add_action( 'frm_after_entry_processed', array( FormidableForms::instance(), 'submit' ), 999, 1 );
         add_action( 'wp_ajax_sgpb_process_after_submission', array( PopupBuilder::instance(), 'submit' ), 999, 1 );
+        add_action( 'wp_ajax_nopriv_sgpb_process_after_submission', array( PopupBuilder::instance(), 'submit' ), 9, 1 );
         add_action( 'pum_sub_form_success', array( PopupMaker::instance(), 'submit' ), 999, 1 );
         add_action( 'forminator_custom_form_submit_before_set_fields', array( ForminatorForms::instance(), 'submit' ), 999, 3 );
         add_action( 'everest_forms_process', array( EverestForms::instance(), 'submit' ), 999, 3 );

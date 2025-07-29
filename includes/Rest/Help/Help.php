@@ -116,6 +116,7 @@ class Help extends RestController {
     public function disconnect_wemail() {
         delete_metadata( 'user', 0, 'wemail_api_key', '', true );
         delete_metadata( 'user', 0, 'wemail_user_data', '', true );
+        delete_option( 'wemail_api_key' );
 
         return new \WP_REST_Response(
             array(

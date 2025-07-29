@@ -174,16 +174,7 @@ function wemail_set_owner_api_key( $check_user_is_logged_in = true ) {
     global $wpdb;
 
     // We are assuming the first wemail_api_key belongs to owner
-    $owner_api_key = $wpdb->get_var(
-        $wpdb->prepare(
-            'select meta_value'
-            . ' from ' . $wpdb->usermeta
-            . ' where meta_key = %s'
-            . ' order by umeta_id asc'
-            . ' limit 1',
-            'wemail_api_key'
-        )
-    );
+    $owner_api_key = get_option( 'wemail_api_key' );
 
     wemail()->api->set_api_key( $owner_api_key );
 }
