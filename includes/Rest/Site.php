@@ -83,6 +83,8 @@ class Site extends RestController {
             'wemail_is_edd_synced',
             'wemail_woocommerce_integrated',
             'wemail_is_woocommerce_synced',
+            'wemail_api_key',
+            'wemail_site_connection_notice',
         );
 
         foreach ( $wemail_options as $option ) {
