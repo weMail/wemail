@@ -1,6 +1,6 @@
 {
   "name": "wemail",
-  "version": "1.14.16",
+  "version": "2.0.0",
   "description": "Send Beautiful Email Newsletters with WordPress",
   "scripts": {
     "build": "node build",

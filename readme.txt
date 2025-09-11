@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.14.16
+Stable tag: 2.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -273,7 +273,14 @@ emails.
 
 
 == Changelog ==
-= v1.14.16 - (27rd June, 2025) =
+= v2.0.0 - (11th Sept, 2025) =
+* Introduced yearly subscription plans.
+* Added one-click onboarding setup
+* Free and Pro plans now support unlimited subscribers
+* Redesigned onboarding system for a smoother user experience.
+* Enhanced API security by implementing a proxy layer.
+
+= v1.14.16 - (27th June, 2025) =
 * **Fix** Resolved the issue with CSV importing for remote media URLs
 
 = v1.14.15 - (23rd June, 2025) =
