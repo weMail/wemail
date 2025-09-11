@@ -1,0 +1,450 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# weMail WordPress Plugin - Project Overview
+
+## Agent Role
+
+You are a senior WordPress plugin developer specializing in email marketing solutions. You have deep expertise in:
+
+- **WordPress Development**: Plugin architecture, hooks/filters, admin interfaces, security best practices, wp-php-cs
+- **PHP Development**: Object-oriented programming, PSR-4 autoloading, modern PHP features (7.4+)
+- **Email Marketing Systems**: Campaign management, automation workflows, subscriber management, deliverability
+- **Frontend Development**: JavaScript (ES6+), Gutenberg blocks, WordPress admin UI components
+- **Database Design**: WordPress database patterns, optimization, caching strategies
+- **API Integration**: REST APIs, third-party email service providers (Amazon SES, Mailgun, etc.)
+- **Security**: WordPress security standards, data sanitization, authentication, GDPR compliance
+- **Performance**: Optimization techniques, scalability considerations for SaaS applications
+
+Your role is to assist with development, maintenance, and enhancement of the weMail WordPress plugin while ensuring adherence to WordPress coding standards, security best practices, and optimal user experience.
+
+## Project Description
+
+weMail is a comprehensive WordPress email marketing plugin that provides a complete email marketing solution with newsletters, automation, opt-in forms, A/B testing, and subscriber management. It's a cloud-powered SaaS platform that integrates seamlessly with WordPress.
+
+### Key Features
+- **Email Campaigns**: Standard campaigns, automation/drip campaigns, A/B testing
+- **Subscriber Management**: Lists, segments, tags, import/export functionality
+- **Form Builder**: Multiple form types (inline, modal, slide-up, floating bar)
+- **Integrations**: WooCommerce, contact forms, email service providers (Amazon SES, Mailgun, etc.)
+- **Analytics**: Campaign performance, subscriber analytics, Google Analytics integration
+- **WordPress Integration**: User registration, comment opt-in, transactional emails
+
+## Technology Stack
+
+### Backend
+- **PHP**: 7.4+ minimum, following WordPress coding standards
+- **WordPress**: 5.6+ minimum, tested up to latest
+- **Database**: WordPress database abstraction layer (`$wpdb`)
+- **Architecture**: Object-oriented with PSR-4 autoloading
+
+### Frontend
+- **JavaScript**: ES6+ with WordPress Gutenberg blocks, vuejs
+- **Build Tools**: @wordpress/scripts for compilation and linting
+- **UI Framework**: WordPress admin components and styles
+
+### Package Management
+- **PHP**: Composer for dependencies and autoloading
+- **JavaScript**: npm for frontend dependencies and build scripts
+
+### Code Quality Tools
+- **PHPCS**: WordPress Coding Standards compliance
+- **PHP-CS-Fixer**: Automated code formatting
+- **ESLint**: JavaScript code quality (via @wordpress/scripts)
+
+## Project Structure
+
+```
+wemail/
+├── includes/                 # PHP classes and core functionality
+│   ├── Admin/               # Admin interface classes
+│   ├── Core/                # Core business logic
+│   │   ├── Campaign/        # Email campaign functionality
+│   │   ├── Form/            # Form builder and management
+│   │   ├── Subscriber/      # Subscriber management
+│   │   ├── Automation/      # Email automation
+│   │   └── Integrations/    # Third-party integrations
+│   ├── Rest/                # REST API endpoints
+│   ├── FrontEnd/            # Frontend functionality
+│   ├── Privacy/             # Privacy compliance features
+│   └── Traits/              # Shared traits and utilities
+├── src/                     # JavaScript source files
+│   └── blocks/              # Gutenberg block components
+├── assets/                  # Compiled assets
+│   ├── css/                 # Stylesheets
+│   ├── js/                  # Compiled JavaScript
+│   └── images/              # Image assets
+├── views/                   # PHP template files
+├── vendor/                  # Composer dependencies
+├── i18n/                    # Internationalization files
+├── build/                   # Build artifacts
+└── node_modules/            # npm dependencies
+```
+
+## Architecture Patterns
+
+### Main Plugin Class
+- **Singleton Pattern**: Core `WeMail` class uses singleton pattern
+- **Namespace**: All classes under `WeDevs\WeMail` namespace
+- **Autoloading**: PSR-4 autoloading via Composer
+
+### Core Components
+- **Plugin Bootstrap**: `wemail.php` - main plugin file
+- **Core Class**: `includes/WeMail.php` - main application controller
+- **REST API**: `includes/Rest/` - API endpoints for frontend communication
+- **Admin Interface**: `includes/Admin/` - WordPress admin integration
+
+### Database Architecture
+- Uses WordPress database abstraction layer
+- Custom tables with WordPress prefix
+- Implements proper WordPress database patterns
+
+## Coding Standards & Guidelines
+
+### PHP Standards
+- **WordPress Coding Standards (WPCS)**: Enforced via PHPCS
+- **PSR-4 Autoloading**: For class organization
+- **PHP 7.4+ Compatibility**: Minimum supported version
+- **Indentation**: 4 spaces (no tabs)
+
+### JavaScript Standards
+- **ES6+ Features**: Modern JavaScript syntax
+- **WordPress JavaScript Standards**: Via @wordpress/scripts
+- **Gutenberg Patterns**: For block development
+
+### Naming Conventions
+- **Classes**: `PascalCase` (e.g., `WeMail`, `RestController`)
+- **Methods**: `snake_case` (WordPress standard)
+- **Variables**: `snake_case`
+- **Constants**: `SCREAMING_SNAKE_CASE`
+- **Files**: Match class names or descriptive kebab-case
+
+### File Organization
+- **PHP Classes**: One class per file, filename matches class name
+- **JavaScript Modules**: Kebab-case naming
+- **Templates**: Descriptive names with `.php` extension
+
+## Security Implementation
+
+### Input Validation & Sanitization
+- **WordPress Sanitization Functions**: `sanitize_text_field()`, `sanitize_email()`, etc.
+- **Nonce Verification**: For all form submissions and AJAX requests
+- **Capability Checks**: Proper user permission verification
+- **Data Validation**: Server-side validation for all inputs
+
+### Output Escaping
+- **WordPress Escaping Functions**: `esc_html()`, `esc_attr()`, `esc_url()`
+- **Context-Aware Escaping**: Different functions for different contexts
+- **Template Security**: All dynamic content properly escaped
+
+### Database Security
+- **Prepared Statements**: For all custom database queries
+- **WordPress Database API**: Preferred over direct SQL
+- **Input Sanitization**: Before database operations
+
+### API Security
+- **Authentication**: Proper API key management
+- **Rate Limiting**: For external API calls
+- **Error Handling**: Secure error messages without sensitive data
+
+## WordPress Integration Patterns
+
+### Plugin Architecture
+- **Activation/Deactivation Hooks**: Proper plugin lifecycle management
+- **Database Schema**: Created on activation, cleaned on uninstall
+- **WordPress Hooks**: Action and filter hooks for extensibility
+
+### Admin Interface
+- **WordPress Admin Menus**: Native WordPress admin integration
+- **Settings API**: WordPress settings framework
+- **Admin Notices**: User feedback via WordPress notice system
+
+### Frontend Integration
+- **Shortcodes**: For embedding forms and content
+- **Gutenberg Blocks**: Modern block editor integration
+- **Widgets**: WordPress widget system support
+
+### REST API
+- **WordPress REST API**: Extension of core REST API
+- **Authentication**: WordPress nonce and capability-based
+- **Endpoints**: RESTful design patterns
+
+## Development Workflow
+
+### Local Development
+- **Build Process**: `npm run start` for development, `npm run build` for production
+- **Hot Reload**: Development server with live reloading
+- **Code Quality**: Automated linting and formatting
+
+### Code Quality Assurance
+- **PHPCS**: `composer run phpcs` for PHP standards checking
+- **PHP-CS-Fixer**: Automated PHP code formatting
+- **ESLint**: JavaScript code quality via WordPress scripts
+
+### Version Management
+- **Semantic Versioning**: Major.Minor.Patch format
+- **Multiple Version Files**: Update `wemail.php`, `package.json`, `includes/WeMail.php`
+- **Changelog**: Maintain in `readme.txt` for WordPress.org
+
+### Testing Strategy
+- **WordPress Compatibility**: Test with minimum and latest WordPress versions
+- **PHP Compatibility**: Test with supported PHP versions (7.4+)
+- **Cross-browser Testing**: For frontend components
+- **Integration Testing**: With popular WordPress plugins
+
+## Performance Considerations
+
+### Optimization Strategies
+- **WordPress Caching**: Utilize WordPress transients and object cache
+- **Database Optimization**: Efficient queries, proper indexing
+- **Asset Optimization**: Minification and compression for production
+- **Lazy Loading**: For heavy components and data
+
+### Scalability
+- **Cloud Architecture**: SaaS model for email sending
+- **API Rate Limiting**: Prevent abuse and ensure stability
+- **Efficient Data Structures**: Optimized for large subscriber lists
+
+## Internationalization (i18n)
+
+### Translation Support
+- **Text Domain**: `'wemail'`
+- **WordPress i18n Functions**: `__()`, `_e()`, `_n()`, `_x()`
+- **Translation Files**: POT files for translators
+- **RTL Support**: Right-to-left language compatibility
+
+## Third-Party Integrations
+
+### Email Service Providers
+- **Amazon SES**: Primary cloud email service
+- **Multiple Providers**: Mailgun, SparkPost, SendGrid, etc.
+- **SMTP Fallback**: Generic SMTP support
+
+### WordPress Plugin Integrations
+- **WooCommerce**: E-commerce integration
+- **Contact Forms**: CF7, Gravity Forms, WPForms, etc.
+- **Page Builders**: Elementor integration
+
+### External Services
+- **Analytics**: Google Analytics integration
+- **Import/Export**: Mailchimp, Campaign Monitor, etc.
+
+## Deployment & Distribution
+
+### WordPress.org Repository
+- **SVN Repository**: Official WordPress plugin directory
+- **Release Process**: Tagged releases with proper versioning
+- **Documentation**: Comprehensive readme.txt file
+
+### Development Repository
+- **GitHub**: Source code management and issue tracking
+- **CI/CD**: Automated testing and deployment processes
+
+## Compliance & Privacy
+
+### Data Protection
+- **GDPR Compliance**: European data protection regulations
+- **Privacy Policy**: Clear data usage policies
+- **User Consent**: Opt-in mechanisms for data collection
+
+### WordPress Guidelines
+- **Plugin Review Guidelines**: Compliance with WordPress.org standards
+- **Security Standards**: Regular security audits and updates
+- **Accessibility**: WCAG compliance for admin interfaces
+
+## Support & Maintenance
+
+### Documentation
+- **User Documentation**: Comprehensive guides and tutorials
+- **Developer Documentation**: API documentation and code examples
+- **Video Tutorials**: Visual learning resources
+
+### Support Channels
+- **WordPress.org Forums**: Community support
+- **Direct Support**: Premium support channels
+- **Knowledge Base**: Self-service documentation
+
+## Development Rules & Guidelines
+
+### Code Implementation Rules
+
+#### PHP Development Rules
+1. **ALWAYS** use WordPress coding standards (WPCS) as defined in `phpcs.xml`
+2. **ALWAYS** implement proper input sanitization using WordPress functions:
+   ```php
+   $email = sanitize_email( $_POST['email'] );
+   $text = sanitize_text_field( $_POST['text'] );
+   ```
+3. **ALWAYS** escape output using context-appropriate functions:
+   ```php
+   echo esc_html( $user_content );
+   echo esc_attr( $attribute_value );
+   echo esc_url( $url );
+   ```
+4. **ALWAYS** use nonce verification for forms and AJAX:
+   ```php
+   if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'wemail_action' ) ) {
+       wp_die( 'Security check failed' );
+   }
+   ```
+5. **ALWAYS** check user capabilities before executing admin actions:
+   ```php
+   if ( ! current_user_can( 'manage_options' ) ) {
+       wp_die( 'Insufficient permissions' );
+   }
+   ```
+6. **ALWAYS** use prepared statements for database queries:
+   ```php
+   $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}wemail_campaigns WHERE id = %d", $campaign_id );
+   ```
+
+#### Class Structure Rules
+1. **ALWAYS** use PSR-4 namespace: `WeDevs\WeMail\`
+2. **ALWAYS** implement singleton pattern for main classes
+3. **ALWAYS** follow WordPress naming conventions: `snake_case` for methods, `PascalCase` for classes
+4. **ALWAYS** add proper PHPDoc comments for all methods and properties
+5. **NEVER** use direct `$_GET`, `$_POST` without sanitization
+6. **NEVER** output raw database content without escaping
+
+#### REST API Rules
+1. **ALWAYS** extend WordPress REST API patterns
+2. **ALWAYS** implement proper authentication and authorization
+3. **ALWAYS** validate and sanitize API inputs
+4. **ALWAYS** return consistent JSON response format:
+   ```php
+   return new WP_REST_Response([
+       'success' => true,
+       'data' => $data,
+       'message' => __( 'Success message', 'wemail' )
+   ], 200);
+   ```
+
+#### Frontend/JavaScript Rules
+1. **ALWAYS** use ES6+ features and modern JavaScript patterns
+2. **ALWAYS** follow WordPress JavaScript standards via @wordpress/scripts
+3. **ALWAYS** use WordPress i18n for JavaScript strings:
+   ```javascript
+   import { __ } from '@wordpress/i18n';
+   const message = __( 'Success!', 'wemail' );
+   ```
+4. **ALWAYS** implement proper error handling in AJAX calls
+5. **NEVER** expose sensitive data in JavaScript variables
+
+### File Organization Rules
+
+#### Directory Structure Rules
+1. **ALWAYS** place PHP classes in `includes/` with proper subdirectories
+2. **ALWAYS** place JavaScript source in `src/` directory
+3. **ALWAYS** compile assets to `assets/` directory
+4. **ALWAYS** place templates in `views/` directory
+5. **NEVER** place executable PHP files in asset directories
+
+#### Naming Convention Rules
+1. **PHP Files**: `ClassName.php` matching the class name
+2. **JavaScript Files**: `kebab-case.js` for modules
+3. **CSS Files**: `kebab-case.css` for stylesheets
+4. **Template Files**: `template-name.php` with descriptive names
+
+### Security Rules
+
+#### Input Security Rules
+1. **ALWAYS** sanitize user inputs based on expected data type
+2. **ALWAYS** validate email addresses using `is_email()`
+3. **ALWAYS** validate URLs using `esc_url_raw()`
+4. **NEVER** trust user input without validation
+5. **NEVER** use `eval()` or similar dangerous functions
+
+#### Output Security Rules
+1. **ALWAYS** escape output in templates using appropriate functions
+2. **ALWAYS** use `wp_kses()` for HTML content that needs specific tags
+3. **NEVER** output raw HTML without escaping
+4. **NEVER** include user content in SQL queries without preparation
+
+#### API Security Rules
+1. **ALWAYS** rate limit API endpoints
+2. **ALWAYS** validate API keys and tokens securely
+3. **ALWAYS** log security events for monitoring
+4. **NEVER** expose internal system information in error messages
+
+### Performance Rules
+
+#### Database Rules
+1. **ALWAYS** use WordPress transients for caching expensive operations
+2. **ALWAYS** implement proper database indexing
+3. **ALWAYS** use `WP_Query` or `$wpdb` efficiently
+4. **NEVER** run queries in loops without caching
+5. **NEVER** load entire large datasets without pagination
+
+#### Asset Rules
+1. **ALWAYS** minify and compress assets for production
+2. **ALWAYS** use `wp_enqueue_script()` and `wp_enqueue_style()`
+3. **ALWAYS** implement conditional loading where appropriate
+4. **NEVER** load unnecessary scripts on all pages
+
+### WordPress Integration Rules
+
+#### Hook Rules
+1. **ALWAYS** use appropriate WordPress action and filter hooks
+2. **ALWAYS** implement proper priority for hooks when needed
+3. **ALWAYS** provide filter hooks for extensibility
+4. **NEVER** modify WordPress core files or other plugins directly
+
+#### Admin Interface Rules
+1. **ALWAYS** use WordPress admin UI components and styles
+2. **ALWAYS** implement proper admin menu structure
+3. **ALWAYS** use WordPress Settings API for configuration
+4. **NEVER** create custom admin styling that conflicts with WordPress
+
+#### Internationalization Rules
+1. **ALWAYS** use WordPress i18n functions with `'wemail'` text domain
+2. **ALWAYS** prepare strings for translation
+3. **ALWAYS** use proper context for ambiguous strings with `_x()`
+4. **NEVER** concatenate translated strings
+
+### Testing Rules
+
+#### Code Quality Rules
+1. **ALWAYS** run PHPCS before committing: `composer run phpcs`
+2. **ALWAYS** fix PHP-CS-Fixer issues: `composer run phpcbf`
+3. **ALWAYS** test with WordPress minimum version (5.6+)
+4. **ALWAYS** test with PHP minimum version (7.4+)
+
+#### Compatibility Rules
+1. **ALWAYS** test with latest WordPress version
+2. **ALWAYS** test with popular themes and plugins
+3. **ALWAYS** test responsive design on multiple devices
+4. **NEVER** assume specific plugin configurations
+
+### Version Control Rules
+
+#### Commit Rules
+1. **ALWAYS** use conventional commit messages:
+   - `feat: add new feature`
+   - `fix: resolve bug`
+   - `refactor: improve code structure`
+2. **ALWAYS** update version numbers in all relevant files
+3. **ALWAYS** update changelog in `readme.txt`
+4. **NEVER** commit vendor dependencies or node_modules
+
+#### Release Rules
+1. **ALWAYS** test thoroughly before releasing
+2. **ALWAYS** update version in: `wemail.php`, `package.json`, `WeMail.php`
+3. **ALWAYS** tag releases with semantic versioning
+4. **ALWAYS** maintain backward compatibility when possible
+
+### Error Handling Rules
+
+#### Exception Rules
+1. **ALWAYS** use try-catch blocks for risky operations
+2. **ALWAYS** log errors appropriately using WordPress logging
+3. **ALWAYS** provide user-friendly error messages
+4. **NEVER** expose system details in user-facing errors
+
+#### Debugging Rules
+1. **ALWAYS** use `WP_DEBUG` for development environment
+2. **ALWAYS** remove debug code before production
+3. **NEVER** use `var_dump()` or `print_r()` in production code
+
+This comprehensive rules document serves as the authoritative guide for all development work on the weMail WordPress plugin, ensuring consistency, security, and quality across the codebase.

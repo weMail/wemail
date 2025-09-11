@@ -60,6 +60,16 @@ class Api {
     private $json = false;
 
     /**
+     * @var string
+     */
+    private $roles;
+
+    /**
+     * @var string
+     */
+    private $email;
+
+    /**
      * Executes during instance creation
      *
      * @since 1.0.0
@@ -68,8 +78,12 @@ class Api {
      */
     public function boot() {
         $this->root = wemail()->wemail_api;
-        $api_key = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
+        $user = wp_get_current_user();
+        $roles = implode( ',', $user->roles );
+        $api_key = get_option( 'wemail_api_key' );
         $this->set_api_key( $api_key );
+        $this->set_roles( $roles );
+        $this->set_user_email( $user->user_email );
     }
 
     /**
@@ -105,12 +119,65 @@ class Api {
     }
 
     /**
+     * Set user roles
+     * @since 1.14.10
+     * @param string $roles
+     * @return Api
+     */
+    public function set_roles( $roles ) {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Set user roles
+     * @since 1.14.10
+     * @param string $email
+     * @return Api
+     */
+    public function set_user_email( $email ) {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get user roles
+     * @since 1.14.10
+     * @return string
+     */
+    public function get_roles() {
+        return $this->roles;
+    }
+
+    /**
+     * Get user email
+     * @since 1.14.10
+     * @return string
+     */
+    public function get_user_email() {
+        return $this->email;
+    }
+
+    /**
      * Is api key set on this instance
      * @since
      * @return bool
      */
     public function has_api_key() {
         return (bool) $this->api_key;
+    }
+
+    /**
+     * Added url
+     *
+     * @param [string] $url
+     * @return void
+     */
+    public function url( $url ) {
+        $this->url = $url;
+        return $this;
     }
 
     /**
@@ -146,6 +213,7 @@ class Api {
         return array(
             'root'     => $this->root,
             'api_key'  => $this->get_api_key(),
+            'user_roles' => $this->get_roles(),
         );
     }
 
@@ -162,6 +230,8 @@ class Api {
         $defaults = array(
             'headers' => array(
                 'x-api-key' => $this->get_api_key(),
+                'x-user-roles' => $this->get_roles(),
+                'x-wemail-user' => $this->get_user_email(),
             ),
         );
 
@@ -308,7 +378,25 @@ class Api {
      * @return mixed
      */
     public function put( $data, $args = array() ) {
-        $data['_method'] = 'put';
+        $args = $this->args( $args );
+        $args['method'] = 'PUT';
+
+        return $this->post( $data, $args );
+    }
+
+    /**
+     * API - PATCH request caller
+     *
+     * @since 2.0.0
+     *
+     * @param array  $data PUT data
+     * @param array  $args wp_remote_request argument overrides
+     *
+     * @return mixed
+     */
+    public function patch( $data, $args = array() ) {
+        $args = $this->args( $args );
+        $args['method'] = 'PATCH';
 
         return $this->post( $data, $args );
     }
@@ -326,15 +414,9 @@ class Api {
     public function delete( $data = array(), $args = array() ) {
         $args = $this->args( $args );
 
-        $args['method'] = 'delete';
+        $args['method'] = 'DELETE';
 
-        $args['body'] = ! empty( $data ) ? $data : null;
-
-        $url = $this->build_url();
-
-        $response = wp_remote_request( $url, $args );
-
-        return $this->response( $response );
+        return $this->post( $data, $args );
     }
 
     /**

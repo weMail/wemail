@@ -21,7 +21,7 @@ class Install {
         update_option( 'wemail_version', WEMAIL_VERSION );
 
         // let the API know we are active again
-        $api_key    = get_user_meta( get_current_user_id(), 'wemail_api_key', true );
+        $api_key    = get_option( 'wemail_api_key' );
         $api        = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
         $wemail_api = untrailingslashit( $api );
 

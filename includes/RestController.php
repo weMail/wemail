@@ -303,24 +303,24 @@ abstract class RestController extends WP_REST_Controller {
             return true;
         }
 
-        $api_key = $request->get_header( 'X-WeMail-Key' );
+        $api_key = $request->get_header( 'x-wemail-key' );
 
         if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query(
-                array(
-                    'fields'        => 'ID',
-                    'meta_key'      => 'wemail_api_key',
-                    'meta_value'    => $api_key,
-                )
-            );
+            $wp_api_key = get_option( 'wemail_api_key' );
+            if ( $api_key !== $wp_api_key ) {
+                return false;
+            }
 
-            if ( $query->get_total() ) {
-                $results = $query->get_results();
-                $user_id = array_pop( $results );
+            $user_email = $request->get_header( 'x-wemail-user' );
 
-                $this->current_user = wp_set_current_user( $user_id );
+            if ( ! empty( $user_email ) ) {
+                $user = get_user_by( 'email', $user_email );
 
-                return true;
+                if ( $user ) {
+                    $this->current_user = wp_set_current_user( $user->ID, $user->user_login );
+
+                    return true;
+                }
             }
         }
 

@@ -52,46 +52,30 @@ class Users extends RestController {
         );
     }
 
-    public function store( $request ) {
-        $users = $request->get_param( 'users' );
-        $role = $request->get_param( 'role' );
+    public function storeRoles( $request ) {
+        $roles = $this->saveAccessibleRoles( $request );
+        $access_token = get_option( 'wemail_api_key' );
 
-        $access_token = get_user_meta( get_current_user_id(), 'wemail_api_key', false );
-        if ( $access_token ) {
-            wemail()->api->set_api_key( $access_token[0] );
-
-            foreach ( $users as $user ) {
-                $wp_admin_response = wemail()->api->teamUsers()->post(
-                    array(
-                        'name'    => $user['name'],
-                        'email'   => $user['email'],
-                        'role'    => $role,
-                        'include' => 'role,permissions',
-                    )
-                );
-
-                if ( isset( $wp_admin_response['access_token'] ) && $wp_admin_response['access_token'] !== '' ) {
-                    update_user_meta( $user['id'], 'wemail_api_key', $wp_admin_response['access_token'] );
-                    if ( isset( $wp_admin_response['data'] ) ) {
-                        $response = $wp_admin_response['data'];
-                        $user_meta = array(
-                            'deleted_at'  => $response['deleted_at'],
-                            'email'       => $response['email'],
-                            'hash'        => $response['hash'],
-                            'name'        => $response['name'],
-                            'permissions' => $response['permissions'],
-                            'role'        => $response['role'],
-                            'roles'       => $response['roles'],
-                        );
-                        update_user_meta( $user['id'], 'wemail_user_data', $user_meta );
-                    }
-                }
-            }
-
-            return $this->respond( array( 'success' => true ), self::HTTP_CREATED );
+        if ( empty( $roles ) || ! is_array( $roles ) ) {
+            return $this->respond( array( 'message' => 'Invalid roles provided' ), 422 );
         }
 
-        return $this->respond( array( 'message' => 'Access token not found' ), 422 );
+        if ( empty( $access_token ) ) {
+            return $this->respond( array( 'message' => 'API token not available' ), 422 );
+        }
+
+        $data = array(
+            'roles' => $roles,
+            'api_token' => $access_token,
+        );
+
+        $response = wemail()->api->wp()->users()->rolePermissions()->post( $data );
+
+        if ( $response['success'] === true ) {
+            return $this->respond( array( 'message' => $response['message'] ), 200 );
+        }
+
+        return $this->respond( array( 'message' => 'Failed to update roles' ), 422 );
     }
 
     public function update( $request ) {
@@ -191,11 +175,29 @@ class Users extends RestController {
         );
     }
 
-    public function storeRoles( $request ) {
+    public function store( $request ) {
+        $args = array(
+            'role' => $request->get_param( 'role' ),
+            'exclude' => array( get_current_user_id() ),
+        );
+
+        $users = get_users( $args );
+
+        foreach ( $users as $user ) {
+            delete_user_meta( $user->ID, 'wemail_user_data' );
+        }
+
+        return $this->respond( array( 'success' => true ), 200 );
+    }
+
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function saveAccessibleRoles( $request ) {
         $roles = $request->get_param( 'roles' );
 
         update_option( 'wemail_accessible_roles', $roles );
-
-        return $this->respond( array( 'success' => true ), 200 );
+        return $roles;
     }
 }
