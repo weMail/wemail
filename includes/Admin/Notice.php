@@ -54,7 +54,7 @@ class Notice {
                     <p><?php echo __( 'You are one step closer to use weMail. Connect your site to get started with weMail. With weMail, you can send marketing and transactional emails to your audience.', 'wemail' ); ?></p>
                 </div>
                 <div class="wemail-connect-notice-connect-button">
-                    <a class="button" href="<?php echo wemail()->wemail_app . '/connect?email=' . rawurlencode( wp_get_current_user()->user_email ) . '&site_name=' . rawurlencode( get_bloginfo( 'name' ) ) . '&site_url=' . rawurlencode( site_url( '/' ) ) . '&redirect_url=' . rawurlencode( admin_url( 'admin.php?page=wemail' ) ); ?>">Connect</a>
+                    <a class="button" href="<?php echo admin_url( 'admin.php?page=wemail' ); ?>">Connect</a>
                 </div>
             </div>
         <?php
@@ -71,7 +71,7 @@ class Notice {
                 update_option( 'wemail_site_connection_notice', 1 );
             }
         }
-        if ( ! get_user_meta( get_current_user_id(), 'wemail_api_key', true ) && (int) get_option( 'wemail_site_connection_notice' ) !== 1 && ! ( isset( $_GET['page'] ) && $_GET['page'] === 'wemail' ) ) {
+        if ( ! get_option( 'wemail_api_key' ) && (int) get_option( 'wemail_site_connection_notice' ) !== 1 && ! ( isset( $_GET['page'] ) && $_GET['page'] === 'wemail' ) ) {
             add_action( 'admin_notices', array( $this, 'connect_notice_html' ) );
         }
     }

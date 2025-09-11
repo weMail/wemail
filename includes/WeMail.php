@@ -23,7 +23,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '1.14.16';
+    public $version = '2.0.0';
 
     /**
      * DB version

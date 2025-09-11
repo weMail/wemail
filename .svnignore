@@ -10,3 +10,4 @@ bin
 license.txt
 composer.json
 composer.lock
+.cursor
