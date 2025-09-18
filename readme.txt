@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 5.6
-Tested up to: 6.7.2
-Stable tag: 2.0.0
+Tested up to: 6.8.2
+Stable tag: 2.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -273,6 +273,9 @@ emails.
 
 
 == Changelog ==
+= v2.0.1 - (17th June, 2025) =
+* Fixed permission checking for remote calling
+
 = v2.0.0 - (11th Sept, 2025) =
 * Introduced yearly subscription plans.
 * Added one-click onboarding setup
