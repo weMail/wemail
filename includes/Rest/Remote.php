@@ -12,7 +12,7 @@ class Remote extends RestController {
     public $rest_base = '/remote';
 
     public function register_routes() {
-        $this->post( '/', 'call_remote', 'manage_options' );
+        $this->post( '/', 'call_remote', 'can_remote_call' );
     }
 
     /**
