@@ -62,7 +62,10 @@ class User {
      */
     public function boot() {
         $user_id = get_current_user_id();
-        $user_email = get_user_by( 'id', $user_id )->user_email;
+        $wp_user = get_user_by( 'id', $user_id );
+        if ( $wp_user ) {
+            $user_email = $wp_user->user_email;
+        }
 
         $disabled = get_user_meta( $user_id, 'wemail_disable_user_access' );
         if ( $disabled ) {

@@ -34,7 +34,7 @@ class WP extends RestController {
      */
     public function register_routes() {
         $this->get( '/post-types', 'post_types', 'can_update_campaign' );
-        $this->get( '/posts', 'posts', 'can_update_campaign' );
+        $this->get( '/posts', 'posts', 'permission' );
         $this->get( '/user-roles', 'user_roles', 'can_manage_settings' );
         $this->get( '/users', 'users', 'can_create_subscriber' );
         $this->get( '/products', 'products', 'can_update_campaign' );
@@ -339,5 +339,18 @@ class WP extends RestController {
                 $categories
             )
         );
+    }
+
+    public function permission( $request )
+    {
+        $api_key = $request->get_header( 'X-WeMail-Key' );
+        if ( ! empty( $api_key ) ) {
+            $wemail_api_key = get_option( 'wemail_api_key' );
+            if ( $api_key === $wemail_api_key ) {
+                return true;
+            }
+        }
+
+        return $this->can_update_campaign($request);
     }
 }
