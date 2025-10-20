@@ -15,6 +15,7 @@ class Site extends RestController {
         $this->post( '/settings', 'save_settings', 'can_manage_settings' );
         $this->post( '/settings/save-options', 'save_options', 'manage_options' );
         $this->delete( '', 'delete_site', 'can_manage_settings' );
+        $this->get( '/authentication', 'check_after_update', 'manage_options' );
     }
 
     /**
@@ -127,4 +128,22 @@ class Site extends RestController {
 
         return;
     }
+
+    public function check_after_update()
+    {
+        $api_key = get_option('wemail_api_key');
+
+        if (empty($api_key)) {
+            $key = wemail()->api->site()->authentication()->send_json()->post(array ('site_url' => get_site_url()));
+            update_option('wemail_api_key', $key);
+
+            // Return redirect URL for frontend to handle
+            return rest_ensure_response(array(
+                'success' => true,
+                'redirect_url' => admin_url('admin.php?page=wemail'),
+                'message' => __('Site connected successfully!', 'wemail')
+            ));
+        }
+    }
+
 }
