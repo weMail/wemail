@@ -259,6 +259,10 @@ These forms are fully customizable optins. It will allow you to match your brand
 weMail doesn't require any pre-requisite. But we do advise you first look through the options & documentation provided by the email sending API service providers. You will need these services to send
 emails.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the weMail plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fb987-a20f-469f-bb16-9d9b4916acf1). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this
+
 =  =
 
 == Screenshots ==
