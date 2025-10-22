@@ -36,5 +36,6 @@ class Rest {
         new Help();
         new AffiliateIntegrations();
         new Remote();
+        new Tracking();
     }
 }
