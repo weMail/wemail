@@ -49,7 +49,7 @@ class Tracking extends RestController {
     public function redirect_to_tracking( $request ) {
         $accept_header = $request->get_header( 'accept' );
         if ( $request->is_json_content_type() ||
-             ( $accept_header && strpos( $accept_header, 'application/json' ) !== false ) ) {
+            ( $accept_header && strpos( $accept_header, 'application/json' ) !== false ) ) {
             return $this->respond( array( 'success' => true ) );
         }
 
