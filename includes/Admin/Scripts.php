@@ -145,7 +145,7 @@ class Scripts {
             'currentUser' => $current_user ? array(
                 'name' => $current_user->display_name,
                 'email' => $current_user->user_email,
-                'api_key'  => get_user_meta( $current_user->ID, 'wemail_api_key', true ),
+                'api_key'  => (bool)get_user_meta($current_user->ID, 'wemail_api_key', true),
             ) : null,
 
             // Vue related data

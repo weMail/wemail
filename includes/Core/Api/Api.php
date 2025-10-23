@@ -81,6 +81,9 @@ class Api {
         $user = wp_get_current_user();
         $roles = implode( ',', $user->roles );
         $api_key = get_option( 'wemail_api_key' );
+        if ( empty( $api_key ) ) {
+            $api_key = get_user_meta( $user->ID, 'wemail_api_key', true );
+        }
         $this->set_api_key( $api_key );
         $this->set_roles( $roles );
         $this->set_user_email( $user->user_email );
