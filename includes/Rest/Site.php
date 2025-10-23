@@ -134,6 +134,14 @@ class Site extends RestController {
         $api_key = get_option('wemail_api_key');
 
         if (empty($api_key)) {
+            // Get user meta API key for header
+            $user_api_key = get_user_meta(get_current_user_id(), 'wemail_api_key', true);
+            
+            // Set the API key in the API instance for proper header inclusion
+            if (!empty($user_api_key)) {
+                wemail()->api->set_api_key($user_api_key);
+            }
+            
             $key = wemail()->api->site()->authentication()->send_json()->post(array ('site_url' => get_site_url()));
             update_option('wemail_api_key', $key);
 
