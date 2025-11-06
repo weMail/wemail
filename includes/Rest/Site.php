@@ -142,7 +142,7 @@ class Site extends RestController {
             }
 
             $response = wemail()->api->site()->authentication()->send_json()->post( array( 'site_url' => get_site_url() ) );
-            if ( is_wp_error( $response ) && empty($response['key'])) {
+            if ( is_wp_error( $response ) && empty( $response['key'] ) ) {
                 return rest_ensure_response(
                     array(
                         'success' => false,
@@ -151,15 +151,15 @@ class Site extends RestController {
                     )
                 );
             } else {
-                update_option('wemail_api_key', $response['key']);
+                update_option( 'wemail_api_key', $response['key'] );
                 wemail()->api->set_api_key( $response['key'] );
 
                 // Return redirect URL for frontend to handle
                 return rest_ensure_response(
                     array(
                         'success' => true,
-                        'redirect_url' => admin_url('admin.php?page=wemail'),
-                        'message' => __('Site connected successfully!', 'wemail'),
+                        'redirect_url' => admin_url( 'admin.php?page=wemail' ),
+                        'message' => __( 'Site connected successfully!', 'wemail' ),
                     )
                 );
             }
