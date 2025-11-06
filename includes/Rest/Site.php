@@ -150,19 +150,17 @@ class Site extends RestController {
                         'message' => $response->get_error_message(),
                     )
                 );
-            } else {
-                update_option( 'wemail_api_key', $response['key'] );
-                wemail()->api->set_api_key( $response['key'] );
-
-                // Return redirect URL for frontend to handle
-                return rest_ensure_response(
-                    array(
-                        'success' => true,
-                        'redirect_url' => admin_url( 'admin.php?page=wemail' ),
-                        'message' => __( 'Site connected successfully!', 'wemail' ),
-                    )
-                );
             }
-        }
-    }
+            update_option( 'wemail_api_key', $response['key'] );
+            wemail()->api->set_api_key( $response['key'] );
+
+            return rest_ensure_response(
+                array(
+					'success' => true,
+					'redirect_url' => admin_url( 'admin.php?page=wemail' ),
+					'message' => __( 'Site connected successfully!', 'wemail' ),
+				)
+            );
+		}
+	}
 }
