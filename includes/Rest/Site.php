@@ -14,7 +14,7 @@ class Site extends RestController {
     public function register_routes() {
         $this->post( '/settings', 'save_settings', 'can_manage_settings' );
         $this->post( '/settings/save-options', 'save_options', 'manage_options' );
-        $this->delete( '', 'delete_site', 'can_manage_settings' );
+        $this->delete( '', 'delete_site', 'check_delete_permission' );
         $this->get( '/authentication', 'check_after_update', 'manage_options' );
     }
 
@@ -163,4 +163,22 @@ class Site extends RestController {
             );
 		}
 	}
+
+    /**
+     * Check delete site permission
+     *
+     * @since 2.0.4
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return bool
+     */
+    public function check_delete_permission( $request ) {
+        $api_key = $request->get_header( 'x-wemail-key' );
+        $wp_api_key = get_option( 'wemail_api_key' );
+        if ( $api_key !== $wp_api_key ) {
+            return false;
+        }
+        return true;
+    }
 }
