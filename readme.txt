@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: email marketing, newsletter, subscription, smtp, optins
 Requires at least: 5.6
 Tested up to: 6.8.3
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -277,6 +277,9 @@ Please report security bugs found in the source code of the weMail plugin throug
 
 
 == Changelog ==
+= v2.0.5 - (12th Nov, 2025) =
+* Fixed permisison checking to access rest api
+
 = v2.0.4 - (6th Nov, 2025) =
 * Prevents disconnection after updating the plugin
 
