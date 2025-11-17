@@ -25,13 +25,13 @@ class Install {
 
         if ($api_key) {
             $wemail_api = wemail()->wemail_api;
-
+            $user = wp_get_current_user();
             wp_remote_post(
                 $wemail_api . '/site/update-activation-status',
                 array(
                     'headers' => array(
                         'x-api-key' => $api_key,
-                        'x-wemail-user' => wemail()->wemail_api->get_user_email(),
+                        'x-wemail-user' => $user->user_email,
                     ),
                     'body'    => array(
                         'deactivated' => false,
