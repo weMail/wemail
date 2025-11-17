@@ -23,7 +23,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '2.0.5';
+    public $version = '2.0.6';
 
     /**
      * DB version
@@ -417,6 +417,12 @@ final class WeMail {
          * @param string
          */
         $api = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
+
+        // Ensure the filtered API URL is valid
+        if ( is_wp_error( $api ) || ! is_string( $api ) || empty( $api ) ) {
+            $api = 'https://api.getwemail.io/v1'; // Fallback to default
+        }
+
         $this->wemail_api = untrailingslashit( $api );
     }
 
