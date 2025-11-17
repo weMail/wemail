@@ -23,6 +23,12 @@ class Install {
         // let the API know we are active again
         $api_key    = get_option( 'wemail_api_key' );
         $api        = apply_filters( 'wemail_api_url', 'https://api.getwemail.io/v1' );
+
+        // Ensure the filtered API URL is valid
+        if ( is_wp_error( $api ) || ! is_string( $api ) || empty( $api ) ) {
+            $api = 'https://api.getwemail.io/v1'; // Fallback to default
+        }
+
         $wemail_api = untrailingslashit( $api );
 
         wp_remote_post(

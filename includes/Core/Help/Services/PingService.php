@@ -29,6 +29,11 @@ class PingService {
             'https://api.getwemail.io/v1'
         );
 
+        // Ensure the filtered API URL is valid
+        if ( is_wp_error( $api ) || ! is_string( $api ) || empty( $api ) ) {
+            $api = 'https://api.getwemail.io/v1'; // Fallback to default
+        }
+
         $wemail_api = untrailingslashit( $api );
 
         $response = wp_remote_post(
