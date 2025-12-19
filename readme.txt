@@ -277,8 +277,9 @@ Please report security bugs found in the source code of the weMail plugin throug
 
 
 == Changelog ==
-v2.0.7 - (24th Nov, 2025) =
+v2.0.7 - (19th Dec, 2025) =
 * Handle API calls when the API key is missing
+* Update plugin uri
 
 v2.0.6 - (18th Nov, 2025) =
 * Improve handling of WP_Error on remote calls
