@@ -3,7 +3,7 @@
 /**
  * Plugin Name: weMail - Email Marketing Simplified With WordPress
  * Description: Send Beautiful Email Newsletters with WordPress
- * Plugin URI: https://wordpress.org/plugins/wemail/
+ * Plugin URI: https://getwemail.io
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
  * Version: 2.0.7
