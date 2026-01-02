@@ -23,7 +23,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_create_form' ),
                     'callback'            => array( $this, 'store' ),
                 ),
             )
@@ -35,7 +35,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::DELETABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_delete_form' ),
                     'callback'            => array( $this, 'destroy' ),
                 ),
             )
@@ -47,7 +47,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_restore_form' ),
                     'callback'            => array( $this, 'restore' ),
                 ),
             )
@@ -59,7 +59,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_sync_form' ),
                     'callback'            => array( $this, 'sync' ),
                 ),
             )
@@ -78,7 +78,7 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_update_form' ),
                     'callback'            => array( $this, 'update' ),
                 ),
             )
@@ -96,7 +96,7 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_submit_form' ),
                     'callback'            => array( $this, 'submit' ),
                 ),
             )
@@ -114,21 +114,11 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_submit_form' ),
                     'callback'            => array( $this, 'increment_visitor' ),
                 ),
             )
         );
-    }
-
-    public function permission( $request ) {
-        $nonce = $request->get_header( 'X-WP-Nonce' );
-
-        if ( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return true;
-        }
-
-        return false;
     }
 
     public function submit( $request ) {
