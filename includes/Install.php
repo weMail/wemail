@@ -21,9 +21,9 @@ class Install {
         update_option( 'wemail_version', WEMAIL_VERSION );
 
         // let the API know we are active again
-        $api_key = get_option( 'wemail_api_key' );
+        $api_key    = get_option( 'wemail_api_key' );
 
-        if ( $api_key ) {
+        if ($api_key) {
             $wemail_api = wemail()->wemail_api;
             $user = wp_get_current_user();
             wp_remote_post(
