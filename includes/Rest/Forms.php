@@ -23,7 +23,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => array( $this, 'can_create_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'store' ),
                 ),
             )
@@ -35,7 +35,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::DELETABLE,
-                    'permission_callback' => array( $this, 'can_delete_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'destroy' ),
                 ),
             )
@@ -47,7 +47,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'can_restore_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'restore' ),
                 ),
             )
@@ -59,7 +59,7 @@ class Forms {
             array(
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'can_sync_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'sync' ),
                 ),
             )
@@ -78,7 +78,7 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'can_update_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'update' ),
                 ),
             )
@@ -96,7 +96,7 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => array( $this, 'can_submit_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'submit' ),
                 ),
             )
@@ -114,11 +114,43 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'can_submit_form' ),
+                    'permission_callback' => array( $this, 'permission' ),
                     'callback'            => array( $this, 'increment_visitor' ),
                 ),
             )
         );
+    }
+
+    /**
+     * Permission callback for form endpoints
+     * Requires WordPress authentication, weMail role-based capability checks, and nonce verification
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return bool
+     */
+    public function permission( $request ) {
+        // 1. Require WordPress authentication (user must be logged in)
+        if ( ! is_user_logged_in() ) {
+            return false;
+        }
+
+        // 2. Check user has appropriate weMail role-based capabilities
+        if ( ! function_exists( 'wemail' ) || ! method_exists( wemail(), 'user' ) ) {
+            return false;
+        }
+
+        if ( ! wemail()->user->can( 'manage_form' ) ) {
+            return false;
+        }
+
+        // 3. Require nonce verification for CSRF protection
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return false;
+        }
+
+        return true;
     }
 
     public function submit( $request ) {
