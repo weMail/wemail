@@ -121,14 +121,36 @@ class Forms {
         );
     }
 
+    /**
+     * Permission callback for form endpoints
+     * Requires WordPress authentication, weMail role-based capability checks, and nonce verification
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return bool
+     */
     public function permission( $request ) {
-        $nonce = $request->get_header( 'X-WP-Nonce' );
-
-        if ( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-            return true;
+        // 1. Require WordPress authentication (user must be logged in)
+        if ( ! is_user_logged_in() ) {
+            return false;
         }
 
-        return false;
+        // 2. Check user has appropriate weMail role-based capabilities
+        if ( ! function_exists( 'wemail' ) || ! method_exists( wemail(), 'user' ) ) {
+            return false;
+        }
+
+        if ( ! wemail()->user->can( 'manage_form' ) ) {
+            return false;
+        }
+
+        // 3. Require nonce verification for CSRF protection
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return false;
+        }
+
+        return true;
     }
 
     public function submit( $request ) {

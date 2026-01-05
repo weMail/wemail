@@ -5,7 +5,6 @@ namespace WeDevs\WeMail\Rest;
 use League\Csv\Reader;
 use WP_REST_Response;
 use WP_REST_Server;
-use WP_User_Query;
 
 class Csv {
 
@@ -30,7 +29,7 @@ class Csv {
                 ),
                 array(
                     'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_csv_upload' ),
                     'callback' => array( $this, 'csv_file_info' ),
                 ),
             )
@@ -48,7 +47,7 @@ class Csv {
                 ),
                 array(
                     'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_meta_fields' ),
                     'callback' => array( $this, 'meta_fields' ),
                 ),
             )
@@ -66,47 +65,11 @@ class Csv {
                 ),
                 array(
                     'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'can_get_subscribers' ),
                     'callback' => array( $this, 'subscribers' ),
                 ),
             )
         );
-    }
-
-    public function permission( $request ) {
-        $api_key = $request->get_header( 'X-WeMail-Key' );
-
-        $user_email = $request->get_header( 'x-wemail-user' );
-
-        if ( ! empty( $user_email ) ) {
-            $user = get_user_by( 'email', $user_email );
-
-            if ( $user ) {
-                wp_set_current_user( $user->ID );
-                return wemail()->user->can( 'create_subscriber' );
-            }
-        }
-
-        if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query(
-                array(
-                    'fields'        => 'ID',
-                    'meta_key'      => 'wemail_api_key',
-                    'meta_value'    => $api_key,
-                )
-            );
-
-            if ( $query->get_total() ) {
-                $results = $query->get_results();
-                $user_id = array_pop( $results );
-
-                wp_set_current_user( $user_id );
-
-                return wemail()->user->can( 'create_subscriber' );
-            }
-        }
-
-        return false;
     }
 
     private function reader( $file_id ) {
