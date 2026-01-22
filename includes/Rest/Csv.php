@@ -3,73 +3,16 @@
 namespace WeDevs\WeMail\Rest;
 
 use League\Csv\Reader;
-use WP_REST_Response;
-use WP_REST_Server;
+use WeDevs\WeMail\RestController;
 
-class Csv {
-
-    public $namespace = 'wemail/v1';
+class Csv extends RestController {
 
     public $rest_base = '/csv/(?P<id>[\d]+)';
 
-    public function __construct() {
-        $this->register_routes();
-    }
-
     public function register_routes() {
-        register_rest_route(
-            $this->namespace,
-            $this->rest_base,
-            array(
-                'args' => array(
-                    'id' => array(
-                        'description' => __( 'CSV file attachment id', 'wemail' ),
-                        'type'        => 'integer',
-                    ),
-                ),
-                array(
-                    'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'can_csv_upload' ),
-                    'callback' => array( $this, 'csv_file_info' ),
-                ),
-            )
-        );
-
-        register_rest_route(
-            $this->namespace,
-            $this->rest_base . '/meta-fields',
-            array(
-                'args' => array(
-                    'id' => array(
-                        'description' => __( 'CSV file attachment id', 'wemail' ),
-                        'type'        => 'integer',
-                    ),
-                ),
-                array(
-                    'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'can_meta_fields' ),
-                    'callback' => array( $this, 'meta_fields' ),
-                ),
-            )
-        );
-
-        register_rest_route(
-            $this->namespace,
-            $this->rest_base . '/subscribers',
-            array(
-                'args' => array(
-                    'id' => array(
-                        'description' => __( 'CSV file attachment id', 'wemail' ),
-                        'type'        => 'integer',
-                    ),
-                ),
-                array(
-                    'methods' => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'can_get_subscribers' ),
-                    'callback' => array( $this, 'subscribers' ),
-                ),
-            )
-        );
+        $this->get( '', 'csv_file_info', 'can_csv_upload' );
+        $this->get( '/meta-fields', 'meta_fields', 'can_meta_fields' );
+        $this->get( '/subscribers', 'subscribers', 'can_get_subscribers' );
     }
 
     private function reader( $file_id ) {
@@ -90,7 +33,7 @@ class Csv {
             'total' => $count - 1, // Subtract 1 for header row
         );
 
-        return new WP_REST_Response( $data, 200 );
+        return $this->respond( $data );
     }
 
     public function meta_fields( $request ) {
@@ -100,11 +43,11 @@ class Csv {
         $reader->setHeaderOffset( 0 );
         $meta_fields = array_keys( $reader->fetchOne() );
 
-        $data = array(
-            'fields' => $meta_fields,
+        return $this->respond(
+            array(
+                'fields' => $meta_fields,
+            )
         );
-
-        return new WP_REST_Response( $data, 200 );
     }
 
     public function subscribers( $request ) {
@@ -128,10 +71,10 @@ class Csv {
         $records = $stmt->process( $reader ); // Iterator of associative arrays
         $subscribers = iterator_to_array( $records );
 
-        $data = array(
-            'subscribers' => $subscribers,
+        return $this->respond(
+            array(
+                'subscribers' => $subscribers,
+            )
         );
-
-        return new WP_REST_Response( $data, 200 );
     }
 }
