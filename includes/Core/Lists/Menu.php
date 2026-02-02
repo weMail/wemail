@@ -40,8 +40,8 @@ class Menu {
      */
     public function register_submenu( $menu_items, $capability ) {
         if ( wemail()->user->can( 'view_list' ) ) {
-            $menu_items[] = array( __( 'Subscriber Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' );
-            $menu_items[] = array( __( 'Contacts', 'wemail' ), $capability, 'admin.php?page=wemail#/contacts' );
+            $menu_items[] = array( __( 'Contact Lists', 'wemail' ), $capability, 'admin.php?page=wemail#/lists' );
+            $menu_items[] = array( __( 'All Contacts', 'wemail' ), $capability, 'admin.php?page=wemail#/contacts' );
         }
 
         return $menu_items;
