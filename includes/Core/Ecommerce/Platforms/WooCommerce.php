@@ -98,7 +98,15 @@ class WooCommerce extends AbstractPlatform {
      * Register post update hooks
      */
     public function register_hooks() {
+        // New order created hook
+        add_action( 'woocommerce_new_order', array( $this, 'handle_order' ), 10, 2 );
+
+        // Order status changed hook (handles pending payment, completed, etc.)
         add_action( 'woocommerce_order_status_changed', array( $this, 'handle_order' ), 10, 4 );
+
+        // Pending payment status specific hook
+        add_action( 'woocommerce_order_status_pending', array( $this, 'handle_pending_payment' ), 10, 1 );
+
         add_action( 'woocommerce_order_refunded', array( $this, 'create_order_refund' ), 10, 2 );
         add_action( 'woocommerce_refund_deleted', array( $this, 'delete_order_refund' ), 10, 2 );
         add_action( 'after_delete_post', array( $this, 'delete' ), 10, 2 );
@@ -110,6 +118,37 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Handling pending payment status
+     *
+     * @param int $order_id Order ID
+     *
+     * @return void
+     */
+    public function handle_pending_payment( $order_id ) {
+        $order = wc_get_order( $order_id );
+
+        if ( ! $order ) {
+            return;
+        }
+
+        if ( ! $this->is_valid_order_item( $order->get_type() ) ) {
+            return;
+        }
+
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $payload = OrderResource::single( $order );
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->orders( $order_id )
+            ->put( $payload );
+    }
+
+    /**
      * Handling order
      *
      * @param $order_id
@@ -117,7 +156,7 @@ class WooCommerce extends AbstractPlatform {
      * @param $status_to
      * @param $order \WC_Order
      */
-    public function handle_order( $order_id, $status_from, $status_to, $order ) {
+    public function handle_order( $order_id, $order ) {
         if ( ! $this->is_valid_order_item( $order->get_type() ) ) {
             return;
         }
