@@ -17,8 +17,12 @@ class CategoryResource extends JsonResource {
      */
     public function blueprint( $resource ) {
         return array(
-            'id'   => $resource->term_id,
-            'name' => $resource->name,
+            'id'          => (string) $resource->term_id,
+            'name'        => $resource->name,
+            'slug'        => $resource->slug,
+            'parent_id'   => $resource->parent ? (string) $resource->parent : null,
+            'description' => $resource->description,
+            'source'      => 'woocommerce',
         );
     }
 }
