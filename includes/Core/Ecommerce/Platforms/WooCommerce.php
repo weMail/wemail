@@ -442,10 +442,6 @@ class WooCommerce extends AbstractPlatform {
         wemail()->api
             ->ecommerce()
             ->categories( $term_id )
-            ->post(
-                array(
-                    '_method' => 'delete',
-                )
-            );
+            ->delete();
     }
 }
