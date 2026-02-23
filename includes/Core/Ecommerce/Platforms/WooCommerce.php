@@ -115,6 +115,9 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'woocommerce_new_product_variation', array( $this, 'handle_product_variation' ) );
         add_action( 'woocommerce_update_product_variation', array( $this, 'handle_product_variation' ) );
         add_action( 'woocommerce_delete_product_variation', array( $this, 'delete_product_variation' ) );
+        add_action( 'created_product_cat', array( $this, 'handle_category' ), 10, 2 );
+        add_action( 'edited_product_cat', array( $this, 'handle_category' ), 10, 2 );
+        add_action( 'delete_product_cat', array( $this, 'handle_category_delete' ), 10, 3 );
     }
 
     /**
@@ -392,5 +395,53 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->products( $id )
             ->put( $payload );
+    }
+
+    /**
+     * Handle category create and update event
+     *
+     * @param int $term_id Category term ID
+     * @param int $tt_id Term taxonomy ID
+     *
+     * @return void
+     */
+    public function handle_category( $term_id, $tt_id = null ) {
+        if ( ! Settings::instance()->is_integrated() ) {
+            return;
+        }
+
+        $term = get_term( $term_id, 'product_cat' );
+
+        if ( ! $term || is_wp_error( $term ) ) {
+            return;
+        }
+
+        $payload = CategoryResource::single( $term );
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->categories( $term_id )
+            ->put( $payload );
+    }
+
+    /**
+     * Handle category delete event
+     *
+     * @param int $term_id Category term ID
+     * @param int $tt_id Term taxonomy ID
+     * @param object $deleted_term Deleted term object
+     *
+     * @return void
+     */
+    public function handle_category_delete( $term_id, $tt_id, $deleted_term ) {
+        if ( ! Settings::instance()->is_integrated() ) {
+            return;
+        }
+
+        wemail()->api
+            ->ecommerce()
+            ->categories( $term_id )
+            ->delete();
     }
 }
