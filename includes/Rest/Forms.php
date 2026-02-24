@@ -135,16 +135,11 @@ class Forms {
             return false;
         }
 
-        // 2. Check user has appropriate weMail role-based capabilities
-        if ( ! function_exists( 'wemail' ) || ! method_exists( wemail(), 'user' ) ) {
-            return false;
-        }
-
         if ( ! wemail()->user->can( 'manage_form' ) ) {
             return false;
         }
 
-        // 3. Require nonce verification for CSRF protection
+        // 2. Require nonce verification for CSRF protection
         $nonce = $request->get_header( 'X-WP-Nonce' );
         if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
             return false;
