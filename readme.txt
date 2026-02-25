@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
 Requires at least: 5.6
 Tested up to: 6.8.3
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -398,6 +398,13 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+v2.0.12 - (25th Feb, 2026) =
+* Added purchased product category wise segmentation
+* Added customer lifetime summary for wooCommerce
+* Enhance date picker
+* Improve automation searching
+* Fix automation created at duplication issue
+
 v2.0.11 - (20th Feb, 2026) =
 * Added support for WooCommerce 'order-create' and 'pending-payment' order statuses
 
