@@ -99,10 +99,10 @@ class WooCommerce extends AbstractPlatform {
      */
     public function register_hooks() {
         // New order created hook
-        add_action( 'woocommerce_new_order', array( $this, 'handle_order' ), 10, 2 );
+        add_action( 'woocommerce_new_order', array( $this, 'handle_new_order' ), 10, 2 );
 
         // Order status changed hook (handles pending payment, completed, etc.)
-        add_action( 'woocommerce_order_status_changed', array( $this, 'handle_order' ), 10, 4 );
+        add_action( 'woocommerce_order_status_changed', array( $this, 'handle_order_status_changed' ), 10, 4 );
 
         // Pending payment status specific hook
         add_action( 'woocommerce_order_status_pending', array( $this, 'handle_pending_payment' ), 10, 1 );
@@ -121,11 +121,9 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
-     * Handling pending payment status
+     * Handle pending payment status
      *
      * @param int $order_id Order ID
-     *
-     * @return void
      */
     public function handle_pending_payment( $order_id ) {
         $order = wc_get_order( $order_id );
@@ -152,14 +150,42 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
-     * Handling order
+     * Handle new order created
      *
-     * @param $order_id
-     * @param $status_from
-     * @param $status_to
-     * @param $order \WC_Order
+     * @param int $order_id Order ID
+     * @param \WC_Order $order Order object
      */
-    public function handle_order( $order_id, $order ) {
+    public function handle_new_order( $order_id, $order ) {
+        $this->process_order( $order_id, $order );
+    }
+
+    /**
+     * Handle order status changed
+     *
+     * @param int $order_id Order ID
+     * @param string $status_from From status
+     * @param string $status_to To status
+     * @param \WC_Order $order Order object
+     */
+    public function handle_order_status_changed( $order_id, $status_from, $status_to, $order ) {
+        $this->process_order( $order_id, $order );
+    }
+
+    /**
+     * Process order - shared logic for new order and status change
+     *
+     * @param int $order_id Order ID
+     * @param \WC_Order $order Order object
+     */
+    private function process_order( $order_id, $order ) {
+        if ( ! $order ) {
+            $order = wc_get_order( $order_id );
+        }
+
+        if ( ! $order ) {
+            return;
+        }
+
         if ( ! $this->is_valid_order_item( $order->get_type() ) ) {
             return;
         }
