@@ -121,6 +121,35 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Handle pending payment status
+     *
+     * @param int $order_id Order ID
+     */
+    public function handle_pending_payment( $order_id ) {
+        $order = wc_get_order( $order_id );
+
+        if ( ! $order ) {
+            return;
+        }
+
+        if ( ! $this->is_valid_order_item( $order->get_type() ) ) {
+            return;
+        }
+
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $payload = OrderResource::single( $order );
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->orders( $order_id )
+            ->put( $payload );
+    }
+
+    /**
      * Handle new order created
      *
      * @param int $order_id Order ID
