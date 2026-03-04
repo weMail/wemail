@@ -4,6 +4,7 @@ namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
 use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CartResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\ProductResource;
@@ -98,6 +99,12 @@ class WooCommerce extends AbstractPlatform {
      * Register post update hooks
      */
     public function register_hooks() {
+        // Cart hooks
+        add_action( 'woocommerce_add_to_cart', array( $this, 'handle_add_to_cart' ), 10, 6 );
+        add_action( 'woocommerce_cart_updated', array( $this, 'handle_cart_updated' ), 10, 0 );
+        add_action( 'woocommerce_remove_cart_item', array( $this, 'handle_remove_cart_item' ), 10, 2 );
+        add_action( 'woocommerce_cart_emptied', array( $this, 'handle_cart_emptied' ), 10, 0 );
+
         // New order created hook
         add_action( 'woocommerce_new_order', array( $this, 'handle_new_order' ), 10, 2 );
 
@@ -118,6 +125,107 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'created_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'edited_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'delete_product_cat', array( $this, 'handle_category_delete' ), 10, 3 );
+    }
+
+    /**
+     * Handle add to cart event
+     *
+     * @param string $cart_item_key Cart item key
+     * @param int $product_id Product ID
+     * @param int $quantity Quantity
+     * @param int $variation_id Variation ID
+     * @param array $variation Variation data
+     * @param array $cart_item_data Cart item data
+     */
+    public function handle_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'add_to_cart' );
+    }
+
+    /**
+     * Handle cart updated event
+     */
+    public function handle_cart_updated() {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'cart_updated' );
+    }
+
+    /**
+     * Handle remove cart item event
+     *
+     * @param string $cart_item_key Cart item key
+     * @param \WC_Cart $cart Cart object
+     */
+    public function handle_remove_cart_item( $cart_item_key, $cart ) {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'remove_cart_item' );
+    }
+
+    /**
+     * Handle cart emptied event
+     */
+    public function handle_cart_emptied() {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'cart_emptied' );
+    }
+
+    /**
+     * Get or generate cart key
+     *
+     * @return string Cart key
+     */
+    private function get_cart_key() {
+        $cart_key = WC()->session->get( 'wem_cart_key' );
+
+        if ( ! $cart_key ) {
+            $cart_key = wp_generate_uuid4();
+            WC()->session->set( 'wem_cart_key', $cart_key );
+        }
+
+        return $cart_key;
+    }
+
+    /**
+     * Send cart data to weMail API
+     *
+     * @param string $event Event type
+     */
+    private function send_cart_data( $event ) {
+        $cart = WC()->cart;
+
+        if ( ! $cart ) {
+            return;
+        }
+
+        // Don't send if cart is empty (except for cart_emptied event)
+        if ( $event !== 'cart_emptied' && $cart->is_empty() ) {
+            return;
+        }
+
+        $cart_key = $this->get_cart_key();
+        $payload = CartResource::with_customer( $cart, $cart_key );
+        $payload['event'] = $event;
+        $payload['session_id'] = WC()->session->get_customer_id();
+
+        error_log(print_r($payload, true));
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->carts()
+            ->put( $payload );
     }
 
     /**
