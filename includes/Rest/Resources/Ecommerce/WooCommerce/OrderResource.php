@@ -37,15 +37,15 @@ class OrderResource extends JsonResource {
             'total'      => floatval( $order->get_total() ),
             'source'     => 'woocommerce',
             'type'       => $this->get_type( $order->get_type() ),
-            'created_at' => $order->get_date_created()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
-            'updated_at' => $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ),
+            'created_at' => $order->get_date_created() ? $order->get_date_created()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null,
+            'updated_at' => $order->get_date_modified() ? $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null,
         );
 
         if ( $this->is_refund( $data['type'] ) ) {
             /** @var $order \Automattic\WooCommerce\Admin\Overrides\OrderRefund */
             $data['customer_id']  = $this->get_customer_id( wc_get_order( $order->get_parent_id() )->get_billing_email() );
             $data['permalink']    = wc_get_order( $order->get_parent_id() )->get_edit_order_url();
-            $data['completed_at'] = $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT );
+            $data['completed_at'] = $order->get_date_modified() ? $order->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null;
         } else {
             $data['customer']     = $this->customer( $order );
             $data['permalink']    = $order->get_edit_order_url();
