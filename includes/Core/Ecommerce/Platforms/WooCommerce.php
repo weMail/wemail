@@ -179,6 +179,8 @@ class WooCommerce extends AbstractPlatform {
         }
 
         $this->send_cart_data( 'cart_emptied' );
+
+        $this->reset_cart_key();
     }
 
     /**
@@ -195,6 +197,17 @@ class WooCommerce extends AbstractPlatform {
         }
 
         return $cart_key;
+    }
+
+    /**
+     * Reset cart key for current session.
+     *
+     * @return void
+     */
+    private function reset_cart_key() {
+        if ( function_exists( 'WC' ) && WC()->session ) {
+            WC()->session->__unset( 'wem_cart_key' );
+        }
     }
 
     /**
@@ -255,6 +268,8 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->orders( $order_id )
             ->put( $payload );
+
+        $this->reset_cart_key();
     }
 
     /**
@@ -311,6 +326,8 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->orders( $order_id )
             ->put( $payload );
+
+        $this->reset_cart_key();
     }
 
     /**

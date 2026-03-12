@@ -42,12 +42,13 @@ class CartResource extends JsonResource {
 		}
 
 		return array(
-			'items'       => $items,
-			'total'       => floatval( $cart->get_total( 'raw' ) ),
-			'subtotal'    => floatval( $cart->get_subtotal() ),
-			'currency'    => get_woocommerce_currency(),
-			'updated_at'  => current_time( self::DATE_FORMAT, true ),
-			'source'      => 'woocommerce',
+			'items'        => $items,
+			'total'        => floatval( $cart->get_total( 'raw' ) ),
+			'subtotal'     => floatval( $cart->get_subtotal() ),
+			'currency'     => get_woocommerce_currency(),
+			'updated_at'   => current_time( self::DATE_FORMAT, true ),
+			'checkout_url' => wc_get_checkout_url(),
+			'source'       => 'woocommerce',
 		);
 	}
 
