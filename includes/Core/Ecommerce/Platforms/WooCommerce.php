@@ -99,6 +99,9 @@ class WooCommerce extends AbstractPlatform {
      * Register post update hooks
      */
     public function register_hooks() {
+        // Cart recovery hook
+        add_action( 'template_redirect', array( $this, 'handle_cart_recovery' ) );
+
         // Cart hooks
         add_action( 'woocommerce_add_to_cart', array( $this, 'handle_add_to_cart' ), 10, 6 );
         add_action( 'woocommerce_cart_updated', array( $this, 'handle_cart_updated' ), 10, 0 );
@@ -184,6 +187,54 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Handle cart recovery from abandoned cart email link
+     */
+    public function handle_cart_recovery() {
+        if ( ! isset( $_GET['wemail-recover-cart'] ) ) {
+            return;
+        }
+
+        $token = sanitize_text_field( wp_unslash( $_GET['wemail-recover-cart'] ) );
+
+        if ( empty( $token ) ) {
+            return;
+        }
+
+        if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+            return;
+        }
+
+        $response = wemail()->api
+            ->abandoned_carts()
+            ->recover()
+            ->query( array( 'token' => $token ) )
+            ->get();
+
+        if ( is_wp_error( $response ) || empty( $response['data']['items'] ) ) {
+            wp_safe_redirect( wc_get_checkout_url() );
+            exit;
+        }
+
+        WC()->cart->empty_cart();
+
+        $items = $response['data']['items'];
+
+        foreach ( $items as $item ) {
+            $product_id     = isset( $item['product_id'] ) ? absint( $item['product_id'] ) : 0;
+            $quantity       = isset( $item['quantity'] ) ? absint( $item['quantity'] ) : 1;
+            $variation_id   = isset( $item['variation_id'] ) ? absint( $item['variation_id'] ) : 0;
+            $variation_attr = isset( $item['variation'] ) ? (array) $item['variation'] : array();
+
+            if ( $product_id ) {
+                WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attr );
+            }
+        }
+
+        wp_safe_redirect( wc_get_checkout_url() );
+        exit;
+    }
+
+    /**
      * Get or generate cart key
      *
      * @return string Cart key
@@ -231,8 +282,6 @@ class WooCommerce extends AbstractPlatform {
         $payload = CartResource::with_customer( $cart, $cart_key );
         $payload['event'] = $event;
         $payload['session_id'] = WC()->session->get_customer_id();
-
-        error_log(print_r($payload, true));
 
         wemail()->api
             ->send_json()

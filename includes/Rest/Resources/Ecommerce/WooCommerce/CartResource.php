@@ -24,14 +24,18 @@ class CartResource extends JsonResource {
 		$items      = array();
 
 		foreach ( $cart_items as $cart_item_key => $cart_item ) {
-			$product   = $cart_item['data'];
-			$permalink = $product->get_permalink();
-			$thumbnail = wp_get_attachment_image_url( $product->get_image_id() );
+			$product      = $cart_item['data'];
+			$permalink    = $product->get_permalink();
+			$thumbnail    = wp_get_attachment_image_url( $product->get_image_id() );
+			$product_id   = isset( $cart_item['product_id'] ) ? $cart_item['product_id'] : $product->get_id();
+			$variation_id = isset( $cart_item['variation_id'] ) ? $cart_item['variation_id'] : 0;
 
 			$items[] = array(
 				'cart_item_key' => $cart_item_key,
 				'id'            => (string) $product->get_id(),
 				'parent_id'     => (string) $product->get_parent_id(),
+				'product_id'    => (string) $product_id,
+				'variation_id'  => (string) $variation_id,
 				'name'          => $product->get_name(),
 				'quantity'      => $cart_item['quantity'],
 				'total'         => floatval( $cart_item['line_total'] ),
