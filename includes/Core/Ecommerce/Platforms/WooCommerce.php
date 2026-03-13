@@ -4,6 +4,7 @@ namespace WeDevs\WeMail\Core\Ecommerce\Platforms;
 
 use WeDevs\WeMail\Core\Ecommerce\Settings;
 use WeDevs\WeMail\Core\Sync\Ecommerce\RevenueTrack;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CartResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\ProductResource;
@@ -98,6 +99,15 @@ class WooCommerce extends AbstractPlatform {
      * Register post update hooks
      */
     public function register_hooks() {
+        // Cart recovery hook
+        add_action( 'template_redirect', array( $this, 'handle_cart_recovery' ) );
+
+        // Cart hooks
+        add_action( 'woocommerce_add_to_cart', array( $this, 'handle_add_to_cart' ), 10, 6 );
+        add_action( 'woocommerce_cart_updated', array( $this, 'handle_cart_updated' ), 10, 0 );
+        add_action( 'woocommerce_remove_cart_item', array( $this, 'handle_remove_cart_item' ), 10, 2 );
+        add_action( 'woocommerce_cart_emptied', array( $this, 'handle_cart_emptied' ), 10, 0 );
+
         // New order created hook
         add_action( 'woocommerce_new_order', array( $this, 'handle_new_order' ), 10, 2 );
 
@@ -118,6 +128,166 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'created_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'edited_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'delete_product_cat', array( $this, 'handle_category_delete' ), 10, 3 );
+    }
+
+    /**
+     * Handle add to cart event
+     *
+     * @param string $cart_item_key Cart item key
+     * @param int $product_id Product ID
+     * @param int $quantity Quantity
+     * @param int $variation_id Variation ID
+     * @param array $variation Variation data
+     * @param array $cart_item_data Cart item data
+     */
+    public function handle_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'add_to_cart' );
+    }
+
+    /**
+     * Handle cart updated event
+     */
+    public function handle_cart_updated() {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'cart_updated' );
+    }
+
+    /**
+     * Handle remove cart item event
+     *
+     * @param string $cart_item_key Cart item key
+     * @param \WC_Cart $cart Cart object
+     */
+    public function handle_remove_cart_item( $cart_item_key, $cart ) {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'remove_cart_item' );
+    }
+
+    /**
+     * Handle cart emptied event
+     */
+    public function handle_cart_emptied() {
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $this->send_cart_data( 'cart_emptied' );
+
+        $this->reset_cart_key();
+    }
+
+    /**
+     * Handle cart recovery from abandoned cart email link
+     */
+    public function handle_cart_recovery() {
+        if ( ! isset( $_GET['wemail-recover-cart'] ) ) {
+            return;
+        }
+
+        $token = sanitize_text_field( wp_unslash( $_GET['wemail-recover-cart'] ) );
+
+        if ( empty( $token ) ) {
+            return;
+        }
+
+        if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+            return;
+        }
+
+        $response = wemail()->api
+            ->abandoned_carts()
+            ->recover()
+            ->query( array( 'token' => $token ) )
+            ->get();
+
+        if ( is_wp_error( $response ) || empty( $response['data']['items'] ) ) {
+            wp_safe_redirect( wc_get_checkout_url() );
+            exit;
+        }
+
+        WC()->cart->empty_cart();
+
+        $items = $response['data']['items'];
+
+        foreach ( $items as $item ) {
+            $product_id     = isset( $item['product_id'] ) ? absint( $item['product_id'] ) : 0;
+            $quantity       = isset( $item['quantity'] ) ? absint( $item['quantity'] ) : 1;
+            $variation_id   = isset( $item['variation_id'] ) ? absint( $item['variation_id'] ) : 0;
+            $variation_attr = isset( $item['variation'] ) ? (array) $item['variation'] : array();
+
+            if ( $product_id ) {
+                WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attr );
+            }
+        }
+
+        wp_safe_redirect( wc_get_checkout_url() );
+        exit;
+    }
+
+    /**
+     * Get or generate cart key
+     *
+     * @return string Cart key
+     */
+    private function get_cart_key() {
+        $cart_key = WC()->session->get( 'wem_cart_key' );
+
+        if ( ! $cart_key ) {
+            $cart_key = wp_generate_uuid4();
+            WC()->session->set( 'wem_cart_key', $cart_key );
+        }
+
+        return $cart_key;
+    }
+
+    /**
+     * Reset cart key for current session.
+     *
+     * @return void
+     */
+    private function reset_cart_key() {
+        if ( function_exists( 'WC' ) && WC()->session ) {
+            WC()->session->__unset( 'wem_cart_key' );
+        }
+    }
+
+    /**
+     * Send cart data to weMail API
+     *
+     * @param string $event Event type
+     */
+    private function send_cart_data( $event ) {
+        $cart = WC()->cart;
+
+        if ( ! $cart ) {
+            return;
+        }
+
+        // Don't send if cart is empty (except for cart_emptied event)
+        if ( $event !== 'cart_emptied' && $cart->is_empty() ) {
+            return;
+        }
+
+        $cart_key = $this->get_cart_key();
+        $payload = CartResource::with_customer( $cart, $cart_key );
+        $payload['event'] = $event;
+        $payload['session_id'] = WC()->session->get_customer_id();
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->carts()
+            ->put( $payload );
     }
 
     /**
@@ -147,6 +317,8 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->orders( $order_id )
             ->put( $payload );
+
+        $this->reset_cart_key();
     }
 
     /**
@@ -203,6 +375,8 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->orders( $order_id )
             ->put( $payload );
+
+        $this->reset_cart_key();
     }
 
     /**
