@@ -52,6 +52,7 @@ class CartResource extends JsonResource {
 			'currency'     => get_woocommerce_currency(),
 			'updated_at'   => current_time( self::DATE_FORMAT, true ),
 			'checkout_url' => wc_get_checkout_url(),
+			'home_url'     => home_url(),
 			'source'       => 'woocommerce',
 		);
 	}
