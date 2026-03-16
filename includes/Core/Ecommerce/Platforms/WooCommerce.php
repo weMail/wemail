@@ -204,6 +204,8 @@ class WooCommerce extends AbstractPlatform {
             return;
         }
 
+        $coupon_code = isset( $_GET['coupon'] ) ? sanitize_text_field( wp_unslash( $_GET['coupon'] ) ) : '';
+
         $response = wemail()->api
             ->abandoned_carts()
             ->recover()
@@ -230,8 +232,43 @@ class WooCommerce extends AbstractPlatform {
             }
         }
 
+        if ( ! empty( $coupon_code ) && ! empty( $response['data']['discount'] ) ) {
+            $this->create_recovery_coupon( $coupon_code, $response['data']['discount'] );
+            WC()->cart->apply_coupon( $coupon_code );
+        }
+
         wp_safe_redirect( wc_get_checkout_url() );
         exit;
+    }
+
+    /**
+     * Create a WooCommerce coupon for cart recovery
+     *
+     * @param string $code Coupon code
+     * @param array $discount Discount settings from API response
+     */
+    private function create_recovery_coupon( $code, $discount ) {
+        $existing = wc_get_coupon_id_by_code( $code );
+
+        if ( $existing ) {
+            return;
+        }
+
+        $coupon = new \WC_Coupon();
+
+        $coupon->set_code( $code );
+        $coupon->set_amount( floatval( $discount['amount'] ) );
+        $coupon->set_usage_limit( 1 );
+        $coupon->set_individual_use( true );
+
+        $discount_type = isset( $discount['type'] ) ? $discount['type'] : 'percent';
+        $coupon->set_discount_type( 'percent' === $discount_type ? 'percent' : 'fixed_cart' );
+
+        if ( ! empty( $discount['expiry_date'] ) ) {
+            $coupon->set_date_expires( $discount['expiry_date'] );
+        }
+
+        $coupon->save();
     }
 
     /**

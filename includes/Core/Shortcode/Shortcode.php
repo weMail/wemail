@@ -125,6 +125,9 @@ class Shortcode {
                 'count'       => array(
                     'title' => __( 'Number of Items', 'wemail' ),
                 ),
+                'coupon_code' => array(
+                    'title' => __( 'Coupon Code', 'wemail' ),
+                ),
             ),
         );
 
