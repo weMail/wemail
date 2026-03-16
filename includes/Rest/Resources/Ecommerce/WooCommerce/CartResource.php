@@ -32,8 +32,6 @@ class CartResource extends JsonResource {
 
 			$items[] = array(
 				'cart_item_key' => $cart_item_key,
-				'id'            => (string) $product->get_id(),
-				'parent_id'     => (string) $product->get_parent_id(),
 				'product_id'    => (string) $product_id,
 				'variation_id'  => (string) $variation_id,
 				'name'          => $product->get_name(),
