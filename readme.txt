@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
 Requires at least: 5.6
 Tested up to: 6.8.3
-Stable tag: 2.0.13
+Stable tag: 2.0.14
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -408,6 +408,9 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+v2.0.14 - (16th March, 2026) =
+* Enhance readme file
+
 v2.0.13 - (5th March, 2026) =
 * Added null handling for order creation and modification dates to prevent errors when date values are missing.
 
