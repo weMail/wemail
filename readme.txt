@@ -1,4 +1,4 @@
-=== weMail: Email Marketing, Email Automation, Newsletters, Subscribers & eCommerce Email Optins ===
+=== weMail: Email Marketing, Email Automation, Newsletters, Subscribers & Email Optins for WooCommerce ===
 Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
@@ -9,14 +9,24 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
 
-Send email newsletters, automate email marketing with email automation, manage subscribers, eCommerce emails, post notifications & optins with ease
+Send email newsletters, automate email marketing with email automation, manage subscribers, post notifications, optins & emails for WooCommerce.
 == Description ==
-Send massive campaigns at lightning speed for unlimited subscribers - right inside WordPress with complete sending freedom.
-Stop paying more as your list grows. weMail is the industry's most affordable all-in-one email marketing platform built for WordPress, designed for startups, small businesses, agencies, and large enterprises.
-Create beautiful email newsletters, automate email automation workflows, manage unlimited subscribers, send WooCommerce emails, set up welcome emails, enable post notifications, and capture leads with signup forms and optins - all without leaving your WordPress dashboard.
-Unlike other solutions that lock you into proprietary sending services, weMail gives you complete freedom to connect with the email service provider you already know and trust.
+The fastest and most affordable email marketing, newsletter & WooCommerce email plugin for WordPress – with complete sending freedom.
+Stop paying more as your list grows. weMail is the industry's most affordable all-in-one email marketing platform for WordPress. Built by weDevs with 13 years of innovation and trust, affordability and reliability have always been the core promise.
+Designed for startups, small businesses, agencies, and large enterprises – weMail fits every business size.
 
-[YouTube Video](https://www.youtube.com/watch?v=vp56CIPXHq4)
+**Your Complete Email Marketing Solution Inside WordPress**
+
+Want to send beautiful email newsletters, automate workflows, or manage unlimited subscribers? weMail is the perfect solution. No third-party tools. No leaving your dashboard. Just powerful email marketing, right inside WordPress.
+* Send massive email campaigns at lightning speed
+* Manage unlimited subscribers with ease
+* Automate email marketing workflows effortlessly
+* Send WooCommerce emails seamlessly
+* Set up welcome emails for new subscribers
+* Enable post notifications automatically
+* Capture leads with signup forms and optins
+
+[youtube https://www.youtube.com/watch?v=vp56CIPXHq4]
 
 == Explore: ==
 [Official Website](https://getwemail.io/)
