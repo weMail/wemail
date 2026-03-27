@@ -207,6 +207,7 @@ class WooCommerce extends AbstractPlatform {
         $coupon_code = isset( $_GET['coupon'] ) ? sanitize_text_field( wp_unslash( $_GET['coupon'] ) ) : '';
 
         $response = wemail()->api
+            ->ecommerce()
             ->abandoned_carts()
             ->recover()
             ->query( array( 'token' => $token ) )
@@ -232,9 +233,11 @@ class WooCommerce extends AbstractPlatform {
             }
         }
 
-        if ( ! empty( $coupon_code ) && ! empty( $response['data']['discount'] ) ) {
+        if ( ! empty( $coupon_code ) ) {
             $this->create_recovery_coupon( $coupon_code, $response['data']['discount'] );
             WC()->cart->apply_coupon( $coupon_code );
+            WC()->cart->calculate_totals();
+            WC()->session->save_data();
         }
 
         wp_safe_redirect( wc_get_checkout_url() );
