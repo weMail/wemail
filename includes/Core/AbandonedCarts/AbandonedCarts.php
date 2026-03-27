@@ -8,4 +8,3 @@ class AbandonedCarts {
 
     use Core;
 }
-

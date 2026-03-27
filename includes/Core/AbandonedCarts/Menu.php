@@ -46,4 +46,3 @@ class Menu {
         return $menu_items;
     }
 }
-
