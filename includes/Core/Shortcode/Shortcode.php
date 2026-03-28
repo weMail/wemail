@@ -110,6 +110,27 @@ class Shortcode {
             ),
         );
 
+        $shortcodes['abandoned_cart'] = array(
+            'title' => __( 'Abandoned Cart', 'wemail' ),
+            'codes' => array(
+                'items'       => array(
+                    'title' => __( 'Cart Items Table', 'wemail' ),
+                ),
+                'total'       => array(
+                    'title' => __( 'Cart Total', 'wemail' ),
+                ),
+                'recover_url' => array(
+                    'title' => __( 'Cart Recovery Link', 'wemail' ),
+                ),
+                'count'       => array(
+                    'title' => __( 'Number of Items', 'wemail' ),
+                ),
+                'coupon_code' => array(
+                    'title' => __( 'Coupon Code', 'wemail' ),
+                ),
+            ),
+        );
+
         if ( ! empty( $type ) && ! empty( $shortcodes[ $type ] ) ) {
             return $shortcodes[ $type ];
         }
