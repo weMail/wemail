@@ -2,7 +2,6 @@
 
 namespace WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce;
 
-use DateTimeZone;
 use WeDevs\WeMail\Rest\Resources\JsonResource;
 
 class CartResource extends JsonResource {
@@ -10,7 +9,7 @@ class CartResource extends JsonResource {
 	/**
 	 * Date format
 	 */
-	const DATE_FORMAT = 'Y-m-d h:i:s';
+	const DATE_FORMAT = 'Y-m-d H:i:s';
 
 	/**
 	 * Structure of cart

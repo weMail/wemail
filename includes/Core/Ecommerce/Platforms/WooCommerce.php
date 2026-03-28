@@ -15,6 +15,13 @@ class WooCommerce extends AbstractPlatform {
     use Singleton;
 
     /**
+     * Flag to prevent recursive hook firing during cart recovery
+     *
+     * @var bool
+     */
+    private $is_recovering = false;
+
+    /**
      * Get currency
      *
      * @return string
@@ -141,7 +148,7 @@ class WooCommerce extends AbstractPlatform {
      * @param array $cart_item_data Cart item data
      */
     public function handle_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
-        if ( ! Settings::instance()->is_enabled() ) {
+        if ( $this->is_recovering || ! Settings::instance()->is_enabled() ) {
             return;
         }
 
@@ -152,7 +159,7 @@ class WooCommerce extends AbstractPlatform {
      * Handle cart updated event
      */
     public function handle_cart_updated() {
-        if ( ! Settings::instance()->is_enabled() ) {
+        if ( $this->is_recovering || ! Settings::instance()->is_enabled() ) {
             return;
         }
 
@@ -166,7 +173,7 @@ class WooCommerce extends AbstractPlatform {
      * @param \WC_Cart $cart Cart object
      */
     public function handle_remove_cart_item( $cart_item_key, $cart ) {
-        if ( ! Settings::instance()->is_enabled() ) {
+        if ( $this->is_recovering || ! Settings::instance()->is_enabled() ) {
             return;
         }
 
@@ -177,7 +184,7 @@ class WooCommerce extends AbstractPlatform {
      * Handle cart emptied event
      */
     public function handle_cart_emptied() {
-        if ( ! Settings::instance()->is_enabled() ) {
+        if ( $this->is_recovering || ! Settings::instance()->is_enabled() ) {
             return;
         }
 
@@ -218,11 +225,9 @@ class WooCommerce extends AbstractPlatform {
             exit;
         }
 
-        WC()->cart->empty_cart();
+        $this->is_recovering = true;
 
-        foreach ( WC()->cart->get_applied_coupons() as $coupon ) {
-            WC()->cart->remove_coupon( $coupon );
-        }
+        WC()->cart->empty_cart();
 
         $items = $response['data']['items'];
 
@@ -233,15 +238,21 @@ class WooCommerce extends AbstractPlatform {
             $variation_attr = isset( $item['variation'] ) ? (array) $item['variation'] : array();
 
             if ( $product_id ) {
-                WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attr );
+                try {
+                    WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_attr );
+                } catch ( \Exception $e ) {
+                    error_log( 'weMail cart recovery: failed to add product ' . $product_id . ' - ' . $e->getMessage() );
+                }
             }
         }
 
         if ( ! empty( $coupon_code ) && wc_get_coupon_id_by_code( $coupon_code ) ) {
             WC()->cart->apply_coupon( $coupon_code );
-            WC()->cart->calculate_totals();
-            WC()->session->save_data();
         }
+
+        WC()->cart->calculate_totals();
+
+        $this->is_recovering = false;
 
         wp_safe_redirect( wc_get_checkout_url() );
         exit;
@@ -280,6 +291,10 @@ class WooCommerce extends AbstractPlatform {
      * @param string $event Event type
      */
     private function send_cart_data( $event ) {
+        if ( ! WC()->session || ! WC()->session->get_customer_id() ) {
+            return;
+        }
+
         $cart = WC()->cart;
 
         if ( ! $cart ) {
