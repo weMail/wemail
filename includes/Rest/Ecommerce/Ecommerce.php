@@ -20,6 +20,7 @@ class Ecommerce extends RestController {
     public function register_routes() {
         $this->post( '/(?P<source>woocommerce|edd)/settings', 'settings' );
         $this->get( '/(?P<source>woocommerce|edd)/(?P<resource>products|orders|categories)', 'resource', 'permission' );
+        $this->post( '/coupons', 'create_coupon', 'permission' );
         $this->delete( '/disconnect', 'disconnect', 'permission' );
     }
 
@@ -105,6 +106,58 @@ class Ecommerce extends RestController {
         }
 
         return new \WP_REST_Response( $response );
+    }
+
+    /**
+     * Create a WooCommerce coupon
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response|\WP_Error
+     */
+    public function create_coupon( $request ) {
+        if ( ! function_exists( 'WC' ) ) {
+            return $this->respond_error( 'WooCommerce is not active.', 'woocommerce_inactive', self::HTTP_UNPROCESSABLE_ENTITY );
+        }
+
+        $data = $request->get_json_params();
+
+        if ( empty( $data['code'] ) ) {
+            return $this->respond_error( 'Coupon code is required.', 'missing_coupon_code', self::HTTP_UNPROCESSABLE_ENTITY );
+        }
+
+        $existing = wc_get_coupon_id_by_code( $data['code'] );
+
+        if ( $existing ) {
+            return $this->respond_error( 'Coupon code already exists.', 'coupon_exists', self::HTTP_CONFLICT );
+        }
+
+        $coupon = new \WC_Coupon();
+
+        $coupon->set_code( sanitize_text_field( $data['code'] ) );
+        $coupon->set_discount_type( isset( $data['discount_type'] ) ? sanitize_text_field( $data['discount_type'] ) : 'percent' );
+        $coupon->set_amount( isset( $data['amount'] ) ? floatval( $data['amount'] ) : 0 );
+        $coupon->set_usage_limit( isset( $data['usage_limit'] ) ? absint( $data['usage_limit'] ) : 1 );
+        $coupon->set_individual_use( ! empty( $data['individual_use'] ) );
+        $coupon->set_free_shipping( ! empty( $data['free_shipping'] ) );
+
+        if ( ! empty( $data['date_expires'] ) ) {
+            $coupon->set_date_expires( $data['date_expires'] );
+        }
+
+        if ( ! empty( $data['email_restrictions'] ) && is_array( $data['email_restrictions'] ) ) {
+            $coupon->set_email_restrictions( array_map( 'sanitize_email', $data['email_restrictions'] ) );
+        }
+
+        $coupon->save();
+
+        return $this->respond(
+            array(
+                'id'   => $coupon->get_id(),
+                'code' => $coupon->get_code(),
+            ),
+            self::HTTP_CREATED
+        );
     }
 
     /**
