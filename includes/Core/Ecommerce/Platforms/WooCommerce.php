@@ -8,6 +8,7 @@ use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CartResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\ProductResource;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\SubscriptionResource;
 use WeDevs\WeMail\Traits\Singleton;
 use WP_Post;
 
@@ -135,6 +136,15 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'created_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'edited_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'delete_product_cat', array( $this, 'handle_category_delete' ), 10, 3 );
+
+        // WooCommerce Subscriptions hooks
+        if ( class_exists( 'WC_Subscriptions' ) ) {
+            add_action( 'woocommerce_subscription_status_updated', array( $this, 'handle_subscription_status_updated' ), 10, 3 );
+            add_action( 'woocommerce_subscription_renewal_payment_complete', array( $this, 'handle_subscription_renewal_payment_complete' ), 10, 2 );
+            add_action( 'woocommerce_subscription_renewal_payment_failed', array( $this, 'handle_subscription_renewal_payment_failed' ), 10, 2 );
+            add_action( 'woocommerce_subscription_trial_end', array( $this, 'handle_subscription_trial_end' ), 10, 1 );
+            add_action( 'woocommerce_scheduled_subscription_payment', array( $this, 'handle_scheduled_subscription_payment' ), 10, 1 );
+        }
     }
 
     /**
@@ -671,5 +681,101 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->categories( $term_id )
             ->delete();
+    }
+
+    /**
+     * Handle subscription status change
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     * @param string $new_status New status
+     * @param string $old_status Old status
+     */
+    public function handle_subscription_status_updated( $subscription, $new_status, $old_status ) {
+        $this->send_subscription_data( $subscription, 'subscription_status_updated', array(
+            'previous_status' => $old_status,
+        ) );
+    }
+
+    /**
+     * Handle subscription renewal payment complete
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     * @param \WC_Order $last_order Last renewal order
+     */
+    public function handle_subscription_renewal_payment_complete( $subscription, $last_order ) {
+        $this->send_subscription_data( $subscription, 'subscription_renewal_payment_complete', array(
+            'renewal_complete' => true,
+        ) );
+    }
+
+    /**
+     * Handle subscription renewal payment failed
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     * @param \WC_Order $last_order Last renewal order
+     */
+    public function handle_subscription_renewal_payment_failed( $subscription, $last_order ) {
+        $this->send_subscription_data( $subscription, 'subscription_renewal_payment_failed', array(
+            'renewal_complete' => false,
+        ) );
+    }
+
+    /**
+     * Handle subscription trial end
+     *
+     * @param int $subscription_id Subscription ID
+     */
+    public function handle_subscription_trial_end( $subscription_id ) {
+        $subscription = wcs_get_subscription( $subscription_id );
+
+        if ( ! $subscription ) {
+            return;
+        }
+
+        $this->send_subscription_data( $subscription, 'subscription_trial_end' );
+    }
+
+    /**
+     * Handle scheduled subscription payment (before renewal)
+     *
+     * @param int $subscription_id Subscription ID
+     */
+    public function handle_scheduled_subscription_payment( $subscription_id ) {
+        $subscription = wcs_get_subscription( $subscription_id );
+
+        if ( ! $subscription ) {
+            return;
+        }
+
+        $this->send_subscription_data( $subscription, 'subscription_scheduled_payment' );
+    }
+
+    /**
+     * Send subscription data to weMail API
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     * @param string $event Event type
+     * @param array $extra Additional payload data
+     */
+    private function send_subscription_data( $subscription, $event, $extra = array() ) {
+        if ( ! $subscription ) {
+            return;
+        }
+
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $payload          = SubscriptionResource::single( $subscription );
+        $payload['event'] = $event;
+        $payload          = array_merge( $payload, $extra );
+
+        wemail_set_owner_api_key();
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->subscriptions( $subscription->get_id() )
+            ->put( $payload );
     }
 }
