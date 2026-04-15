@@ -114,16 +114,12 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'woocommerce_add_to_cart', array( $this, 'handle_add_to_cart' ), 10, 6 );
         add_action( 'woocommerce_cart_updated', array( $this, 'handle_cart_updated' ), 10, 0 );
         add_action( 'woocommerce_remove_cart_item', array( $this, 'handle_remove_cart_item' ), 10, 2 );
-        add_action( 'woocommerce_cart_emptied', array( $this, 'handle_cart_emptied' ), 10, 0 );
 
         // New order created hook
         add_action( 'woocommerce_new_order', array( $this, 'handle_new_order' ), 10, 2 );
 
         // Order status changed hook (handles pending payment, completed, etc.)
         add_action( 'woocommerce_order_status_changed', array( $this, 'handle_order_status_changed' ), 10, 4 );
-
-        // Pending payment status specific hook
-        add_action( 'woocommerce_order_status_pending', array( $this, 'handle_pending_payment' ), 10, 1 );
 
         add_action( 'woocommerce_order_refunded', array( $this, 'create_order_refund' ), 10, 2 );
         add_action( 'woocommerce_refund_deleted', array( $this, 'delete_order_refund' ), 10, 2 );
@@ -138,13 +134,10 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'delete_product_cat', array( $this, 'handle_category_delete' ), 10, 3 );
 
         // WooCommerce Subscriptions hooks
-        if ( class_exists( 'WC_Subscriptions' ) ) {
-            add_action( 'woocommerce_subscription_status_updated', array( $this, 'handle_subscription_status_updated' ), 10, 3 );
-            add_action( 'woocommerce_subscription_renewal_payment_complete', array( $this, 'handle_subscription_renewal_payment_complete' ), 10, 2 );
-            add_action( 'woocommerce_subscription_renewal_payment_failed', array( $this, 'handle_subscription_renewal_payment_failed' ), 10, 2 );
-            add_action( 'woocommerce_subscription_trial_end', array( $this, 'handle_subscription_trial_end' ), 10, 1 );
-            add_action( 'woocommerce_scheduled_subscription_payment', array( $this, 'handle_scheduled_subscription_payment' ), 10, 1 );
-        }
+        add_action( 'woocommerce_new_subscription', array( $this, 'handle_new_subscription' ), 10, 1 );
+        add_action( 'woocommerce_subscription_status_cancelled', array( $this, 'handle_subscription_cancelled' ), 10, 1 );
+        add_action( 'woocommerce_subscription_status_expired', array( $this, 'handle_subscription_expired' ), 10, 1 );
+        add_action( 'woocommerce_subscription_renewal_payment_complete', array( $this, 'handle_subscription_renewal_payment_complete' ), 10, 2 );
     }
 
     /**
@@ -326,37 +319,6 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->carts()
             ->put( $payload );
-    }
-
-    /**
-     * Handle pending payment status
-     *
-     * @param int $order_id Order ID
-     */
-    public function handle_pending_payment( $order_id ) {
-        $order = wc_get_order( $order_id );
-
-        if ( ! $order ) {
-            return;
-        }
-
-        if ( ! $this->is_valid_order_item( $order->get_type() ) ) {
-            return;
-        }
-
-        if ( ! Settings::instance()->is_enabled() ) {
-            return;
-        }
-
-        $payload = OrderResource::single( $order );
-
-        wemail()->api
-            ->send_json()
-            ->ecommerce()
-            ->orders( $order_id )
-            ->put( $payload );
-
-        $this->reset_cart_key();
     }
 
     /**
@@ -684,16 +646,45 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Handle new subscription created
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_new_subscription( $subscription ) {
+        if ( is_numeric( $subscription ) ) {
+            $subscription = wcs_get_subscription( $subscription );
+        }
+
+        if ( ! $subscription ) {
+            return;
+        }
+
+        $this->send_subscription_data( $subscription, 'subscription_created' );
+    }
+
+    /**
      * Handle subscription status change
      *
      * @param \WC_Subscription $subscription Subscription object
      * @param string $new_status New status
      * @param string $old_status Old status
      */
-    public function handle_subscription_status_updated( $subscription, $new_status, $old_status ) {
-        $this->send_subscription_data( $subscription, 'subscription_status_updated', array(
-            'previous_status' => $old_status,
-        ) );
+    /**
+     * Handle subscription cancelled
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_subscription_cancelled( $subscription ) {
+        $this->send_subscription_data( $subscription, 'subscription_cancelled' );
+    }
+
+    /**
+     * Handle subscription expired
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_subscription_expired( $subscription ) {
+        $this->send_subscription_data( $subscription, 'subscription_expired' );
     }
 
     /**
@@ -707,49 +698,6 @@ class WooCommerce extends AbstractPlatform {
             'renewal_complete' => true,
         ) );
     }
-
-    /**
-     * Handle subscription renewal payment failed
-     *
-     * @param \WC_Subscription $subscription Subscription object
-     * @param \WC_Order $last_order Last renewal order
-     */
-    public function handle_subscription_renewal_payment_failed( $subscription, $last_order ) {
-        $this->send_subscription_data( $subscription, 'subscription_renewal_payment_failed', array(
-            'renewal_complete' => false,
-        ) );
-    }
-
-    /**
-     * Handle subscription trial end
-     *
-     * @param int $subscription_id Subscription ID
-     */
-    public function handle_subscription_trial_end( $subscription_id ) {
-        $subscription = wcs_get_subscription( $subscription_id );
-
-        if ( ! $subscription ) {
-            return;
-        }
-
-        $this->send_subscription_data( $subscription, 'subscription_trial_end' );
-    }
-
-    /**
-     * Handle scheduled subscription payment (before renewal)
-     *
-     * @param int $subscription_id Subscription ID
-     */
-    public function handle_scheduled_subscription_payment( $subscription_id ) {
-        $subscription = wcs_get_subscription( $subscription_id );
-
-        if ( ! $subscription ) {
-            return;
-        }
-
-        $this->send_subscription_data( $subscription, 'subscription_scheduled_payment' );
-    }
-
     /**
      * Send subscription data to weMail API
      *
@@ -770,7 +718,6 @@ class WooCommerce extends AbstractPlatform {
         $payload['event'] = $event;
         $payload          = array_merge( $payload, $extra );
 
-        wemail_set_owner_api_key();
 
         wemail()->api
             ->send_json()
