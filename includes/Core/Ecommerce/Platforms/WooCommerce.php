@@ -184,19 +184,6 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
-     * Handle cart emptied event
-     */
-    public function handle_cart_emptied() {
-        if ( $this->is_recovering || ! Settings::instance()->is_enabled() ) {
-            return;
-        }
-
-        $this->send_cart_data( 'cart_emptied' );
-
-        $this->reset_cart_key();
-    }
-
-    /**
      * Handle cart recovery from abandoned cart email link
      */
     public function handle_cart_recovery() {
