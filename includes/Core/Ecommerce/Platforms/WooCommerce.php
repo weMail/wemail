@@ -690,9 +690,11 @@ class WooCommerce extends AbstractPlatform {
      * @param \WC_Order $last_order Last renewal order
      */
     public function handle_subscription_renewal_payment_complete( $subscription, $last_order ) {
-        $this->send_subscription_data( $subscription, 'subscription_renewal_payment_complete', array(
-            'renewal_complete' => true,
-        ) );
+        $this->send_subscription_data(
+            $subscription, 'subscription_renewal_payment_complete', array(
+				'renewal_complete' => true,
+            )
+        );
     }
     /**
      * Send subscription data to weMail API
@@ -713,7 +715,6 @@ class WooCommerce extends AbstractPlatform {
         $payload          = SubscriptionResource::single( $subscription );
         $payload['event'] = $event;
         $payload          = array_merge( $payload, $extra );
-
 
         wemail()->api
             ->send_json()
