@@ -10,7 +10,7 @@ class SubscriptionResource extends JsonResource {
     /**
      * Date format
      */
-    const DATE_FORMAT = 'Y-m-d';
+    const DATE_FORMAT = 'Y-m-d\TH:i:s';
 
     /**
      * Structure of subscription
@@ -36,7 +36,10 @@ class SubscriptionResource extends JsonResource {
             'categories'        => $this->get_category_ids( $items ),
             'billing_period'    => $subscription->get_billing_period(),
             'billing_interval'  => intval( $subscription->get_billing_interval() ),
+            'trial_end_date'    => $this->format_date( $subscription->get_date( 'trial_end' ) ),
             'next_payment_date' => $this->format_date( $subscription->get_date( 'next_payment' ) ),
+            'end_date'          => $this->format_date( $subscription->get_date( 'end' ) ),
+            'permalink'         => $subscription->get_view_order_url(),
             'created_at'        => $subscription->get_date_created() ? $subscription->get_date_created()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null,
             'updated_at'        => $subscription->get_date_modified() ? $subscription->get_date_modified()->setTimezone( new DateTimeZone( 'UTC' ) )->format( self::DATE_FORMAT ) : null,
         );
@@ -53,6 +56,7 @@ class SubscriptionResource extends JsonResource {
         return array(
             'email'      => $subscription->get_billing_email(),
             'first_name' => $subscription->get_billing_first_name(),
+            'last_name'  => $subscription->get_billing_last_name(),
         );
     }
 

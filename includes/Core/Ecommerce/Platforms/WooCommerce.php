@@ -70,6 +70,43 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Get subscriptions from WooCommerce store
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public function subscriptions( array $args = array() ) {
+        if ( ! $this->is_subscriptions_active() ) {
+            return array(
+                'data'         => array(),
+                'total'        => 0,
+                'current_page' => 1,
+                'total_page'   => 0,
+            );
+        }
+
+        $args = wp_parse_args(
+            $args,
+            array(
+                'limit'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 100,
+                'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+                'paginate' => true,
+                'type'     => 'shop_subscription',
+            )
+        );
+
+        $data = wc_get_orders( $args );
+
+        return array(
+            'data'         => SubscriptionResource::collection( $data->orders ),
+            'total'        => $data->total,
+            'current_page' => intval( $args['page'] ),
+            'total_page'   => $data->max_num_pages,
+        );
+    }
+
+    /**
      * Get orders from WooCommerce store
      *
      * @param array $args
@@ -137,7 +174,7 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'woocommerce_new_subscription', array( $this, 'handle_new_subscription' ), 10, 1 );
         add_action( 'woocommerce_subscription_status_cancelled', array( $this, 'handle_subscription_cancelled' ), 10, 1 );
         add_action( 'woocommerce_subscription_status_expired', array( $this, 'handle_subscription_expired' ), 10, 1 );
-        add_action( 'woocommerce_subscription_renewal_payment_complete', array( $this, 'handle_subscription_renewal_payment_complete' ), 10, 2 );
+        add_action( 'woocommerce_subscription_renewal_payment_complete', array( $this, 'handle_subscription_renewal_payment_complete' ), 10, 1 );
     }
 
     /**
@@ -659,13 +696,6 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
-     * Handle subscription status change
-     *
-     * @param \WC_Subscription $subscription Subscription object
-     * @param string $new_status New status
-     * @param string $old_status Old status
-     */
-    /**
      * Handle subscription cancelled
      *
      * @param \WC_Subscription $subscription Subscription object
@@ -687,9 +717,8 @@ class WooCommerce extends AbstractPlatform {
      * Handle subscription renewal payment complete
      *
      * @param \WC_Subscription $subscription Subscription object
-     * @param \WC_Order $last_order Last renewal order
      */
-    public function handle_subscription_renewal_payment_complete( $subscription, $last_order ) {
+    public function handle_subscription_renewal_payment_complete( $subscription ) {
         $this->send_subscription_data(
             $subscription, 'subscription_renewal_payment_complete', array(
 				'renewal_complete' => true,
