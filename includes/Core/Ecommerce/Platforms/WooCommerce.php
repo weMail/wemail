@@ -530,6 +530,15 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Check if WooCommerce Subscriptions is active
+     *
+     * @return bool
+     */
+    public function is_subscriptions_active() {
+        return class_exists( 'WC_Subscription' );
+    }
+
+    /**
      * Get integration name
      *
      * @return string

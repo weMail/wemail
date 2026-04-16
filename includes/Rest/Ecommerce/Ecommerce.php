@@ -20,6 +20,7 @@ class Ecommerce extends RestController {
     public function register_routes() {
         $this->post( '/(?P<source>woocommerce|edd)/settings', 'settings' );
         $this->get( '/(?P<source>woocommerce|edd)/(?P<resource>products|orders|categories)', 'resource', 'permission' );
+        $this->get( '/(?P<source>woocommerce)/status', 'status', 'permission' );
         $this->post( '/coupons', 'create_coupon', 'permission' );
         $this->delete( '/disconnect', 'disconnect', 'permission' );
     }
@@ -38,9 +39,10 @@ class Ecommerce extends RestController {
 
         $body = array_merge(
             $body, array(
-				'currency' => $platform->currency(),
-				'currency_symbol' => $platform->currency_symbol(),
-				'platform' => $platform->get_name(),
+				'currency'              => $platform->currency(),
+				'currency_symbol'       => $platform->currency_symbol(),
+				'platform'              => $platform->get_name(),
+				'subscriptions_enabled' => $platform->is_subscriptions_active(),
 			)
         );
         // Update settings to wp options
@@ -57,6 +59,25 @@ class Ecommerce extends RestController {
         }
 
         return new \WP_REST_Response( $response );
+    }
+
+    /**
+     * Platform status endpoint
+     *
+     * @param \WP_REST_Request $request
+     */
+    public function status( $request ) {
+        $platform = $request->get_param( 'source' );
+
+        /** @var PlatformInterface $platform */
+        $platform = wemail()->ecommerce->platform( $platform );
+
+        return new \WP_REST_Response(
+            array(
+                'is_active'             => $platform->is_active(),
+                'subscriptions_enabled' => $platform->is_subscriptions_active(),
+            )
+        );
     }
 
     /**

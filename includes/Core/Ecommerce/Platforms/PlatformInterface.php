@@ -18,4 +18,6 @@ interface PlatformInterface {
     public function register_hooks();
 
     public function get_name();
+
+    public function is_subscriptions_active();
 }
