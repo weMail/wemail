@@ -20,8 +20,9 @@ class SubscriptionResource extends JsonResource {
      * @return array
      */
     public function blueprint( $subscription ) {
-        $items = array_filter(
-            $subscription->get_items(), function ( $item ) {
+        $source = $this->get_billing_source( $subscription );
+        $items  = array_filter(
+            $source->get_items(), function ( $item ) {
                 return $item->get_product_id();
             }
         );
@@ -29,7 +30,7 @@ class SubscriptionResource extends JsonResource {
         return array(
             'id'                => (string) $subscription->get_id(),
             'status'            => $subscription->get_status(),
-            'customer_id'       => $this->get_customer_id( $subscription->get_billing_email() ),
+            'customer_id'       => $this->get_customer_id( $this->get_billing_email( $subscription ) ),
             'customer'          => $this->customer( $subscription ),
             'total'             => floatval( $subscription->get_total() ),
             'product_ids'       => $this->get_product_ids( $items ),
@@ -46,6 +47,36 @@ class SubscriptionResource extends JsonResource {
     }
 
     /**
+     * Return the authoritative billing source (parent order when available).
+     * Avoids stale session data that may be on the subscription object when
+     * woocommerce_new_subscription fires before billing details are persisted.
+     *
+     * @param \WC_Subscription $subscription
+     *
+     * @return \WC_Order|\WC_Subscription
+     */
+    protected function get_billing_source( $subscription ) {
+        $parent_order = $subscription->get_parent();
+
+        if ( $parent_order && $parent_order->get_billing_email() ) {
+            return $parent_order;
+        }
+
+        return $subscription;
+    }
+
+    /**
+     * Get billing email from the authoritative billing source.
+     *
+     * @param \WC_Subscription $subscription
+     *
+     * @return string
+     */
+    protected function get_billing_email( $subscription ) {
+        return $this->get_billing_source( $subscription )->get_billing_email();
+    }
+
+    /**
      * Transform customer data
      *
      * @param \WC_Subscription $subscription
@@ -53,10 +84,19 @@ class SubscriptionResource extends JsonResource {
      * @return array
      */
     protected function customer( $subscription ) {
+        $source = $this->get_billing_source( $subscription );
+
         return array(
-            'email'      => $subscription->get_billing_email(),
-            'first_name' => $subscription->get_billing_first_name(),
-            'last_name'  => $subscription->get_billing_last_name(),
+            'email'      => $source->get_billing_email(),
+            'first_name' => $source->get_billing_first_name(),
+            'last_name'  => $source->get_billing_last_name(),
+            'address_1'  => $source->get_billing_address_1(),
+            'address_2'  => $source->get_billing_address_2(),
+            'city'       => $source->get_billing_city(),
+            'state'      => $source->get_billing_state(),
+            'postcode'   => $source->get_billing_postcode(),
+            'country'    => $source->get_billing_country(),
+            'phone'      => $source->get_billing_phone(),
         );
     }
 
