@@ -23,6 +23,7 @@ class ProductResource extends JsonResource {
             'permalink'  => $resource->get_permalink(),
             'thumbnail'  => $thumbnail ? $thumbnail : null,
             'categories' => $resource->get_category_ids(),
+            'type'       => $resource->get_type(),
             'source'     => 'woocommerce',
         );
     }
