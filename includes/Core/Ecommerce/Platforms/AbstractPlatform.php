@@ -13,4 +13,8 @@ abstract class AbstractPlatform implements PlatformInterface {
     public function is_integrated() {
         return Settings::instance()->is_integrated() && Settings::instance()->platform() === $this->get_name();
     }
+
+    public function is_subscriptions_active() {
+        return false;
+    }
 }

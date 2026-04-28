@@ -8,6 +8,7 @@ use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CartResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\CategoryResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\OrderResource;
 use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\ProductResource;
+use WeDevs\WeMail\Rest\Resources\Ecommerce\WooCommerce\SubscriptionResource;
 use WeDevs\WeMail\Traits\Singleton;
 use WP_Post;
 
@@ -69,6 +70,43 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Get subscriptions from WooCommerce store
+     *
+     * @param array $args
+     *
+     * @return array
+     */
+    public function subscriptions( array $args = array() ) {
+        if ( ! $this->is_subscriptions_active() ) {
+            return array(
+                'data'         => array(),
+                'total'        => 0,
+                'current_page' => 1,
+                'total_page'   => 0,
+            );
+        }
+
+        $args = wp_parse_args(
+            $args,
+            array(
+                'limit'    => isset( $args['limit'] ) ? intval( $args['limit'] ) : 100,
+                'page'     => isset( $args['page'] ) ? intval( $args['page'] ) : 1,
+                'paginate' => true,
+                'type'     => 'shop_subscription',
+            )
+        );
+
+        $data = wc_get_orders( $args );
+
+        return array(
+            'data'         => SubscriptionResource::collection( $data->orders ),
+            'total'        => $data->total,
+            'current_page' => intval( $args['page'] ),
+            'total_page'   => $data->max_num_pages,
+        );
+    }
+
+    /**
      * Get orders from WooCommerce store
      *
      * @param array $args
@@ -113,16 +151,12 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'woocommerce_add_to_cart', array( $this, 'handle_add_to_cart' ), 10, 6 );
         add_action( 'woocommerce_cart_updated', array( $this, 'handle_cart_updated' ), 10, 0 );
         add_action( 'woocommerce_remove_cart_item', array( $this, 'handle_remove_cart_item' ), 10, 2 );
-        add_action( 'woocommerce_cart_emptied', array( $this, 'handle_cart_emptied' ), 10, 0 );
 
         // New order created hook
         add_action( 'woocommerce_new_order', array( $this, 'handle_new_order' ), 10, 2 );
 
         // Order status changed hook (handles pending payment, completed, etc.)
         add_action( 'woocommerce_order_status_changed', array( $this, 'handle_order_status_changed' ), 10, 4 );
-
-        // Pending payment status specific hook
-        add_action( 'woocommerce_order_status_pending', array( $this, 'handle_pending_payment' ), 10, 1 );
 
         add_action( 'woocommerce_order_refunded', array( $this, 'create_order_refund' ), 10, 2 );
         add_action( 'woocommerce_refund_deleted', array( $this, 'delete_order_refund' ), 10, 2 );
@@ -135,6 +169,12 @@ class WooCommerce extends AbstractPlatform {
         add_action( 'created_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'edited_product_cat', array( $this, 'handle_category' ), 10, 2 );
         add_action( 'delete_product_cat', array( $this, 'handle_category_delete' ), 10, 3 );
+
+        // WooCommerce Subscriptions hooks
+        add_action( 'woocommerce_new_subscription', array( $this, 'handle_new_subscription' ), 10, 1 );
+        add_action( 'woocommerce_subscription_status_cancelled', array( $this, 'handle_subscription_cancelled' ), 10, 1 );
+        add_action( 'woocommerce_subscription_status_expired', array( $this, 'handle_subscription_expired' ), 10, 1 );
+        add_action( 'woocommerce_subscription_renewal_payment_complete', array( $this, 'handle_subscription_renewal_payment_complete' ), 10, 1 );
     }
 
     /**
@@ -178,19 +218,6 @@ class WooCommerce extends AbstractPlatform {
         }
 
         $this->send_cart_data( 'remove_cart_item' );
-    }
-
-    /**
-     * Handle cart emptied event
-     */
-    public function handle_cart_emptied() {
-        if ( $this->is_recovering || ! Settings::instance()->is_enabled() ) {
-            return;
-        }
-
-        $this->send_cart_data( 'cart_emptied' );
-
-        $this->reset_cart_key();
     }
 
     /**
@@ -316,37 +343,6 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->carts()
             ->put( $payload );
-    }
-
-    /**
-     * Handle pending payment status
-     *
-     * @param int $order_id Order ID
-     */
-    public function handle_pending_payment( $order_id ) {
-        $order = wc_get_order( $order_id );
-
-        if ( ! $order ) {
-            return;
-        }
-
-        if ( ! $this->is_valid_order_item( $order->get_type() ) ) {
-            return;
-        }
-
-        if ( ! Settings::instance()->is_enabled() ) {
-            return;
-        }
-
-        $payload = OrderResource::single( $order );
-
-        wemail()->api
-            ->send_json()
-            ->ecommerce()
-            ->orders( $order_id )
-            ->put( $payload );
-
-        $this->reset_cart_key();
     }
 
     /**
@@ -571,6 +567,15 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Check if WooCommerce Subscriptions is active
+     *
+     * @return bool
+     */
+    public function is_subscriptions_active() {
+        return class_exists( 'WC_Subscription' );
+    }
+
+    /**
      * Get integration name
      *
      * @return string
@@ -671,5 +676,79 @@ class WooCommerce extends AbstractPlatform {
             ->ecommerce()
             ->categories( $term_id )
             ->delete();
+    }
+
+    /**
+     * Handle new subscription created
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_new_subscription( $subscription ) {
+        if ( is_numeric( $subscription ) ) {
+            $subscription = wcs_get_subscription( $subscription );
+        }
+
+        if ( ! $subscription ) {
+            return;
+        }
+
+        $this->send_subscription_data( $subscription, 'subscription_created' );
+    }
+
+    /**
+     * Handle subscription cancelled
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_subscription_cancelled( $subscription ) {
+        $this->send_subscription_data( $subscription, 'subscription_cancelled' );
+    }
+
+    /**
+     * Handle subscription expired
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_subscription_expired( $subscription ) {
+        $this->send_subscription_data( $subscription, 'subscription_expired' );
+    }
+
+    /**
+     * Handle subscription renewal payment complete
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     */
+    public function handle_subscription_renewal_payment_complete( $subscription ) {
+        $this->send_subscription_data(
+            $subscription, 'subscription_renewal_payment_complete', array(
+				'renewal_complete' => true,
+            )
+        );
+    }
+    /**
+     * Send subscription data to weMail API
+     *
+     * @param \WC_Subscription $subscription Subscription object
+     * @param string $event Event type
+     * @param array $extra Additional payload data
+     */
+    private function send_subscription_data( $subscription, $event, $extra = array() ) {
+        if ( ! $subscription ) {
+            return;
+        }
+
+        if ( ! Settings::instance()->is_enabled() ) {
+            return;
+        }
+
+        $payload          = SubscriptionResource::single( $subscription );
+        $payload['event'] = $event;
+        $payload          = array_merge( $payload, $extra );
+
+        wemail()->api
+            ->send_json()
+            ->ecommerce()
+            ->subscriptions( $subscription->get_id() )
+            ->put( $payload );
     }
 }
