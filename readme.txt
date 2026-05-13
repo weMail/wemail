@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
 Requires at least: 5.6
 Tested up to: 6.8.3
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -408,6 +408,9 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+v2.1.2 - (13th May, 2026) =
+* Fix Fluent Forms 6.x compatibility issues
+
 v2.1.1 - (28th April, 2026) =
 * Add WooCommerce Subscriptions integration with triggers for subscription created, cancelled, renewed, and expired events
 

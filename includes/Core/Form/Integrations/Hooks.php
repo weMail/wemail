@@ -18,7 +18,7 @@ class Hooks {
         add_action( 'caldera_forms_submit_complete', array( CalderaForms::instance(), 'submit' ), 999, 4 );
         add_action( 'weforms_entry_submission', array( Weforms::instance(), 'submit' ), 999, 4 );
         add_action( 'nf_save_sub', array( NinjaForms::instance(), 'submit' ), 999, 1 );
-        add_action( 'fluentform_before_insert_submission', array( FluentForms::instance(), 'submit' ), 999, 1 );
+        add_action( 'fluentform/before_insert_submission', array( FluentForms::instance(), 'submit' ), 999, 1 );
         add_action( 'happyforms_submission_success', array( HappyForms::instance(), 'submit' ), 999, 1 );
         add_action( 'frm_after_entry_processed', array( FormidableForms::instance(), 'submit' ), 999, 1 );
         add_action( 'wp_ajax_sgpb_process_after_submission', array( PopupBuilder::instance(), 'submit' ), 999, 1 );

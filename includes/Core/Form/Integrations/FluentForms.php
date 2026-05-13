@@ -26,7 +26,7 @@ class FluentForms extends AbstractIntegration {
      * Checking if Fluent Form plugin active or not
      */
     public function boot() {
-        $this->is_active = defined( 'FLUENTFORM' );
+        $this->is_active = function_exists( 'wpFluent' );
     }
 
     /**
@@ -37,6 +37,11 @@ class FluentForms extends AbstractIntegration {
      */
     public function forms() {
         $forms = wpFluent()->table( 'fluentform_forms' )->get();
+
+        // Fluent Forms 6.x returns Collection, convert to array
+        if ( ! is_array( $forms ) && method_exists( $forms, 'toArray' ) ) {
+            $forms = $forms->toArray();
+        }
 
         return array_map(
             function ( $form ) {
