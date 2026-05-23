@@ -33,6 +33,12 @@ class FormPreview {
      * @return string
      */
     public function render_form_component() {
+        if ( ! wemail()->user->can( 'view_form' ) ) {
+            wp_die( esc_html__( 'You do not have permission to access this page.', 'wemail' ), 403 );
+        }
+
+        check_ajax_referer( 'wemail_form_preview', 'nonce' );
+
         global $wp_scripts;
         $form = wemail_form( $this->form_id, true );
         ?>
@@ -52,7 +58,7 @@ class FormPreview {
             </head>
             <body>
                 <div>
-                    <?php printf( '<div id="preview-wemail-form" data-form-type="%s"><wemail-form-preview id="%s"/></div>', $form['type'], $this->form_id ); ?>
+                    <?php printf( '<div id="preview-wemail-form" data-form-type="%s"><wemail-form-preview id="%s"/></div>', esc_attr( $form['type'] ), esc_attr( $this->form_id ) ); ?>
                 </div>
 
                 <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>

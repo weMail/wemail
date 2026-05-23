@@ -41,8 +41,9 @@ class GutenbergBlock {
             'wemail-block-script',
             'weMailData',
             array(
-                'forms'  => $forms ? $forms : array(),
+                'forms'   => $forms ? $forms : array(),
                 'siteUrl' => get_site_url(),
+                'previewNonce' => wp_create_nonce( 'wemail_form_preview' ),
             )
         );
     }

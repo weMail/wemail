@@ -59,7 +59,7 @@ registerBlockType('wemail/forms', {
                 <div height="500px" className="wemail-block-form-preview">
                     <div className="wemail-block-overlay"/>
                     <iframe className={props.attributes.isLoading ? 'hide' : ''} onLoad={loadForm} width="100%"
-                            src={`${window.weMailData.siteUrl}/wp-admin/admin-ajax.php?action=wemail_preview&form_id=${encodeURIComponent(formId)}`}
+                            src={`${window.weMailData.siteUrl}/wp-admin/admin-ajax.php?action=wemail_preview&form_id=${encodeURIComponent(formId)}&nonce=${encodeURIComponent(window.weMailData.previewNonce)}`}
                             frameBorder="0" scrolling="no"/>
                     {
                         props.attributes.isLoading ?
