@@ -1,30 +1,23 @@
-=== weMail: Email Marketing, Email Automation, Newsletters, Subscribers & Email Optins for WooCommerce ===
+=== weMail – Email Marketing, Newsletter Builder & Email Automations for WooCommerce ===
 Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
 Requires at least: 5.6
 Tested up to: 6.8.3
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
 
-Send email newsletters, automate email marketing with email automation, manage subscribers, post notifications, optins & emails for WooCommerce.
+Email marketing, newsletter & email automation for WordPress. Manage WooCommerce emails & build email newsletter campaigns with weMail.
 == Description ==
-The fastest and most affordable email marketing, newsletter & WooCommerce email plugin for WordPress – with complete sending freedom.
-Stop paying more as your list grows. weMail is the industry's most affordable all-in-one email marketing platform for WordPress. Built by weDevs with 13 years of innovation and trust, affordability and reliability have always been the core promise.
-Designed for startups, small businesses, agencies, and large enterprises – weMail fits every business size.
+Most email marketing platforms treat WordPress as an afterthought. weMail is built differently: it delivers professional-grade email marketing natively inside your WordPress dashboard, without the complexity or the runaway cost.
 
-**Your Complete Email Marketing Solution Inside WordPress**
+Whether you're sending a weekly campaign to a few hundred loyal readers or running sophisticated drip campaigns for tens of thousands of subscribers, weMail gives you the tools to do it right. Full sending flexibility across eight-plus gateways, a drag-and-drop email newsletter builder, powerful email automation, customizable signup forms, and native WooCommerce integration for transactional and marketing emails: all managed from a single interface.
 
-Want to send beautiful email newsletters, automate workflows, or manage unlimited subscribers? weMail is the perfect solution. No third-party tools. No leaving your dashboard. Just powerful email marketing, right inside WordPress.
-* Send massive email campaigns at lightning speed
-* Manage unlimited subscribers with ease
-* Automate email marketing workflows effortlessly
-* Send WooCommerce emails seamlessly
-* Set up welcome emails for new subscribers
-* Enable post notifications automatically
-* Capture leads with signup forms and optins
+weMail stores campaign and subscriber data in the cloud, so your WordPress database stays lean regardless of list size. At scale, weMail runs up to 88% cheaper than Mailchimp without sacrificing a single feature.
+
+From building optin forms that capture leads to delivering automated newsletter sequences that convert them, weMail covers the complete subscriber lifecycle inside WordPress.
 
 [youtube https://www.youtube.com/watch?v=vp56CIPXHq4]
 
@@ -34,294 +27,204 @@ Want to send beautiful email newsletters, automate workflows, or manage unlimite
 
 ### Useful Links
 [Docs](https://getwemail.io/docs/wemail/) | [Videos Tutorials](https://www.youtube.com/@getwemail/videos) | [Support](https://getwemail.io/contact/) | [Get Started](https://getwemail.io/pricing/)
-## Why weMail? Complete Email Marketing Freedom
-Unlike typical email marketing tools that lock you into expensive proprietary systems, weMail gives you complete sending freedom. Connect with Amazon SES, Brevo (formerly Sendinblue), SparkPost, SendGrid, Postmark, Mailgun, Elastic Email, Pepipost, or any other SMTP provider you trust.
+## SMTP Flexibility: Send From Any Gateway You Trust
+Email deliverability starts with your SMTP configuration; a poorly wired setup guarantees campaigns land in spam, not inboxes. weMail supports eight-plus email gateways, giving you complete control over delivery.
 
-You get ultimate flexibility, better deliverability control, and significant cost savings. Whether you're running a small business or managing campaigns with thousands of subscribers, this is email marketing without compromise. Build powerful email automation, manage unlimited subscribers, and create beautiful email newsletters all from the WordPress dashboard.
+**Supported SMTP providers:**
 
-## Built for Speed & Scale
-Send large volumes of emails at lightning speed. weMail is engineered for businesses that can't afford to wait - whether you're launching a Black Friday sale, sending time-sensitive promotions, or reaching your entire list during critical moments.
+* [Amazon SES](https://aws.amazon.com/ses/)
+* [SendGrid] (https://www.twilio.com/en-us/sendgrid)
+* [Mailgun] (https://www.mailgun.com/)
+* [SparkPost] (https://developers.sparkpost.com/)
+* [Postmark] (https://postmarkapp.com/)
+* [Elastic Email] (https://elasticemail.com/)
+* [Brevo] (https://www.brevo.com/)
 
-Unlike other WordPress email plugins that throttle or slow down with large lists, weMail delivers at scale:
+**Custom SMTP**
 
-✅ Send tens of thousands of emails per hour
-✅ Zero throttling or delays
-✅ Perfect for time-sensitive campaigns
-✅ Tested at massive scale
+Configure your gateway directly inside weMail's settings: no third-party SMTP plugins required. Authentication, TLS/SSL, and connection management are handled natively, and the sending layer is decoupled from your campaigns, lists, and automation, so switching providers never breaks anything. Agencies can run separate or shared SMTP setups across multisite installations.
 
-When timing matters, weMail delivers.
+## Email Campaigns: Build Beautiful Campaigns That Convert
+An email newsletter lives or dies on design and trust. weMail's drag-and-drop builder makes it easy to create professional campaigns without code: choose pre-built templates or start from a blank canvas.
 
-## Cloud-Powered with Automatic Backup
-weMail combines WordPress control with cloud-powered reliability. Your subscriber lists, campaigns, and analytics are automatically backed up with enterprise-grade security.
+**The visual editor supports:**
 
-What this means for you:
+* **Block-based editing:** arrange text, images, buttons, dividers, and social links on a canvas
+* **Responsive layouts:** every newsletter renders correctly on desktop, tablet, and mobile
+* **Brand customization:** apply your colors, fonts, and logo across campaigns
+* **Dynamic personalization:** address subscribers by name or insert any custom field
+* **Preview and test send:** confirm rendering before a campaign reaches anyone's inbox
+* **Scheduling is timezone-aware:** queue a campaign today and deliver at peak engagement time tomorrow, in each subscriber's local hour.
 
-✅ Never lose your subscriber data
-✅ One-click data restoration if needed
-✅ Enterprise backup at startup prices
-✅ Peace of mind included
+The builder generates both HTML and plain-text versions of every campaign, improving deliverability and reaching recipients who prefer plain text. All newsletter data, opens, clicks, bounces, unsubscribes — is stored in weMail's cloud, so history stays accessible through hosting migrations and WordPress updates.
 
-It's the best of both worlds: WordPress flexibility with SaaS-level data protection.
+## Email Automation: Nurture Subscribers on Autopilot
+Manual campaigns create results; email automation creates compounding results. weMail's automation engine works as a complete autoresponder platform, building sequences that engage subscribers at every stage of their journey, executing automatically based on behavior, time, or external triggers with no ongoing manual effort.
 
-## weMail is Your Complete Email Marketing Solution
-weMail comes packed with every feature businesses and marketers need to perfect their email marketing strategy. Email marketing features at a glance that you're getting completely free with weMail:
+Trigger-based automation fires campaigns the moment conditions are met: list signup, purchase completion, link clicks, email opens, date conditions, or inactivity. Define the logic once; weMail runs it continuously.
 
-1. **Drag & drop email builder** + text-based simplified editor
-2. **Advanced email automation** & drip campaigns (Pro)
-3. **Email A/B split testing** (subject, sender, content) (Pro)
-4. **New post notifications** (automatic blog updates) (Pro)
-5. **Multiple list management** with unlimited lists
-6. **Advanced segments & tags** for precise targeting
-7. **Cross-list sending** (send one campaign to multiple lists)
-8. **4 types of signup forms & optins** (inline, modal, slide-up, floating bar)
-9. **Real-time analytics** & overview dashboard (Pro)
-10. **Subscriber import** (CSV, Mailchimp, Campaign Monitor, MailPoet, ActiveCampaign, HubSpot, and many more!)
-11. **Subscriber export** (Pro)
-12. **100+ pre-built email templates** (Pro)
-13. **WooCommerce, FastSpring integrations** (Pro)
-14. **Easy Digital Downloads** (EDD)
-15. **12+ contact form integrations** (Pro)
-16. **AffiliateWP integration** (Pro)
-17. **Time-warp sending** (timezone-based delivery) (Pro)
-18. **WordPress transactional emails** support (Pro)
-19. **Bounce handling & email suppression** (Pro)
-20. **Double opt-in confirmation** (Pro)
-21. **Team management** (Pro)
-22. **8+ SMTP gateway options** – Your gateway, your choice
-…and much more!
+**Core automation capabilities:**
 
-## 🚀 SMTP Flexibility – Send Emails Your Way
-**Unlike competitors that force you into proprietary email services, weMail gives you complete SMTP freedom.**
+**Drip sequences:** a series of emails over days or weeks — an introduction on day one, a walkthrough on day three, a case study on day seven, an offer on day fourteen — mapped visually in the node-based builder.
 
-Choose from industry-leading email sending providers and maintain full control over your email deliverability:
+**Welcome email:** every new subscriber gets a personalized onboarding email immediately, your highest-opened touchpoint, with tailored content or an introductory offer.
 
-✅ **Amazon SES** (all AWS regions supported)
-✅ **Brevo** (formerly Sendinblue)
-✅ **SparkPost**
-✅ **SendGrid**
-✅ **Postmark**
-✅ **Mailgun**
-✅ **Elastic Email**
-✅ **Pepipost**
-✅ **Any SMTP provider** (custom SMTP support with IMAP bounce handling)
+**Behavioral automation:** branch sequences based on what contacts do — different follow-ups depending on opens, clicks, or 30 days of inactivity.
 
-**Why SMTP choice matters:**
+**Date-based automation:** trigger campaigns on fixed dates, anniversaries, or expiration events without manual scheduling.
 
-*  **Lower costs** – Choose the most affordable gateway for your volume
-* **Better deliverability** – Select providers with the best inbox rates for your audience
-* **No vendor lock-in** – Switch providers anytime without losing data
-* **Optimal performance** – Pick the fastest gateway for your region
-* **Your sender reputation** – Maintain control over your domain's email reputation
+**Post notification:** automatically send a newsletter when new content goes live — configure once, and every published post fires a broadcast to your chosen list.
 
-## 📧 Create Email Newsletters, Welcome Emails & Post Notifications Effortlessly
-Set up any type of email campaign, automate subscriber journeys, and send engaging email newsletters from your WordPress dashboard with weMail.
+**Re-engagement automation:** systematically win back dormant contacts with targeted sequences before removing them from active lists.
 
-Standard Email Campaigns Send bulk emails to multiple subscribers at once using weMail's Standard Campaign feature.
+The visual builder uses a node-based canvas where each node is a step (send, wait, or evaluate a condition), with branching paths for different behaviors, so complex flows are easy to build, read, and adjust as your strategy evolves.
 
-[Standard Email Campaigns](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-standard-campaign-work)
+## A/B Testing: Optimize Every Campaign With Data
+Gut instinct has a ceiling; A/B testing removes it. weMail's built-in testing tools let you validate campaign decisions, systematically improving open rates, click rates, and conversions over time.
 
-Send bulk emails to multiple subscribers at once using weMail's [Standard Campaign](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-standard-campaign-work) feature.
+Subject line testing is the most impactful starting point: send variant A to 20% of your list and variant B to another 20%; let weMail measure performance, then automatically deliver the winner to the remaining 60%.
 
-**How to design and send email newsletters:**
+Content testing goes further, comparing layouts, calls to action, or offers, short versus long subject lines, emoji versus plain text, preheader variations, image-heavy versus text-first designs, and CTA color, copy, or placement.
 
-Creating beautiful email campaigns is incredibly easy. Choose from two powerful editors:
+weMail declares a winner based on your chosen metric (open rate, click-through rate, or attributed revenue) and stores every result in your analytics dashboard, building institutional knowledge about what works for your audience.
 
-* **Drag-and-drop builder** – Visual email editor for creating stunning layouts
-* **Writing-focused simplified editor** – Distraction-free content creation
+## Optin Forms: Grow Your List From Every Corner of Your Site
+Your subscriber list is only as strong as the systems feeding it. weMail's optin form builder lets you create, customize, and place forms throughout your site without code, adapting to any WordPress theme.
 
-Select from our template gallery with 100+ built-in email templates designed for various industries, or start with a blank canvas and create your own unique brand style.
+**Supported form types:**
 
-Once your email content is ready, configure your Subject Line, Preview Text, From Name & Address, and Reply-to settings. Send instantly or schedule your email campaign for future delivery with precise timing control.
+* Inline forms: embedded within post content, sidebars, or any widget area
+* Popup forms: timed or exit-intent overlays that capture leaving visitors
+* Slide-in forms: subtle panels appearing from the corner without interrupting reading
+* Top bar banners: sticky strips that stay visible as visitors scroll
 
-[**🤖 Email Automation & Drip Campaigns**](https://getwemail.io/email-automation/)
-**Automate your email marketing to simplify your marketing and engage your audience with ease.**
+Every form is fully customizable — colors, fonts, field labels, button text — with custom fields to collect attributes like location, company, or preferences at signup.
 
-Build personalized [drip campaigns](https://getwemail.io/email-automation/) that deliver the right message at the right time. Get the most impact from your leads through automated follow-ups, welcome email sequences, and targeted content.
+Double optin keeps lists healthy and compliant: each new subscriber receives a confirmation email before being added, creating a documented consent trail and better long-term engagement.
 
-**weMail's email automation features include:**
+weMail's forms connect natively to weMail lists and to 18-plus third-party integrations, so leads from any optin touchpoint flow automatically into the right segments, across all WordPress themes including block-based Gutenberg layouts.
 
-🎯 **Multiple Automation Triggers:**
+## Subscriber Management: Organize, Segment, and Target
+Building a list is step one. How you organize, qualify, and communicate with subscribers determines whether email becomes a real revenue channel or just noise. weMail includes a complete subscriber management system built directly into WordPress.
 
-- When someone **subscribes to a list**
-- When a customer **purchases a product** (WooCommerce/EDD)
-- When a subscriber is **tagged**
-- On **milestone dates or anniversaries**
-- On **form submissions**
-- And many more trigger options
+**List management:** unlimited lists for different audiences, products, or campaigns. A contact can belong to multiple lists, and moving contacts between lists is handled through bulk actions.
 
-**🛠️ Intuitive Workflow Builder:**
-Design personalized customer journeys with weMail's visual automation builder. Set delays, apply **if/else conditional logic**, and combine multiple rules to send perfectly timed messages based on subscriber behavior.
+**Tagging and segmentation:** tag based on behavior, purchase history, signup source, or any custom attribute, and build dynamic segments that update automatically as data changes.
 
-🧩 **Beyond Email Automation:**
-Automate **subscriber** management actions including:
+**Custom fields:** store any subscriber attribute your campaigns need; these sync with optin forms and become personalization tokens in every email.
 
-- Moving subscribers between lists
-- Adding or removing tags automatically
-- Unsubscribing inactive users
-- Updating subscriber data dynamically
-- Segmenting based on engagement
+**Subscription status:** view active, unsubscribed, bounced, and pending contacts at a glance, and update records individually or in bulk for cleaner deliverability.
 
-**Automated Email Types:**
+**Activity timeline:** each contact's history of emails received, opens, clicks, and signup events, to inform re-engagement and segmentation.
 
-✅ Welcome email sequences for new subscribers
-✅ Post notification emails when you publish new content
-✅ Email automation for WooCommerce emails and customer journey
+**Bulk operations:** import, export, tag, move, or delete contacts en masse, and merge duplicates to keep lists authoritative.
 
-[**🧪 Email A/B Split Testing**](https://getwemail.io/ab-testing/)
-**Optimize your email campaigns for maximum engagement with comprehensive** [**A/B testing**](https://getwemail.io/a-b-split-testing/).
+Because weMail stores subscriber data in the cloud, your database never carries the weight of large lists — hosting performance stays consistent whether you manage 500 subscribers or 500,000.
 
-weMail lets you test two variations to determine which performs best. You can run split tests on:
+## WordPress Integration: Email Marketing That Feels Native
+weMail feels like a natural extension of WordPress, not a bolted-on tool. Every major WordPress feature connects without extra configuration.
 
-✅ **Email Subject Line** – Find the most compelling subject
-✅ **From Name** – Test sender identity impact
-✅ **Email Content** – Compare different designs and copy
+**WordPress user sync:** automatically add new registrations to subscriber lists based on role, turning registration into a signup event.
 
-**Two A/B Testing Methods:**
+**Gutenberg block:** add signup forms to any page or post using weMail's native block, live without shortcodes.
 
-**Method 1: 50/50 Split Test –** Variation A goes to 50% of subscribers, Variation B to the other 50%. Review detailed campaign reports to determine the better-performing version.
-**Method 2: Test-Then-Send Optimization –** Send to a small sample group first (e.g., 20%: 10% receive A, 10% receive B). The winning variation automatically sends to the remaining 80% based on open or click rates.
+**Post notification:** configure a list once, and every published post goes out as a formatted email notification automatically.
 
-## Lead Generation with 4 Types of Opt-in Forms
+**Widget support:** place signup forms in any widget area, compatible with classic and block-based themes.
 
-Capture subscribers everywhere on your website with weMail's powerful **signup forms** and optins builder.
+**Shortcode support:** embed forms with a simple shortcode in any theme or page builder.
 
-weMail provides 4 distinct **signup forms** types designed to maximize conversions:
+## WooCommerce Integration: Turn Customers Into Loyal Subscribers
+For WooCommerce stores, weMail connects store data directly to email campaigns, delivering full subscriber lifecycle management powered by real purchase behavior.
 
-1. [**Inline Forms**](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-inline-form-work/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – [Embed forms](https://getwemail.io/docs/wemail/forms/embeded-forms/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) directly within your content, pages, or posts. Perfect for contextual lead capture.
-2. [**Modal Popup Forms**](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-modal-form-work) – Display attention-grabbing popup forms with customizable triggers (time delay, scroll percentage, exit intent).
-3. [**Slide-Up Forms**](https://getwemail.io/docs/wemail/forms/types-of-forms/#how-does-slide-up-form-work) – Non-intrusive slide-up forms appear from the bottom of the screen at the perfect moment.
-4. **Floating Bar Forms** – Sticky notification bars that attach to the top or bottom of the screen and scroll with users.
+**Branded WooCommerce emails:** design transactional messages — order confirmations, shipping notifications, post-purchase follow-ups — using the same drag-and-drop builder as marketing campaigns.
 
-**All signup forms and optins include:**
+**Customer-to-subscriber sync:** when a purchase completes, weMail can add the buyer to a list, tag them by product category, and trigger a post-purchase automation, turning every customer into an addressable contact.
 
-✅ **Custom field support** – Collect name, phone, custom data
-✅ **Responsive design** – Perfect display on all devices
-✅ **Brand customization** – Match your website's look and feel
-✅ **Gutenberg block support** – Easy integration with WordPress editor
-✅ **Placement flexibility** – Place forms anywhere: widgets, posts, pages, after blog posts
+**Abandoned cart recovery:** one of the highest-ROI applications of WooCommerce email automation. weMail detects an abandoned cart and sends a timed sequence of recovery emails, consistently recovering 10-15% of lost revenue with no ongoing effort.
 
-Capture subscribers with powerful signup forms and optins. Perfect for growing your email newsletter list and email marketing campaigns.
+**Product-based segmentation:** segment subscribers by what they've purchased, browsed, or spent, sending targeted promotions to specific-product buyers or re-engagement messages to customers inactive for 90 days.
 
-## 📊 Manage Subscribers & Email Marketing Lists
+**Revenue attribution:** see which newsletter drove the most purchases, which automation sequence produces the highest lifetime value, and which segments convert best.
 
-Focus on growing subscriber lists and executing email marketing directly within the WordPress dashboard.
+The integration is native, with no bridge plugins needed. Connect your store in minutes from weMail Integrations and start turning order data into targeted campaigns immediately.
 
-- [**Collect Leads**](https://getwemail.io/docs/wemail/forms/embeded-forms/) – Place weMail's HTML embed forms or optins anywhere on the website and collect leads.
-- [**Automate onboarding emails**](https://getwemail.io/docs/wemail/campaigns/types-of-campaigns/#how-does-automatic-campaign-work) – Welcome new subscribers with automated welcome emails.
-- [**Auto Clean List**](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks) – Automatically removes fake, spam, or bounced emails.
-- [**Bounce Handling**](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks) – Maintains email list quality by processing hard and soft bounces automatically.
+## Contact Form Integrations: Capture Leads at Every Touchpoint
+Not every visitor converts through a dedicated registration form. Many engage first through your site's inquiry form, quote request form, or support page. weMail integrates with the most popular WordPress form plugins to ensure those touchpoints also grow your subscriber list.
 
-**Advanced Email List Features:**
+**Supported contact form plugins:**
 
-- [**List**](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Create unlimited lists to organize contacts by interest, source, or behavior.
-- [**Multi-list Sending**](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Send one campaign to multiple lists. Use 'Exclude Recipients' to target precisely.
-- [**Segmentation**](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/#segment) – Segment with unlimited conditions based on behavior, custom fields, list membership, purchase history, location, and signup source.
-- [**Tags**](https://getwemail.io/docs/wemail/subscriber-lists/how-to-create-a-list/#tags) – Tag contacts based on actions, interests, or behaviors.
+* Contact Form 7
+* Ninja Forms
+* Caldera Forms
+* WPForms
+* weForms
+* Gravity Forms
+* Happy Forms
+* Formidable Forms
+* Fluent Forms
+* Forminator Froms
+* Everest Forms
+* Elementor Forms
 
-## 🔌 Complete WordPress Integration
-A complete WordPress integration helps you get email subscribers effortlessly. Collecting email addresses from WooCommerce users, WooCommerce orders, new WordPress user registration, and new comments to grow your email list just got easier.
+For each integration, you control which fields map to subscriber attributes and whether a consent checkbox is required, keeping consent transparent and auditable.
 
-- [**User Registration**](https://getwemail.io/docs/wemail/settings/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Collect subscribers each time anyone registers. Enable automated welcome email or double opt-in confirmation.
-- [**Comment Opt-in**](https://getwemail.io/docs/wemail/settings/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Collect emails from blog post comments without redirecting visitors.
-- [**WordPress User Sync**](https://getwemail.io/docs/wemail/settings/wordpress-users-sync/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Auto import WordPress users to weMail subscribers. Sync users by role automatically.
-- [**Forms after blog posts**](https://getwemail.io/docs/wemail/forms/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Show weMail signup forms after every WordPress blog posts.
-- [**WordPress Transactional Email**](https://getwemail.io/docs/wemail/settings/general/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Send all WordPress transactional emails via weMail.
+When a visitor submits the form and opts in, they're added to your specified list immediately, ready for your welcome sequence and subsequent campaigns.
 
- [**🛒 Complete WooCommerce Email Marketing Solution**](https://getwemail.io/docs/wemail/integrations/e-commerce/woocommerce-integration-wemail/)
+## Team Management: Collaborate Without Chaos
+Collaborate with your marketing team without granting everyone full admin access. weMail includes built-in team management with role-based permissions to keep your account secure and productive.
 
-Advanced WooCommerce integration gives your eCommerce store a boost. Send targeted WooCommerce emails including order confirmations, shipping notifications, and promotional campaigns. Automate welcome emails for first-time customers and create email automation workflows based on purchase behavior.
+weMail leverages WordPress's native role system. By default, only Administrator and Editor roles have access:
 
-**Smooth WooCommerce Integration:**
+Administrator: full access to all weMail features
+Editor: full access to campaigns, subscribers, and settings
 
-✅ Collect email contacts from WooCommerce checkout
-✅ Send automated welcome emails to first-time customers
-✅ Segment subscribers based on purchase behavior
-✅ Create targeted WooCommerce emails for product promotions
+Admins can grant access to additional roles (Author, Contributor, etc.) from weMail Settings → General. Users without an accessible role cannot see or interact with weMail features.
 
-**Advanced eCommerce Segmentation:**
+## Analytics & Reporting: Measure What Actually Matters
+Every campaign generates detailed performance data in a clean, actionable dashboard, with no separate analytics tool required.
 
-Target subscribers with laser precision using weMail's powerful WooCommerce segmentation:
+**Campaign reports:** delivery, open, click-through, bounce, and unsubscribe rates for every newsletter or automation step, plus geographic distribution of engagement.
 
-1. **Order Spending (Total)** – Example: Target subscribers who have spent more than $500 total
-2. **Order Spending (Single Order)** – Example: Send offers to subscribers who spent less than $30
-3. **Order Frequency** – Example: Reward customers who have purchased 5+ times
-4. **Product Purchased** – Example: Send emails to customers who haven't purchased Product A
-5. **Purchase Activity** – Example: Re-engage subscribers who haven't purchased in 90 days
-6. **Last Purchase Date** – Example: Win-back campaigns for customers inactive for 6+ months
+**List reports:** subscriber growth over time, signup source breakdown, and list health metrics, helping identify which forms produce the highest-quality leads based on engagement, not volume.
 
-**Additional eCommerce Integrations:**
+**Automation reports:** step-by-step performance across every sequence, showing where subscribers drop off and which branch or step performs best.
 
-[**EDD Integration**](https://getwemail.io/docs/wemail/settings/easy-digital-downloads/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Welcome first-time customers with automated welcome emails.
+**Link tracking:** click maps for individual emails show exactly which links contacts clicked most, helping optimize placement and CTA copy in future campaigns.
 
-[**FastSpring Integration**](https://getwemail.io/docs/wemail/integrations/fastspring-wemail-integration/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Collect email contacts from FastSpring checkout (unique to weMail!)
+All analytics data is stored in weMail's cloud, so historical reports remain accessible even after WordPress updates or server migrations.
 
-[**WooCommerce Integration**](https://getwemail.io/docs/wemail/integrations/fastspring-wemail-integration/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Collect contacts from WooCommerce checkout and send emails.
+## Import & Export: Migrate Without the Headache
+Switching email platforms is notoriously painful. weMail makes it as smooth as possible.
 
-[**Send Thank You Email to First Time Customers**](http://getwemail.io/docs/wemail/settings/woocommerce-integration-wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) and use [**Advanced e-Commerce Segmentation**](http://getwemail.io/docs/wemail/settings/woocommerce-integration-wemail/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) for precise targeting.
+Import subscribers from any CSV file. The import wizard maps your columns to weMail fields, handles duplicates, and respects existing opt-in status, so previously unsubscribed contacts aren't re-added to active lists.
 
-It shouldn't cost you a fortune to have a large email subscriber list. With unlimited subscribers, weMail keeps email marketing affordable and accessible.
+Platform-specific guides walk through migrating from Mailchimp, ActiveCampaign, ConvertKit, and others, with tags, custom fields, and history transferring cleanly where the source platform allows export.
 
-## 📝 Contact Form Integrations
+Export at any time: pull any list or segment to CSV on demand. Your data is never locked in, whether auditing, syncing to a CRM, or evaluating alternatives.
 
-Using contact forms to collect leads? weMail has integration for all your favorite contact form plugins:
+## GDPR Compliance: Built-In Privacy Tools
+Privacy regulations require verifiable consent for email marketing. weMail includes the tools to keep your subscriber collection compliant without custom development.
 
-✅ Contact Form 7
-✅ Ninja Forms
-✅ Caldera Forms
-✅ WPForms
-✅ weForms
-✅ Gravity Forms
-✅ Happy Forms
-✅ Formidable Forms
-✅ Fluent Forms
-✅ Forminator Froms
-✅ Everest Forms
-✅ Elementor Forms
+**Double optin:** each new contact receives a confirmation email before activation, creating a documented consent record for every signup.
 
-[**👥 Email Marketing Team**](https://getwemail.io/docs/wemail/teams/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme)
+**Consent logging:** weMail records the date, time, IP address, and form ID for each subscription, exportable for regulatory review under GDPR, CCPA, or similar frameworks.
 
-[**Teams**](https://getwemail.io/docs/wemail/teams/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Manage an entire email marketing team with weMail. Give and revoke access to your WordPress users for email marketing tasks.
+**One-click unsubscribe:** every email includes a compliant unsubscribe link, processed instantly and respected across all future sends and automations.
 
-## 📈 Built-in Analytics and Dashboard
+**Data access and deletion:** export or delete individual subscriber records directly from the management panel, fulfilling access and erasure requests without third-party tools.
 
-weMail analytics help you make better-informed decisions about your email marketing campaigns.
+## Installation & Setup
+Getting started with weMail takes under ten minutes.
 
-- [**24 Hours Email Statistics**](https://getwemail.io/docs/wemail/settings/general/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Automated daily reports with campaign statistics.
-- [**Google Analytics**](https://getwemail.io/docs/wemail/campaigns/create-campaigns-with-google-analytics/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Track email link clicks in Google Analytics with UTM parameters.
-- [**Campaign Overview**](https://getwemail.io/docs/wemail/campaigns/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Monitor emails sent, subscriber growth, and form performance.
-- [**Email Link Click**](https://getwemail.io/docs/wemail/campaigns/your-first-campaign/#Link%20Clicks) – Automatic click tracking without third-party trackers.
+1. Install and activate weMail from the WordPress plugin directory.
+2. Create a free weMail account or connect an existing one from the plugin dashboard.
+3. Go to **weMail → Settings → SMTP** and connect your preferred gateway. weMail walks through API key setup for each supported sending provider step by step.
+4. Create your first subscriber list.
+5. Build a lead form using the optin form builder and publish it to your site.
+6. Set up a welcome email in the email automation builder to greet every new subscriber automatically.
 
-## 📥 Subscriber Import & Export
-
-* [**Import Contacts**](https://getwemail.io/docs/wemail/imports/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Import subscriber lists from other email marketing tools. Migration is easy, simple, and solid.
-
-**Import Contacts From:**
-
-✅ [**Mailchimp**](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-mailchimp/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – API-based import with list mapping
-✅ [**Campaign Monitor**](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-campaign-monitor/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – API import with full data sync
-✅ [**MailPoet**](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-mailpoet/?utm_medium=referral&utm_source=wporg&utm_campaign=weMail+Readme) – Direct WordPress plugin integration
-✅ [**Active Campaign**](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-active-campaign/) – Migrate lists, tags, and subscriber data
-✅ [**CSV Files**](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-csv/) – Import from any platform via CSV upload
-✅ [**Export Subscribers to CSV**](https://getwemail.io/docs/wemail/imports/import-subscriber-list-from-csv/) – One-click export
-✅ [**Mailchimp Sync**](https://getwemail.io/docs/wemail/subscriber-lists/mailchimp-sync/) – Maintain the same email list in both weMail & Mailchimp. Subscribe & unsubscribe activities sync automatically—perfect for gradual migration.
-
-## ✨ Why weMail is the Best WordPress Email Marketing Plugin
-
-There is no better service than weMail when it comes to flexibility, affordability, and unlimited subscribers:
-
-✅ Seamless WordPress integration
-✅ 4 types of optins (Slide Up, Inline, Modal, Floating Bar)
-✅ Advanced analytics
-✅ SMTP flexibility – Choose from 8+ gateways
-✅ Cloud-powered architecture
-✅ Comprehensive marketing automation
-✅ 12+ contact form integrations
-✅ 100+ stunning email newsletter templates
-✅ Unlimited subscribers
-✅ WooCommerce emails & EDD ready
-✅ A/B split testing
-✅ Team management
-✅ Multisite compatible
+The onboarding wizard guides you through each step. Most users complete initial setup (including sending setup and first optin form) in a single session. For WooCommerce stores, enable the integration under **weMail → Integrations** to begin syncing customers and configuring store-related emails.
 
 ## 🔒 Privacy Policy
 
@@ -350,42 +253,33 @@ Additionally, review [weDevs privacy policy](https://wedevs.com/privacy-policy/)
 
 == Frequently Asked Questions ==
 
-= What is weMail? =
+= How is weMail different from other email marketing plugins? =
 
-weMail is an email marketing plugin for WordPress that enables you to send email newsletters, automate email campaigns, collect leads with signup forms and optins, and connect with professional email-sending services like Amazon SES, Mailgun, SparkPost, SendGrid, and more, all from your WordPress dashboard.
+Most WordPress email marketing plugins store subscriber and campaign data locally, bloating your database and slowing your site as lists grow. Others fully offload to a third-party service but remove control from your WordPress workflow. weMail combines both strengths: a native WordPress interface with cloud-based data storage, full SMTP flexibility, and pricing up to 88% cheaper than Mailchimp at equivalent subscriber volumes. For teams evaluating weMail as a Mailchimp alternative, the cost difference compounds quickly at scale.
 
-= How does it work? =
+= Does weMail work with my existing SMTP provider? =
 
-weMail provides a built-in drag-and-drop email template builder to create beautiful email newsletters. After designing your email, configure the subject line, preview text, recipients (lists and segments), and sender information. Connect weMail with any supported SMTP gateway (Amazon SES, SendGrid, Mailgun, SparkPost, etc.) by adding your API key in settings. Then send bulk emails, schedule campaigns, or set up automated email automation sequences.
+Yes. weMail supports **Amazon SES**, **SendGrid**, **Mailgun**, **SparkPost**, **Postmark**, **Elastic Email**, **SparkPost EU**, and **SMTP.com**. If you have an account with any of these SMTP providers, connecting it takes only a few minutes using an API key or SMTP credentials. No extra plugins needed.
 
-= Is weMail dependent on external services? =
+= Can I migrate my subscribers from Mailchimp or another platform? =
 
-Yes. To send emails, weMail requires connection to an email-sending service (SMTP provider). weMail supports Amazon SES, Brevo, SparkPost, SendGrid, Postmark, Mailgun, Elastic Email, Pepipost, and any SMTP provider. This gives you flexibility to choose the most affordable and reliable sending solution, unlike competitors that lock you into proprietary services.
+Yes. weMail's import wizard accepts any standard CSV file and includes guided import flows for common platforms. Tags, custom fields, and subscription status transfer cleanly. Previously unsubscribed contacts are respected and will not be re-added to active lists.
 
-= How is my data handled? Is weMail GDPR compliant? =
+= Is double optin required? =
 
-Yes, weMail is fully GDPR compliant. All subscriber data is stored in your WordPress database - you own 100% of your data. weMail only collects anonymized telemetry data (with your permission) to improve the plugin. You can request data deletion anytime.
+**Double optin** is optional and configured per list. Enable it for compliance-sensitive audiences where list quality matters most. Disable it to maximize registration conversion rates for traffic you've already warmed through other channels.
 
-= Can I use weMail with my existing email list? =
+= Does weMail slow down my WordPress site? =
 
-Absolutely! weMail supports importing subscriber lists from Mailchimp (API import), MailPoet (WordPress integration), Campaign Monitor (API import), ActiveCampaign (API import), and CSV files (from any platform). Once imported, manage and segment subscribers directly from your WordPress dashboard.
+No. Subscriber data, campaign history, and analytics live in weMail's cloud infrastructure, not your WordPress database. The plugin footprint is lightweight and subscriber operations do not run heavy server queries. Site performance is unaffected at any list size.
 
-= Does weMail support WooCommerce integration? =
+= What happens to my data if I cancel? =
 
-Yes! weMail seamlessly integrates with WooCommerce. You can collect email addresses from WooCommerce checkout, send automated welcome emails to first-time customers, and segment subscribers based on purchase history, order frequency, total spending, products purchased, and last purchase date. Create targeted WooCommerce emails campaigns to boost customer engagement and sales.
+Your subscriber data is always yours. CSV export is available on every plan, including before cancellation. weMail does not lock lists, templates, or historical reports behind a paywall at the moment of export.
 
-= What types of opt-in forms does weMail support? =
+= Does weMail support WooCommerce abandoned cart recovery? =
 
-weMail provides 4 types of signup forms and optins for maximum lead capture flexibility:
-
-* Embed Forms – Place forms directly in content, widgets, or pages
-* Slide-Up Forms – Non-intrusive forms that slide up from the bottom
-* Modal Popup Forms – Eye-catching popups with trigger controls
-* Floating Bar Forms – Sticky bars that attach to top/bottom of screen
-
-All signup forms and optins are fully customizable with custom fields, responsive design, and match your brand's style. weMail also integrates with 12+ contact form plugins like Contact Form 7, WPForms, and Gravity Forms for seamless lead collection.
-
-Ready to send at scale without the scale pricing? Install weMail free today and upgrade when you're ready.
+Yes. With the WooCommerce integration active, weMail detects abandoned carts and triggers a recovery sequence of transactional emails on a schedule you define. Timing, number of messages, and content are all configured in the email automation builder. This feature is available on paid plans and delivers strong ROI with no ongoing manual effort.
 
 weMail development repository on [GitHub](https://github.com/weDevsOfficial/wemail/)
 
@@ -408,6 +302,9 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+v2.1.4 - (17th Jun, 2026) =
+* Enhance readme file
+
 v2.1.3 - (23th May, 2026) =
 * Fix reflected XSS vulnerability in form preview AJAX handler
 
