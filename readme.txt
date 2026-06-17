@@ -33,12 +33,12 @@ Email deliverability starts with your SMTP configuration; a poorly wired setup g
 **Supported SMTP providers:**
 
 * [Amazon SES](https://aws.amazon.com/ses/)
-* [SendGrid] (https://www.twilio.com/en-us/sendgrid)
-* [Mailgun] (https://www.mailgun.com/)
-* [SparkPost] (https://developers.sparkpost.com/)
-* [Postmark] (https://postmarkapp.com/)
-* [Elastic Email] (https://elasticemail.com/)
-* [Brevo] (https://www.brevo.com/)
+* [SendGrid](https://www.twilio.com/en-us/sendgrid)
+* [Mailgun](https://www.mailgun.com/)
+* [SparkPost](https://developers.sparkpost.com/)
+* [Postmark](https://postmarkapp.com/)
+* [Elastic Email](https://elasticemail.com/)
+* [Brevo](https://www.brevo.com/)
 
 **Custom SMTP**
 
