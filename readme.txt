@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
 Requires at least: 5.6
 Tested up to: 6.8.3
-Stable tag: 2.1.4
+Stable tag: 2.1.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -33,12 +33,12 @@ Email deliverability starts with your SMTP configuration; a poorly wired setup g
 **Supported SMTP providers:**
 
 * [Amazon SES](https://aws.amazon.com/ses/)
-* [SendGrid] (https://www.twilio.com/en-us/sendgrid)
-* [Mailgun] (https://www.mailgun.com/)
-* [SparkPost] (https://developers.sparkpost.com/)
-* [Postmark] (https://postmarkapp.com/)
-* [Elastic Email] (https://elasticemail.com/)
-* [Brevo] (https://www.brevo.com/)
+* [SendGrid](https://www.twilio.com/en-us/sendgrid)
+* [Mailgun](https://www.mailgun.com/)
+* [SparkPost](https://developers.sparkpost.com/)
+* [Postmark](https://postmarkapp.com/)
+* [Elastic Email](https://elasticemail.com/)
+* [Brevo](https://www.brevo.com/)
 
 **Custom SMTP**
 
@@ -302,6 +302,9 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+v2.1.5 - (17th Jun, 2026) =
+* Enhance readme file
+
 v2.1.4 - (17th Jun, 2026) =
 * Enhance readme file
 
