@@ -1,7 +1,7 @@
-=== weMail – Email Marketing, Newsletter Builder & Email Automations for WooCommerce ===
+=== weMail – Email Marketing, Newsletters Builder & Email Automations for WooCommerce ===
 Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
-Tags: Email Marketing, email newsletter, email automation, subscribers, woocommerce emails
+Tags: newsletters, email newsletter, autoresponder, email automation, drip email
 Requires at least: 5.6
 Tested up to: 6.8.3
 Stable tag: 2.1.5
@@ -9,7 +9,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
 
-Email marketing, newsletter & email automation for WordPress. Manage WooCommerce emails & build email newsletter campaigns with weMail.
+Email marketing, newsletters & email automation for WordPress. Manage WooCommerce emails & build email newsletter campaigns with weMail.
 == Description ==
 Most email marketing platforms treat WordPress as an afterthought. weMail is built differently: it delivers professional-grade email marketing natively inside your WordPress dashboard, without the complexity or the runaway cost.
 
@@ -65,7 +65,7 @@ Trigger-based automation fires campaigns the moment conditions are met: list sig
 
 **Core automation capabilities:**
 
-**Drip sequences:** a series of emails over days or weeks — an introduction on day one, a walkthrough on day three, a case study on day seven, an offer on day fourteen — mapped visually in the node-based builder.
+**Drip email sequences:** a series of emails over days or weeks — an introduction on day one, a walkthrough on day three, a case study on day seven, an offer on day fourteen — mapped visually in the node-based builder.
 
 **Welcome email:** every new subscriber gets a personalized onboarding email immediately, your highest-opened touchpoint, with tailored content or an introductory offer.
 
