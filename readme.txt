@@ -3,7 +3,7 @@ Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: newsletters, email newsletter, autoresponder, email automation, drip email
 Requires at least: 5.6
-Tested up to: 6.8.3
+Tested up to: 7.1
 Stable tag: 2.1.5
 Requires PHP: 7.4
 License: GPLv2 or later
