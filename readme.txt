@@ -3,8 +3,8 @@ Contributors: tareq1988, nizamuddinbabu, wedevs, wemail
 Donate link: https://getwemail.io
 Tags: newsletters, email newsletter, autoresponder, email automation, drip email
 Requires at least: 5.6
-Tested up to: 6.8.3
-Stable tag: 2.1.5
+Tested up to: 7.1
+Stable tag: 2.1.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -302,6 +302,9 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+v2.1.6 - (26th Sep, 2026) =
+* Tested compatibility with WordPress 7.1
+
 v2.1.5 - (17th Jun, 2026) =
 * Enhance readme file
 
