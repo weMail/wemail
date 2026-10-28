@@ -22,7 +22,7 @@ class Users extends RestController {
     }
 
     public function permissions( $request ) {
-        return wemail()->user->can( 'manage_settings' );
+        return current_user_can( 'manage_options' );
     }
 
     public function index() {
@@ -53,25 +53,26 @@ class Users extends RestController {
     }
 
     public function storeRoles( $request ) {
-        $roles = $this->saveAccessibleRoles( $request );
-        $access_token = get_option( 'wemail_api_key' );
+        $roles = $this->saveAccessibleRoles( $request );   // validates first; writes only on success
 
-        if ( empty( $roles ) || ! is_array( $roles ) ) {
+        if ( false === $roles ) {
             return $this->respond( array( 'message' => 'Invalid roles provided' ), 422 );
         }
+
+        $access_token = get_option( 'wemail_api_key' );
 
         if ( empty( $access_token ) ) {
             return $this->respond( array( 'message' => 'API token not available' ), 422 );
         }
 
-        $data = array(
-            'roles' => $roles,
-            'api_token' => $access_token,
+        $response = wemail()->api->wp()->users()->rolePermissions()->post(
+            array(
+                'roles'     => $roles,
+                'api_token' => $access_token,
+            )
         );
 
-        $response = wemail()->api->wp()->users()->rolePermissions()->post( $data );
-
-        if ( $response['success'] === true ) {
+        if ( ! is_wp_error( $response ) && isset( $response['success'] ) && true === $response['success'] ) {
             return $this->respond( array( 'message' => $response['message'] ), 200 );
         }
 
@@ -191,13 +192,38 @@ class Users extends RestController {
     }
 
     /**
-     * @param $request
-     * @return mixed
+     * Validate and persist the weMail accessible roles
+     *
+     * @since 2.1.7 Validates before writing; returns false on invalid input.
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return array|false
      */
     public function saveAccessibleRoles( $request ) {
         $roles = $request->get_param( 'roles' );
 
-        update_option( 'wemail_accessible_roles', $roles );
-        return $roles;
+        if ( empty( $roles ) || ! is_array( $roles ) ) {
+            return false;
+        }
+
+        $registered = array_keys( wp_roles()->roles );
+        $sanitized  = array();
+
+        foreach ( $roles as $role ) {
+            // Verbatim check: accept registered slugs exactly as registered —
+            // no key normalization that could reject a legitimate slug.
+            if ( ! is_string( $role ) || ! in_array( $role, $registered, true ) ) {
+                return false;
+            }
+
+            $sanitized[] = $role;
+        }
+
+        $sanitized = array_values( array_unique( $sanitized ) );
+
+        update_option( 'wemail_accessible_roles', $sanitized );
+
+        return $sanitized;
     }
 }

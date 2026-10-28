@@ -2,9 +2,6 @@
 
 namespace WeDevs\WeMail\Rest;
 
-use WeDevs\WeMail\Core\Ecommerce\EDD\EDDSettings;
-use WeDevs\WeMail\Core\Ecommerce\Requests\Settings;
-use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCSettings;
 use WeDevs\WeMail\RestController;
 
 class Site extends RestController {
@@ -12,8 +9,8 @@ class Site extends RestController {
     public $rest_base = '/site';
 
     public function register_routes() {
-        $this->post( '/settings', 'save_settings', 'can_manage_settings' );
-        $this->post( '/settings/save-options', 'save_options', 'manage_options' );
+        $this->post( '/settings', 'save_settings', 'manage_options' );
+        $this->post( '/settings/save-options', 'save_options', 'manage_options_or_service' );
         $this->delete( '', 'delete_site', 'check_delete_permission' );
         $this->get( '/authentication', 'check_after_update', 'manage_options' );
     }
@@ -32,6 +29,11 @@ class Site extends RestController {
      */
     public function save_settings( $request ) {
         $name = $request->get_param( 'name' );
+
+        if ( ! is_string( $name ) || ! in_array( $name, $this->allowed_setting_names(), true ) ) {
+            return $this->respond_error( __( 'Invalid settings name.', 'wemail' ), 'invalid_settings_name' );
+        }
+
         $settings = $request->get_param( 'settings' );
 
         $response = wemail()->api->settings()->$name()->post( $settings );
@@ -48,6 +50,25 @@ class Site extends RestController {
     }
 
     /**
+     * Setting names the /site/settings endpoint may persist locally
+     *
+     * @since 2.1.7
+     *
+     * @return array
+     */
+    private function allowed_setting_names() {
+        $allowed = apply_filters(
+            'wemail_site_settings_allowed_names',
+            array( 'general', 'transactional_emails', 'sync_subscriber_wp', 'sync_subscriber_erp_contacts' )
+        );
+
+        // Never let a filter re-open credential / ACL / integration options.
+        $blocked = array( 'api_key', 'accessible_roles', 'ecommerce', 'site_slug', 'version' );
+
+        return array_values( array_diff( (array) $allowed, $blocked ) );
+    }
+
+    /**
      * @param $request \WP_REST_Request
      *
      * @return mixed|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
@@ -55,16 +76,31 @@ class Site extends RestController {
     public function save_options( $request ) {
         $settings = $request->get_param( 'settings' );
 
-        foreach ( $settings as $key => $setting ) {
-            if ( rest_is_boolean( $setting ) ) {
-                update_option( "wemail_{$key}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+        if ( ! is_array( $settings ) ) {
+            return $this->respond_error( __( 'Invalid settings.', 'wemail' ), 'invalid_settings' );
+        }
 
-                // Update site settings data on server
-                $this->update_site_settings_on_server( $key );
+        $blocked = array( 'api_key', 'accessible_roles', 'site_slug', 'version', 'ecommerce' );
+
+        foreach ( $settings as $key => $setting ) {
+            if ( ! is_string( $key ) ) {
                 continue;
             }
 
-            update_option( "wemail_{$key}", $setting );
+            // Canonical name: one normalized form for the blocklist compare and
+            // the written option, so " Api_Key " cannot bypass the blocklist.
+            $name = strtolower( trim( $key ) );
+
+            if ( in_array( $name, $blocked, true ) ) {
+                continue;
+            }
+
+            if ( rest_is_boolean( $setting ) ) {
+                update_option( "wemail_{$name}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+                continue;
+            }
+
+            update_option( "wemail_{$name}", $setting );
         }
 
         return rest_ensure_response( array( 'success' => true ) );
@@ -105,28 +141,6 @@ class Site extends RestController {
         global $wpdb;
         $keys = implode( "','", array_map( 'esc_sql', $keys ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key IN ('" . $keys . "')" ) );
-    }
-
-    /**
-     * @param $key
-     */
-    public function update_site_settings_on_server( $key ) {
-        switch ( $key ) {
-            case 'is_woocommerce_synced':
-                $setting = new WCSettings();
-                break;
-            case 'is_edd_synced':
-                $setting = new EDDSettings();
-                break;
-            default:
-                return;
-        }
-
-        $settings = $setting->get();
-        $setting = new Settings();
-        $setting->update( $settings );
-
-        return;
     }
 
     public function check_after_update() {

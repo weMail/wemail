@@ -35,8 +35,8 @@ class WP extends RestController {
     public function register_routes() {
         $this->get( '/post-types', 'post_types', 'can_update_campaign' );
         $this->get( '/posts', 'posts', 'permission' );
-        $this->get( '/user-roles', 'user_roles', 'can_manage_settings' );
-        $this->get( '/users', 'users', 'can_create_subscriber' );
+        $this->get( '/user-roles', 'user_roles', 'manage_options_or_service' );
+        $this->get( '/users', 'users', 'manage_options_or_service' );
         $this->get( '/products', 'products', 'can_update_campaign' );
         $this->get( '/post-types/(?P<post_type>[\w]+)/taxonomies/(?P<taxonomy>post_tag|category)', 'terms', 'can_update_campaign' );
     }
