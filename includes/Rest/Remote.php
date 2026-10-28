@@ -11,6 +11,22 @@ class Remote extends RestController {
 
     public $rest_base = '/remote';
 
+    /**
+     * The weMail API paths whose payload is persisted by the SaaS and later used
+     * as the site credential for server-to-WP callbacks.
+     *
+     * Exact matches only — third-party import endpoints (e.g. /import/mailchimp/*)
+     * carry the user's own external api_key and must never be overwritten.
+     *
+     * @since 2.1.7
+     *
+     * @var array
+     */
+    private $site_key_paths = array(
+        '/import/csv/start',
+        '/import/mail-poet/start',
+    );
+
     public function register_routes() {
         $this->post( '/', 'call_remote', 'can_remote_call' );
     }
@@ -38,10 +54,32 @@ class Remote extends RestController {
     }
 
     /**
+     * Stamp the site API key into the payload of allow-listed proxy paths
+     *
+     * @since 2.1.7
+     *
+     * @param string $path Proxied weMail API path
+     * @param array  $data Request payload
+     *
+     * @return array
+     */
+    private function stamp_site_api_key( $path, $data ) {
+        $parts    = explode( '?', $path );
+        $endpoint = untrailingslashit( $parts[0] );
+
+        if ( in_array( $endpoint, $this->site_key_paths, true ) ) {
+            $data['api_key'] = wemail()->api->get_api_key();
+        }
+
+        return $data;
+    }
+
+    /**
      * Call remote api | weMail api
      * This is proxy to call weMail api
      *
      * @since 2.0.0
+     * @since 2.1.7 Stamps site api_key for allow-listed import paths.
      *
      * @param \WP_REST_Request $request
      *
@@ -68,6 +106,7 @@ class Remote extends RestController {
             $response = wemail()->api->send_json()->get( $path, $query );
         } else {
             $data = array_merge( $data ? $data : array(), $query ? $query : array() );
+            $data = $this->stamp_site_api_key( $path, $data );
             $response = wemail()->api->url( $path )->send_json()->{$method}( $data, array() );
         }
 
