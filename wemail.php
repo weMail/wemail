@@ -7,7 +7,9 @@
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
  * Version: 2.1.6
- * License: GPL-3.0
+ * Requires at least: 5.6
+ * Requires PHP: 7.4
+ * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
  * Domain Path: /i18n/languages

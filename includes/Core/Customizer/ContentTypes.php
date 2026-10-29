@@ -400,7 +400,7 @@ class ContentTypes {
      * @return array
      */
     public static function countdown() {
-        $api_url = parse_url( wemail()->wemail_api );
+        $api_url = wp_parse_url( wemail()->wemail_api );
 
         return array(
             'type'       => 'countdown',

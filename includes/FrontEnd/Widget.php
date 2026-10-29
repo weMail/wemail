@@ -34,10 +34,10 @@ class Widget extends WP_Widget {
     public function widget( $args, $instance ) {
         $title = ! empty( $instance['title'] ) ? $instance['title'] : '';
 
-        echo $args['before_widget'];
+        echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-supplied widget wrapper markup.
 
         if ( $title ) {
-            echo $args['before_title'] . $title . $args['after_title'];
+            echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-supplied widget wrapper markup.
         }
 
         if ( empty( $instance['form'] ) ) {
@@ -61,6 +61,6 @@ class Widget extends WP_Widget {
 
         include WEMAIL_VIEWS . '/form.php';
 
-        echo $args['after_widget'];
+        echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-supplied widget wrapper markup.
     }
 }

@@ -32,24 +32,24 @@ class ReviewNotice {
      */
     public function connect_review_notice_html() {
 		?>
-        <div class="notice wemail-review-notice-flex-container is-dismissible review-time-background-image" data-nonce="<?php echo wp_create_nonce( '_review_nonce' ); ?>" >
+        <div class="notice wemail-review-notice-flex-container is-dismissible review-time-background-image" data-nonce="<?php echo esc_attr( wp_create_nonce( '_review_nonce' ) ); ?>" >
             <div class="wemail-connect-notice-content">
                 <div class="wemail-connect-notice-content">
                     <h3>
                         <?php
-                        echo __( 'Great! ', 'wemail' );
+                        esc_html_e( 'Great! ', 'wemail' );
                         if ( $this->time_based_review ) {
                             /* translators: %d is replaced with the number of days */
-                            printf( __( 'You are using weMail for %s absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval( $this->day_count ) . ' days' );
+                            echo esc_html( sprintf( __( 'You are using weMail for %s absolutely free', 'wemail' ), $this->day_count > 31 ? 'more than 1 month' : intval( $this->day_count ) . ' days' ) );
                         } else {
                             /* translators: %d is replaced with the number of campaigns */
-                            printf( __( 'You sent %d campaigns using weMail successfully.', 'wemail' ), $this->campaign_count );
+                            echo esc_html( sprintf( __( 'You sent %d campaigns using weMail successfully.', 'wemail' ), $this->campaign_count ) );
                         }
                         ?>
                     </h3>
                     <p>
                         <?php
-                        echo __(
+                        esc_html_e(
                             'Don\'t worry, we are not asking you to buy the pro plan. But would you give us a great review, if you will? We put a lot of
                             hard work to develop it and make it better every day. It would motivate the team a lot! Do you think it\'s fair?', 'wemail'
                         );
@@ -58,13 +58,13 @@ class ReviewNotice {
                     <div class="wemail-reivew-notice-connect-button" style="margin-bottom: 10px: margin top: 10px">
                         <form method='post'>
                             <button type="submit" class="button review_reposnse_yes" id="review_reposnse_yes" name="review_reposnse_yes">
-                                <?php echo __( 'Yes, Absolutely', 'wemail' ); ?>
+                                <?php esc_html_e( 'Yes, Absolutely', 'wemail' ); ?>
                             </button>
                             <button type="submit" class="button response-button" id="review_reposnse_later" name="review_response_later">
-                                <?php echo __( 'Ask me later', 'wemail' ); ?>
+                                <?php esc_html_e( 'Ask me later', 'wemail' ); ?>
                             </button>
                             <button type="submit" class="response-button" id="review_reposnse_no" name="review_response_no">
-                                <u> <?php echo __( 'No, I\'m just taking, not giving', 'wemail' ); ?> </u>
+                                <u> <?php esc_html_e( 'No, I\'m just taking, not giving', 'wemail' ); ?> </u>
                             </button>
                             <?php wp_nonce_field( '_review_nonce', 'review_nonce' ); ?>
                         </form>
@@ -91,11 +91,11 @@ class ReviewNotice {
 
         if ( isset( $_GET['dismiss_wemail_review_notice'] ) && (int) $_GET['dismiss_wemail_review_notice'] === 1 ) {
             if ( ! isset( $_GET['review_nonce'] ) ) {
-                wp_die( __( 'Nonce not found!', 'wemail' ) );
+                wp_die( esc_html__( 'Nonce not found!', 'wemail' ) );
             }
 
             if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['review_nonce'] ) ), '_review_nonce' ) ) {
-                wp_die( __( 'Invalid nonce!', 'wemail' ) );
+                wp_die( esc_html__( 'Invalid nonce!', 'wemail' ) );
             }
 
             update_option( 'wemail_review_notice', 1 );
@@ -152,16 +152,16 @@ class ReviewNotice {
      */
     public function handle_review_response() {
         if ( isset( $_POST['submit'] ) && ! isset( $_POST['review_nonce'] ) ) {
-            wp_die( __( 'Nonce Not Found', 'wemail' ) );
+            wp_die( esc_html__( 'Nonce Not Found', 'wemail' ) );
         }
 
         if ( isset( $_POST['submit'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['review_nonce'] ) ), '_review_nonce' ) ) {
-            wp_die( __( 'Security check', 'wemail' ) );
+            wp_die( esc_html__( 'Security check', 'wemail' ) );
         }
 
         if ( isset( $_POST['review_reposnse_yes'] ) ) {
             $this->review_response( 'yes' );
-            wp_redirect( 'https://wordpress.org/support/plugin/wemail/reviews/?filter=5' );
+            wp_redirect( 'https://wordpress.org/support/plugin/wemail/reviews/' ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- hardcoded external review URL, no user input
             exit;
 		} elseif ( isset( $_POST['review_response_later'] ) ) {
 			$this->review_response( 'later' );

@@ -175,7 +175,9 @@ class MailPoet {
         $segment_table = $wpdb->prefix . 'mailpoet_segments';
         $pivot_table = $wpdb->prefix . 'mailpoet_subscriber_segment';
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name built from $wpdb->prefix, no values
         $lists = $wpdb->get_results( 'SELECT * FROM ' . $segment_table, ARRAY_A );
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table names built from $wpdb->prefix, value prepared
         $stats = $wpdb->get_results( $wpdb->prepare( 'SELECT mp_segments.id, COUNT(*) as count FROM ' . $pivot_table . ' as mp_segment_pivot INNER JOIN ' . $segment_table . ' as mp_segments ON mp_segment_pivot.segment_id = mp_segments.id AND mp_segment_pivot.status = %s GROUP BY mp_segments.id', Subscriber::STATUS_SUBSCRIBED ), ARRAY_A );
 
         $lists = array_column( $lists, 'name', 'id' );

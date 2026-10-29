@@ -103,8 +103,14 @@ class Site extends RestController {
 
     public function delete_user_metadata( $keys ) {
         global $wpdb;
-        $keys = implode( "','", array_map( 'esc_sql', $keys ) );
-        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key IN ('" . $keys . "')" ) );
+
+        if ( empty( $keys ) ) {
+            return;
+        }
+
+        $placeholders = implode( ', ', array_fill( 0, count( $keys ), '%s' ) );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- {$wpdb->usermeta} is a core table property, values prepared
+        $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ($placeholders)", $keys ) );
     }
 
     /**

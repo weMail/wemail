@@ -71,9 +71,9 @@ class Shortcode {
         ?>
             <script type="text/javascript">
                 var wemail_forms_shortcode_button = {
-                    title: '<?php echo __( 'Insert weMail form', 'wemail' ); ?>',
+                    title: '<?php echo esc_js( __( 'Insert weMail form', 'wemail' ) ); ?>',
                     forms: <?php echo $forms ? wp_json_encode( $forms ) : wp_json_encode( array() ); ?>,
-                    icon: '<?php echo $icon; ?>'
+                    icon: '<?php echo esc_js( $icon ); ?>'
                 };
             </script>
         <?php

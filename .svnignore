@@ -11,3 +11,6 @@ license.txt
 composer.json
 composer.lock
 .cursor
+.idea
+plans
+.commandcode

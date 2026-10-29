@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Turkmenistan Divisions
  *
@@ -13,5 +15,5 @@ return [
     "D" => __( "Dasoguz", "wemail" ),
     "L" => __( "Lebap", "wemail" ),
     "M" => __( "Mary", "wemail" ),
-    "X~" => __( "", "wemail" ),
+    "X~" => "",
 ];
