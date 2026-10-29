@@ -148,6 +148,10 @@ class Form {
 
         $ids = (array) $id;
 
+        if ( empty( $ids ) ) {
+            return false;
+        }
+
         $data = $this->fillable_check(
             $data,
             array( 'name', 'template', 'settings', 'type', 'status', 'deleted_at' )
@@ -190,6 +194,10 @@ class Form {
     public function delete( $ids, $soft_delete = false ) {
         global $wpdb;
         $ids = (array) $ids;
+
+        if ( empty( $ids ) ) {
+            return false;
+        }
 
         if ( $soft_delete ) {
             return $this->update( array( 'deleted_at' => current_time( 'mysql' ) ), $ids );

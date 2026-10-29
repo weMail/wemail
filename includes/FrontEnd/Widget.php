@@ -37,7 +37,7 @@ class Widget extends WP_Widget {
         echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-supplied widget wrapper markup.
 
         if ( $title ) {
-            echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-supplied widget wrapper markup.
+            echo $args['before_title'] . wp_kses_post( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-supplied widget wrapper markup.
         }
 
         if ( empty( $instance['form'] ) ) {

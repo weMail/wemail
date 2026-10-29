@@ -49,9 +49,9 @@ class FormPreview {
                 <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo esc_url( wemail()->wemail_cdn . '/build/css/Form.css?ver=' . WEMAIL_VERSION ); ?>">
                 <script>
                     var weMail = {
-                        'restURL': '<?php echo esc_js( untrailingslashit( get_rest_url( null, '/wemail/v1' ) ) ); ?>',
-                        'nonce': '<?php echo esc_js( wp_create_nonce( 'wp_rest' ) ); ?>',
-                        'cdn': '<?php echo esc_js( wemail()->wemail_cdn ); ?>'
+                        restURL: <?php echo wp_json_encode( untrailingslashit( get_rest_url( null, '/wemail/v1' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON for JS context ?>,
+                        nonce: <?php echo wp_json_encode( wp_create_nonce( 'wp_rest' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON for JS context ?>,
+                        cdn: <?php echo wp_json_encode( wemail()->wemail_cdn ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON for JS context ?>
                     };
                     var wemailForm = <?php echo wp_json_encode( $form ); ?>
                 </script>
