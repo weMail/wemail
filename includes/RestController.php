@@ -4,6 +4,7 @@ namespace WeDevs\WeMail;
 
 use WP_Error;
 use WP_REST_Controller;
+use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 use WP_User_Query;
@@ -96,15 +97,6 @@ abstract class RestController extends WP_REST_Controller {
     protected $rest_base;
 
     /**
-     * Current authenticate user
-     *
-     * @since 1.0.0
-     *
-     * @var null|\WP_User
-     */
-    protected $current_user = null;
-
-    /**
      * Class constructor
      *
      * @since 1.0.0
@@ -129,9 +121,21 @@ abstract class RestController extends WP_REST_Controller {
         /**
          * This will handle the weMail permission callback starts with can_.
          * For example 'can_create_campaign'
+         *
+         * A request carrying x-wemail-key is a server-to-server call: it is
+         * authorized by the site key alone. Browser (session) requests never
+         * send that header and fall through to the role check.
          */
         if ( strpos( $name, 'can_' ) === 0 ) {
-            $this->set_current_user( $args[0] );
+            $request = isset( $args[0] ) ? $args[0] : null;
+
+            if ( $request instanceof WP_REST_Request ) {
+                $api_key = $request->get_header( 'x-wemail-key' );
+
+                if ( ! empty( $api_key ) ) {
+                    return self::service_request( $request );
+                }
+            }
 
             $permission = str_replace( 'can_', '', $name );
 
@@ -163,6 +167,45 @@ abstract class RestController extends WP_REST_Controller {
      */
     public function manage_options( $request ) {
         return current_user_can( 'manage_options' );
+    }
+
+    /**
+     * Whether the request carries the valid site service key
+     *
+     * Bare key check only — no user impersonation, x-wemail-user is ignored.
+     *
+     * @since 2.1.7
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return bool
+     */
+    public static function service_request( $request ) {
+        if ( ! $request instanceof WP_REST_Request ) {
+            return false;
+        }
+
+        $api_key    = $request->get_header( 'x-wemail-key' );
+        $wp_api_key = get_option( 'wemail_api_key' );
+
+        if ( empty( $api_key ) || empty( $wp_api_key ) || ! is_string( $api_key ) || ! is_string( $wp_api_key ) ) {
+            return false;
+        }
+
+        return hash_equals( $wp_api_key, $api_key );
+    }
+
+    /**
+     * Zone-2 composed with Zone-3: site admin session OR site service key
+     *
+     * @since 2.1.7
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return bool
+     */
+    public function manage_options_or_service( $request ) {
+        return current_user_can( 'manage_options' ) || self::service_request( $request );
     }
 
     /**
@@ -287,44 +330,6 @@ abstract class RestController extends WP_REST_Controller {
                 ),
             )
         );
-    }
-
-    /**
-     * Set authenticate user as WP User
-     *
-     * @since 1.0.0
-     *
-     * @param \WP_REST_Request $request
-     *
-     * @return bool
-     */
-    protected function set_current_user( $request ) {
-        if ( $this->current_user ) {
-            return true;
-        }
-
-        $api_key = $request->get_header( 'x-wemail-key' );
-
-        if ( ! empty( $api_key ) ) {
-            $wp_api_key = get_option( 'wemail_api_key' );
-            if ( $api_key !== $wp_api_key ) {
-                return false;
-            }
-
-            $user_email = $request->get_header( 'x-wemail-user' );
-
-            if ( ! empty( $user_email ) ) {
-                $user = get_user_by( 'email', $user_email );
-
-                if ( $user ) {
-                    $this->current_user = wp_set_current_user( $user->ID, $user->user_login );
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**

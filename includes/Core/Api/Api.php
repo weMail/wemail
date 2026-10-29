@@ -205,14 +205,15 @@ class Api {
     /**
      * Get selective class properties
      *
+     * Localized to the admin SPA (weMail.api); must never contain credentials.
+     *
      * @since 1.0.0
      *
      * @return array
      */
     public function get_props() {
         return array(
-            'root'     => $this->root,
-            'api_key'  => $this->get_api_key(),
+            'root'       => $this->root,
             'user_roles' => $this->get_roles(),
         );
     }

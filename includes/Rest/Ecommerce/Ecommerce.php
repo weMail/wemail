@@ -29,7 +29,11 @@ class Ecommerce extends RestController {
     /**
      * Settings endpoint
      *
+     * @since 2.1.7 Stamps access_token server-side so the browser never supplies the site credential.
+     *
      * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response|\WP_Error
      */
     public function settings( $request ) {
         $body = $request->get_json_params();
@@ -38,12 +42,14 @@ class Ecommerce extends RestController {
         /** @var PlatformInterface $platform */
         $platform = wemail()->ecommerce->platform( $platform );
 
+        // Server-side fields; access_token is stamped here so the browser never supplies the site credential.
         $body = array_merge(
             $body, array(
 				'currency'              => $platform->currency(),
 				'currency_symbol'       => $platform->currency_symbol(),
 				'platform'              => $platform->get_name(),
 				'subscriptions_enabled' => $platform->is_subscriptions_active(),
+				'access_token'          => wemail()->api->get_api_key(),
 			)
         );
         // Update settings to wp options
