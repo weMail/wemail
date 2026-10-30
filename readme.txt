@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: newsletters, email newsletter, autoresponder, email automation, drip email
 Requires at least: 5.6
 Tested up to: 7.1
-Stable tag: 2.1.6
+Stable tag: 2.1.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,19 @@ weMail stores campaign and subscriber data in the cloud, so your WordPress datab
 From building optin forms that capture leads to delivering automated newsletter sequences that convert them, weMail covers the complete subscriber lifecycle inside WordPress.
 
 [youtube https://www.youtube.com/watch?v=vp56CIPXHq4]
+
+== External services ==
+
+This plugin connects to the weMail cloud platform, which stores campaigns and subscriber data and delivers your emails. The following third-party services are used:
+
+* **weMail API (api.getwemail.io)** – connects your site to weMail when you link the site with your weMail account. Your site URL, site name and administrator email are sent during the connection, and campaign, subscriber and store data are exchanged with the cloud while you use the plugin's sending features.
+* **weMail app and CDN (app.getwemail.io, cdn.getwemail.io)** – the weMail dashboard, campaign builder and front-end form assets are loaded from the weMail CDN on the pages where the weMail interface runs. Third-party libraries used by the plugin are bundled with the plugin and load from your own site.
+* **Appsero (appsero.com)** – collects non-sensitive telemetry data upon user confirmation, to troubleshoot problems faster and make product improvements.
+
+These services are required for the plugin to send emails and manage campaigns. Their privacy policies:
+* [weMail Privacy Policy](https://getwemail.io/privacy-policy/)
+* [weDevs Privacy Policy](https://wedevs.com/privacy-policy/)
+* [Appsero](https://appsero.com/)
 
 == Explore: ==
 [Official Website](https://getwemail.io/)
@@ -302,58 +315,66 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
-v2.1.6 - (26th Sep, 2026) =
+= v2.1.7 - (29th Oct, 2026) =
+* Security fix: tightened REST route permissions so unprivileged users can no longer read private data (including WooCommerce coupon codes)
+* Security fix: blocked an unauthenticated fatal error caused by the Popup Builder integration on sites where that plugin is not active
+* Security fix: campaign customizer routes no longer crash when the weMail cloud is unreachable
+* Security fix: saving accessible roles now keeps the saved state consistent with the response
+* Security fix: save-options route now reports refused keys instead of always reporting success
+* WordPress.org readiness: release packaging, plugin header and readme metadata fixes
+
+= v2.1.6 - (26th Sep, 2026) =
 * Tested compatibility with WordPress 7.1
 
-v2.1.5 - (17th Jun, 2026) =
+= v2.1.5 - (17th Jun, 2026) =
 * Enhance readme file
 
-v2.1.4 - (17th Jun, 2026) =
+= v2.1.4 - (17th Jun, 2026) =
 * Enhance readme file
 
-v2.1.3 - (23th May, 2026) =
+= v2.1.3 - (23th May, 2026) =
 * Fix reflected XSS vulnerability in form preview AJAX handler
 
-v2.1.2 - (13th May, 2026) =
+= v2.1.2 - (13th May, 2026) =
 * Fix Fluent Forms 6.x compatibility issues
 
-v2.1.1 - (28th April, 2026) =
+= v2.1.1 - (28th April, 2026) =
 * Add WooCommerce Subscriptions integration with triggers for subscription created, cancelled, renewed, and expired events
 
-v2.1.0 - (31st March, 2026) =
+= v2.1.0 - (31st March, 2026) =
 * Abandoned cart feature
 
-v2.0.14 - (16th March, 2026) =
+= v2.0.14 - (16th March, 2026) =
 * Enhance readme file
 
-v2.0.13 - (5th March, 2026) =
+= v2.0.13 - (5th March, 2026) =
 * Added null handling for order creation and modification dates to prevent errors when date values are missing.
 
-v2.0.12 - (25th Feb, 2026) =
+= v2.0.12 - (25th Feb, 2026) =
 * Added purchased product category wise segmentation
 * Added customer lifetime summary for wooCommerce
 * Enhance date picker
 * Improve automation searching
 * Fix automation created at duplication issue
 
-v2.0.11 - (20th Feb, 2026) =
+= v2.0.11 - (20th Feb, 2026) =
 * Added support for WooCommerce 'order-create' and 'pending-payment' order statuses
 
-v2.0.10 - (10th Feb, 2026) =
+= v2.0.10 - (10th Feb, 2026) =
 * Fixed issue for csv import
 
-v2.0.9 - (22nd Jan, 2026) =
+= v2.0.9 - (22nd Jan, 2026) =
 * Fixed issue for csv import
 
-v2.0.8 - (19th Jan, 2026) =
+= v2.0.8 - (19th Jan, 2026) =
 * Refactor permission callbacks for form and CSV handling
 * Fix Wordfence security scan issues
 
-v2.0.7 - (19th Dec, 2025) =
+= v2.0.7 - (19th Dec, 2025) =
 * Handle API calls when the API key is missing
 * Update plugin uri
 
-v2.0.6 - (18th Nov, 2025) =
+= v2.0.6 - (18th Nov, 2025) =
 * Improve handling of WP_Error on remote calls
 
 = v2.0.5 - (12th Nov, 2025) =

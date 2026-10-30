@@ -52,8 +52,18 @@ class Users extends RestController {
         );
     }
 
+    /**
+     * Save the weMail accessible roles
+     *
+     * @since 2.1.7 The local option is written only after the cloud push succeeds,
+     * so a failure response can no longer leave new roles saved.
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return mixed
+     */
     public function storeRoles( $request ) {
-        $roles = $this->saveAccessibleRoles( $request );   // validates first; writes only on success
+        $roles = $this->validateAccessibleRoles( $request );
 
         if ( false === $roles ) {
             return $this->respond( array( 'message' => 'Invalid roles provided' ), 422 );
@@ -72,11 +82,14 @@ class Users extends RestController {
             )
         );
 
-        if ( ! is_wp_error( $response ) && isset( $response['success'] ) && true === $response['success'] ) {
-            return $this->respond( array( 'message' => $response['message'] ), 200 );
+        if ( is_wp_error( $response ) || ! isset( $response['success'] ) || true !== $response['success'] ) {
+            // Nothing was written locally, so the saved state and this response agree.
+            return $this->respond( array( 'message' => 'Failed to update roles' ), 422 );
         }
 
-        return $this->respond( array( 'message' => 'Failed to update roles' ), 422 );
+        update_option( 'wemail_accessible_roles', $roles );
+
+        return $this->respond( array( 'message' => $response['message'] ), 200 );
     }
 
     public function update( $request ) {
@@ -94,6 +107,11 @@ class Users extends RestController {
                         'include' => 'role,permissions',
                     )
                 );
+
+                // Cloud failure returns WP_Error; skip caching meta for this user.
+                if ( is_wp_error( $response ) || empty( $response['data'] ) ) {
+                    continue;
+                }
 
                 $wp_user = get_user_by( 'email', $user );
                 if ( isset( $wp_user->ID ) ) {
@@ -127,7 +145,12 @@ class Users extends RestController {
                     'status' => $status,
                 )
             );
-            if ( $wp_admin_response['success'] ) {
+
+            if ( is_wp_error( $wp_admin_response ) ) {
+                return $this->respond( array( 'message' => 'Failed to update user status' ), 422 );
+            }
+
+            if ( ! empty( $wp_admin_response['success'] ) ) {
                 if ( isset( $wp_admin_response['token'] ) ) {
                     update_user_meta( $user->ID, 'wemail_api_key', $wp_admin_response['token'] );
                 }
@@ -192,15 +215,16 @@ class Users extends RestController {
     }
 
     /**
-     * Validate and persist the weMail accessible roles
+     * Validate the weMail accessible roles without writing anything
      *
-     * @since 2.1.7 Validates before writing; returns false on invalid input.
+     * @since 2.1.7 Validates and returns the sanitized roles; the caller persists
+     * them only after the cloud push succeeds. Returns false on invalid input.
      *
      * @param \WP_REST_Request $request
      *
      * @return array|false
      */
-    public function saveAccessibleRoles( $request ) {
+    public function validateAccessibleRoles( $request ) {
         $roles = $request->get_param( 'roles' );
 
         if ( empty( $roles ) || ! is_array( $roles ) ) {
@@ -220,10 +244,6 @@ class Users extends RestController {
             $sanitized[] = $role;
         }
 
-        $sanitized = array_values( array_unique( $sanitized ) );
-
-        update_option( 'wemail_accessible_roles', $sanitized );
-
-        return $sanitized;
+        return array_values( array_unique( $sanitized ) );
     }
 }

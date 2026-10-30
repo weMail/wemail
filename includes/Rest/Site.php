@@ -69,6 +69,11 @@ class Site extends RestController {
     }
 
     /**
+     * Save local options
+     *
+     * @since 2.1.7 The response reports how many keys were saved and which were
+     * refused, so a request where nothing was saved no longer reports success.
+     *
      * @param $request \WP_REST_Request
      *
      * @return mixed|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
@@ -80,7 +85,9 @@ class Site extends RestController {
             return $this->respond_error( __( 'Invalid settings.', 'wemail' ), 'invalid_settings' );
         }
 
-        $blocked = array( 'api_key', 'accessible_roles', 'site_slug', 'version', 'ecommerce' );
+        $blocked  = array( 'api_key', 'accessible_roles', 'site_slug', 'version', 'ecommerce' );
+        $saved    = 0;
+        $rejected = array();
 
         foreach ( $settings as $key => $setting ) {
             if ( ! is_string( $key ) ) {
@@ -92,18 +99,27 @@ class Site extends RestController {
             $name = strtolower( trim( $key ) );
 
             if ( in_array( $name, $blocked, true ) ) {
+                $rejected[] = $name;
                 continue;
             }
 
             if ( rest_is_boolean( $setting ) ) {
                 update_option( "wemail_{$name}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+                ++$saved;
                 continue;
             }
 
             update_option( "wemail_{$name}", $setting );
+            ++$saved;
         }
 
-        return rest_ensure_response( array( 'success' => true ) );
+        return rest_ensure_response(
+            array(
+                'success'  => $saved > 0,
+                'saved'    => $saved,
+                'rejected' => $rejected,
+            )
+        );
     }
 
     public function delete_site() {

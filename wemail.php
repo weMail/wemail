@@ -1,18 +1,17 @@
 <?php
 
 /**
- * Plugin Name: weMail - Email Marketing Simplified With WordPress
+ * Plugin Name: weMail – Email Marketing, Newsletters Builder & Email Automations for WooCommerce
  * Description: Send Beautiful Email Newsletters with WordPress
  * Plugin URI: https://getwemail.io
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
- * Version: 2.1.6
+ * Version: 2.1.7
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wemail
- * Domain Path: /i18n/languages
  *
  * Copyright (c) 2020 weMail (email: info@getwemail.io). All rights reserved.
  *

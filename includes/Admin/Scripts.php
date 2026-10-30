@@ -37,12 +37,13 @@ class Scripts {
      * Enqueue admin styles
      *
      * @since 1.0.0
+     * @since 2.1.7 Third-party libraries load from the plugin folder instead of the CDN.
      *
      * @return void
      */
     public function enqueue_styles() {
-        wp_register_style( 'wemail-jquery-ui', wemail()->wemail_cdn . '/vendor/jquery-ui/jquery-ui.min.css', array(), $this->version );
-        wp_register_style( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.css', array(), $this->version );
+        wp_register_style( 'wemail-jquery-ui', WEMAIL_URL . '/assets/vendor/jquery-ui/jquery-ui.min.css', array(), $this->version );
+        wp_register_style( 'wemail-timepicker', WEMAIL_URL . '/assets/vendor/jquery-timepicker/jquery.timepicker.min.css', array(), $this->version );
         wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), array(), $this->version );
 
         $dependencies = array(
@@ -58,6 +59,7 @@ class Scripts {
      * Enqueue admin js
      *
      * @since 1.0.0
+     * @since 2.1.7 Third-party libraries load from the plugin folder instead of the CDN.
      *
      * @return void
      */
@@ -65,14 +67,14 @@ class Scripts {
         wp_enqueue_media();
 
         wp_register_script( 'wemail-tiny-mce', site_url( '/wp-includes/js/tinymce/tinymce.min.js' ), array(), true );
-        wp_register_script( 'wemail-tiny-mce-code', wemail()->wemail_cdn . '/vendor/tinymce/plugins/code/plugin.min.js', array( 'wemail-tiny-mce' ), $this->version, true );
-        wp_register_script( 'wemail-tiny-mce-hr', wemail()->wemail_cdn . '/vendor/tinymce/plugins/hr/plugin.min.js', array( 'wemail-tiny-mce-code' ), $this->version, true );
+        wp_register_script( 'wemail-tiny-mce-code', WEMAIL_URL . '/assets/vendor/tinymce/plugins/code/plugin.min.js', array( 'wemail-tiny-mce' ), $this->version, true );
+        wp_register_script( 'wemail-tiny-mce-hr', WEMAIL_URL . '/assets/vendor/tinymce/plugins/hr/plugin.min.js', array( 'wemail-tiny-mce-code' ), $this->version, true );
 
-        wp_register_script( 'wemail-moment', wemail()->wemail_cdn . '/vendor/moment/moment.min.js', array(), $this->version, true );
-        wp_register_script( 'wemail-moment-timezone', wemail()->wemail_cdn . '/vendor/moment/moment-timezone-with-data-2012-2022.min.js', array( 'wemail-moment' ), $this->version, true );
+        wp_register_script( 'wemail-moment', WEMAIL_URL . '/assets/vendor/moment/moment.min.js', array(), $this->version, true );
+        wp_register_script( 'wemail-moment-timezone', WEMAIL_URL . '/assets/vendor/moment/moment-timezone-with-data-2012-2022.min.js', array( 'wemail-moment' ), $this->version, true );
 
-        wp_register_script( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.js', array( 'jquery' ), $this->version, true );
-        wp_register_script( 'wemail-popper-js', wemail()->wemail_cdn . '/vendor/popper.js/popper.min.js', array(), $this->version, true );
+        wp_register_script( 'wemail-timepicker', WEMAIL_URL . '/assets/vendor/jquery-timepicker/jquery.timepicker.min.js', array( 'jquery' ), $this->version, true );
+        wp_register_script( 'wemail-popper-js', WEMAIL_URL . '/assets/vendor/popper.js/popper.min.js', array(), $this->version, true );
 
         $dependencies = array(
             'jquery',
