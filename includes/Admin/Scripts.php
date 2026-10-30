@@ -181,6 +181,8 @@ class Scripts {
      * Src: https://github.com/WordPress/gutenberg/blob/25a2003c7faac2dcdb723161fefd10ef44d147b6/lib/i18n.php#L12
      *
      * @since 1.0.0
+     * @since 2.1.7 Reads the msgid off each entry object, since WP 6.5+ keys
+     *              the entries array numerically.
      *
      * @return array
      */
@@ -206,6 +208,20 @@ class Scripts {
         }
 
         foreach ( $translations->entries as $msgid => $entry ) {
+            // Since WP 6.5 the entries array is numerically indexed, so the
+            // msgid has to be read off the entry object. Older versions
+            // already keyed entries by $entry->key(), so both paths agree.
+            if ( ! is_string( $msgid ) ) {
+                $msgid = (string) $entry->key();
+
+                // Defensive: some providers key plurals as "singular\0plural" (older or
+                // foreign data shapes). Core already strips the suffix, so this only guards
+                // against that shape; it is not a description of current core behavior.
+                if ( false !== strpos( $msgid, "\0" ) ) {
+                    $msgid = substr( $msgid, 0, strpos( $msgid, "\0" ) );
+                }
+            }
+
             $locale['locale_data'][ $domain ][ $msgid ] = $entry->translations;
         }
 

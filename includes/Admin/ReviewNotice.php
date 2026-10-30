@@ -148,15 +148,33 @@ class ReviewNotice {
     }
 
     /**
+     * Handle the review notice response form submission
+     *
+     * @since 2.1.7 Detects a form submission by the response fields instead of
+     *              the dead `submit` gate, verifies the nonce unconditionally
+     *              and requires weMail access before any option is changed.
+     *
      * @return void
      */
     public function handle_review_response() {
-        if ( isset( $_POST['submit'] ) && ! isset( $_POST['review_nonce'] ) ) {
+        $has_response = isset( $_POST['review_reposnse_yes'] ) || isset( $_POST['review_response_later'] ) || isset( $_POST['review_response_no'] );
+
+        if ( ! $has_response ) {
+            return;
+        }
+
+        if ( ! isset( $_POST['review_nonce'] ) ) {
             wp_die( esc_html__( 'Nonce Not Found', 'wemail' ) );
         }
 
-        if ( isset( $_POST['submit'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['review_nonce'] ) ), '_review_nonce' ) ) {
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['review_nonce'] ) ), '_review_nonce' ) ) {
             wp_die( esc_html__( 'Security check', 'wemail' ) );
+        }
+
+        $can_respond = current_user_can( 'manage_options' ) || wemail()->user->can( 'view_wemail' );
+
+        if ( ! $can_respond ) {
+            wp_die( esc_html__( 'You are not allowed to perform this action.', 'wemail' ) );
         }
 
         if ( isset( $_POST['review_reposnse_yes'] ) ) {
