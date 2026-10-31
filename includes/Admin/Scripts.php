@@ -103,6 +103,10 @@ class Scripts {
             wp_enqueue_script( 'wemail', $hmr_host . '/src/js/wemail.js', array( 'wemail-vendor' ), $this->version, true );
         }
 
+        wp_register_script( 'wemail-headway-blocker', false, array(), $this->version, true );
+        wp_enqueue_script( 'wemail-headway-blocker' );
+        wp_add_inline_script( 'wemail-headway-blocker', $this->headway_blocker_script() );
+
         $user = wemail()->user;
 
         $date_format = get_option( 'date_format', 'Y-m-d' );
@@ -173,6 +177,109 @@ class Scripts {
         wp_localize_script( 'wemail-vendor', 'weMail', $wemail );
 
         WeMail::register_module_scripts();
+    }
+
+    /**
+     * JS that stops the weMail app bundle's Headway changelog widget from
+     * loading. Headway is injected at runtime by the remote CDN bundle
+     * (cdn.getwemail.io / cdn-staging.getwemail.io); this plugin cannot
+     * change that bundle, so the only thing it can do is stop the injected
+     * script from running once it reaches the browser. Intercepting the
+     * `src` property assignment is the primary guard (that is how the
+     * bundle loads Headway); the MutationObserver is defense-in-depth for
+     * any leftover badge markup.
+     *
+     * @since 2.1.7
+     *
+     * @return string
+     */
+    private function headway_blocker_script() {
+        return <<<'JS'
+(function () {
+    'use strict';
+
+    if ( window.__weMailHeadwayBlockerInstalled ) {
+        return;
+    }
+    window.__weMailHeadwayBlockerInstalled = true;
+
+    var BLOCKED_HOSTS = [ 'cdn.headwayapp.co', 'headway-widget.net' ];
+
+    function isBlockedUrl( value ) {
+        if ( ! value ) {
+            return false;
+        }
+        var url = String( value );
+        for ( var i = 0; i < BLOCKED_HOSTS.length; i++ ) {
+            if ( url.indexOf( BLOCKED_HOSTS[ i ] ) !== -1 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function removeHeadwayNodes() {
+        var selectors = [
+            'script[src*="cdn.headwayapp.co"]',
+            'script[src*="headway-widget.net"]',
+            '#HW_frame_cont',
+            '#HW_badge_cont',
+            '#HW_badge'
+        ];
+        var i, nodes, j;
+        for ( i = 0; i < selectors.length; i++ ) {
+            nodes = document.querySelectorAll( selectors[ i ] );
+            for ( j = 0; j < nodes.length; j++ ) {
+                if ( nodes[ j ] && nodes[ j ].parentNode ) {
+                    nodes[ j ].parentNode.removeChild( nodes[ j ] );
+                }
+            }
+        }
+
+        var changelog = document.getElementById( 'wemail-changelog' );
+        if ( changelog ) {
+            changelog.innerHTML = '';
+        }
+    }
+
+    try {
+        var proto = window.HTMLScriptElement && window.HTMLScriptElement.prototype;
+        var srcDescriptor = proto && Object.getOwnPropertyDescriptor( proto, 'src' );
+
+        if ( proto && srcDescriptor && srcDescriptor.set && srcDescriptor.get ) {
+            Object.defineProperty( proto, 'src', {
+                configurable: true,
+                enumerable: srcDescriptor.enumerable,
+                get: function () {
+                    return srcDescriptor.get.call( this );
+                },
+                set: function ( value ) {
+                    if ( isBlockedUrl( value ) ) {
+                        return;
+                    }
+                    srcDescriptor.set.call( this, value );
+                }
+            } );
+        }
+    } catch ( e ) {
+        // If the browser will not let us redefine the property, the
+        // MutationObserver below is the fallback guard.
+    }
+
+    removeHeadwayNodes();
+
+    if ( window.MutationObserver ) {
+        var observer = new MutationObserver( function () {
+            removeHeadwayNodes();
+        } );
+
+        observer.observe( document.documentElement || document, {
+            childList: true,
+            subtree: true
+        } );
+    }
+}());
+JS;
     }
 
     /**

@@ -26,13 +26,15 @@ From building optin forms that capture leads to delivering automated newsletter 
 This plugin connects to the weMail cloud platform, which stores campaigns and subscriber data and delivers your emails. The following third-party services are used:
 
 * **weMail API (api.getwemail.io)** – connects your site to weMail when you link the site with your weMail account. Your site URL, site name and administrator email are sent during the connection, and campaign, subscriber and store data are exchanged with the cloud while you use the plugin's sending features.
-* **weMail app and CDN (app.getwemail.io, cdn.getwemail.io)** – the weMail dashboard, campaign builder and front-end form assets are loaded from the weMail CDN on the pages where the weMail interface runs. Third-party libraries used by the plugin are bundled with the plugin and load from your own site.
+* **weMail app and CDN (app.getwemail.io, cdn.getwemail.io)** – the weMail dashboard, campaign builder and front-end form assets are loaded from the weMail CDN on the pages where the weMail interface runs. The other third-party JavaScript and CSS libraries the plugin needs (such as moment.js, Popper.js, jQuery UI, jQuery Timepicker and the TinyMCE plugins) are bundled inside the plugin itself and load from your own site, not from any third-party CDN.
 * **Appsero (appsero.com)** – collects non-sensitive telemetry data upon user confirmation, to troubleshoot problems faster and make product improvements.
+* **icanhazip.com** – when a site administrator opens the plugin's Help > System Status screen, or when site information is sent to the support team, the plugin sends a request to icanhazip.com to look up the site's own public IP address, and shows it on that screen to help with troubleshooting. No site data is sent to icanhazip.com beyond the standard request headers (the site URL appears in WordPress's default User-Agent header). (Separately, the Appsero integration above may make the same kind of request to icanhazip.com as part of its own telemetry; that is Appsero's own call, not this plugin's.)
 
-These services are required for the plugin to send emails and manage campaigns. Their privacy policies:
-* [weMail Privacy Policy](https://getwemail.io/privacy-policy/)
-* [weDevs Privacy Policy](https://wedevs.com/privacy-policy/)
-* [Appsero](https://appsero.com/)
+These services are used for the plugin's email sending, campaign management and troubleshooting features. Their Privacy Policy and Terms of Service pages (Appsero does not publish separate terms):
+* weMail: [Privacy Policy](https://getwemail.io/privacy-policy/) | [Terms of Service](https://getwemail.io/terms-of-service/)
+* weDevs: [Privacy Policy](https://wedevs.com/privacy-policy/) | [Terms of Service](https://wedevs.com/terms-of-service/)
+* Appsero: [Privacy Policy](https://appsero.com/privacy-policy/)
+* Cloudflare (operator of icanhazip.com): [Privacy Policy](https://www.cloudflare.com/privacypolicy/) | [Terms of Use](https://www.cloudflare.com/website-terms/)
 
 == Explore: ==
 [Official Website](https://getwemail.io/)
@@ -321,6 +323,7 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 * Security fix: campaign customizer routes no longer crash when the weMail cloud is unreachable
 * Security fix: saving accessible roles now keeps the saved state consistent with the response
 * Security fix: save-options route now reports refused keys instead of always reporting success
+* WordPress.org readiness: stopped the third-party Headway changelog widget from loading in the weMail admin, bundled the Lato font locally in the email customizer instead of Google Fonts, and documented all external services in the readme
 * WordPress.org readiness: release packaging, plugin header and readme metadata fixes
 
 = v2.1.6 - (26th Sep, 2026) =
