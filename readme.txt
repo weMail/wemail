@@ -318,6 +318,7 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 == Changelog ==
 = v2.1.7 - (29th Oct, 2026) =
+* Fix: site visitors who are not logged in to WordPress can subscribe through weMail forms again (the form submit and visitor count requests were being refused for them)
 * Security fix: tightened REST route permissions so unprivileged users can no longer read private data (including WooCommerce coupon codes)
 * Security fix: blocked an unauthenticated fatal error caused by the Popup Builder integration on sites where that plugin is not active
 * Security fix: campaign customizer routes no longer crash when the weMail cloud is unreachable
