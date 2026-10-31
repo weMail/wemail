@@ -185,6 +185,20 @@ class Forms {
         $submitted_data = array();
 
         foreach ( $data as $form_input ) {
+            if (
+                ! is_array( $form_input )
+                || ! isset( $form_input['name'], $form_input['value'] )
+                || ! is_string( $form_input['name'] )
+                || strpos( $form_input['name'], 'wemail_form_field_' ) !== 0
+                || ! is_scalar( $form_input['value'] )
+            ) {
+                return new WP_Error(
+                    'invalid_form_data',
+                    __( 'Invalid form data', 'wemail' ),
+                    array( 'status' => 422 )
+                );
+            }
+
             $field_id                    = str_replace( 'wemail_form_field_', '', $form_input['name'] );
             $submitted_data[ $field_id ] = $form_input['value'];
         }
