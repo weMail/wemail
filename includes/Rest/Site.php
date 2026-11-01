@@ -178,7 +178,8 @@ class Site extends RestController {
             }
 
             $response = wemail()->api->site()->authentication()->send_json()->post( array( 'site_url' => get_site_url() ) );
-            if ( is_wp_error( $response ) && empty( $response['key'] ) ) {
+
+            if ( is_wp_error( $response ) ) {
                 return rest_ensure_response(
                     array(
                         'success' => false,
@@ -187,15 +188,26 @@ class Site extends RestController {
                     )
                 );
             }
+
+            if ( empty( $response['key'] ) || ! is_string( $response['key'] ) ) {
+                return rest_ensure_response(
+                    array(
+                        'success' => false,
+                        'redirect_url' => admin_url( 'admin.php?page=wemail' ),
+                        'message' => __( 'weMail could not connect this site. Please try again.', 'wemail' ),
+                    )
+                );
+            }
+
             update_option( 'wemail_api_key', $response['key'] );
             wemail()->api->set_api_key( $response['key'] );
 
             return rest_ensure_response(
                 array(
-					'success' => true,
-					'redirect_url' => admin_url( 'admin.php?page=wemail' ),
-					'message' => __( 'Site connected successfully!', 'wemail' ),
-				)
+                    'success' => true,
+                    'redirect_url' => admin_url( 'admin.php?page=wemail' ),
+                    'message' => __( 'Site connected successfully!', 'wemail' ),
+                )
             );
 		}
 	}
@@ -210,11 +222,13 @@ class Site extends RestController {
      * @return bool
      */
     public function check_delete_permission( $request ) {
-        $api_key = $request->get_header( 'x-wemail-key' );
+        $api_key    = $request->get_header( 'x-wemail-key' );
         $wp_api_key = get_option( 'wemail_api_key' );
-        if ( $api_key !== $wp_api_key ) {
+
+        if ( empty( $wp_api_key ) || empty( $api_key ) || ! is_string( $api_key ) || ! is_string( $wp_api_key ) ) {
             return false;
         }
-        return true;
+
+        return hash_equals( $wp_api_key, $api_key );
     }
 }

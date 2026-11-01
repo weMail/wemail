@@ -327,6 +327,8 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 * Security fix: save-options route now reports refused keys instead of always reporting success
 * WordPress.org readiness: stopped the third-party Headway changelog widget from loading in the weMail admin, bundled the Lato font locally in the email customizer instead of Google Fonts, and documented all external services in the readme
 * WordPress.org readiness: release packaging, plugin header and readme metadata fixes
+* Fix: the video thumbnail route now rejects invalid source and video_id values instead of forwarding them to the weMail cloud request path
+* Fix: the site disconnect route no longer accepts an empty key, and a failed site connection no longer stores an empty key
 
 = v2.1.6 - (26th Sep, 2026) =
 * Tested compatibility with WordPress 7.1
