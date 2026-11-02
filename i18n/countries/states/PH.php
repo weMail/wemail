@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Philippines Divisions
  *
@@ -57,7 +59,7 @@ return [
     "MAS" => __( "Masbate", "wemail" ),
     "MDC" => __( "Mindoro Occidental", "wemail" ),
     "MDR" => __( "Mindoro Oriental", "wemail" ),
-    "MNL" => __( "", "wemail" ),
+    "MNL" => "",
     "MOU" => __( "Mountain Province", "wemail" ),
     "MSC" => __( "Misamis Occidental", "wemail" ),
     "MSR" => __( "Misamis Oriental", "wemail" ),

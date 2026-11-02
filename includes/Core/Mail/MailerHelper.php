@@ -51,7 +51,7 @@ trait MailerHelper {
                 if ( is_array( $attachment ) ) {
                     $split = explode( '/uploads/', $attachment[0] );
 
-                    return esc_sql( end( $split ) );
+                    return end( $split );
                 }
 
                 return null;
@@ -60,7 +60,14 @@ trait MailerHelper {
         );
 
         $attachments = array_filter( $attachments );
-        $files = $wpdb->get_results( "SELECT `post_id` FROM {$wpdb->postmeta} WHERE `meta_key` = '_wp_attached_file' AND `meta_value` IN('" . implode( "', '", $attachments ) . "')" );
+
+        if ( empty( $attachments ) ) {
+            return array();
+        }
+
+        $placeholders = implode( ', ', array_fill( 0, count( $attachments ), '%s' ) );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- {$wpdb->postmeta} is a core table property, values prepared
+        $files = $wpdb->get_results( $wpdb->prepare( "SELECT `post_id` FROM {$wpdb->postmeta} WHERE `meta_key` = '_wp_attached_file' AND `meta_value` IN ($placeholders)", array_values( $attachments ) ) );
 
         return array_map(
             function ( $file ) {

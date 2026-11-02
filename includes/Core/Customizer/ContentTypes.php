@@ -182,6 +182,7 @@ class ContentTypes {
      * Content type: Social Follow
      *
      * @since 1.0.0
+     * @since 2.1.7 Falls back to defaults when the cloud call returns WP_Error.
      *
      * @return array
      */
@@ -193,12 +194,12 @@ class ContentTypes {
         $x  = 'https://x.com';
         $website  = 'https://example.com';
 
-        if ( ! empty( $settings['data'] ) ) {
+        if ( ! is_wp_error( $settings ) && ! empty( $settings['data'] ) ) {
             $facebook = $settings['data']['facebook'];
             $x = $settings['data']['twitter'];
         }
 
-        if ( ! empty( $company['data'] ) ) {
+        if ( ! is_wp_error( $company ) && ! empty( $company['data'] ) ) {
             $website = $company['data']['website'];
         }
 
@@ -400,7 +401,7 @@ class ContentTypes {
      * @return array
      */
     public static function countdown() {
-        $api_url = parse_url( wemail()->wemail_api );
+        $api_url = wp_parse_url( wemail()->wemail_api );
 
         return array(
             'type'       => 'countdown',

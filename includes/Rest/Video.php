@@ -37,10 +37,26 @@ class Video extends WP_REST_Controller {
         $source = $request->get_param( 'source' );
         $video_id = $request->get_param( 'video_id' );
 
-        if ( ! $source || ! $video_id ) {
+        if ( ! $source || ! $video_id || ! is_string( $video_id ) ) {
             return new WP_Error(
                 'invalid_request',
                 __( 'source and video_id fields are required', 'wemail' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        if ( ! in_array( $source, array( 'youtube', 'vimeo' ), true ) ) {
+            return new WP_Error(
+                'invalid_request',
+                __( 'source must be either youtube or vimeo', 'wemail' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        if ( ! preg_match( '/^[A-Za-z0-9_-]{1,32}\z/', $video_id ) ) {
+            return new WP_Error(
+                'invalid_request',
+                __( 'video_id contains invalid characters', 'wemail' ),
                 array( 'status' => 400 )
             );
         }

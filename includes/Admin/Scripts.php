@@ -37,12 +37,13 @@ class Scripts {
      * Enqueue admin styles
      *
      * @since 1.0.0
+     * @since 2.1.7 Third-party libraries load from the plugin folder instead of the CDN.
      *
      * @return void
      */
     public function enqueue_styles() {
-        wp_register_style( 'wemail-jquery-ui', wemail()->wemail_cdn . '/vendor/jquery-ui/jquery-ui.min.css', array(), $this->version );
-        wp_register_style( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.css', array(), $this->version );
+        wp_register_style( 'wemail-jquery-ui', WEMAIL_URL . '/assets/vendor/jquery-ui/jquery-ui.min.css', array(), $this->version );
+        wp_register_style( 'wemail-timepicker', WEMAIL_URL . '/assets/vendor/jquery-timepicker/jquery.timepicker.min.css', array(), $this->version );
         wp_register_style( 'wemail-tiny-mce', site_url( '/wp-includes/css/editor.css' ), array(), $this->version );
 
         $dependencies = array(
@@ -58,6 +59,7 @@ class Scripts {
      * Enqueue admin js
      *
      * @since 1.0.0
+     * @since 2.1.7 Third-party libraries load from the plugin folder instead of the CDN.
      *
      * @return void
      */
@@ -65,14 +67,14 @@ class Scripts {
         wp_enqueue_media();
 
         wp_register_script( 'wemail-tiny-mce', site_url( '/wp-includes/js/tinymce/tinymce.min.js' ), array(), true );
-        wp_register_script( 'wemail-tiny-mce-code', wemail()->wemail_cdn . '/vendor/tinymce/plugins/code/plugin.min.js', array( 'wemail-tiny-mce' ), $this->version, true );
-        wp_register_script( 'wemail-tiny-mce-hr', wemail()->wemail_cdn . '/vendor/tinymce/plugins/hr/plugin.min.js', array( 'wemail-tiny-mce-code' ), $this->version, true );
+        wp_register_script( 'wemail-tiny-mce-code', WEMAIL_URL . '/assets/vendor/tinymce/plugins/code/plugin.min.js', array( 'wemail-tiny-mce' ), $this->version, true );
+        wp_register_script( 'wemail-tiny-mce-hr', WEMAIL_URL . '/assets/vendor/tinymce/plugins/hr/plugin.min.js', array( 'wemail-tiny-mce-code' ), $this->version, true );
 
-        wp_register_script( 'wemail-moment', wemail()->wemail_cdn . '/vendor/moment/moment.min.js', array(), $this->version, true );
-        wp_register_script( 'wemail-moment-timezone', wemail()->wemail_cdn . '/vendor/moment/moment-timezone-with-data-2012-2022.min.js', array( 'wemail-moment' ), $this->version, true );
+        wp_register_script( 'wemail-moment', WEMAIL_URL . '/assets/vendor/moment/moment.min.js', array(), $this->version, true );
+        wp_register_script( 'wemail-moment-timezone', WEMAIL_URL . '/assets/vendor/moment/moment-timezone-with-data-2012-2022.min.js', array( 'wemail-moment' ), $this->version, true );
 
-        wp_register_script( 'wemail-timepicker', wemail()->wemail_cdn . '/vendor/jquery-timepicker/jquery.timepicker.min.js', array( 'jquery' ), $this->version, true );
-        wp_register_script( 'wemail-popper-js', wemail()->wemail_cdn . '/vendor/popper.js/popper.min.js', array(), $this->version, true );
+        wp_register_script( 'wemail-timepicker', WEMAIL_URL . '/assets/vendor/jquery-timepicker/jquery.timepicker.min.js', array( 'jquery' ), $this->version, true );
+        wp_register_script( 'wemail-popper-js', WEMAIL_URL . '/assets/vendor/popper.js/popper.min.js', array(), $this->version, true );
 
         $dependencies = array(
             'jquery',
@@ -100,6 +102,10 @@ class Scripts {
             wp_enqueue_script( 'wemail-vendor', $hmr_host . '/src/js/vendor.js', $dependencies, $this->version, true );
             wp_enqueue_script( 'wemail', $hmr_host . '/src/js/wemail.js', array( 'wemail-vendor' ), $this->version, true );
         }
+
+        wp_register_script( 'wemail-headway-blocker', false, array(), $this->version, true );
+        wp_enqueue_script( 'wemail-headway-blocker' );
+        wp_add_inline_script( 'wemail-headway-blocker', $this->headway_blocker_script() );
 
         $user = wemail()->user;
 
@@ -174,11 +180,116 @@ class Scripts {
     }
 
     /**
+     * JS that stops the weMail app bundle's Headway changelog widget from
+     * loading. Headway is injected at runtime by the remote CDN bundle
+     * (cdn.getwemail.io / cdn-staging.getwemail.io); this plugin cannot
+     * change that bundle, so the only thing it can do is stop the injected
+     * script from running once it reaches the browser. Intercepting the
+     * `src` property assignment is the primary guard (that is how the
+     * bundle loads Headway); the MutationObserver is defense-in-depth for
+     * any leftover badge markup.
+     *
+     * @since 2.1.7
+     *
+     * @return string
+     */
+    private function headway_blocker_script() {
+        return <<<'JS'
+(function () {
+    'use strict';
+
+    if ( window.__weMailHeadwayBlockerInstalled ) {
+        return;
+    }
+    window.__weMailHeadwayBlockerInstalled = true;
+
+    var BLOCKED_HOSTS = [ 'cdn.headwayapp.co', 'headway-widget.net' ];
+
+    function isBlockedUrl( value ) {
+        if ( ! value ) {
+            return false;
+        }
+        var url = String( value );
+        for ( var i = 0; i < BLOCKED_HOSTS.length; i++ ) {
+            if ( url.indexOf( BLOCKED_HOSTS[ i ] ) !== -1 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function removeHeadwayNodes() {
+        var selectors = [
+            'script[src*="cdn.headwayapp.co"]',
+            'script[src*="headway-widget.net"]',
+            '#HW_frame_cont',
+            '#HW_badge_cont',
+            '#HW_badge'
+        ];
+        var i, nodes, j;
+        for ( i = 0; i < selectors.length; i++ ) {
+            nodes = document.querySelectorAll( selectors[ i ] );
+            for ( j = 0; j < nodes.length; j++ ) {
+                if ( nodes[ j ] && nodes[ j ].parentNode ) {
+                    nodes[ j ].parentNode.removeChild( nodes[ j ] );
+                }
+            }
+        }
+
+        var changelog = document.getElementById( 'wemail-changelog' );
+        if ( changelog ) {
+            changelog.innerHTML = '';
+        }
+    }
+
+    try {
+        var proto = window.HTMLScriptElement && window.HTMLScriptElement.prototype;
+        var srcDescriptor = proto && Object.getOwnPropertyDescriptor( proto, 'src' );
+
+        if ( proto && srcDescriptor && srcDescriptor.set && srcDescriptor.get ) {
+            Object.defineProperty( proto, 'src', {
+                configurable: true,
+                enumerable: srcDescriptor.enumerable,
+                get: function () {
+                    return srcDescriptor.get.call( this );
+                },
+                set: function ( value ) {
+                    if ( isBlockedUrl( value ) ) {
+                        return;
+                    }
+                    srcDescriptor.set.call( this, value );
+                }
+            } );
+        }
+    } catch ( e ) {
+        // If the browser will not let us redefine the property, the
+        // MutationObserver below is the fallback guard.
+    }
+
+    removeHeadwayNodes();
+
+    if ( window.MutationObserver ) {
+        var observer = new MutationObserver( function () {
+            removeHeadwayNodes();
+        } );
+
+        observer.observe( document.documentElement || document, {
+            childList: true,
+            subtree: true
+        } );
+    }
+}());
+JS;
+    }
+
+    /**
      * Load the translation strings
      *
      * Src: https://github.com/WordPress/gutenberg/blob/25a2003c7faac2dcdb723161fefd10ef44d147b6/lib/i18n.php#L12
      *
      * @since 1.0.0
+     * @since 2.1.7 Reads the msgid off each entry object, since WP 6.5+ keys
+     *              the entries array numerically.
      *
      * @return array
      */
@@ -204,6 +315,20 @@ class Scripts {
         }
 
         foreach ( $translations->entries as $msgid => $entry ) {
+            // Since WP 6.5 the entries array is numerically indexed, so the
+            // msgid has to be read off the entry object. Older versions
+            // already keyed entries by $entry->key(), so both paths agree.
+            if ( ! is_string( $msgid ) ) {
+                $msgid = (string) $entry->key();
+
+                // Defensive: some providers key plurals as "singular\0plural" (older or
+                // foreign data shapes). Core already strips the suffix, so this only guards
+                // against that shape; it is not a description of current core behavior.
+                if ( false !== strpos( $msgid, "\0" ) ) {
+                    $msgid = substr( $msgid, 0, strpos( $msgid, "\0" ) );
+                }
+            }
+
             $locale['locale_data'][ $domain ][ $msgid ] = $entry->translations;
         }
 

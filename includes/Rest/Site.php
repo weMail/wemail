@@ -2,9 +2,6 @@
 
 namespace WeDevs\WeMail\Rest;
 
-use WeDevs\WeMail\Core\Ecommerce\EDD\EDDSettings;
-use WeDevs\WeMail\Core\Ecommerce\Requests\Settings;
-use WeDevs\WeMail\Core\Ecommerce\WooCommerce\WCSettings;
 use WeDevs\WeMail\RestController;
 
 class Site extends RestController {
@@ -12,8 +9,8 @@ class Site extends RestController {
     public $rest_base = '/site';
 
     public function register_routes() {
-        $this->post( '/settings', 'save_settings', 'can_manage_settings' );
-        $this->post( '/settings/save-options', 'save_options', 'manage_options' );
+        $this->post( '/settings', 'save_settings', 'manage_options' );
+        $this->post( '/settings/save-options', 'save_options', 'manage_options_or_service' );
         $this->delete( '', 'delete_site', 'check_delete_permission' );
         $this->get( '/authentication', 'check_after_update', 'manage_options' );
     }
@@ -32,6 +29,11 @@ class Site extends RestController {
      */
     public function save_settings( $request ) {
         $name = $request->get_param( 'name' );
+
+        if ( ! is_string( $name ) || ! in_array( $name, $this->allowed_setting_names(), true ) ) {
+            return $this->respond_error( __( 'Invalid settings name.', 'wemail' ), 'invalid_settings_name' );
+        }
+
         $settings = $request->get_param( 'settings' );
 
         $response = wemail()->api->settings()->$name()->post( $settings );
@@ -48,6 +50,30 @@ class Site extends RestController {
     }
 
     /**
+     * Setting names the /site/settings endpoint may persist locally
+     *
+     * @since 2.1.7
+     *
+     * @return array
+     */
+    private function allowed_setting_names() {
+        $allowed = apply_filters(
+            'wemail_site_settings_allowed_names',
+            array( 'general', 'transactional_emails', 'sync_subscriber_wp', 'sync_subscriber_erp_contacts' )
+        );
+
+        // Never let a filter re-open credential / ACL / integration options.
+        $blocked = array( 'api_key', 'accessible_roles', 'ecommerce', 'site_slug', 'version' );
+
+        return array_values( array_diff( (array) $allowed, $blocked ) );
+    }
+
+    /**
+     * Save local options
+     *
+     * @since 2.1.7 The response reports how many keys were saved and which were
+     * refused, so a request where nothing was saved no longer reports success.
+     *
      * @param $request \WP_REST_Request
      *
      * @return mixed|\WP_Error|\WP_HTTP_Response|\WP_REST_Response
@@ -55,19 +81,45 @@ class Site extends RestController {
     public function save_options( $request ) {
         $settings = $request->get_param( 'settings' );
 
-        foreach ( $settings as $key => $setting ) {
-            if ( rest_is_boolean( $setting ) ) {
-                update_option( "wemail_{$key}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+        if ( ! is_array( $settings ) ) {
+            return $this->respond_error( __( 'Invalid settings.', 'wemail' ), 'invalid_settings' );
+        }
 
-                // Update site settings data on server
-                $this->update_site_settings_on_server( $key );
+        $blocked  = array( 'api_key', 'accessible_roles', 'site_slug', 'version', 'ecommerce' );
+        $saved    = 0;
+        $rejected = array();
+
+        foreach ( $settings as $key => $setting ) {
+            if ( ! is_string( $key ) ) {
                 continue;
             }
 
-            update_option( "wemail_{$key}", $setting );
+            // Canonical name: one normalized form for the blocklist compare and
+            // the written option, so " Api_Key " cannot bypass the blocklist.
+            $name = strtolower( trim( $key ) );
+
+            if ( in_array( $name, $blocked, true ) ) {
+                $rejected[] = $name;
+                continue;
+            }
+
+            if ( rest_is_boolean( $setting ) ) {
+                update_option( "wemail_{$name}", wemail_validate_boolean( $setting ) ? 1 : 0 );
+                ++$saved;
+                continue;
+            }
+
+            update_option( "wemail_{$name}", $setting );
+            ++$saved;
         }
 
-        return rest_ensure_response( array( 'success' => true ) );
+        return rest_ensure_response(
+            array(
+                'success'  => $saved > 0,
+                'saved'    => $saved,
+                'rejected' => $rejected,
+            )
+        );
     }
 
     public function delete_site() {
@@ -103,30 +155,14 @@ class Site extends RestController {
 
     public function delete_user_metadata( $keys ) {
         global $wpdb;
-        $keys = implode( "','", array_map( 'esc_sql', $keys ) );
-        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->usermeta WHERE meta_key IN ('" . $keys . "')" ) );
-    }
 
-    /**
-     * @param $key
-     */
-    public function update_site_settings_on_server( $key ) {
-        switch ( $key ) {
-            case 'is_woocommerce_synced':
-                $setting = new WCSettings();
-                break;
-            case 'is_edd_synced':
-                $setting = new EDDSettings();
-                break;
-            default:
-                return;
+        if ( empty( $keys ) ) {
+            return;
         }
 
-        $settings = $setting->get();
-        $setting = new Settings();
-        $setting->update( $settings );
-
-        return;
+        $placeholders = implode( ', ', array_fill( 0, count( $keys ), '%s' ) );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- {$wpdb->usermeta} is a core table property, values prepared
+        $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ($placeholders)", $keys ) );
     }
 
     public function check_after_update() {
@@ -142,7 +178,8 @@ class Site extends RestController {
             }
 
             $response = wemail()->api->site()->authentication()->send_json()->post( array( 'site_url' => get_site_url() ) );
-            if ( is_wp_error( $response ) && empty( $response['key'] ) ) {
+
+            if ( is_wp_error( $response ) ) {
                 return rest_ensure_response(
                     array(
                         'success' => false,
@@ -151,15 +188,26 @@ class Site extends RestController {
                     )
                 );
             }
+
+            if ( empty( $response['key'] ) || ! is_string( $response['key'] ) ) {
+                return rest_ensure_response(
+                    array(
+                        'success' => false,
+                        'redirect_url' => admin_url( 'admin.php?page=wemail' ),
+                        'message' => __( 'weMail could not connect this site. Please try again.', 'wemail' ),
+                    )
+                );
+            }
+
             update_option( 'wemail_api_key', $response['key'] );
             wemail()->api->set_api_key( $response['key'] );
 
             return rest_ensure_response(
                 array(
-					'success' => true,
-					'redirect_url' => admin_url( 'admin.php?page=wemail' ),
-					'message' => __( 'Site connected successfully!', 'wemail' ),
-				)
+                    'success' => true,
+                    'redirect_url' => admin_url( 'admin.php?page=wemail' ),
+                    'message' => __( 'Site connected successfully!', 'wemail' ),
+                )
             );
 		}
 	}
@@ -174,11 +222,13 @@ class Site extends RestController {
      * @return bool
      */
     public function check_delete_permission( $request ) {
-        $api_key = $request->get_header( 'x-wemail-key' );
+        $api_key    = $request->get_header( 'x-wemail-key' );
         $wp_api_key = get_option( 'wemail_api_key' );
-        if ( $api_key !== $wp_api_key ) {
+
+        if ( empty( $wp_api_key ) || empty( $api_key ) || ! is_string( $api_key ) || ! is_string( $wp_api_key ) ) {
             return false;
         }
-        return true;
+
+        return hash_equals( $wp_api_key, $api_key );
     }
 }

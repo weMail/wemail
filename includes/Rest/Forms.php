@@ -96,7 +96,7 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'public_permission' ),
                     'callback'            => array( $this, 'submit' ),
                 ),
             )
@@ -114,7 +114,7 @@ class Forms {
                 ),
                 array(
                     'methods'             => WP_REST_Server::EDITABLE,
-                    'permission_callback' => array( $this, 'permission' ),
+                    'permission_callback' => array( $this, 'public_permission' ),
                     'callback'            => array( $this, 'increment_visitor' ),
                 ),
             )
@@ -122,8 +122,9 @@ class Forms {
     }
 
     /**
-     * Permission callback for form endpoints
-     * Requires WordPress authentication, weMail role-based capability checks, and nonce verification
+     * Permission callback for the admin-only form routes (store, destroy, restore, sync, update).
+     * Requires WordPress authentication, weMail role-based capability checks, and nonce verification.
+     * Do not use this for a public-facing route — a logged-out visitor can never pass it.
      *
      * @param \WP_REST_Request $request
      *
@@ -148,6 +149,27 @@ class Forms {
         return true;
     }
 
+    /**
+     * Permission callback for the public front-end form routes (submit, visitor count).
+     * Any site visitor must be able to pass this, logged in or not — it must never
+     * require login or a capability check. Only the CSRF nonce is checked.
+     *
+     * @since 2.1.7
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return bool
+     */
+    public function public_permission( $request ) {
+        $nonce = $request->get_header( 'X-WP-Nonce' );
+
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function submit( $request ) {
         $id   = $request->get_param( 'id' );
         $data = $request->get_body_params();
@@ -163,6 +185,20 @@ class Forms {
         $submitted_data = array();
 
         foreach ( $data as $form_input ) {
+            if (
+                ! is_array( $form_input )
+                || ! isset( $form_input['name'], $form_input['value'] )
+                || ! is_string( $form_input['name'] )
+                || strpos( $form_input['name'], 'wemail_form_field_' ) !== 0
+                || ! is_scalar( $form_input['value'] )
+            ) {
+                return new WP_Error(
+                    'invalid_form_data',
+                    __( 'Invalid form data', 'wemail' ),
+                    array( 'status' => 422 )
+                );
+            }
+
             $field_id                    = str_replace( 'wemail_form_field_', '', $form_input['name'] );
             $submitted_data[ $field_id ] = $form_input['value'];
         }

@@ -15,10 +15,30 @@ class Csv extends RestController {
         $this->get( '/subscribers', 'subscribers', 'can_get_subscribers' );
     }
 
+    /**
+     * Read a CSV file attachment
+     *
+     * @since 2.1.7 Only reads existing CSV attachments.
+     *
+     * @param int|string $file_id
+     *
+     * @return \League\Csv\Reader|\WP_Error
+     */
     private function reader( $file_id ) {
-        $file_url = wp_get_attachment_url( $file_id );
-        $response = wp_remote_get( $file_url );
+        $post = get_post( absint( $file_id ) );
+
+        if (
+            ! $post
+            || 'attachment' !== $post->post_type
+            || ! in_array( get_post_mime_type( $post ), array( 'text/csv', 'text/plain' ), true )
+        ) {
+            return $this->respond_error( __( 'Invalid CSV file.', 'wemail' ), 'invalid_csv_file', self::HTTP_UNPROCESSABLE_ENTITY );
+        }
+
+        $file_url    = wp_get_attachment_url( $post->ID );
+        $response    = wp_remote_get( $file_url );
         $csv_content = wp_remote_retrieve_body( $response );
+
         return Reader::createFromString( $csv_content );
     }
 
@@ -26,6 +46,10 @@ class Csv extends RestController {
         $file_id = $request->get_param( 'id' );
 
         $reader = $this->reader( $file_id );
+
+        if ( is_wp_error( $reader ) ) {
+            return $reader;
+        }
 
         $count = iterator_count( $reader );
 
@@ -39,6 +63,10 @@ class Csv extends RestController {
     public function meta_fields( $request ) {
         $file_id = $request->get_param( 'id' );
         $reader = $this->reader( $file_id );
+
+        if ( is_wp_error( $reader ) ) {
+            return $reader;
+        }
 
         $reader->setHeaderOffset( 0 );
         $meta_fields = array_keys( $reader->fetchOne() );
@@ -59,6 +87,10 @@ class Csv extends RestController {
         $offset = $offset ? $offset : 0;
 
         $reader = $this->reader( $file_id );
+
+        if ( is_wp_error( $reader ) ) {
+            return $reader;
+        }
 
         // Set the header offset so records are returned as associative arrays
         $reader->setHeaderOffset( 0 );

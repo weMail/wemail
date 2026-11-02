@@ -22,7 +22,7 @@ class Users extends RestController {
     }
 
     public function permissions( $request ) {
-        return wemail()->user->can( 'manage_settings' );
+        return current_user_can( 'manage_options' );
     }
 
     public function index() {
@@ -52,30 +52,44 @@ class Users extends RestController {
         );
     }
 
+    /**
+     * Save the weMail accessible roles
+     *
+     * @since 2.1.7 The local option is written only after the cloud push succeeds,
+     * so a failure response can no longer leave new roles saved.
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return mixed
+     */
     public function storeRoles( $request ) {
-        $roles = $this->saveAccessibleRoles( $request );
-        $access_token = get_option( 'wemail_api_key' );
+        $roles = $this->validateAccessibleRoles( $request );
 
-        if ( empty( $roles ) || ! is_array( $roles ) ) {
+        if ( false === $roles ) {
             return $this->respond( array( 'message' => 'Invalid roles provided' ), 422 );
         }
+
+        $access_token = get_option( 'wemail_api_key' );
 
         if ( empty( $access_token ) ) {
             return $this->respond( array( 'message' => 'API token not available' ), 422 );
         }
 
-        $data = array(
-            'roles' => $roles,
-            'api_token' => $access_token,
+        $response = wemail()->api->wp()->users()->rolePermissions()->post(
+            array(
+                'roles'     => $roles,
+                'api_token' => $access_token,
+            )
         );
 
-        $response = wemail()->api->wp()->users()->rolePermissions()->post( $data );
-
-        if ( $response['success'] === true ) {
-            return $this->respond( array( 'message' => $response['message'] ), 200 );
+        if ( is_wp_error( $response ) || ! isset( $response['success'] ) || true !== $response['success'] ) {
+            // Nothing was written locally, so the saved state and this response agree.
+            return $this->respond( array( 'message' => 'Failed to update roles' ), 422 );
         }
 
-        return $this->respond( array( 'message' => 'Failed to update roles' ), 422 );
+        update_option( 'wemail_accessible_roles', $roles );
+
+        return $this->respond( array( 'message' => $response['message'] ), 200 );
     }
 
     public function update( $request ) {
@@ -93,6 +107,11 @@ class Users extends RestController {
                         'include' => 'role,permissions',
                     )
                 );
+
+                // Cloud failure returns WP_Error; skip caching meta for this user.
+                if ( is_wp_error( $response ) || empty( $response['data'] ) ) {
+                    continue;
+                }
 
                 $wp_user = get_user_by( 'email', $user );
                 if ( isset( $wp_user->ID ) ) {
@@ -126,7 +145,12 @@ class Users extends RestController {
                     'status' => $status,
                 )
             );
-            if ( $wp_admin_response['success'] ) {
+
+            if ( is_wp_error( $wp_admin_response ) ) {
+                return $this->respond( array( 'message' => 'Failed to update user status' ), 422 );
+            }
+
+            if ( ! empty( $wp_admin_response['success'] ) ) {
                 if ( isset( $wp_admin_response['token'] ) ) {
                     update_user_meta( $user->ID, 'wemail_api_key', $wp_admin_response['token'] );
                 }
@@ -191,13 +215,35 @@ class Users extends RestController {
     }
 
     /**
-     * @param $request
-     * @return mixed
+     * Validate the weMail accessible roles without writing anything
+     *
+     * @since 2.1.7 Validates and returns the sanitized roles; the caller persists
+     * them only after the cloud push succeeds. Returns false on invalid input.
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return array|false
      */
-    public function saveAccessibleRoles( $request ) {
+    public function validateAccessibleRoles( $request ) {
         $roles = $request->get_param( 'roles' );
 
-        update_option( 'wemail_accessible_roles', $roles );
-        return $roles;
+        if ( empty( $roles ) || ! is_array( $roles ) ) {
+            return false;
+        }
+
+        $registered = array_keys( wp_roles()->roles );
+        $sanitized  = array();
+
+        foreach ( $roles as $role ) {
+            // Verbatim check: accept registered slugs exactly as registered —
+            // no key normalization that could reject a legitimate slug.
+            if ( ! is_string( $role ) || ! in_array( $role, $registered, true ) ) {
+                return false;
+            }
+
+            $sanitized[] = $role;
+        }
+
+        return array_values( array_unique( $sanitized ) );
     }
 }

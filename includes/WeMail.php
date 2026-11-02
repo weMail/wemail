@@ -23,7 +23,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $version = '2.1.6';
+    public $version = '2.1.7';
 
     /**
      * DB version
@@ -41,7 +41,7 @@ final class WeMail {
      *
      * @var string
      */
-    public $min_php = '5.4.0';
+    public $min_php = '7.4.0';
 
     /**
      * Minimum WordPress version required
@@ -261,7 +261,7 @@ final class WeMail {
      */
     public function admin_notices() {
         foreach ( $this->admin_notices as $notice ) {
-            printf( '<div class="error"><p>' . $notice . '</p></div>' );
+            echo wp_kses_post( '<div class="error"><p>' . $notice . '</p></div>' );
         }
     }
 
