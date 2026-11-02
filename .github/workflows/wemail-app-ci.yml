@@ -1,0 +1,176 @@
+name: wemail-app CI
+
+# Quality gates for weMail/wemail-app (its docs/feature-migration/09 §6), run
+# here on the event its ci.yml dispatches. The result is posted back on the
+# wemail-app commit as the `wemail-app-ci` status.
+#
+# repository_dispatch only fires workflows on this repository's default
+# branch, so this file must live on develop.
+#
+# Secret: WEMAIL_APP_TOKEN, a fine-grained PAT scoped to weMail/wemail-app with
+# Contents: read and Commit statuses: read and write. This repository is
+# public: its run logs are too, and wemail-app is private. Keep the token out
+# of every step that runs the app's code.
+
+on:
+  repository_dispatch:
+    types: [wemail-app-ci]
+  # A manual rerun of one wemail-app commit.
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: wemail-app commit SHA
+        required: true
+      ref:
+        description: wemail-app branch (for the concurrency group)
+        required: false
+        default: develop
+
+env:
+  APP_REPO: weMail/wemail-app
+  APP_SHA: ${{ github.event.client_payload.sha || inputs.sha }}
+  STATUS_CONTEXT: wemail-app-ci
+
+concurrency:
+  group: wemail-app-ci-${{ github.event.client_payload.ref || inputs.ref }}
+  cancel-in-progress: true
+
+run-name: wemail-app CI · ${{ github.event.client_payload.ref || inputs.ref }} · ${{ github.event.client_payload.sha || inputs.sha }}
+
+jobs:
+  pending:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Mark the commit pending
+        env:
+          GH_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh api "repos/$APP_REPO/statuses/$APP_SHA" --method POST \
+            -f state=pending \
+            -f context="$STATUS_CONTEXT" \
+            -f description="Running in weMail/wemail" \
+            -f target_url="$RUN_URL"
+
+  checks:
+    needs: pending
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: ${{ env.APP_REPO }}
+          ref: ${{ env.APP_SHA }}
+          token: ${{ secrets.WEMAIL_APP_TOKEN }}
+          persist-credentials: false
+
+      # pnpm's version comes from package.json `packageManager`.
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      # No wem- classes, off-scale radii or wrapped arrow bodies (doc 08 §5, doc 09 §6).
+      - name: Banned source patterns
+        run: pnpm run check:source
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Format
+        run: pnpm run format:check
+
+      - name: Build
+        run: pnpm exec vite build
+
+      # The production build's output (scripts/check-build.mjs): TinyMCE is
+      # lazy, self-hosted and within budget (canvas C5 criteria 45, 48), and
+      # the report's world map is lazy.
+      - name: Build output checks
+        run: pnpm run check:build
+
+      - name: Bundle size
+        run: |
+          {
+            echo '### React bundle size'
+            echo
+            echo '| File | Size |'
+            echo '|---|---|'
+            find dist/js dist/css -type f \( -name '*.js' -o -name '*.css' \) -print0 \
+              | xargs -0 du -k \
+              | sort -rn \
+              | awk '{ printf "| %s | %s KB |\n", $2, $1 }'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # wemail-app is private: remove its source, node_modules and dist/ from
+      # the runner whatever the steps above did.
+      - name: Clean up the checkout
+        if: always()
+        run: find "$GITHUB_WORKSPACE" -mindepth 1 -delete
+
+  # The unit suite split by file across four runners, beside the checks job.
+  test:
+    needs: pending
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    name: test (${{ matrix.shard }}/4)
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: ${{ env.APP_REPO }}
+          ref: ${{ env.APP_SHA }}
+          token: ${{ secrets.WEMAIL_APP_TOKEN }}
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm exec vitest run --shard=${{ matrix.shard }}/4
+
+      - name: Clean up the checkout
+        if: always()
+        run: find "$GITHUB_WORKSPACE" -mindepth 1 -delete
+
+  # The result on the wemail-app commit, whatever the jobs above did.
+  report:
+    needs: [checks, test]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Post the result
+        env:
+          GH_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          CHECKS: ${{ needs.checks.result }}
+          TEST: ${{ needs.test.result }}
+        run: |
+          if [ "$CHECKS" = success ] && [ "$TEST" = success ]; then
+            state=success; description="Checks and tests passed"
+          elif [ "$CHECKS" = cancelled ] || [ "$TEST" = cancelled ]; then
+            state=error; description="Cancelled"
+          else
+            state=failure; description="checks: $CHECKS, test: $TEST"
+          fi
+          gh api "repos/$APP_REPO/statuses/$APP_SHA" --method POST \
+            -f state="$state" \
+            -f context="$STATUS_CONTEXT" \
+            -f description="$description" \
+            -f target_url="$RUN_URL"
