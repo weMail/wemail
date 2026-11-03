@@ -105,8 +105,17 @@ class PopupBuilder extends AbstractIntegration {
      * @param $data
      * @return void
      * @since 1.0.0
+     * @since 2.1.7 Bails out when Popup Builder is not active.
      */
     public function submit( $data ) {
+        if (
+            ! defined( 'SG_POPUP_TEXT_DOMAIN' )
+            || ! defined( 'SG_AJAX_NONCE' )
+            || ! class_exists( '\sgpb\Ajax' )
+        ) {
+            return;
+        }
+
         $forms = get_option( 'wemail_form_integration_popup_builder', array() );
 
         check_ajax_referer( SG_AJAX_NONCE, 'nonce' );

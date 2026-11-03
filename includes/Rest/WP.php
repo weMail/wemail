@@ -35,8 +35,8 @@ class WP extends RestController {
     public function register_routes() {
         $this->get( '/post-types', 'post_types', 'can_update_campaign' );
         $this->get( '/posts', 'posts', 'permission' );
-        $this->get( '/user-roles', 'user_roles', 'can_manage_settings' );
-        $this->get( '/users', 'users', 'can_create_subscriber' );
+        $this->get( '/user-roles', 'user_roles', 'manage_options_or_service' );
+        $this->get( '/users', 'users', 'manage_options_or_service' );
         $this->get( '/products', 'products', 'can_update_campaign' );
         $this->get( '/post-types/(?P<post_type>[\w]+)/taxonomies/(?P<taxonomy>post_tag|category)', 'terms', 'can_update_campaign' );
     }
@@ -70,22 +70,31 @@ class WP extends RestController {
     /**
      * Get public posts
      *
+     * @since 1.0.0
+     * @since 2.1.7 Only public post types of the /post-types list can be queried,
+     * and only published posts are returned.
+     *
      * @param \WP_REST_Request $request
      *
      * @return \WP_REST_Response|mixed
-     * @since 1.0.0
      */
     public function posts( $request ) {
         $post_type   = $request->get_param( 'post_type' );
+        $post_type   = ! empty( $post_type ) ? $post_type : 'post';
         $search      = $request->get_param( 's' );
         $tag_id      = $request->get_param( 'tag_id' );
         $category_id = $request->get_param( 'category_id' );
         $limit       = $request->get_param( 'limit' );
 
+        if ( ! in_array( $post_type, $this->allowed_post_types(), true ) ) {
+            return $this->respond_error( __( 'Invalid post type.', 'wemail' ), 'invalid_post_type' );
+        }
+
         $limit = empty( $limit ) ? 5 : $limit;
 
         $args = array(
-            'post_type'           => ! empty( $post_type ) ? $post_type : 'post',
+            'post_type'           => $post_type,
+            'post_status'         => 'publish',
             's'                   => $search,
             'posts_per_page'      => $limit,
             'ignore_sticky_posts' => true,
@@ -126,6 +135,22 @@ class WP extends RestController {
         );
 
         return rest_ensure_response( $posts );
+    }
+
+    /**
+     * Post types the /wp/posts route may query — the same public types the
+     * /wp/post-types route exposes. attachment and product have their own flows;
+     * everything non-public (e.g. WooCommerce coupons, orders) is refused.
+     *
+     * @since 2.1.7
+     *
+     * @return array
+     */
+    private function allowed_post_types() {
+        $types = get_post_types( array( 'public' => true ), 'names' );
+        unset( $types['attachment'], $types['product'] );
+
+        return array_values( $types );
     }
 
     /**

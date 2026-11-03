@@ -20,7 +20,7 @@ class Help extends RestController {
             array(
                 array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'permission_callback' => array( $this, 'can_view_wemail' ),
+                    'permission_callback' => array( $this, 'manage_options_or_service' ),
                     'callback'            => array( $this, 'index' ),
                 ),
             )
@@ -44,7 +44,7 @@ class Help extends RestController {
             array(
                 array(
                     'methods'             => WP_REST_Server::CREATABLE,
-                    'permission_callback' => array( $this, 'can_view_wemail' ),
+                    'permission_callback' => array( $this, 'manage_options_or_service' ),
                     'callback'            => array( $this, 'receive_ping' ),
                 ),
             )
@@ -145,6 +145,10 @@ class Help extends RestController {
     }
 
     public function permission( $request ) {
+        if ( self::service_request( $request ) ) {
+            return true;
+        }
+
         $api_key = $request->get_header( 'X-WeMail-Key' );
 
         if ( ! empty( $api_key ) ) {

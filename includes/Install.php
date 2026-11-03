@@ -10,6 +10,10 @@ class Install {
     /**
      * Run the installer
      *
+     * @since 2.1.7 Re-resolves the weMail API URL before posting the activation
+     *              status, so the request goes to an absolute URL instead of the
+     *              empty value left by `init` not having run yet.
+     *
      * @return void
      */
     public static function install() {
@@ -23,7 +27,8 @@ class Install {
         // let the API know we are active again
         $api_key    = get_option( 'wemail_api_key' );
 
-        if ($api_key) {
+        if ( $api_key ) {
+            wemail()->set_wemail_api();
             $wemail_api = wemail()->wemail_api;
             $user = wp_get_current_user();
             wp_remote_post(

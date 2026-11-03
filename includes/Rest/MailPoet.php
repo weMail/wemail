@@ -3,6 +3,7 @@
 namespace WeDevs\WeMail\Rest;
 
 use MailPoet\Models\Subscriber;
+use WeDevs\WeMail\RestController;
 use WP_Error;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -82,34 +83,47 @@ class MailPoet {
      * API Permission callback
      *
      * @since 1.0.0
+     * @since 2.1.7 Service key branch; legacy per-user token check no longer impersonates the user.
      *
      * @param \WP_REST_Request $requests
      *
      * @return bool
      */
     public function permission( $request ) {
-        $api_key = $request->get_header( 'X-WeMail-Key' );
-
-        if ( ! empty( $api_key ) ) {
-            $query = new WP_User_Query(
-                array(
-                    'fields'        => 'ID',
-                    'meta_key'      => 'wemail_api_key',
-                    'meta_value'    => $api_key,
-                )
-            );
-
-            if ( $query->get_total() ) {
-                $results = $query->get_results();
-                $user_id = array_pop( $results );
-
-                wp_set_current_user( $user_id );
-
-                return wemail()->user->can( 'create_subscriber' );
-            }
+        if ( RestController::service_request( $request ) ) {
+            return true;
         }
 
-        return false;
+        $api_key = $request->get_header( 'X-WeMail-Key' );
+
+        if ( empty( $api_key ) || ! get_option( 'wemail_api_key' ) ) {
+            return false;
+        }
+
+        $query = new WP_User_Query(
+            array(
+                'fields'     => 'ID',
+                'meta_key'   => 'wemail_api_key',
+                'meta_value' => $api_key,
+                'number'     => 1,
+            )
+        );
+
+        $results = $query->get_results();
+
+        if ( empty( $results ) ) {
+            return false;
+        }
+
+        $user = get_userdata( (int) array_pop( $results ) );
+
+        if ( ! $user ) {
+            return false;
+        }
+
+        $accessible_roles = (array) get_option( 'wemail_accessible_roles', array() );
+
+        return (bool) array_intersect( (array) $user->roles, $accessible_roles );
     }
 
     /**
@@ -175,7 +189,9 @@ class MailPoet {
         $segment_table = $wpdb->prefix . 'mailpoet_segments';
         $pivot_table = $wpdb->prefix . 'mailpoet_subscriber_segment';
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name built from $wpdb->prefix, no values
         $lists = $wpdb->get_results( 'SELECT * FROM ' . $segment_table, ARRAY_A );
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- table names built from $wpdb->prefix, value prepared
         $stats = $wpdb->get_results( $wpdb->prepare( 'SELECT mp_segments.id, COUNT(*) as count FROM ' . $pivot_table . ' as mp_segment_pivot INNER JOIN ' . $segment_table . ' as mp_segments ON mp_segment_pivot.segment_id = mp_segments.id AND mp_segment_pivot.status = %s GROUP BY mp_segments.id', Subscriber::STATUS_SUBSCRIBED ), ARRAY_A );
 
         $lists = array_column( $lists, 'name', 'id' );

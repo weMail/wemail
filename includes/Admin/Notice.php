@@ -47,14 +47,14 @@ class Notice {
         ?>
             <div class="notice wemail-connect-notice-flex-container is-dismissible">
                 <div class="wemail-connect-notice-logo">
-                    <img src="<?php echo WEMAIL_ASSETS . '/images/site-connect-notice-logo.svg'; ?>" alt="weMail Logo">
+                    <img src="<?php echo esc_url( WEMAIL_ASSETS . '/images/site-connect-notice-logo.svg' ); ?>" alt="weMail Logo">
                 </div>
                 <div class="wemail-connect-notice-content">
-                    <h3><?php echo __( 'Connect weMail', 'wemail' ); ?></h3>
-                    <p><?php echo __( 'You are one step closer to use weMail. Connect your site to get started with weMail. With weMail, you can send marketing and transactional emails to your audience.', 'wemail' ); ?></p>
+                    <h3><?php esc_html_e( 'Connect weMail', 'wemail' ); ?></h3>
+                    <p><?php esc_html_e( 'You are one step closer to use weMail. Connect your site to get started with weMail. With weMail, you can send marketing and transactional emails to your audience.', 'wemail' ); ?></p>
                 </div>
                 <div class="wemail-connect-notice-connect-button">
-                    <a class="button" href="<?php echo admin_url( 'admin.php?page=wemail' ); ?>">Connect</a>
+                    <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=wemail' ) ); ?>">Connect</a>
                 </div>
             </div>
         <?php
