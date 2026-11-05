@@ -97,6 +97,11 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
       AWS_ENDPOINT: http://localhost:8000
       DYNAMODB_TABLE_PREFIX: ''
+      # A local app calls a cloud function at the URL in the env variable of
+      # the function's name, and a test runs the template compiler that way.
+      # .env.example doesn't set it, so the URL would be null. The request
+      # itself is faked: nothing is sent to this address.
+      CompileEmailTemplate: http://compile-email-template.test
 
     steps:
       - uses: actions/checkout@v5
