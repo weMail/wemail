@@ -10,7 +10,7 @@ name: wemail-api CI
 # Secrets:
 # - WEMAIL_API_TOKEN, a fine-grained PAT scoped to weMail/wemail-api with
 #   Contents: read and Commit statuses: read and write.
-# - COMPOSER_GITHUB_TOKEN, read access to the API's private Composer packages
+# - WEMAIL_APP_TOKEN, read access to the API's private Composer packages
 #   (the value wemail-api's own secret of that name holds).
 #
 # This repository is public: its run logs are too, and wemail-api is private.
@@ -120,13 +120,13 @@ jobs:
       # there, and it is removed before the next step.
       - name: Composer install
         env:
-          COMPOSER_GITHUB_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
+          WEMAIL_APP_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
         run: |
-          if [ -z "$COMPOSER_GITHUB_TOKEN" ]; then
-            echo "::error::Set the COMPOSER_GITHUB_TOKEN secret (read access to wemail-api's private Composer packages)."
+          if [ -z "$WEMAIL_APP_TOKEN" ]; then
+            echo "::error::Set the WEMAIL_APP_TOKEN secret (read access to wemail-api's private Composer packages)."
             exit 1
           fi
-          composer config --global github-oauth.github.com "$COMPOSER_GITHUB_TOKEN"
+          composer config --global github-oauth.github.com "$WEMAIL_APP_TOKEN"
           composer install --no-interaction --no-progress --prefer-dist --no-scripts
           composer config --global --unset github-oauth.github.com
 
