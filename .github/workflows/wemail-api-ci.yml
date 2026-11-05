@@ -8,8 +8,6 @@ name: wemail-api CI
 # branch, so this file must live on develop.
 #
 # Secrets:
-# - WEMAIL_API_TOKEN, a fine-grained PAT scoped to weMail/wemail-api with
-#   Contents: read and Commit statuses: read and write.
 # - WEMAIL_APP_TOKEN, read access to the API's private Composer packages
 #   (the value wemail-api's own secret of that name holds).
 #
@@ -49,7 +47,7 @@ jobs:
     steps:
       - name: Mark the commit pending
         env:
-          GH_TOKEN: ${{ secrets.WEMAIL_API_TOKEN }}
+          GH_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           gh api "repos/$API_REPO/statuses/$API_SHA" --method POST \
@@ -105,7 +103,7 @@ jobs:
         with:
           repository: ${{ env.API_REPO }}
           ref: ${{ env.API_SHA }}
-          token: ${{ secrets.WEMAIL_API_TOKEN }}
+          token: ${{ secrets.WEMAIL_APP_TOKEN }}
           persist-credentials: false
 
       - uses: shivammathur/setup-php@v2
@@ -172,7 +170,7 @@ jobs:
     steps:
       - name: Post the result
         env:
-          GH_TOKEN: ${{ secrets.WEMAIL_API_TOKEN }}
+          GH_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           TEST: ${{ needs.test.result }}
         run: |
