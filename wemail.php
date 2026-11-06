@@ -6,7 +6,7 @@
  * Plugin URI: https://getwemail.io
  * Author: weDevs
  * Author URI: https://getwemail.io/?utm_source=wp-org&utm_medium=author-uri
- * Version: 2.1.7
+ * Version: 2.1.8
  * Requires at least: 5.6
  * Requires PHP: 7.4
  * License: GPLv2 or later
