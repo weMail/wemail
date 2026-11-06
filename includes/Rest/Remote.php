@@ -65,25 +65,102 @@ class Remote extends RestController {
     }
 
     /**
-     * Recursively sanitize input data (array/object/string)
+     * Payload keys that hold an email design (`email.template`, an A/B test's
+     * `template_a` / `template_b`, a saved template's `template`).
+     *
+     * @var array
      */
-    private function wemail_recursive_sanitize( $data ) {
+    private $template_keys = array( 'template', 'template_a', 'template_b' );
+
+    /**
+     * Recursively sanitize input data (array/object/string)
+     *
+     * Text inside an email design is HTML written in the editor (a link, bold,
+     * a text colour). sanitize_text_field() removes every tag, so a campaign
+     * from the Writing Focused Editor was sent with its links as plain text.
+     * There, a text that holds markup keeps its safe HTML instead.
+     *
+     * The blocks of that editor (`template.blocks`) are the words the author
+     * wrote, so the rest of their text is kept as written too: "19.99" stays
+     * "19.99" (absint() made it 19) and a code block keeps its line breaks.
+     *
+     * @param mixed $data        Value to sanitize
+     * @param bool  $in_template Whether the value is inside an email design
+     * @param bool  $in_blocks   Whether the value is inside the design's `blocks`
+     *
+     * @return mixed
+     */
+    private function wemail_recursive_sanitize( $data, $in_template = false, $in_blocks = false ) {
         if ( is_array( $data ) ) {
             foreach ( $data as $key => $value ) {
-                $data[ $key ] = $this->wemail_recursive_sanitize( $value );
+                $data[ $key ] = $this->wemail_recursive_sanitize(
+                    $value,
+                    $in_template || in_array( $key, $this->template_keys, true ),
+                    $in_blocks || ( $in_template && 'blocks' === $key )
+                );
             }
             return $data;
         } elseif ( is_bool( $data ) ) {
             return $data;
         } elseif ( is_email( $data ) ) {
             return sanitize_email( $data );
+        } elseif ( $in_blocks && is_string( $data ) && is_numeric( $data ) ) {
+            return $data;
         } elseif ( is_numeric( $data ) ) {
             return absint( $data );
         } elseif ( filter_var( $data, FILTER_VALIDATE_URL ) ) {
             return esc_url_raw( $data );
+        } elseif ( $in_template && is_string( $data ) && false !== strpos( $data, '<' ) ) {
+            return $this->sanitize_template_html( $data );
+        } elseif ( $in_blocks && is_string( $data ) ) {
+            return $data;
         } else {
             return sanitize_text_field( $data );
         }
+    }
+
+    /**
+     * Sanitize a text of an email design that holds markup
+     *
+     * Keeps what wp_kses_post() allows (links, inline formatting) and removes
+     * the rest (scripts, event handlers, unsafe link protocols).
+     *
+     * @param string $html
+     *
+     * @return string
+     */
+    private function sanitize_template_html( $html ) {
+        add_filter( 'safecss_filter_attr_allow_css', array( $this, 'allow_css_color_functions' ), 10, 2 );
+
+        $html = wp_kses_post( $html );
+
+        remove_filter( 'safecss_filter_attr_allow_css', array( $this, 'allow_css_color_functions' ), 10 );
+
+        return $html;
+    }
+
+    /**
+     * Allow a text or background colour written as rgb() / rgba()
+     *
+     * The editor's colour tools write `color: rgb(236, 120, 120)`, as the
+     * browser serializes it. WordPress drops any CSS value with a bracket, so
+     * the colour was lost. Only these two properties with a plain rgb()/rgba()
+     * value are let through.
+     *
+     * @param bool   $allow_css       Whether WordPress considers the CSS safe
+     * @param string $css_test_string One CSS declaration
+     *
+     * @return bool
+     */
+    public function allow_css_color_functions( $allow_css, $css_test_string ) {
+        if ( $allow_css ) {
+            return $allow_css;
+        }
+
+        return 1 === preg_match(
+            '/^\s*(?:background-)?color\s*:\s*rgba?\(\s*[\d.]+%?(?:\s*[,\s\/]\s*[\d.]+%?){2,3}\s*\)\s*$/i',
+            (string) $css_test_string
+        );
     }
 
     /**
