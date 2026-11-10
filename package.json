@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node build",
     "start": "wp-scripts start src/index.js --output-path=assets/js/block",
-    "wp:build": "wp-scripts build src/index.js --output-path=assets/js/block"
+    "wp:build": "wp-scripts build src/index.js --output-path=assets/js/block",
+    "zip": "bash bin/zip.sh"
   },
   "repository": {
     "type": "git",
