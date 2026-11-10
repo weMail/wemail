@@ -18,3 +18,4 @@ plans
 phpcs.xml
 appsero.json
 .DS_Store
+src
