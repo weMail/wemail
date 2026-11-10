@@ -97,6 +97,28 @@ class Settings {
     }
 
     /**
+     * Add the fields that only this site can supply
+     *
+     * The access_token is stamped here so the browser never supplies the site credential.
+     *
+     * @param \WeDevs\WeMail\Core\Ecommerce\Platforms\PlatformInterface $platform
+     * @param array $settings
+     *
+     * @return array
+     */
+    public function with_site_fields( $platform, array $settings ) {
+        return array_merge(
+            $settings, array(
+				'currency'              => $platform->currency(),
+				'currency_symbol'       => $platform->currency_symbol(),
+				'platform'              => $platform->get_name(),
+				'subscriptions_enabled' => $platform->is_subscriptions_active(),
+				'access_token'          => wemail()->api->get_api_key(),
+			)
+        );
+    }
+
+    /**
      * Delete ecommerce option
      *
      * @return bool
