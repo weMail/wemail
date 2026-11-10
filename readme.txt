@@ -4,7 +4,7 @@ Donate link: https://getwemail.io
 Tags: newsletters, email newsletter, autoresponder, email automation, drip email
 Requires at least: 5.6
 Tested up to: 7.1
-Stable tag: 2.1.8
+Stable tag: 2.1.9
 Requires PHP: 7.4
 License: GPLv2 or later
 License URL: https://www.gnu.org/licenses/gpl-2.0.html
@@ -317,6 +317,11 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
+= v2.1.9 - (10th Nov, 2026) =
+* Fix: campaigns written in the Writing Focused Editor now keep their links and formatting when saved and sent, instead of links turning into plain text
+* Fix: in the Writing Focused Editor, numbers stay exactly as typed (19.99 was being saved as 19) and code blocks keep their line breaks
+* Fix: the e-commerce integration settings are restored when a site reconnects after the plugin was deleted, so the screen no longer shows sync as on while no orders are being sent
+
 = v2.1.8 - (6th Nov, 2026) =
 * Fix: importing subscribers from an uploaded CSV now reads the file directly from the server instead of downloading it from its own URL, so imports work on sites that block loopback requests, sit behind HTTP authentication or use a certificate WordPress does not trust
 * Fix: a CSV file that cannot be read, is empty, or has a missing or duplicated column header is now rejected with a clear error message instead of causing a PHP fatal error or importing broken data
