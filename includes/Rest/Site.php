@@ -202,6 +202,9 @@ class Site extends RestController {
             update_option( 'wemail_api_key', $response['key'] );
             wemail()->api->set_api_key( $response['key'] );
 
+            /** This action is documented in includes/Core/Auth/Auth.php */
+            do_action( 'wemail_site_authenticated', $response );
+
             return rest_ensure_response(
                 array(
                     'success' => true,
