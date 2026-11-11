@@ -1,0 +1,193 @@
+name: wemail-api CI
+
+# The test suite of weMail/wemail-api, run here on the event its ci.yml
+# dispatches. The result is posted back on the wemail-api commit as the
+# `wemail-api-ci` status.
+#
+# repository_dispatch only fires workflows on this repository's default
+# branch, so this file must live on develop.
+#
+# Secrets:
+# - WEMAIL_APP_TOKEN, read access to the API's private Composer packages
+#   (the value wemail-api's own secret of that name holds).
+#
+# This repository is public: its run logs are too, and wemail-api is private.
+# A failing test's output is in that log. Keep both tokens out of every step
+# that runs the API's code, and cache nothing: a cache made here can be
+# restored by a pull request from a fork.
+
+on:
+  repository_dispatch:
+    types: [wemail-api-ci]
+  # A manual rerun of one wemail-api commit.
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: wemail-api commit SHA
+        required: true
+      ref:
+        description: wemail-api branch (for the concurrency group)
+        required: false
+        default: develop
+
+env:
+  API_REPO: weMail/wemail-api
+  API_SHA: ${{ github.event.client_payload.sha || inputs.sha }}
+  STATUS_CONTEXT: wemail-api-ci
+
+concurrency:
+  group: wemail-api-ci-${{ github.event.client_payload.ref || inputs.ref }}
+  cancel-in-progress: true
+
+run-name: wemail-api CI · ${{ github.event.client_payload.ref || inputs.ref }} · ${{ github.event.client_payload.sha || inputs.sha }}
+
+jobs:
+  pending:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Mark the commit pending
+        env:
+          GH_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh api "repos/$API_REPO/statuses/$API_SHA" --method POST \
+            -f state=pending \
+            -f context="$STATUS_CONTEXT" \
+            -f description="Running in weMail/wemail" \
+            -f target_url="$RUN_URL"
+
+  test:
+    needs: pending
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wemail_api_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+      # DynamoDB Local (in memory). Tables are created below; it scopes them
+      # by access key and region, so the CLI and PHP use the same env values.
+      dynamodb:
+        image: amazon/dynamodb-local:latest
+        ports:
+          - 8000:8000
+
+    # Real env vars win over .env (Dotenv is immutable), so these apply to
+    # artisan, phpunit and the AWS CLI alike.
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      # Tests use `m_test` (phpunit.xml); some models are pinned to `mysql`.
+      DB_DATABASE: wemail_api_test
+      DB_DATABASE_TEST: wemail_api_test
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT: http://localhost:8000
+      DYNAMODB_TABLE_PREFIX: ''
+      # A local app calls a cloud function at the URL in the env variable of
+      # the function's name, and a test runs the template compiler that way.
+      # .env.example doesn't set it, so the URL would be null. The request
+      # itself is faked: nothing is sent to this address.
+      CompileEmailTemplate: http://compile-email-template.test
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: ${{ env.API_REPO }}
+          ref: ${{ env.API_SHA }}
+          token: ${{ secrets.WEMAIL_APP_TOKEN }}
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          # The newest PHP the locked packages allow.
+          php-version: '8.3'
+          extensions: mbstring, intl, pdo_mysql, gd, zip, bcmath
+          coverage: none
+
+      # The API's private packages need a token. It is set for the download
+      # only: `--no-scripts` keeps the API's own code from running while it is
+      # there, and it is removed before the next step.
+      - name: Composer install
+        env:
+          WEMAIL_APP_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
+        run: |
+          if [ -z "$WEMAIL_APP_TOKEN" ]; then
+            echo "::error::Set the WEMAIL_APP_TOKEN secret (read access to wemail-api's private Composer packages)."
+            exit 1
+          fi
+          composer config --global github-oauth.github.com "$WEMAIL_APP_TOKEN"
+          composer install --no-interaction --no-progress --prefer-dist --no-scripts
+          composer config --global --unset github-oauth.github.com
+
+      # What `composer install` runs after it (package discovery), without the token.
+      - name: Composer scripts
+        run: composer run-script post-autoload-dump
+
+      - name: App env
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      # The two single-table DynamoDB tables (PK/SK with their LSIs), from the
+      # definitions in wemail-api's .github/dynamodb/.
+      - name: DynamoDB tables
+        run: |
+          for table in Site Subscriber; do
+            aws dynamodb create-table \
+              --endpoint-url "$AWS_ENDPOINT" \
+              --table-name "${DYNAMODB_TABLE_PREFIX}${table}" \
+              --cli-input-json "file://.github/dynamodb/${table}.json" >/dev/null
+          done
+          aws dynamodb list-tables --endpoint-url "$AWS_ENDPOINT" --output text
+
+      # The `ci` suite skips the tests that already failed on develop (see
+      # wemail-api's phpunit.xml).
+      - name: Tests
+        run: vendor/bin/phpunit --testsuite ci
+
+      # wemail-api is private: remove its source and vendor/ from the runner
+      # whatever the steps above did.
+      - name: Clean up the checkout
+        if: always()
+        run: |
+          find "$GITHUB_WORKSPACE" -mindepth 1 -delete
+          rm -rf "$HOME/.composer" "$HOME/.cache/composer" "$HOME/.config/composer"
+
+  # The result on the wemail-api commit, whatever the jobs above did.
+  report:
+    needs: test
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Post the result
+        env:
+          GH_TOKEN: ${{ secrets.WEMAIL_APP_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TEST: ${{ needs.test.result }}
+        run: |
+          if [ "$TEST" = success ]; then
+            state=success; description="Tests passed"
+          elif [ "$TEST" = cancelled ]; then
+            state=error; description="Cancelled"
+          else
+            state=failure; description="test: $TEST"
+          fi
+          gh api "repos/$API_REPO/statuses/$API_SHA" --method POST \
+            -f state="$state" \
+            -f context="$STATUS_CONTEXT" \
+            -f description="$description" \
+            -f target_url="$RUN_URL"

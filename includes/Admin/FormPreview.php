@@ -45,13 +45,13 @@ class FormPreview {
         <html <?php language_attributes(); ?>>
             <head>
                 <title><?php esc_html_e( 'weMail Form Preview', 'wemail' ); ?></title>
-                <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo get_stylesheet_directory_uri() . '/style.css'; ?>">
-                <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo wemail()->wemail_cdn . '/build/css/Form.css?ver=' . WEMAIL_VERSION; ?>">
+                <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo esc_url( get_stylesheet_directory_uri() . '/style.css' ); ?>">
+                <link rel="stylesheet" href="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet */ echo esc_url( wemail()->wemail_cdn . '/build/css/Form.css?ver=' . WEMAIL_VERSION ); ?>">
                 <script>
                     var weMail = {
-                        'restURL': '<?php echo untrailingslashit( get_rest_url( null, '/wemail/v1' ) ); ?>',
-                        'nonce': '<?php echo wp_create_nonce( 'wp_rest' ); ?>',
-                        'cdn': '<?php echo wemail()->wemail_cdn; ?>'
+                        restURL: <?php echo wp_json_encode( untrailingslashit( get_rest_url( null, '/wemail/v1' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON for JS context ?>,
+                        nonce: <?php echo wp_json_encode( wp_create_nonce( 'wp_rest' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON for JS context ?>,
+                        cdn: <?php echo wp_json_encode( wemail()->wemail_cdn ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON for JS context ?>
                     };
                     var wemailForm = <?php echo wp_json_encode( $form ); ?>
                 </script>
@@ -61,10 +61,10 @@ class FormPreview {
                     <?php printf( '<div id="preview-wemail-form" data-form-type="%s"><wemail-form-preview id="%s"/></div>', esc_attr( $form['type'] ), esc_attr( $this->form_id ) ); ?>
                 </div>
 
-                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo get_site_url() . $wp_scripts->registered['jquery-core']->src; ?>"></script>
-                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/build/js/frontend-vendor.js?ver=' . WEMAIL_VERSION; ?>"></script>
-                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/build/js/frontend.js?ver=' . WEMAIL_VERSION; ?>"></script>
-                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo wemail()->wemail_cdn . '/build/js/preview.js?ver=' . WEMAIL_VERSION; ?>"></script>
+                <script src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo esc_url( get_site_url() . $wp_scripts->registered['jquery-core']->src ); ?>"></script>
+                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo esc_url( wemail()->wemail_cdn . '/build/js/frontend-vendor.js?ver=' . WEMAIL_VERSION ); ?>"></script>
+                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo esc_url( wemail()->wemail_cdn . '/build/js/frontend.js?ver=' . WEMAIL_VERSION ); ?>"></script>
+                <script type="module" src="<?php /** phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript */ echo esc_url( wemail()->wemail_cdn . '/build/js/preview.js?ver=' . WEMAIL_VERSION ); ?>"></script>
             </body>
         </html>
 

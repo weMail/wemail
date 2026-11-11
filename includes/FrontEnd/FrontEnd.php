@@ -46,7 +46,7 @@ class FrontEnd {
         if ( ! empty( $forms ) ) {
             $forms = $this->get_filtered_forms( $forms, $current_page_id );
             foreach ( $forms as $form ) {
-                echo wemail_form( $form );
+                echo wemail_form( $form ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML built by the plugin's own form view; contains custom <wemail-form> web-component tags that kses would strip.
             }
         }
     }

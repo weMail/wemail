@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 
 function wemail_add_installed_time() {
     if ( empty( get_option( 'wemail_installed_time' ) ) ) {

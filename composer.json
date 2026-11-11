@@ -9,7 +9,7 @@
   ],
   "homepage": "https://getwemail.io",
   "type": "wordpress-plugin",
-  "license": "GPL-3.0",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "weDevs",
@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "php": ">=5.5",
+    "php": ">=7.4",
     "league/csv": "9.8",
     "appsero/client": "v2.0.4"
   },

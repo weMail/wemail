@@ -1,0 +1,45 @@
+name: Release
+
+# Tag push (2.1.9 or v2.1.9): build the plugin zip and publish a GitHub
+# release with it. The version comes from the tag; the notes come from that
+# version's entry in the readme.txt changelog.
+
+on:
+  push:
+    tags: ['*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer
+
+      - name: Build the plugin zip
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i -E "s/^( \* Version: ).*/\1$VERSION/" wemail.php
+          sed -i -E "s/(public \\\$version = ')[^']*'/\1$VERSION'/" includes/WeMail.php
+          sed -i -E "s/^(Stable tag: ).*/\1$VERSION/" readme.txt
+
+          bash bin/zip.sh
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="$VERSION" 'index($0, "= v" v " ") == 1 { f = 1; next } f && /^= v/ { exit } f && NF' readme.txt > notes.md
+          gh release create "$GITHUB_REF_NAME" "build/wemail-v$VERSION.zip" --title "v$VERSION" --notes-file notes.md

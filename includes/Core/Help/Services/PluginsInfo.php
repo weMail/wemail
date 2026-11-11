@@ -21,26 +21,26 @@ class PluginsInfo {
         foreach ( $plugins as $k => $v ) {
             // Take care of formatting the data how we want it.
             $formatted         = array();
-            $formatted['name'] = strip_tags( $v['Name'] );
+            $formatted['name'] = wp_strip_all_tags( $v['Name'] );
 
             if ( isset( $v['Version'] ) ) {
-                $formatted['version'] = strip_tags( $v['Version'] );
+                $formatted['version'] = wp_strip_all_tags( $v['Version'] );
             }
 
             if ( isset( $v['Author'] ) ) {
-                $formatted['author'] = strip_tags( $v['Author'] );
+                $formatted['author'] = wp_strip_all_tags( $v['Author'] );
             }
 
             if ( isset( $v['Network'] ) ) {
-                $formatted['network'] = strip_tags( $v['Network'] );
+                $formatted['network'] = wp_strip_all_tags( $v['Network'] );
             }
 
             if ( isset( $v['AuthorURI'] ) ) {
-                $formatted['author_uri'] = strip_tags( $v['AuthorURI'] );
+                $formatted['author_uri'] = wp_strip_all_tags( $v['AuthorURI'] );
             }
 
             if ( isset( $v['PluginURI'] ) ) {
-                $formatted['plugin_uri'] = strip_tags( $v['PluginURI'] );
+                $formatted['plugin_uri'] = wp_strip_all_tags( $v['PluginURI'] );
             }
 
             if ( in_array( $k, $active_plugins_keys, true ) ) {

@@ -15,6 +15,7 @@
         "package-lock.json",
         "package.json",
         "phpcs.xml",
-        "src"
+        "src",
+        ".wordpress-org"
     ]
 }

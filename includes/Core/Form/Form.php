@@ -33,10 +33,8 @@ class Form {
     public function get( $id ) {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $query = $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1", $id );
-
-        $form = $wpdb->get_row( $query, ARRAY_A );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name from a fixed prefix, value prepared
+        $form = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->get_table()} WHERE `id` = %s AND deleted_at IS NULL AND `status` = 1", $id ), ARRAY_A );
 
         if ( $form ) {
             $form['settings'] = json_decode( $form['settings'], true );
@@ -150,6 +148,10 @@ class Form {
 
         $ids = (array) $id;
 
+        if ( empty( $ids ) ) {
+            return false;
+        }
+
         $data = $this->fillable_check(
             $data,
             array( 'name', 'template', 'settings', 'type', 'status', 'deleted_at' )
@@ -175,11 +177,10 @@ class Form {
             }
         );
 
-        $ids_sql = $this->in_sql( $ids );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $statement = $wpdb->prepare( "UPDATE {$this->get_table()} SET {$attrs} WHERE `id` IN({$ids_sql})", $data );
-
-        return $wpdb->query( $statement );
+        $placeholders = implode( ', ', array_fill( 0, count( $ids ), '%s' ) );
+        $values = array_merge( array_values( $data ), $ids );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- column names from a hardcoded whitelist, values prepared
+        return $wpdb->query( $wpdb->prepare( "UPDATE {$this->get_table()} SET {$attrs} WHERE `id` IN ($placeholders)", $values ) );
     }
 
     /**
@@ -194,14 +195,17 @@ class Form {
         global $wpdb;
         $ids = (array) $ids;
 
+        if ( empty( $ids ) ) {
+            return false;
+        }
+
         if ( $soft_delete ) {
             return $this->update( array( 'deleted_at' => current_time( 'mysql' ) ), $ids );
         }
 
-        $ids_string = $this->in_sql( $ids );
-
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        return $wpdb->query( "DELETE FROM {$this->get_table()} WHERE `id` IN ({$ids_string})" );
+        $placeholders = implode( ', ', array_fill( 0, count( $ids ), '%s' ) );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name from a fixed prefix, values prepared
+        return $wpdb->query( $wpdb->prepare( "DELETE FROM {$this->get_table()} WHERE `id` IN ($placeholders)", $ids ) );
     }
 
     /**
@@ -222,8 +226,10 @@ class Form {
             $args
         );
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $forms = $wpdb->get_results( "SELECT {$this->in_sql( $args['select'], false )} FROM {$this->get_table()} WHERE `type` IN ({$this->in_sql( $args['type'] )}) AND `status` = 1 AND `deleted_at` IS NULL", ARRAY_A );
+        $type = (array) $args['type'];
+        $type_placeholders = implode( ', ', array_fill( 0, count( $type ), '%s' ) );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- column list from an internal whitelist, type values prepared
+        $forms = $wpdb->get_results( $wpdb->prepare( "SELECT {$this->in_sql( $args['select'], false )} FROM {$this->get_table()} WHERE `type` IN ($type_placeholders) AND `status` = 1 AND `deleted_at` IS NULL", $type ), ARRAY_A );
 
         if ( is_null( $forms ) ) {
             return array();
