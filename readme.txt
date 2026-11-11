@@ -317,10 +317,11 @@ weMail development repository on [GitHub](https://github.com/weDevsOfficial/wema
 
 
 == Changelog ==
-= v2.1.9 - (10th Nov, 2026) =
+= v2.1.9 - (11th Nov, 2026) =
 * Fix: campaigns written in the Writing Focused Editor now keep their links and formatting when saved and sent, instead of links turning into plain text
 * Fix: in the Writing Focused Editor, numbers stay exactly as typed (19.99 was being saved as 19) and code blocks keep their line breaks
 * Fix: the e-commerce integration settings are restored when a site reconnects after the plugin was deleted, so the screen no longer shows sync as on while no orders are being sent
+* Fix: the abandoned cart recovery link now applies the coupon from the email for guest shoppers, instead of WooCommerce refusing it with "Please enter a valid email at checkout"
 
 = v2.1.8 - (6th Nov, 2026) =
 * Fix: importing subscribers from an uploaded CSV now reads the file directly from the server instead of downloading it from its own URL, so imports work on sites that block loopback requests, sit behind HTTP authentication or use a certificate WordPress does not trust
