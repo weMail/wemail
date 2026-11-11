@@ -221,6 +221,26 @@ class WooCommerce extends AbstractPlatform {
     }
 
     /**
+     * Put the recovered cart's email on a guest's checkout when it has none.
+     *
+     * The automation's coupon is limited to the shopper's email, and the
+     * recovery link opens a new session with no email, so WooCommerce refused
+     * the coupon (wemail-app#335). A signed-in customer keeps their own details.
+     *
+     * @param string $email The email the abandoned cart was saved with.
+     */
+    private function fill_recovered_email( $email ) {
+        $email = sanitize_email( $email );
+
+        if ( ! is_email( $email ) || is_user_logged_in() || ! WC()->customer || WC()->customer->get_billing_email() ) {
+            return;
+        }
+
+        WC()->customer->set_billing_email( $email );
+        WC()->customer->save();
+    }
+
+    /**
      * Handle cart recovery from abandoned cart email link
      */
     public function handle_cart_recovery() {
@@ -272,6 +292,8 @@ class WooCommerce extends AbstractPlatform {
                 }
             }
         }
+
+        $this->fill_recovered_email( isset( $response['data']['email'] ) ? $response['data']['email'] : '' );
 
         if ( ! empty( $coupon_code ) && wc_get_coupon_id_by_code( $coupon_code ) ) {
             WC()->cart->apply_coupon( $coupon_code );
