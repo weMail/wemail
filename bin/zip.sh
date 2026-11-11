@@ -11,8 +11,16 @@ ZIP="$PWD/build/wemail-v$VERSION.zip"
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT
 
+# Build with the Node version in .nvmrc when nvm is installed (NVM_DIR covers
+# installs outside ~/.nvm, such as Herd's).
+NVM_SH="${NVM_DIR:-$HOME/.nvm}/nvm.sh"
+if [ -s "$NVM_SH" ]; then
+    . "$NVM_SH"
+    nvm install
+fi
+
 npm ci
-NODE_OPTIONS=--openssl-legacy-provider npm run wp:build
+npm run wp:build
 
 rsync -r --exclude='*.git*' --exclude=bin --exclude=node_modules --exclude=build --exclude=.DS_Store --exclude=/vendor ./* "$STAGE/wemail"
 composer install --no-dev --no-interaction --no-progress --working-dir="$STAGE/wemail"
