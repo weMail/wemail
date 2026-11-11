@@ -3,6 +3,7 @@
 .eslintrc.json
 .gitignore
 .svnignore
+jsconfig.json
 package-lock.json
 package.json
 README.md
